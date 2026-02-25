@@ -82,6 +82,13 @@ EMAIL_BACKEND = os.getenv(
     "DJANGO_EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend",
 )
+EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "1") == "1"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "20"))
 DEFAULT_FROM_EMAIL = os.getenv("DJANGO_DEFAULT_FROM_EMAIL", "help@quroom.kr")
 QUROOM_CONTACT_EMAIL = os.getenv("QUROOM_CONTACT_EMAIL", "help@quroom.kr")
 GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "")

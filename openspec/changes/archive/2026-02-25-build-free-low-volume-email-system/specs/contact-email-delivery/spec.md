@@ -1,8 +1,5 @@
-# contact-email-delivery Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-contact-email-delivery-and-internal-log. Update Purpose after archive.
-## Requirements
 ### Requirement: Contact submission email MUST target configured operations inbox
 The system MUST send contact submission notifications to `QUROOM_CONTACT_EMAIL` using the configured mail backend, and production configuration MUST allow `help@quroom.kr`.
 
@@ -15,16 +12,3 @@ The system MUST send contact submission notifications to `QUROOM_CONTACT_EMAIL` 
 - **WHEN** a valid contact form is submitted but SMTP sending raises an exception
 - **THEN** the system MUST return the same successful form submission response to the user
 - **AND** the persisted inquiry record MUST be marked as failed delivery with an error summary
-
-### Requirement: Email delivery result MUST be explicitly captured
-The system MUST treat email send success/failure as explicit outcomes for each submission.
-
-#### Scenario: Email send succeeds
-- **WHEN** email backend accepts the submission notification
-- **THEN** the submission is marked as delivery success
-
-#### Scenario: Email send fails
-- **WHEN** email backend raises an exception for the submission notification
-- **THEN** the submission is marked as delivery failed
-- **AND** failure reason is stored for operational review
-

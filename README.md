@@ -65,8 +65,22 @@ If both pass, push to GitHub.
 - `GA4_MEASUREMENT_ID` (if you want GA4 tracking)
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 
+### SMTP mail settings (for real delivery)
+- `DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend`
+- `EMAIL_HOST` (example: `smtp.daum.net`)
+- `EMAIL_PORT` (example: `465` for SSL or `587` for TLS)
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `EMAIL_USE_TLS` (`1` for TLS/587)
+- `EMAIL_USE_SSL` (`1` for SSL/465)
+- `EMAIL_TIMEOUT` (seconds, default `20`)
+- `DJANGO_DEFAULT_FROM_EMAIL` (recommended to match `EMAIL_HOST_USER`)
+
 ### Contact mail ops check
 - Production value should be:
   - `QUROOM_CONTACT_EMAIL=help@quroom.kr`
 - Verify in runtime settings before deploy:
   - `.venv/bin/python manage.py shell -c "from django.conf import settings; print(settings.QUROOM_CONTACT_EMAIL)"`
+- SMTP smoke test:
+  - `set -a; source .env; set +a`
+  - `.venv/bin/python manage.py shell -c "from django.core.mail import send_mail; from django.conf import settings; print(send_mail('[SMTP 테스트] QuRoom','SMTP 테스트', settings.DEFAULT_FROM_EMAIL, [settings.QUROOM_CONTACT_EMAIL], fail_silently=False))"`
