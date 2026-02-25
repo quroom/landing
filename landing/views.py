@@ -1,10 +1,12 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
+from django.db.models import Count
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -159,3 +161,57 @@ def privacy(request: HttpRequest) -> HttpResponse:
 
 def terms(request: HttpRequest) -> HttpResponse:
     return render(request, "landing/terms.html", {"content": SHARED_CONTENT})
+
+
+@staff_member_required
+def admin_dashboard(request: HttpRequest) -> HttpResponse:
+    selected_status = request.GET.get("status", "all")
+    selected_range = request.GET.get("range", "all")
+    valid_statuses = {choice[0] for choice in ContactInquiry.DeliveryStatus.choices}
+
+    inquiries = ContactInquiry.objects.all()
+    if selected_status in valid_statuses:
+        inquiries = inquiries.filter(email_delivery_status=selected_status)
+    else:
+        selected_status = "all"
+
+    today = timezone.localdate()
+    if selected_range == "today":
+        inquiries = inquiries.filter(created_at__date=today)
+    elif selected_range == "7d":
+        inquiries = inquiries.filter(created_at__date__gte=today - timedelta(days=6))
+    elif selected_range == "30d":
+        inquiries = inquiries.filter(created_at__date__gte=today - timedelta(days=29))
+    else:
+        selected_range = "all"
+
+    status_counts = {
+        "total": ContactInquiry.objects.count(),
+        "success": ContactInquiry.objects.filter(
+            email_delivery_status=ContactInquiry.DeliveryStatus.SUCCESS
+        ).count(),
+        "failed": ContactInquiry.objects.filter(
+            email_delivery_status=ContactInquiry.DeliveryStatus.FAILED
+        ).count(),
+        "pending": ContactInquiry.objects.filter(
+            email_delivery_status=ContactInquiry.DeliveryStatus.PENDING
+        ).count(),
+        "today": ContactInquiry.objects.filter(
+            created_at__date=timezone.localdate()
+        ).count(),
+    }
+
+    inquiry_type_stats = list(
+        ContactInquiry.objects.values("inquiry_type")
+        .annotate(count=Count("id"))
+        .order_by("-count")
+    )
+
+    context = {
+        "status_counts": status_counts,
+        "selected_status": selected_status,
+        "selected_range": selected_range,
+        "recent_inquiries": inquiries[:25],
+        "inquiry_type_stats": inquiry_type_stats,
+    }
+    return render(request, "landing/admin_dashboard.html", context)

@@ -6,6 +6,7 @@ app_name = "landing"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("for-founders/", views.founders, name="founders"),
     path(
         "for-foreign-developers/",

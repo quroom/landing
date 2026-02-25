@@ -1,0 +1,6 @@
+{% extends "admin/base_site.html" %}
+
+{% block userlinks %}
+{{ block.super }}
+ / <a href="{% url 'landing:admin_dashboard' %}">문의 대시보드</a>
+{% endblock %}
