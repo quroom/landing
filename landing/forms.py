@@ -2,12 +2,24 @@ from django import forms
 
 
 class ContactForm(forms.Form):
-    INQUIRY_CHOICES = [
+    HOME_INQUIRY_CHOICES = [
         ("development", "서비스 개발"),
         ("matching", "외국인 개발자 연계"),
         ("outsourcing", "고액 외주 상담"),
         ("other", "기타"),
     ]
+    FOREIGN_INQUIRY_CHOICES = [
+        ("network", "개발사 네트워크 연결"),
+        ("career", "취업/실무 커리어 상담"),
+        ("settlement", "정착/생활 연계 상담"),
+        ("other", "기타"),
+    ]
+
+    page_key = forms.CharField(
+        required=False,
+        initial="home",
+        widget=forms.HiddenInput(),
+    )
 
     name = forms.CharField(
         label="이름",
@@ -38,7 +50,7 @@ class ContactForm(forms.Form):
     )
     inquiry_type = forms.ChoiceField(
         label="문의 유형",
-        choices=INQUIRY_CHOICES,
+        choices=HOME_INQUIRY_CHOICES,
     )
     message = forms.CharField(
         label="문의 내용",
@@ -61,3 +73,17 @@ class ContactForm(forms.Form):
         required=False,
         label="전체 동의 (필수 + 선택)",
     )
+
+    def __init__(self, *args, page_key: str = "home", **kwargs):
+        super().__init__(*args, **kwargs)
+        normalized_key = page_key if page_key in {"home", "foreign_developers"} else "home"
+        self.fields["page_key"].initial = normalized_key
+
+        if normalized_key == "foreign_developers":
+            self.fields["inquiry_type"].choices = self.FOREIGN_INQUIRY_CHOICES
+            self.fields["message"].widget.attrs["placeholder"] = (
+                "희망 직무/기술 스택, 현재 상황, 필요한 연결 지원을 작성해 주세요."
+            )
+            self.fields["agree_marketing"].label = (
+                "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
+            )

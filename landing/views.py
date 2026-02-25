@@ -61,7 +61,7 @@ def _base_context(content: dict, page_key: str) -> dict:
         "career_ranges": CAREER_RANGES,
         "career_duration": career_duration,
         "metrics": _build_metrics(content, career_duration),
-        "form": ContactForm(),
+        "form": ContactForm(page_key=page_key),
         "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
         "page_key": page_key,
     }
@@ -100,7 +100,8 @@ def _render_contact_form(
 
 @require_POST
 def contact_submit(request: HttpRequest) -> HttpResponse:
-    form = ContactForm(request.POST)
+    page_key = request.POST.get("page_key", "home")
+    form = ContactForm(request.POST, page_key=page_key)
 
     if not form.is_valid():
         return _render_contact_form(
@@ -127,7 +128,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
 
     return _render_contact_form(
         request,
-        ContactForm(),
+        ContactForm(page_key=page_key),
         status="success",
         status_message="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
     )

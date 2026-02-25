@@ -27,6 +27,8 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "외국인 개발자 제공 서비스")
         self.assertContains(response, "개발사 네트워크 연결 지원")
+        self.assertContains(response, "외국인 개발자 커리어/네트워크 관련 정보 메일 수신")
+        self.assertContains(response, "개발사 네트워크 연결")
 
     def test_policy_pages_render(self) -> None:
         privacy = self.client.get(reverse("landing:privacy"))

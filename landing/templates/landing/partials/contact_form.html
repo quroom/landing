@@ -7,6 +7,7 @@
 
   <form hx-post="{% url 'landing:contact_submit' %}" hx-target="#contact-form-wrap" hx-swap="innerHTML" class="space-y-3">
     {% csrf_token %}
+    {{ form.page_key }}
     <div>
       <label class="mb-1 block text-xs font-medium" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
       {{ form.name }}
