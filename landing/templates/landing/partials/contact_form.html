@@ -1,0 +1,57 @@
+<div class="rounded-2xl bg-white p-4 text-navy md:p-5">
+  {% if status %}
+    <div class="mb-4 rounded-xl px-3 py-2 text-sm {% if status == 'success' %}bg-mint/20 text-green-800{% else %}bg-amber/20 text-amber-900{% endif %}">
+      {{ status_message }}
+    </div>
+  {% endif %}
+
+  <form hx-post="{% url 'landing:contact_submit' %}" hx-target="#contact-form-wrap" hx-swap="innerHTML" class="space-y-3">
+    {% csrf_token %}
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.name.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
+      {{ form.company_name }}
+      {% if form.company_name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.company_name.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.contact.id_for_label }}">{{ form.contact.label }}</label>
+      {{ form.contact }}
+      {% if form.contact.errors %}<p class="mt-1 text-xs text-red-600">{{ form.contact.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+      {% if form.email.errors %}<p class="mt-1 text-xs text-red-600">{{ form.email.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.inquiry_type.id_for_label }}">{{ form.inquiry_type.label }}</label>
+      {{ form.inquiry_type }}
+      {% if form.inquiry_type.errors %}<p class="mt-1 text-xs text-red-600">{{ form.inquiry_type.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+      {{ form.message }}
+      {% if form.message.errors %}<p class="mt-1 text-xs text-red-600">{{ form.message.errors.0 }}</p>{% endif %}
+    </div>
+
+    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_privacy.id_for_label }}">
+      {{ form.agree_privacy }}
+      <span>{{ form.agree_privacy.label }}</span>
+    </label>
+    {% if form.agree_privacy.errors %}<p class="text-xs text-red-600">{{ form.agree_privacy.errors.0 }}</p>{% endif %}
+
+    <button type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">
+      문의 보내기
+    </button>
+    <p class="text-xs text-navy/60">영업일 기준 1~2일 내 회신합니다.</p>
+  </form>
+</div>

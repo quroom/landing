@@ -1,0 +1,55 @@
+from django import forms
+
+
+class ContactForm(forms.Form):
+    INQUIRY_CHOICES = [
+        ("development", "서비스 개발"),
+        ("matching", "외국인 개발자 연계"),
+        ("outsourcing", "고액 외주 상담"),
+        ("other", "기타"),
+    ]
+
+    name = forms.CharField(
+        label="이름",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={"placeholder": "이름을 입력해 주세요", "autocomplete": "name"}
+        ),
+    )
+    company_name = forms.CharField(
+        label="회사명",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "회사명 (선택)"}),
+    )
+    contact = forms.CharField(
+        label="연락 채널",
+        max_length=120,
+        required=False,
+        widget=forms.TextInput(
+            attrs={"placeholder": "이메일 또는 LinkedIn 프로필 URL (선택)"}
+        ),
+    )
+    email = forms.EmailField(
+        label="이메일",
+        widget=forms.EmailInput(
+            attrs={"placeholder": "회신 받을 이메일", "autocomplete": "email"}
+        ),
+    )
+    inquiry_type = forms.ChoiceField(
+        label="문의 유형",
+        choices=INQUIRY_CHOICES,
+    )
+    message = forms.CharField(
+        label="문의 내용",
+        widget=forms.Textarea(
+            attrs={
+                "rows": 5,
+                "placeholder": "프로젝트 목표, 예산 범위, 원하는 일정 등을 자유롭게 작성해 주세요.",
+            }
+        ),
+    )
+    agree_privacy = forms.BooleanField(
+        label="개인정보 수집 및 이용에 동의합니다.",
+        error_messages={"required": "문의 접수를 위해 동의가 필요합니다."},
+    )

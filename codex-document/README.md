@@ -4,6 +4,11 @@
 
 새 위치: `openspec/changes/consolidate-codex-docs-into-openspec/docs/`
 
+운영 경로 참고:
+- Django 코드 루트: `landing/`
+- 설정 모듈: `landing/project/settings.py`
+- 템플릿/정적: `landing/templates/`, `landing/static/`
+
 이동한 파일 목록:
 - quroom-landing-spec.md
 - general-vibe-coding-guide-for-beginners.md
