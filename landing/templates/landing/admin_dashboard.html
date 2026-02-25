@@ -39,6 +39,29 @@
       </article>
     </div>
 
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">홈 유입</p>
+        <p class="mt-1 text-2xl font-bold text-navy">{{ event_counts.lp_view_home }}</p>
+      </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">외국인 페이지 유입</p>
+        <p class="mt-1 text-2xl font-bold text-navy">{{ event_counts.lp_view_foreign }}</p>
+      </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">문의 제출(전체)</p>
+        <p class="mt-1 text-2xl font-bold text-sky">{{ event_counts.contact_submit_total }}</p>
+      </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">문의 제출(창업자)</p>
+        <p class="mt-1 text-2xl font-bold text-sky">{{ event_counts.contact_submit_founder }}</p>
+      </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">문의 제출(외국인)</p>
+        <p class="mt-1 text-2xl font-bold text-sky">{{ event_counts.contact_submit_foreign }}</p>
+      </article>
+    </div>
+
     <div class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-sm font-medium text-navy/80">상태 필터</span>

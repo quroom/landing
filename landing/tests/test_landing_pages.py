@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from unittest.mock import patch
 
-from landing.models import ContactInquiry
+from landing.models import ContactInquiry, FunnelEvent
 
 
 class LandingPageTests(TestCase):
@@ -16,6 +16,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "AX 실행 파트")
         self.assertContains(response, "외주용역 집중 트랙")
         self.assertContains(response, "창업 기본 인프라 구축")
+        self.assertTrue(
+            FunnelEvent.objects.filter(event_name="lp_view", page_key="home").exists()
+        )
 
     def test_founders_page_redirects_to_home(self) -> None:
         response = self.client.get(reverse("landing:founders"))
@@ -29,6 +32,11 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "개발사 네트워크 연결 지원")
         self.assertContains(response, "외국인 개발자 커리어/네트워크 관련 정보 메일 수신")
         self.assertContains(response, "개발사 네트워크 연결")
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="lp_view", page_key="foreign_developers"
+            ).exists()
+        )
 
     def test_policy_pages_render(self) -> None:
         privacy = self.client.get(reverse("landing:privacy"))

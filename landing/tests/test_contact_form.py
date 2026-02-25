@@ -4,7 +4,7 @@ from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from landing.models import ContactInquiry
+from landing.models import ContactInquiry, FunnelEvent
 
 
 @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
@@ -35,6 +35,7 @@ class ContactFormTests(TestCase):
                 "agree_all": "on",
                 "agree_privacy": "on",
                 "agree_marketing": "on",
+                "lead_source": "founder_contact",
             },
         )
         self.assertEqual(response.status_code, 200)
@@ -48,6 +49,11 @@ class ContactFormTests(TestCase):
         self.assertEqual(inquiry.email_error, "")
         self.assertTrue(inquiry.marketing_opt_in)
         self.assertIsNotNone(inquiry.marketing_opted_in_at)
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="contact_submit", lead_source="founder_contact"
+            ).exists()
+        )
 
     @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
     def test_contact_submit_email_failure_still_persists_and_returns_success(

@@ -10,10 +10,11 @@ from django.db.models import Count
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from .analytics import track_event
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm
 from .mailers import deliver_inquiry_email
-from .models import ContactInquiry
+from .models import ContactInquiry, FunnelEvent
 
 
 def _parse_date(value: str) -> date:
@@ -68,6 +69,7 @@ def _base_context(content: dict, page_key: str) -> dict:
 
 
 def index(request: HttpRequest) -> HttpResponse:
+    track_event(request, "lp_view", page_key="home", lead_source="landing")
     context = _base_context(build_page_content(), page_key="home")
     return render(request, "landing/index.html", context)
 
@@ -77,6 +79,12 @@ def founders(request: HttpRequest) -> HttpResponse:
 
 
 def foreign_developers(request: HttpRequest) -> HttpResponse:
+    track_event(
+        request,
+        "lp_view",
+        page_key="foreign_developers",
+        lead_source="foreign_developers",
+    )
     context = _base_context(
         build_page_content("foreign_developers"), page_key="foreign_developers"
     )
@@ -112,6 +120,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         )
 
     data = form.cleaned_data
+    lead_source = data.get("lead_source") or "contact_form"
     marketing_opt_in = bool(data.get("agree_marketing") or data.get("agree_all"))
     inquiry = ContactInquiry.objects.create(
         name=data["name"],
@@ -125,6 +134,16 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
     )
 
     deliver_inquiry_email(inquiry)
+    track_event(
+        request,
+        "contact_submit",
+        page_key=page_key,
+        lead_source=lead_source,
+        metadata={
+            "inquiry_type": data["inquiry_type"],
+            "marketing_opt_in": marketing_opt_in,
+        },
+    )
 
     return _render_contact_form(
         request,
@@ -185,6 +204,23 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         .annotate(count=Count("id"))
         .order_by("-count")
     )
+    event_counts = {
+        "lp_view_home": FunnelEvent.objects.filter(
+            event_name="lp_view", page_key="home"
+        ).count(),
+        "lp_view_foreign": FunnelEvent.objects.filter(
+            event_name="lp_view", page_key="foreign_developers"
+        ).count(),
+        "contact_submit_total": FunnelEvent.objects.filter(
+            event_name="contact_submit"
+        ).count(),
+        "contact_submit_founder": FunnelEvent.objects.filter(
+            event_name="contact_submit", lead_source="founder_contact"
+        ).count(),
+        "contact_submit_foreign": FunnelEvent.objects.filter(
+            event_name="contact_submit", lead_source="foreign_developer_contact"
+        ).count(),
+    }
 
     context = {
         "status_counts": status_counts,
@@ -192,6 +228,7 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "selected_range": selected_range,
         "recent_inquiries": inquiries[:25],
         "inquiry_type_stats": inquiry_type_stats,
+        "event_counts": event_counts,
     }
     return render(request, "landing/admin_dashboard.html", context)
 

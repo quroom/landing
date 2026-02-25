@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .mailers import deliver_inquiry_email
-from .models import ContactInquiry
+from .models import ContactInquiry, FunnelEvent
 
 
 @admin.register(ContactInquiry)
@@ -42,3 +42,11 @@ class ContactInquiryAdmin(admin.ModelAdmin):
             request,
             f"재전송 완료: 성공 {success_count}건, 실패 {failure_count}건",
         )
+
+
+@admin.register(FunnelEvent)
+class FunnelEventAdmin(admin.ModelAdmin):
+    list_display = ("event_name", "page_key", "lead_source", "created_at")
+    list_filter = ("event_name", "page_key", "lead_source", "created_at")
+    search_fields = ("event_name", "page_key", "lead_source")
+    readonly_fields = ("event_name", "page_key", "lead_source", "metadata", "created_at")

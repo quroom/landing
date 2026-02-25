@@ -20,6 +20,11 @@ class ContactForm(forms.Form):
         initial="home",
         widget=forms.HiddenInput(),
     )
+    lead_source = forms.CharField(
+        required=False,
+        initial="contact_form",
+        widget=forms.HiddenInput(),
+    )
 
     name = forms.CharField(
         label="이름",
@@ -78,6 +83,11 @@ class ContactForm(forms.Form):
         super().__init__(*args, **kwargs)
         normalized_key = page_key if page_key in {"home", "foreign_developers"} else "home"
         self.fields["page_key"].initial = normalized_key
+        self.fields["lead_source"].initial = (
+            "foreign_developer_contact"
+            if normalized_key == "foreign_developers"
+            else "founder_contact"
+        )
 
         if normalized_key == "foreign_developers":
             self.fields["inquiry_type"].choices = self.FOREIGN_INQUIRY_CHOICES

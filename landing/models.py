@@ -34,3 +34,17 @@ class ContactInquiry(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} ({self.email}) - {self.get_email_delivery_status_display()}"
+
+
+class FunnelEvent(models.Model):
+    event_name = models.CharField(max_length=80, db_index=True)
+    page_key = models.CharField(max_length=40, blank=True)
+    lead_source = models.CharField(max_length=80, blank=True)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.event_name} ({self.page_key or '-'})"
