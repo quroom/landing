@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from unittest.mock import patch
 
 from landing.models import ContactInquiry
 
@@ -86,3 +87,51 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "오늘 문의")
         self.assertNotContains(response, "오래된 문의")
+
+    def test_admin_resend_inquiry_updates_status(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff3",
+            password="pass1234",
+            is_staff=True,
+        )
+        inquiry = ContactInquiry.objects.create(
+            name="재전송 대상",
+            email="retry@example.com",
+            inquiry_type="development",
+            message="retry",
+            email_delivery_status=ContactInquiry.DeliveryStatus.FAILED,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            reverse("landing:admin_resend_inquiry", kwargs={"inquiry_id": inquiry.id})
+        )
+        self.assertEqual(response.status_code, 302)
+        inquiry.refresh_from_db()
+        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
+
+    @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
+    def test_admin_resend_inquiry_keeps_failed_on_send_error(self, _send_mail: object) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff4",
+            password="pass1234",
+            is_staff=True,
+        )
+        inquiry = ContactInquiry.objects.create(
+            name="재전송 실패",
+            email="retry-fail@example.com",
+            inquiry_type="development",
+            message="retry fail",
+            email_delivery_status=ContactInquiry.DeliveryStatus.FAILED,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            reverse("landing:admin_resend_inquiry", kwargs={"inquiry_id": inquiry.id})
+        )
+        self.assertEqual(response.status_code, 302)
+        inquiry.refresh_from_db()
+        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED)
+        self.assertIn("smtp failed", inquiry.email_error)

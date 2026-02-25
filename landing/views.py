@@ -2,9 +2,9 @@ from datetime import date, datetime, timedelta
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.template.loader import render_to_string
 from django.db.models import Count
 from django.utils import timezone
@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm
+from .mailers import deliver_inquiry_email
 from .models import ContactInquiry
 
 
@@ -119,33 +120,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         message=data["message"],
     )
 
-    mail_subject = f"[QuRoom 문의] {data['name']} / {data['inquiry_type']}"
-    mail_body = (
-        "큐룸 홈페이지 문의가 접수되었습니다.\n\n"
-        f"이름: {data['name']}\n"
-        f"회사명: {data.get('company_name') or '-'}\n"
-        f"연락 채널: {data.get('contact') or '-'}\n"
-        f"이메일: {data['email']}\n"
-        f"문의 유형: {dict(form.fields['inquiry_type'].choices).get(data['inquiry_type'])}\n\n"
-        f"문의 내용:\n{data['message']}\n"
-    )
-
-    try:
-        send_mail(
-            subject=mail_subject,
-            message=mail_body,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.QUROOM_CONTACT_EMAIL],
-            fail_silently=False,
-        )
-        inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.SUCCESS
-        inquiry.emailed_at = timezone.now()
-        inquiry.email_error = ""
-    except Exception as exc:
-        inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.FAILED
-        inquiry.email_error = str(exc)[:1000]
-    finally:
-        inquiry.save(update_fields=["email_delivery_status", "emailed_at", "email_error"])
+    deliver_inquiry_email(inquiry)
 
     return _render_contact_form(
         request,
@@ -215,3 +190,11 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "inquiry_type_stats": inquiry_type_stats,
     }
     return render(request, "landing/admin_dashboard.html", context)
+
+
+@staff_member_required
+@require_POST
+def admin_resend_inquiry(request: HttpRequest, inquiry_id: int) -> HttpResponse:
+    inquiry = get_object_or_404(ContactInquiry, id=inquiry_id)
+    deliver_inquiry_email(inquiry)
+    return redirect(f"{reverse('landing:admin_dashboard')}?status=failed")

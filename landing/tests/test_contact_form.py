@@ -45,7 +45,7 @@ class ContactFormTests(TestCase):
         self.assertIsNotNone(inquiry.emailed_at)
         self.assertEqual(inquiry.email_error, "")
 
-    @patch("landing.views.send_mail", side_effect=RuntimeError("smtp failed"))
+    @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
     def test_contact_submit_email_failure_still_persists_and_returns_success(
         self, _send_mail: object
     ) -> None:
