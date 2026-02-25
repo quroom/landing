@@ -70,8 +70,40 @@
     });
   }
 
+  function bindConsentToggle(root) {
+    var scope = root || document;
+    var all = scope.querySelector("#id_agree_all");
+    var required = scope.querySelector("#id_agree_privacy");
+    var optional = scope.querySelector("#id_agree_marketing");
+    if (!all || !required || !optional) return;
+    if (all.dataset.bound === "1") return;
+
+    function syncAll() {
+      all.checked = required.checked && optional.checked;
+    }
+
+    all.addEventListener("change", function () {
+      required.checked = all.checked;
+      optional.checked = all.checked;
+    });
+
+    required.addEventListener("change", syncAll);
+    optional.addEventListener("change", syncAll);
+    all.dataset.bound = "1";
+    syncAll();
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     bindMobileMenu();
     updateCareerDuration();
+    bindConsentToggle(document);
+  });
+
+  document.body.addEventListener("htmx:afterSwap", function (event) {
+    var target = event && event.detail ? event.detail.target : null;
+    if (!target) return;
+    if (target.id === "contact-form-wrap" || target.querySelector("#id_agree_all")) {
+      bindConsentToggle(target);
+    }
   });
 })();

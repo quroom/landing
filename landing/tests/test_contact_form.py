@@ -32,7 +32,9 @@ class ContactFormTests(TestCase):
                 "email": "tester@example.com",
                 "inquiry_type": "development",
                 "message": "서비스 문의 테스트",
+                "agree_all": "on",
                 "agree_privacy": "on",
+                "agree_marketing": "on",
             },
         )
         self.assertEqual(response.status_code, 200)
@@ -44,6 +46,8 @@ class ContactFormTests(TestCase):
         self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
         self.assertIsNotNone(inquiry.emailed_at)
         self.assertEqual(inquiry.email_error, "")
+        self.assertTrue(inquiry.marketing_opt_in)
+        self.assertIsNotNone(inquiry.marketing_opted_in_at)
 
     @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
     def test_contact_submit_email_failure_still_persists_and_returns_success(
@@ -66,3 +70,22 @@ class ContactFormTests(TestCase):
         inquiry = ContactInquiry.objects.get(email="failure@example.com")
         self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED)
         self.assertIn("smtp failed", inquiry.email_error)
+        self.assertFalse(inquiry.marketing_opt_in)
+        self.assertIsNone(inquiry.marketing_opted_in_at)
+
+    def test_contact_submit_with_agree_all_sets_marketing_opt_in(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "name": "전체동의 사용자",
+                "email": "all@example.com",
+                "inquiry_type": "other",
+                "message": "전체 동의 테스트",
+                "agree_privacy": "on",
+                "agree_all": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="all@example.com")
+        self.assertTrue(inquiry.marketing_opt_in)
+        self.assertIsNotNone(inquiry.marketing_opted_in_at)

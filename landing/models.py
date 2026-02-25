@@ -15,6 +15,8 @@ class ContactInquiry(models.Model):
     inquiry_type = models.CharField(max_length=20)
     message = models.TextField()
     privacy_agreed_at = models.DateTimeField(default=timezone.now)
+    marketing_opt_in = models.BooleanField(default=False)
+    marketing_opted_in_at = models.DateTimeField(null=True, blank=True)
 
     email_delivery_status = models.CharField(
         max_length=20,

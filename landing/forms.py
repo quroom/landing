@@ -53,3 +53,11 @@ class ContactForm(forms.Form):
         label="개인정보 수집 및 이용에 동의합니다.",
         error_messages={"required": "문의 접수를 위해 동의가 필요합니다."},
     )
+    agree_marketing = forms.BooleanField(
+        required=False,
+        label="(선택) 자동화 진단/운영 팁 등 관련 정보 메일 수신에 동의합니다.",
+    )
+    agree_all = forms.BooleanField(
+        required=False,
+        label="전체 동의 (필수 + 선택)",
+    )

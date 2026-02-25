@@ -43,11 +43,22 @@
       {% if form.message.errors %}<p class="mt-1 text-xs text-red-600">{{ form.message.errors.0 }}</p>{% endif %}
     </div>
 
+    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_all.id_for_label }}">
+      {{ form.agree_all }}
+      <span>{{ form.agree_all.label }}</span>
+    </label>
+
     <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_privacy.id_for_label }}">
       {{ form.agree_privacy }}
       <span>{{ form.agree_privacy.label }}</span>
     </label>
     {% if form.agree_privacy.errors %}<p class="text-xs text-red-600">{{ form.agree_privacy.errors.0 }}</p>{% endif %}
+
+    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_marketing.id_for_label }}">
+      {{ form.agree_marketing }}
+      <span>{{ form.agree_marketing.label }}</span>
+    </label>
+    <p class="text-[11px] text-navy/55">선택 동의는 문의 접수와 무관하며, 언제든 수신거부할 수 있습니다.</p>
 
     <button type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">
       문의 보내기

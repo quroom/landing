@@ -111,6 +111,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         )
 
     data = form.cleaned_data
+    marketing_opt_in = bool(data.get("agree_marketing") or data.get("agree_all"))
     inquiry = ContactInquiry.objects.create(
         name=data["name"],
         company_name=data.get("company_name") or "",
@@ -118,6 +119,8 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         email=data["email"],
         inquiry_type=data["inquiry_type"],
         message=data["message"],
+        marketing_opt_in=marketing_opt_in,
+        marketing_opted_in_at=timezone.now() if marketing_opt_in else None,
     )
 
     deliver_inquiry_email(inquiry)

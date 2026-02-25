@@ -10,6 +10,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         "name",
         "email",
         "inquiry_type",
+        "marketing_opt_in",
         "email_delivery_status",
         "created_at",
         "emailed_at",
@@ -20,6 +21,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
         "privacy_agreed_at",
+        "marketing_opted_in_at",
         "emailed_at",
         "email_error",
     )
