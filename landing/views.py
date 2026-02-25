@@ -1,0 +1,161 @@
+from datetime import date, datetime
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+
+from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
+from .forms import ContactForm
+from .models import ContactInquiry
+
+
+def _parse_date(value: str) -> date:
+    return datetime.strptime(value, "%Y-%m-%d").date()
+
+
+def _months_between(start: date, end: date) -> int:
+    months = (end.year - start.year) * 12 + (end.month - start.month)
+    if end.day < start.day:
+        months -= 1
+    return max(months, 0)
+
+
+def _career_duration() -> str:
+    today = date.today()
+    total_months = 0
+    for item in CAREER_RANGES:
+        start = _parse_date(item["start"])
+        end = _parse_date(item["end"]) if item["end"] else today
+        total_months += _months_between(start, end)
+
+    years, months = divmod(total_months, 12)
+    return f"{years}년 {months}개월"
+
+
+def _build_metrics(content: dict, career_duration: str) -> list[dict]:
+    metrics = []
+    for item in content["metrics"]:
+        value = item["value_template"].format(career_duration=career_duration)
+        metrics.append(
+            {
+                "label": item["label"],
+                "value": value,
+                "description": item["description"],
+                "dynamic": "{career_duration}" in item["value_template"],
+            }
+        )
+    return metrics
+
+
+def _base_context(content: dict, page_key: str) -> dict:
+    career_duration = _career_duration()
+    return {
+        "content": content,
+        "career_ranges": CAREER_RANGES,
+        "career_duration": career_duration,
+        "metrics": _build_metrics(content, career_duration),
+        "form": ContactForm(),
+        "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
+        "page_key": page_key,
+    }
+
+
+def index(request: HttpRequest) -> HttpResponse:
+    context = _base_context(build_page_content(), page_key="home")
+    return render(request, "landing/index.html", context)
+
+
+def founders(request: HttpRequest) -> HttpResponse:
+    return redirect("landing:index")
+
+
+def foreign_developers(request: HttpRequest) -> HttpResponse:
+    context = _base_context(
+        build_page_content("foreign_developers"), page_key="foreign_developers"
+    )
+    return render(request, "landing/foreign_developers.html", context)
+
+
+def _render_contact_form(
+    request: HttpRequest,
+    form: ContactForm,
+    status: str | None = None,
+    status_message: str = "",
+) -> HttpResponse:
+    html = render_to_string(
+        "landing/partials/contact_form.html",
+        {"form": form, "status": status, "status_message": status_message},
+        request=request,
+    )
+    status_code = 200 if status != "error" else 400
+    return HttpResponse(html, status=status_code)
+
+
+@require_POST
+def contact_submit(request: HttpRequest) -> HttpResponse:
+    form = ContactForm(request.POST)
+
+    if not form.is_valid():
+        return _render_contact_form(
+            request,
+            form,
+            status="error",
+            status_message="필수 항목을 확인해 주세요.",
+        )
+
+    data = form.cleaned_data
+    inquiry = ContactInquiry.objects.create(
+        name=data["name"],
+        company_name=data.get("company_name") or "",
+        contact=data.get("contact") or "",
+        email=data["email"],
+        inquiry_type=data["inquiry_type"],
+        message=data["message"],
+    )
+
+    mail_subject = f"[QuRoom 문의] {data['name']} / {data['inquiry_type']}"
+    mail_body = (
+        "큐룸 홈페이지 문의가 접수되었습니다.\n\n"
+        f"이름: {data['name']}\n"
+        f"회사명: {data.get('company_name') or '-'}\n"
+        f"연락 채널: {data.get('contact') or '-'}\n"
+        f"이메일: {data['email']}\n"
+        f"문의 유형: {dict(form.fields['inquiry_type'].choices).get(data['inquiry_type'])}\n\n"
+        f"문의 내용:\n{data['message']}\n"
+    )
+
+    try:
+        send_mail(
+            subject=mail_subject,
+            message=mail_body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.QUROOM_CONTACT_EMAIL],
+            fail_silently=False,
+        )
+        inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.SUCCESS
+        inquiry.emailed_at = timezone.now()
+        inquiry.email_error = ""
+    except Exception as exc:
+        inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.FAILED
+        inquiry.email_error = str(exc)[:1000]
+    finally:
+        inquiry.save(update_fields=["email_delivery_status", "emailed_at", "email_error"])
+
+    return _render_contact_form(
+        request,
+        ContactForm(),
+        status="success",
+        status_message="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
+    )
+
+
+def privacy(request: HttpRequest) -> HttpResponse:
+    return render(request, "landing/privacy.html", {"content": SHARED_CONTENT})
+
+
+def terms(request: HttpRequest) -> HttpResponse:
+    return render(request, "landing/terms.html", {"content": SHARED_CONTENT})
