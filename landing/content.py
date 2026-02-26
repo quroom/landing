@@ -3,24 +3,24 @@ from copy import deepcopy
 SERVICE_CARDS = [
     {
         "id": "founder-ax-diagnosis",
-        "title": "AX 진단 (90분)",
+        "title": "자동화 실행 진단 (90분)",
         "summary": "아이디어/운영 이슈를 빠르게 구조화하고 자동화 우선순위를 설계합니다.",
         "items": [
             "현재 업무 흐름/병목 구간 진단",
             "OpenClaw/바이브코딩 적용 후보 도출",
-            "2주 실행 백로그와 KPI 기준선 정의",
+            "2주 실행 백로그와 기준선 정의",
         ],
         "duration": "90분",
         "price": "15만원 ~ 30만원",
-        "deliverable": "AX 실행 진단 리포트 + 우선순위 백로그",
+        "deliverable": "자동화 실행 진단 리포트 + 우선순위 백로그",
         "audience": "초기 창업팀, 1인기업, 소규모 운영팀",
-        "cta_label": "AX 진단 신청",
+        "cta_label": "자동화 실행 진단 신청",
         "cta_href": "#contact",
         "persona_targets": ["founders"],
     },
     {
         "id": "founder-ax-build",
-        "title": "AX 구축 (2주 ~ 4주)",
+        "title": "자동화 실행 구축 (2주 ~ 4주)",
         "summary": "바이브코딩/OpenClaw/자동화 조합으로 핵심 실행 체계를 구축합니다.",
         "items": [
             "핵심 업무 플로우와 제품 실행 루프 설계/구현",
@@ -29,9 +29,9 @@ SERVICE_CARDS = [
         ],
         "duration": "2주 ~ 4주",
         "price": "300만원 ~ 900만원",
-        "deliverable": "운영 가능한 AX 실행 체계 + 운영 문서",
+        "deliverable": "운영 가능한 자동화 실행 체계 + 운영 문서",
         "audience": "실행 체계 고도화가 필요한 창업팀/사업자",
-        "cta_label": "AX 구축 상담",
+        "cta_label": "자동화 실행 구축 상담",
         "cta_href": "#contact",
         "persona_targets": ["founders"],
     },
@@ -93,7 +93,7 @@ SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
     "headline": "창업자의 아이디어를 실행 가능한 제품과 자동화로 연결합니다",
     "subcopy": (
-        "큐룸은 창업자/소상공인을 위해 OpenClaw와 바이브코딩 기반 AX 실행 서비스를 제공하고, "
+        "큐룸은 창업자/소상공인을 위해 OpenClaw와 바이브코딩 기반 자동화 실행 서비스를 제공하고, "
         "아이디어 검증부터 운영 자동화까지 빠르게 연결합니다."
     ),
     "founder_capacity_policy": "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.",
@@ -102,8 +102,8 @@ SHARED_CONTENT = {
     ),
     "about_title": "큐룸은 실행 가능한 제품을 만듭니다",
     "about_body": [
-        "큐룸은 아이디어 검증부터 MVP 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.",
-        "창업자의 실행 속도를 높이는 AX 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.",
+        "큐룸은 아이디어 검증부터 최소 기능 제품 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.",
+        "창업자의 실행 속도를 높이는 자동화 실행 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.",
     ],
     "metrics": [
         {
@@ -202,7 +202,7 @@ SHARED_CONTENT = {
             "summary": "온라인으로 미술작품을 관람하고 오디오 해설을 들을 수 있는 미술관 큐레이션 서비스",
             "problem": "미술관마다 작품 해설 지원 수준이 다르고 전시를 관통하는 스토리 제공이 부족해 관람 경험이 단절되는 시장 문제",
             "solution": "Django 백엔드와 Vue 프론트엔드 기반으로 작품 정보, 큐레이션 스토리, 오디오 해설을 통합 제공하는 구조 설계",
-            "result": "온라인 관람 + 오디오 해설 중심의 큐레이션 서비스 MVP 구축",
+            "result": "온라인 관람 + 오디오 해설 중심의 큐레이션 서비스 최소 기능 제품 구축",
             "tech": "Django, Vue",
             "image": "portfolio/thumb/2022-arttrip-thumb-v1.jpg",
             "link": "",
@@ -259,7 +259,7 @@ PERSONA_CONTENT = {
     "founders": {
         "label": "For Founders",
         "title": "창업자/소상공인을 위한 제품화·수익화 실행 파트너",
-        "description": "AX 진단, AX 구축, 외주용역 트랙으로 아이디어를 실행 가능한 제품과 수익으로 연결합니다.",
+        "description": "자동화 실행 진단, 자동화 실행 구축, 외주용역 트랙으로 아이디어를 실행 가능한 제품과 수익으로 연결합니다.",
         "primary_cta": {"label": "창업자 상담 신청", "href": "#contact"},
         "secondary_cta": {"label": "제공 서비스 확인", "href": "#services"},
         "service_target": "founders",

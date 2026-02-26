@@ -69,3 +69,28 @@ form input[type="checkbox"] {
   margin-top: 0.1rem;
   accent-color: var(--sky);
 }
+
+form input[type="radio"] {
+  accent-color: var(--sky);
+}
+
+.htmx-indicator {
+  display: none;
+}
+
+.htmx-request.htmx-indicator {
+  display: block;
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+.loading-bar {
+  animation: loading-bar 1s linear infinite;
+}

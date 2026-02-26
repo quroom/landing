@@ -95,3 +95,40 @@ class ContactFormTests(TestCase):
         inquiry = ContactInquiry.objects.get(email="all@example.com")
         self.assertTrue(inquiry.marketing_opt_in)
         self.assertIsNotNone(inquiry.marketing_opted_in_at)
+
+    def test_lead_magnet_submit_sends_two_emails_and_tracks_event(self) -> None:
+        response = self.client.post(
+            reverse("landing:lead_magnet_submit"),
+            {
+                "name": "리드 유저",
+                "email": "lead@example.com",
+                "company_name": "Lead Co",
+                "q1": "2",
+                "q2": "2",
+                "q3": "1",
+                "q4": "1",
+                "q5": "2",
+                "q6": "1",
+                "q7": "2",
+                "q8": "1",
+                "agree_privacy": "on",
+                "agree_marketing": "on",
+                "lead_source": "founder_lead_magnet",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "진단이 완료되었습니다.")
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(mail.outbox[0].to, ["help@quroom.kr"])
+        self.assertEqual(mail.outbox[1].to, ["lead@example.com"])
+        self.assertIn("2) 2주 실행 우선순위 Top 5", mail.outbox[1].body)
+        self.assertIn("추천 툴(실사용 중심):", mail.outbox[1].body)
+        self.assertIn("확장 추천 툴:", mail.outbox[1].body)
+        inquiry = ContactInquiry.objects.get(email="lead@example.com")
+        self.assertEqual(inquiry.inquiry_type, "lead_magnet_diagnosis")
+        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="lead_magnet_submit", lead_source="founder_lead_magnet"
+            ).exists()
+        )

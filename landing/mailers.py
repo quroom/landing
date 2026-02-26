@@ -1,12 +1,17 @@
+from threading import Thread
+
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django.utils import timezone
 
-from .models import ContactInquiry
+from .models import ContactInquiry, FunnelEvent
 
 INQUIRY_TYPE_LABELS = {
     "development": "서비스 개발",
     "matching": "개발자 연계",
+    "outsourcing": "고액 외주 상담",
+    "lead_magnet_diagnosis": "무료 자동화 실행 진단",
     "other": "기타",
 }
 
@@ -28,6 +33,7 @@ def _build_inquiry_mail(inquiry: ContactInquiry) -> tuple[str, str]:
 
 def deliver_inquiry_email(inquiry: ContactInquiry) -> bool:
     subject, body = _build_inquiry_mail(inquiry)
+    success = True
 
     try:
         send_mail(
@@ -37,14 +43,75 @@ def deliver_inquiry_email(inquiry: ContactInquiry) -> bool:
             recipient_list=[settings.QUROOM_CONTACT_EMAIL],
             fail_silently=False,
         )
+    except Exception as exc:
+        success = False
+        inquiry.email_error = str(exc)[:1000]
+
+    if success and inquiry.inquiry_type == "lead_magnet_diagnosis":
+        try:
+            homepage_url = f"{settings.SITE_BASE_URL}/"
+            contact_url = f"{settings.SITE_BASE_URL}/#contact"
+            diagnosis_url = f"{settings.SITE_BASE_URL}/free-diagnosis/"
+
+            text_body = (
+                "요청하신 무료 자동화 실행 진단 리포트입니다.\n\n"
+                f"{inquiry.message}\n\n"
+                f"홈페이지 보기: {homepage_url}\n"
+                f"문의 남기기: {contact_url}\n"
+                f"무료 진단 다시하기: {diagnosis_url}\n\n"
+                "추가 상담이 필요하면 이 메일에 회신하거나 홈페이지 문의를 남겨주세요."
+            )
+            html_body = f"""
+            <div style="font-family: Pretendard, Arial, sans-serif; line-height: 1.6; color: #0f172a;">
+              <h2 style="margin: 0 0 12px;">무료 자동화 실행 진단 리포트</h2>
+              <p style="margin: 0 0 16px;">요청하신 진단 결과를 전달드립니다.</p>
+              <div style="background: #f3f8ff; border: 1px solid #dbeafe; border-radius: 12px; padding: 14px; white-space: pre-line;">{inquiry.message}</div>
+              <div style="margin-top: 20px;">
+                <a href="{homepage_url}" style="display: inline-block; margin-right: 8px; background: #0f172a; color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 10px;">홈페이지 보기</a>
+                <a href="{contact_url}" style="display: inline-block; margin-right: 8px; background: #0ea5e9; color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 10px;">문의 남기기</a>
+                <a href="{diagnosis_url}" style="display: inline-block; background: #fff; color: #0f172a; text-decoration: none; border: 1px solid #cbd5e1; padding: 10px 14px; border-radius: 10px;">진단 다시하기</a>
+              </div>
+            </div>
+            """
+            message = EmailMultiAlternatives(
+                subject="[QuRoom] 무료 자동화 실행 진단 리포트",
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[inquiry.email],
+            )
+            message.attach_alternative(html_body, "text/html")
+            message.send(fail_silently=False)
+        except Exception as exc:
+            success = False
+            inquiry.email_error = str(exc)[:1000]
+
+    if success:
         inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.SUCCESS
         inquiry.emailed_at = timezone.now()
         inquiry.email_error = ""
-        success = True
-    except Exception as exc:
+    else:
         inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.FAILED
-        inquiry.email_error = str(exc)[:1000]
-        success = False
 
     inquiry.save(update_fields=["email_delivery_status", "emailed_at", "email_error"])
     return success
+
+
+def deliver_inquiry_email_async(
+    inquiry_id: int,
+    *,
+    event_name: str = "",
+    page_key: str = "",
+    lead_source: str = "",
+) -> None:
+    def _worker() -> None:
+        inquiry = ContactInquiry.objects.get(id=inquiry_id)
+        success = deliver_inquiry_email(inquiry)
+        if success and event_name:
+            FunnelEvent.objects.create(
+                event_name=event_name,
+                page_key=page_key,
+                lead_source=lead_source,
+                metadata={"inquiry_id": inquiry_id},
+            )
+
+    Thread(target=_worker, daemon=True).start()

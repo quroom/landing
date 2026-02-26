@@ -1,12 +1,9 @@
-# contact-email-delivery Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-contact-email-delivery-and-internal-log. Update Purpose after archive.
-## Requirements
 ### Requirement: Contact submission email MUST target configured operations inbox
 The system MUST send both contact submission notifications and lead-magnet report deliveries through the configured mail backend. Operational notification emails MUST target `QUROOM_CONTACT_EMAIL`, and user-facing lead-magnet follow-up emails MUST target the submitter email.
 
-#### Scenario: Valid inquiry is submitted with SMTP backend configured
+#### Scenario: Valid general inquiry is submitted with SMTP backend configured
 - **WHEN** a user submits a valid contact form and SMTP settings are configured
 - **THEN** the system MUST send an operations notification email via SMTP to `QUROOM_CONTACT_EMAIL`
 - **AND** the persisted inquiry record MUST be marked as successful delivery with send timestamp
@@ -21,15 +18,3 @@ The system MUST send both contact submission notifications and lead-magnet repor
 - **WHEN** a valid form submission triggers email sending but SMTP raises an exception
 - **THEN** the system MUST keep the submission persisted and return a successful UX response
 - **AND** the persisted inquiry record MUST be marked as failed delivery with an error summary
-
-### Requirement: Email delivery result MUST be explicitly captured
-The system MUST treat email send success/failure as explicit outcomes for each submission.
-
-#### Scenario: Email send succeeds
-- **WHEN** email backend accepts the submission notification
-- **THEN** the submission is marked as delivery success
-
-#### Scenario: Email send fails
-- **WHEN** email backend raises an exception for the submission notification
-- **THEN** the submission is marked as delivery failed
-- **AND** failure reason is stored for operational review

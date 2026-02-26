@@ -20,6 +20,7 @@
 
 ## Quick links
 - Landing spec: `openspec/changes/consolidate-codex-docs-into-openspec/docs/quroom-landing-spec.md`
+- AX tool stack + diagnosis question source: `landing/ax_tool_stack.py`
 - Vibe coding guides & prompt library:
   - `openspec/changes/consolidate-codex-docs-into-openspec/docs/general-vibe-coding-guide-for-beginners.md`
   - `openspec/changes/consolidate-codex-docs-into-openspec/docs/vibe-coding-step-by-step-guide.md`
@@ -39,6 +40,7 @@
    - `python manage.py runserver`
 3. Open
    - `http://127.0.0.1:8000/`
+   - Free diagnosis page: `http://127.0.0.1:8000/free-diagnosis/`
 
 ## Standard check command (always uses `.venv`)
 - Django system check:
@@ -64,6 +66,8 @@ If both pass, push to GitHub.
 - `DJANGO_ALLOWED_HOSTS` (comma-separated)
 - `GA4_MEASUREMENT_ID` (if you want GA4 tracking)
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
+- `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
+- `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
 
 ### SMTP mail settings (for real delivery)
 - `DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend`
@@ -76,6 +80,26 @@ If both pass, push to GitHub.
 - `EMAIL_TIMEOUT` (seconds, default `20`)
 - `DJANGO_DEFAULT_FROM_EMAIL` (recommended to match `EMAIL_HOST_USER`)
 
+### Contact + Lead Magnet behavior
+- Contact form endpoint: `/contact/submit/`
+- Lead magnet endpoint: `/lead-magnet/submit/`
+- Lead magnet page: `/free-diagnosis/`
+- Lead magnet flow:
+  - user submits 8-question diagnosis
+  - partial result is shown immediately (score/grade/top priorities)
+  - full detailed report is delivered by email
+
+### Async email mode (recommended for slow SMTP)
+- Enable:
+  - `CONTACT_EMAIL_ASYNC=1`
+- Behavior:
+  - form response returns immediately
+  - email sending runs in background thread
+  - UI shows "처리 중" loading indicator during HTMX request
+- Note:
+  - current async mode is process-local thread based (simple, no queue persistence)
+  - if you need retry/durable jobs, migrate to Celery/Redis later
+
 ### Contact mail ops check
 - Production value should be:
   - `QUROOM_CONTACT_EMAIL=help@quroom.kr`
@@ -84,3 +108,11 @@ If both pass, push to GitHub.
 - SMTP smoke test:
   - `set -a; source .env; set +a`
   - `.venv/bin/python manage.py shell -c "from django.core.mail import send_mail; from django.conf import settings; print(send_mail('[SMTP 테스트] QuRoom','SMTP 테스트', settings.DEFAULT_FROM_EMAIL, [settings.QUROOM_CONTACT_EMAIL], fail_silently=False))"`
+
+### Admin operational checks
+- Django Admin: `/admin/`
+- Admin dashboard: `/admin-dashboard/`
+- Recommended quick checks:
+  - verify contact inquiry count increases after form submit
+  - verify lead-magnet inquiry appears with type `lead_magnet_diagnosis`
+  - verify funnel events (`lead_magnet_start`, `lead_magnet_submit`, `lead_magnet_email_sent`) are visible in dashboard metrics

@@ -37,9 +37,13 @@
         <p class="text-xs text-navy/60">오늘 접수</p>
         <p class="mt-1 text-2xl font-bold text-navy">{{ status_counts.today }}</p>
       </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">리드마그넷 접수</p>
+        <p class="mt-1 text-2xl font-bold text-sky">{{ status_counts.lead_magnet }}</p>
+      </article>
     </div>
 
-    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
       <article class="rounded-2xl bg-white p-4 shadow-sm">
         <p class="text-xs text-navy/60">홈 유입</p>
         <p class="mt-1 text-2xl font-bold text-navy">{{ event_counts.lp_view_home }}</p>
@@ -60,22 +64,32 @@
         <p class="text-xs text-navy/60">문의 제출(외국인)</p>
         <p class="mt-1 text-2xl font-bold text-sky">{{ event_counts.contact_submit_foreign }}</p>
       </article>
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <p class="text-xs text-navy/60">리드마그넷 시작/제출</p>
+        <p class="mt-1 text-xl font-bold text-sky">{{ event_counts.lead_magnet_start }} / {{ event_counts.lead_magnet_submit }}</p>
+      </article>
     </div>
 
     <div class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-sm font-medium text-navy/80">상태 필터</span>
-        <a href="?status=all&range={{ selected_range }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
-        <a href="?status=success&range={{ selected_range }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'success' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">성공</a>
-        <a href="?status=failed&range={{ selected_range }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'failed' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">실패</a>
-        <a href="?status=pending&range={{ selected_range }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'pending' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">대기</a>
+        <a href="?status=all&range={{ selected_range }}&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
+        <a href="?status=success&range={{ selected_range }}&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'success' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">성공</a>
+        <a href="?status=failed&range={{ selected_range }}&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'failed' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">실패</a>
+        <a href="?status=pending&range={{ selected_range }}&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_status == 'pending' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">대기</a>
       </div>
       <div class="mt-3 flex flex-wrap items-center gap-2">
         <span class="text-sm font-medium text-navy/80">기간 필터</span>
-        <a href="?status={{ selected_status }}&range=all" class="rounded-full px-3 py-1 text-sm {% if selected_range == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
-        <a href="?status={{ selected_status }}&range=today" class="rounded-full px-3 py-1 text-sm {% if selected_range == 'today' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">오늘</a>
-        <a href="?status={{ selected_status }}&range=7d" class="rounded-full px-3 py-1 text-sm {% if selected_range == '7d' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">7일</a>
-        <a href="?status={{ selected_status }}&range=30d" class="rounded-full px-3 py-1 text-sm {% if selected_range == '30d' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">30일</a>
+        <a href="?status={{ selected_status }}&range=all&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_range == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
+        <a href="?status={{ selected_status }}&range=today&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_range == 'today' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">오늘</a>
+        <a href="?status={{ selected_status }}&range=7d&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_range == '7d' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">7일</a>
+        <a href="?status={{ selected_status }}&range=30d&type={{ selected_type }}" class="rounded-full px-3 py-1 text-sm {% if selected_range == '30d' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">30일</a>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center gap-2">
+        <span class="text-sm font-medium text-navy/80">유형 필터</span>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=all" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=lead_magnet_diagnosis" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'lead_magnet_diagnosis' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">리드마그넷</a>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=outsourcing" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'outsourcing' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">외주</a>
       </div>
     </div>
 

@@ -92,3 +92,5 @@ EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "20"))
 DEFAULT_FROM_EMAIL = os.getenv("DJANGO_DEFAULT_FROM_EMAIL", "help@quroom.kr")
 QUROOM_CONTACT_EMAIL = os.getenv("QUROOM_CONTACT_EMAIL", "help@quroom.kr")
 GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "")
+CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "0") == "1"
+SITE_BASE_URL = os.getenv("DJANGO_SITE_BASE_URL", "http://127.0.0.1:8000")

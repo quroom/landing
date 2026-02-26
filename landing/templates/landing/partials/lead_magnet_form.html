@@ -1,0 +1,87 @@
+<div class="rounded-2xl bg-fog/50 p-4 text-navy md:p-5">
+  {% if status %}
+    <div class="mb-4 rounded-xl px-3 py-2 text-sm {% if status == 'success' %}bg-mint/20 text-green-800{% else %}bg-amber/20 text-amber-900{% endif %}">
+      {{ status_message }}
+    </div>
+  {% endif %}
+
+  {% if result %}
+    <div class="mb-4 rounded-2xl border border-sky/20 bg-white p-4">
+      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-sky">진단 결과 요약</p>
+      <p class="mt-2 text-sm text-navy/80">점수 {{ result.score }}/16 · 등급 <strong>{{ result.grade }}</strong></p>
+      <p class="mt-3 text-xs font-semibold text-navy/70">우선순위 Top 5</p>
+      <ul class="mt-2 space-y-1 text-sm text-navy/80">
+        {% for item in result.priorities %}
+        <li class="flex items-start gap-2"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span><span>{{ item }}</span></li>
+        {% endfor %}
+      </ul>
+      {% if result.support_summary %}
+      <div class="mt-3 rounded-xl bg-fog/70 p-3 text-xs text-navy/75">
+        <p><strong>직접 지원 가능 항목:</strong> {{ result.support_summary.direct|length }}개</p>
+      </div>
+      {% endif %}
+      <a href="{{ result.cta.href }}" class="mt-4 inline-flex rounded-lg border border-sky/30 bg-sky/10 px-3 py-2 text-xs font-semibold text-sky hover:bg-sky hover:text-white">{{ result.cta.label }}</a>
+      <p class="mt-2 text-xs text-navy/60">{{ result.cta.note }}</p>
+    </div>
+  {% endif %}
+
+  <form hx-post="{% url 'landing:lead_magnet_submit' %}" hx-target="#lead-magnet-wrap" hx-swap="innerHTML" hx-indicator="#lead-loading" class="grid gap-3 md:grid-cols-2">
+    {% csrf_token %}
+    {{ form.lead_source }}
+
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.name.errors.0 }}</p>{% endif %}
+    </div>
+    <div>
+      <label class="mb-1 block text-xs font-medium" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+      {% if form.email.errors %}<p class="mt-1 text-xs text-red-600">{{ form.email.errors.0 }}</p>{% endif %}
+    </div>
+
+    <div class="md:col-span-2">
+      <label class="mb-1 block text-xs font-medium" for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
+      {{ form.company_name }}
+      {% if form.company_name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.company_name.errors.0 }}</p>{% endif %}
+    </div>
+
+    {% for field in form %}
+      {% if field.name|slice:":1" == "q" %}
+      <div class="rounded-xl border border-navy/10 bg-white p-3 md:col-span-1">
+        <p class="text-xs font-medium text-navy">{{ field.label }}</p>
+        <div class="mt-2 space-y-1 text-xs text-navy/75">
+          {% for choice in field %}
+          <label class="flex items-center gap-2">{{ choice.tag }} <span>{{ choice.choice_label }}</span></label>
+          {% endfor %}
+        </div>
+        {% if field.errors %}<p class="mt-1 text-xs text-red-600">{{ field.errors.0 }}</p>{% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="md:col-span-2">
+      <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_privacy.id_for_label }}">
+        {{ form.agree_privacy }}
+        <span>{{ form.agree_privacy.label }}</span>
+      </label>
+      {% if form.agree_privacy.errors %}<p class="text-xs text-red-600">{{ form.agree_privacy.errors.0 }}</p>{% endif %}
+
+      <label class="mt-2 flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_marketing.id_for_label }}">
+        {{ form.agree_marketing }}
+        <span>{{ form.agree_marketing.label }}</span>
+      </label>
+      <p class="mt-1 text-[11px] text-navy/55">선택 동의는 진단 제공과 무관하며, 언제든 수신거부할 수 있습니다.</p>
+    </div>
+
+    <div class="md:col-span-2">
+      <button type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">무료 진단 결과 받기</button>
+    </div>
+    <div id="lead-loading" class="md:col-span-2 htmx-indicator rounded-lg bg-sky/10 px-3 py-2 text-xs text-sky">
+      진단 결과를 생성하고 있습니다... 잠시만 기다려 주세요.
+      <div class="mt-2 h-1 w-full overflow-hidden rounded bg-sky/20">
+        <div class="loading-bar h-full w-1/3 bg-sky"></div>
+      </div>
+    </div>
+  </form>
+</div>
