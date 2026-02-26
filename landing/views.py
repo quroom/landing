@@ -14,9 +14,6 @@ from .analytics import track_event
 from .ax_tool_stack import (
     DIAGNOSIS_AXES,
     DIAGNOSIS_QUESTIONS,
-    POSSIBLE_TOOLS,
-    QUESTION_SUPPORT_SCOPE,
-    USED_TOOLS,
     diagnosis_question_keys,
 )
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
@@ -187,78 +184,69 @@ def _bridge_cta(grade: str) -> dict[str, str]:
 
 def _grade_summary(grade: str) -> str:
     if grade == "A":
-        return "실행 기반은 갖춰져 있으나, 자동화/표준화 최적화로 속도를 더 높일 단계입니다."
+        return "실행 기반은 갖춰져 있으며, 1인 운영이든 팀 운영이든 자동화/표준화 최적화로 속도를 더 높일 단계입니다."
     if grade == "B":
-        return "핵심 실행은 가능하지만 반복 운영 손실이 누적되는 단계입니다. 2주 집중 개선이 효과적입니다."
-    return "구조화되지 않은 수작업 비중이 높아 우선순위 정리와 실행체계 재설계가 필요한 단계입니다."
+        return "핵심 실행은 가능하지만 반복 운영 손실이 누적되는 단계입니다. 1인/팀 모두 2주 집중 개선이 효과적입니다."
+    return "구조화되지 않은 수작업 비중이 높아 1인/팀 운영 모두 우선순위 정리와 실행체계 재설계가 필요한 단계입니다."
+
+
+def _question_key(position: int) -> str:
+    keys = diagnosis_question_keys()
+    if 1 <= position <= len(keys):
+        return keys[position - 1]
+    return f"q{position}"
 
 
 def _tools_for_priority(question_key: str) -> tuple[str, str]:
+    k1 = _question_key(1)
+    k2 = _question_key(2)
+    k3 = _question_key(3)
+    k4 = _question_key(4)
+    k5 = _question_key(5)
+    k6 = _question_key(6)
+    k7 = _question_key(7)
+    k8 = _question_key(8)
     tools_map = {
-        "q1": (
-            "Make, Google Apps Script, Google Sheets",
-            "반복 업무 후보를 선정해 자동화 난이도/효과를 빠르게 비교하고 파일럿을 시작합니다.",
+        k1: (
+            "Google Sheets, Notion",
+            "핵심 업무 흐름을 한 화면에서 확인할 수 있게 정리합니다.",
         ),
-        "q2": (
-            "Google Sheets + Make + 메신저 웹훅(텔레그램/디스코드)",
-            "문의 접수→분류→담당자 알림→후속 액션 흐름을 표준화해 초기 응답 지연과 누락을 줄입니다.",
+        k2: (
+            "Google Sheets, Make",
+            "반복 수작업 구간을 수집하고 자동화 후보를 빠르게 찾습니다.",
         ),
-        "q3": (
-            "Notion 백로그, Trello, Impact/Effort 매트릭스",
-            "효과/노력 기준으로 우선순위를 정리해 2주 실행 백로그를 명확히 만듭니다.",
+        k3: (
+            "Trello, Notion",
+            "누락/지연이 나는 병목 지점을 우선순위로 정리합니다.",
         ),
-        "q4": (
-            "Google Sheets, NotebookLM, Obsidian",
-            "문의/작업/진행상태를 한 곳에 정리해 현재 운영 상태를 빠르게 파악하고 회고 인사이트를 축적합니다.",
+        k4: (
+            "Google Sheets, Notion",
+            "업무/리드/진행상태 데이터를 한 곳에 통합합니다.",
         ),
-        "q5": (
-            "OpenAI GPT/Codex, Claude/Claude Code, Gemini, Perplexity, Notion 템플릿",
-            "초안 생성과 리서치/검증을 분리해 작성 시간을 단축하고 품질을 일정하게 유지합니다.",
+        k5: (
+            "Make, Google Apps Script",
+            "규칙형 업무를 자동화 후보로 정리해 파일럿 대상을 명확히 합니다.",
         ),
-        "q6": (
-            "Notion 표준 작업 문서 + Gmail 템플릿(기본), 메신저 상담 흐름(텔레그램/디스코드)",
-            "응대/배포/장애 대응 체크리스트를 고정하고 메신저 알림 흐름을 연결해 운영 편차를 줄입니다.",
+        k6: (
+            "OpenClaw, Codex/Claude Code",
+            "효과 대비 노력 기준으로 자동화 우선순위를 정렬합니다.",
         ),
-        "q7": (
-            "Notion 스프린트 보드, Trello, Google Sheets",
-            "2주 스프린트 기준으로 목표-작업-검증 루프를 만듭니다.",
+        k7: (
+            "Trello, Notion",
+            "2주 실험에 필요한 담당자/시간/검증 기준을 고정합니다.",
         ),
-        "q8": (
-            "Impact/Effort 매트릭스, OpenClaw, Codex/Claude Code(바이브코딩)",
-            "자동화 후보를 정리한 뒤 바이브코딩 기반 시험 구현을 빠르게 검증해 우선순위를 확정합니다.",
-        ),
-        "q9": (
-            "Trello, Notion 스프린트 보드, Google Sheets",
-            "2주 실행 단위로 담당자/일정/검증 기준을 명확히 만들어 실행률을 높입니다.",
-        ),
-        "q10": (
-            "Notion 운영 체크리스트, Gmail 템플릿, Telegram/Discord 알림",
-            "운영 점검 루틴을 표준화해 누락 없이 개선 루프를 유지합니다.",
+        k8: (
+            "Notion 체크리스트, Telegram/Discord",
+            "주간 점검 루틴을 고정해 실행 누락을 줄입니다.",
         ),
     }
     return tools_map.get(
         question_key,
         (
-            "Notion, Google Sheets, GPT/Claude",
+            "Notion, Google Sheets",
             "기본 실행/협업 구조를 빠르게 정리합니다.",
         ),
     )
-
-
-def _extended_tools_for_priority(question_key: str) -> str:
-    extended_map = {
-        "q1": "Zapier, n8n",
-        "q2": "Slack, Zapier",
-        "q3": "GitHub Projects, Supabase",
-        "q4": "Slack, Zapier",
-        "q5": "Canva, Figma",
-        "q6": "Slack, Zapier",
-        "q7": "GitHub Projects",
-        "q8": "Supabase, GitHub",
-        "q9": "Slack, GitHub Projects",
-        "q10": "Zapier, Slack",
-    }
-    return extended_map.get(question_key, ", ".join(POSSIBLE_TOOLS[:3]))
 
 
 def _score_level(score: int) -> str:
@@ -275,14 +263,9 @@ def _score_feedback(score: int, question_key: str) -> str:
     if score == 1:
         return "부분 적용 상태입니다. 템플릿/자동화 규칙을 추가해 운영 편차를 줄이는 것이 좋습니다."
     tools, _ = _tools_for_priority(question_key)
-    return f"미적용 상태입니다. 우선 {tools} 조합으로 1개 파일럿을 2주 안에 실행해 보세요."
-
-
-def _support_scope_label(question_key: str) -> str:
-    scope = QUESTION_SUPPORT_SCOPE.get(question_key, "direct")
-    if scope == "direct":
-        return "직접 지원 가능"
-    return "직접 지원 가능"
+    return (
+        f"미적용 상태입니다. 우선 {tools} 조합으로 1개 파일럿을 2주 안에 실행해 보세요."
+    )
 
 
 def _build_support_summary(priorities: list[str]) -> dict[str, list[str]]:
@@ -295,10 +278,14 @@ def _build_support_summary(priorities: list[str]) -> dict[str, list[str]]:
 
 def _priority_keys_from_score_map(score_map: dict[str, int]) -> list[str]:
     deficits = sorted(
-        [(question_key, score) for question_key, score in score_map.items() if score < 2],
+        [
+            (question_key, score)
+            for question_key, score in score_map.items()
+            if score < 2
+        ],
         key=lambda item: item[1],
     )
-    priorities = [question_key for question_key, _ in deficits[:5]]
+    priorities = [question_key for question_key, _ in deficits[:3]]
     if not priorities:
         priorities = list(score_map.keys())[:3]
     return priorities
@@ -307,7 +294,9 @@ def _priority_keys_from_score_map(score_map: dict[str, int]) -> list[str]:
 def _axis_scores(score_map: dict[str, int]) -> dict[str, dict[str, float]]:
     result: dict[str, dict[str, float]] = {}
     for axis_key, axis in DIAGNOSIS_AXES.items():
-        axis_sum = sum(score_map.get(question_key, 0) for question_key in axis["questions"])
+        axis_sum = sum(
+            score_map.get(question_key, 0) for question_key in axis["questions"]
+        )
         axis_max = 2 * len(axis["questions"])
         result[axis_key] = {
             "score": axis_sum,
@@ -319,31 +308,30 @@ def _axis_scores(score_map: dict[str, int]) -> dict[str, dict[str, float]]:
 
 
 def _segmentation_labels(axis_scores: dict[str, dict[str, float]]) -> dict[str, str]:
-    operating_ratio = axis_scores["operating_context"]["ratio"]
-    data_ratio = axis_scores["data_consistency_visibility"]["ratio"]
-    repetitive_ratio = axis_scores["repetitive_bottlenecks"]["ratio"]
-    automation_ratio = axis_scores["automation_fit"]["ratio"]
-    readiness_ratio = axis_scores["execution_readiness"]["ratio"]
+    workflow_ratio = axis_scores["workflow_clarity"]["ratio"]
+    data_ratio = axis_scores["data_operation_base"]["ratio"]
+    automation_ratio = axis_scores["automation_design"]["ratio"]
+    execution_ratio = axis_scores["execution_system"]["ratio"]
 
-    if operating_ratio >= 0.75 and data_ratio >= 0.75:
+    if workflow_ratio >= 0.75 and data_ratio >= 0.75:
         operation_type = "운영 구조화형"
-    elif operating_ratio >= 0.5:
+    elif workflow_ratio >= 0.5:
         operation_type = "실행 확장형"
     else:
         operation_type = "초기 정리형"
 
-    if repetitive_ratio < 0.5:
-        bottleneck_type = "반복 병목 집중형"
-    elif data_ratio < 0.5:
-        bottleneck_type = "데이터 정합성 보완형"
-    elif automation_ratio < 0.5:
-        bottleneck_type = "자동화 설계 보완형"
-    else:
-        bottleneck_type = "운영 안정형"
+    weakest_axis = min(axis_scores.items(), key=lambda item: item[1]["ratio"])[0]
+    bottleneck_map = {
+        "workflow_clarity": "업무 흐름 정리 필요",
+        "data_operation_base": "데이터 운영 기반 보완 필요",
+        "automation_design": "자동화 설계 보완 필요",
+        "execution_system": "실행 루틴 정착 필요",
+    }
+    bottleneck_type = bottleneck_map.get(weakest_axis, "운영 구조 보완 필요")
 
-    if readiness_ratio >= 0.75:
+    if execution_ratio >= 0.75:
         readiness_type = "즉시 실행 가능형"
-    elif readiness_ratio >= 0.5:
+    elif execution_ratio >= 0.5:
         readiness_type = "가이드 기반 실행형"
     else:
         readiness_type = "기초 정비 필요형"
@@ -358,21 +346,115 @@ def _segmentation_labels(axis_scores: dict[str, dict[str, float]]) -> dict[str, 
 def _profile_tool_recommendations(
     priorities: list[str], labels: dict[str, str]
 ) -> list[str]:
-    recommended = []
-    for question_key in priorities[:3]:
+    recommended: list[str] = []
+    for question_key in priorities[:2]:
         tools, _ = _tools_for_priority(question_key)
-        recommended.append(tools)
+        recommended.extend([item.strip() for item in tools.split(",")])
 
-    if labels["bottleneck_type"] == "반복 병목 집중형":
-        recommended.append("Make, Google Apps Script, Telegram/Discord 알림 웹훅")
     if labels["readiness_type"] == "기초 정비 필요형":
-        recommended.append("Notion 운영 템플릿, Trello 실행 보드")
+        recommended.append("Trello")
 
     deduped: list[str] = []
     for item in recommended:
-        if item not in deduped:
+        if item and item not in deduped:
             deduped.append(item)
-    return deduped[:4]
+    return deduped[:3]
+
+
+def _weakest_axis_key(axis_scores: dict[str, dict[str, float]]) -> str:
+    return min(axis_scores.items(), key=lambda item: item[1]["ratio"])[0]
+
+
+def _category_grade_insights(
+    axis_scores: dict[str, dict[str, float]],
+) -> list[dict[str, str]]:
+    messages = {
+        "workflow_clarity": {
+            "A": (
+                "업무 흐름이 명확합니다.",
+                "1인 운영은 체크리스트 고정, 팀 운영은 인수인계 기준 고정으로 효율을 더 높일 수 있습니다.",
+            ),
+            "B": (
+                "흐름은 잡혀 있으나 인수 인계 기준이 약합니다.",
+                "1인 운영은 단계별 완료 기준을, 팀 운영은 역할별 인계 기준을 먼저 고정하세요.",
+            ),
+            "C": (
+                "업무 시작-종료 흐름이 불명확합니다.",
+                "1인/팀 모두 공통으로 쓰는 최소 프로세스(시작-처리-완료)를 1순위로 정의하세요.",
+            ),
+        },
+        "data_operation_base": {
+            "A": (
+                "데이터 관리 기반이 안정적입니다.",
+                "1인은 핵심 지표 1~2개, 팀은 공통 대시보드 1개로 운영 일관성을 높이세요.",
+            ),
+            "B": (
+                "데이터는 모이지만 표준화가 약합니다.",
+                "1인은 입력 규칙 단순화, 팀은 상태값 통일로 협업 혼선을 줄이세요.",
+            ),
+            "C": (
+                "데이터가 분산되어 판단이 어렵습니다.",
+                "1인/팀 모두 먼저 단일 데이터 보드를 만들고 그 위에서 자동화를 시작하세요.",
+            ),
+        },
+        "automation_design": {
+            "A": (
+                "자동화 대상이 선별되어 있습니다.",
+                "1인은 시간 절감, 팀은 반복 품질 개선 효과가 큰 작업부터 우선 적용하세요.",
+            ),
+            "B": (
+                "자동화 후보는 있으나 우선순위 기준이 약합니다.",
+                "1인/팀 공통으로 효과 대비 노력 기준을 넣어 후보를 1개로 압축하세요.",
+            ),
+            "C": (
+                "자동화 후보 정의가 없습니다.",
+                "1인은 가장 자주 하는 반복작업 1개, 팀은 누락이 많은 반복작업 1개를 먼저 지정하세요.",
+            ),
+        },
+        "execution_system": {
+            "A": (
+                "2주 실행 루틴이 안정적입니다.",
+                "1인은 실행 속도, 팀은 회고 품질 관점으로 루틴을 확장하면 됩니다.",
+            ),
+            "B": (
+                "실행은 가능하지만 점검 루틴이 약합니다.",
+                "1인은 개인 주간 리뷰, 팀은 공통 주간 리뷰를 고정해 실행 편차를 줄이세요.",
+            ),
+            "C": (
+                "실행 체계가 불안정합니다.",
+                "1인/팀 모두 담당자(또는 책임자)·기준일·완료조건부터 먼저 설정하세요.",
+            ),
+        },
+    }
+    insights: list[dict[str, str]] = []
+    for axis_key, axis in DIAGNOSIS_AXES.items():
+        axis_score = axis_scores[axis_key]
+        axis_grade = _grade_from_score(int(axis_score["score"]), int(axis_score["max"]))
+        primary, secondary = messages[axis_key][axis_grade]
+        insights.append(
+            {
+                "key": axis_key,
+                "label": axis["label"],
+                "grade": axis_grade,
+                "grade_visible": axis_grade != "A",
+                "message_primary": primary,
+                "message_secondary": secondary,
+            }
+        )
+    return insights
+
+
+def _best_single_action(score_map: dict[str, int]) -> dict[str, str]:
+    lowest_key = min(score_map, key=lambda key: (score_map[key], key))
+    question_label = DIAGNOSIS_QUESTIONS.get(lowest_key, lowest_key)
+    tools, reason = _tools_for_priority(lowest_key)
+    main_tools = ", ".join([item.strip() for item in tools.split(",")][:2])
+    return {
+        "title": question_label,
+        "tools": main_tools,
+        "reason": reason,
+        "execution": "2주 동안 이 항목 1개만 완료 기준으로 실행하세요.",
+    }
 
 
 def _build_detailed_lead_magnet_report(
@@ -385,110 +467,45 @@ def _build_detailed_lead_magnet_report(
     axis_scores = _axis_scores(score_map)
     labels = _segmentation_labels(axis_scores)
     profile_tools = _profile_tool_recommendations(priorities, labels)
-    support_summary = _build_support_summary(priorities)
+    category_insights = _category_grade_insights(axis_scores)
+    weakest_axis_key = _weakest_axis_key(axis_scores)
+    weakest_axis_label = DIAGNOSIS_AXES[weakest_axis_key]["label"]
+    weakest_insight = next(
+        (item for item in category_insights if item["key"] == weakest_axis_key),
+        category_insights[0],
+    )
+    one_action = _best_single_action(score_map)
+    cta = _bridge_cta(grade)
+
     lines = [
         "요청하신 무료 자동화 실행 진단 리포트입니다.",
-        "본 리포트는 실제 사용 경험이 있는 툴 중심으로 작성되었습니다.",
         "",
-        "1) 진단 요약",
-        f"- 총점: {total_score}/{max_score}",
-        f"- 등급: {grade}",
-        f"- 해석: {_grade_summary(grade)}",
-        f"- 운영 유형: {labels['operation_type']}",
-        f"- 병목 유형: {labels['bottleneck_type']}",
-        f"- 실행 준비도 유형: {labels['readiness_type']}",
+        f"[진단 요약] 점수 {total_score}/{max_score}, 등급 {grade}",
+        _grade_summary(grade),
         "",
-        "2) 축별 점검 결과",
+        "[핵심 보완 카테고리]",
+        (
+            f"- {weakest_insight['label']}"
+            f"{f' ({weakest_insight['grade']})' if weakest_insight['grade_visible'] else ''}: "
+            f"{weakest_insight['message_primary']}"
+        ),
+        f"  -> {weakest_insight['message_secondary']}",
+        "",
+        "[2주 실행 우선 1개]",
+        f"- 실행 과제: {one_action['title']}",
+        f"- 추천 툴: {one_action['tools']}",
+        f"- 수행 기준: {one_action['execution']}",
+        f"- 선택 이유: {one_action['reason']}",
     ]
-    for axis_key, axis in DIAGNOSIS_AXES.items():
-        axis_score = axis_scores[axis_key]
-        lines.append(
-            f"- {axis['label']}: {int(axis_score['score'])}/{int(axis_score['max'])}"
-        )
 
     lines.extend(
         [
             "",
-            "3) 2주 실행 우선순위 Top 5",
-        ]
-    )
-    for idx, question_key in enumerate(priorities, start=1):
-        tools, reason = _tools_for_priority(question_key)
-        level = _score_level(score_map.get(question_key, 0))
-        question_label = DIAGNOSIS_QUESTIONS.get(question_key, question_key)
-        lines.extend(
-            [
-                f"- 우선순위 {idx}: {question_label}",
-                f"  - 현재 수준: {level}",
-                f"  - 지원 방식: {_support_scope_label(question_key)}",
-                f"  - 추천 툴(실사용 중심): {tools}",
-                f"  - 확장 추천 툴: {_extended_tools_for_priority(question_key)}",
-                f"  - 적용 포인트: {reason}",
-            ]
-        )
-
-    lines.extend(
-        [
+            "[주요 추천 툴]",
+            f"- {', '.join(profile_tools)}",
             "",
-            "4) 프로파일 기반 추천 툴",
-        ]
-    )
-    for tool in profile_tools:
-        lines.append(f"- {tool}")
-
-    lines.extend(
-        [
-            "",
-            "5) 2주 실행 플랜(권장)",
-            "- Week 1: 진단 결과 기준으로 현재 프로세스 시각화, 우선순위 1~2 자동화 파일럿 적용",
-            "- Week 2: 우선순위 3~5 적용, 주간 운영 리뷰(문의/작업/진행상태)와 표준 작업 문서 정리",
-            "",
-            "6) 체크리스트",
-            "- 반복업무 자동화 1개 이상 배포",
-            "- 리드 응답 기준 시간 정의(예: 영업일 24시간)",
-            "- 주간 운영 리뷰 루틴 운영",
-            "- 핵심 운영 문서 템플릿 표준화",
-            "- 다음 2주 실행 백로그 확정",
-            "",
-            "7) 지원 가능 범위 진단",
-            f"- 직접 지원 가능 항목 수: {len(support_summary['direct'])}",
-        ]
-    )
-
-    if support_summary["direct"]:
-        lines.extend(
-            [
-                "- 직접 지원 가능 항목:",
-                *[f"  - {item}" for item in support_summary["direct"]],
-            ]
-        )
-
-    lines.extend(
-        [
-            "",
-            "8) 체크 결과 상세 피드백",
-        ]
-    )
-    for question_key in [key for key in diagnosis_question_keys() if key in score_map]:
-        question_label = DIAGNOSIS_QUESTIONS.get(question_key, question_key)
-        level = _score_level(score_map[question_key])
-        feedback = _score_feedback(score_map[question_key], question_key)
-        lines.extend(
-            [
-                f"- {question_label}",
-                f"  - 체크 결과: {level}",
-                f"  - 권장 액션: {feedback}",
-            ]
-        )
-
-    lines.extend(
-        [
-            "",
-            "9) 현재 기준 툴 스택",
-            f"- 자동화/워크플로우: {', '.join(USED_TOOLS['automation_workflow'])}",
-            f"- 문서/지식관리: {', '.join(USED_TOOLS['knowledge_docs'])}",
-            f"- AI/LLM: {', '.join(USED_TOOLS['ai_llm'])}",
-            f"- 프로젝트 관리: {', '.join(USED_TOOLS['project_management'])}",
+            "[다음 액션]",
+            f"- {cta['label']} ({cta['href']})",
             "",
             "추가 상담이 필요하면 이 메일에 회신하거나 홈페이지 문의를 남겨주세요.",
         ]
@@ -496,69 +513,108 @@ def _build_detailed_lead_magnet_report(
     return "\n".join(lines)
 
 
+def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
+    total_score = sum(score_map.values())
+    max_score = len(score_map) * 2
+    grade = _grade_from_score(total_score, max_score)
+    axis_scores = _axis_scores(score_map)
+    labels = _segmentation_labels(axis_scores)
+    priorities = _priority_keys_from_score_map(score_map)
+    profile_tools = _profile_tool_recommendations(priorities, labels)
+    one_action = _best_single_action(score_map)
+    category_insights = _category_grade_insights(axis_scores)
+    weakest_axis_key = _weakest_axis_key(axis_scores)
+    weakest_category_insight = next(
+        (item for item in category_insights if item["key"] == weakest_axis_key),
+        category_insights[0],
+    )
+    result = {
+        "score": total_score,
+        "max_score": max_score,
+        "grade": grade,
+        "priorities": [DIAGNOSIS_QUESTIONS.get(key, key) for key in priorities[:3]],
+        "segmentation": labels,
+        "axis_summary": [
+            {
+                "label": DIAGNOSIS_AXES[axis_key]["label"],
+                "score": int(axis["score"]),
+                "max": int(axis["max"]),
+            }
+            for axis_key, axis in axis_scores.items()
+        ],
+        "profile_tools": profile_tools,
+        "support_summary": _build_support_summary(priorities[:3]),
+        "cta": _bridge_cta(grade),
+        "summary": _grade_summary(grade),
+        "one_action": one_action,
+        "category_insights": category_insights,
+        "weakest_category_insight": weakest_category_insight,
+        "weakest_axis_key": weakest_axis_key,
+        "weakest_axis_label": DIAGNOSIS_AXES[weakest_axis_key]["label"],
+    }
+    report_text = _build_detailed_lead_magnet_report(
+        total_score, max_score, grade, priorities, score_map
+    )
+    return result, report_text
+
+
 def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
-    scenarios = [
-        (
-            "A 등급 예시 (고도화 단계)",
-            {
-                "q1": 2,
-                "q2": 2,
-                "q3": 2,
-                "q4": 2,
-                "q5": 1,
-                "q6": 2,
-                "q7": 2,
-                "q8": 1,
-                "q9": 2,
-                "q10": 2,
-            },
-        ),
-        (
-            "B 등급 예시 (집중 개선 단계)",
-            {
-                "q1": 1,
-                "q2": 1,
-                "q3": 1,
-                "q4": 2,
-                "q5": 1,
-                "q6": 1,
-                "q7": 2,
-                "q8": 1,
-                "q9": 1,
-                "q10": 1,
-            },
-        ),
-        (
-            "C 등급 예시 (기초 정비 단계)",
-            {
-                "q1": 0,
-                "q2": 0,
-                "q3": 1,
-                "q4": 0,
-                "q5": 1,
-                "q6": 0,
-                "q7": 1,
-                "q8": 0,
-                "q9": 0,
-                "q10": 0,
-            },
-        ),
-    ]
+    keys = diagnosis_question_keys()
+
+    axis_items = list(DIAGNOSIS_AXES.items())
+
+    def _make_score_map_for_preview(grade: str, weak_axis_key: str) -> dict[str, int]:
+        # Show all branches: overall grade(A/B/C) x weakest category(4)
+        if grade == "A":
+            score_map = {key: 2 for key in keys}
+            for q in DIAGNOSIS_AXES[weak_axis_key]["questions"]:
+                score_map[q] = 1
+            return score_map
+
+        if grade == "B":
+            score_map = {key: 1 for key in keys}
+            for axis_key, axis in axis_items:
+                if axis_key == weak_axis_key:
+                    continue
+                score_map[axis["questions"][0]] = 2
+            return score_map
+
+        # grade == "C"
+        score_map = {key: 0 for key in keys}
+        for axis_key, axis in axis_items:
+            if axis_key == weak_axis_key:
+                continue
+            for q in axis["questions"]:
+                score_map[q] = 1
+        return score_map
+
+    scenarios: list[tuple[str, dict[str, int]]] = []
+    for grade in ["A", "B", "C"]:
+        for axis_key, axis in axis_items:
+            title = f"{grade} 등급 · 핵심 보완: {axis['label']}"
+            scenarios.append((title, _make_score_map_for_preview(grade, axis_key)))
     preview_reports = []
     for title, score_map in scenarios:
-        total_score = sum(score_map.values())
-        max_score = len(score_map) * 2
-        grade = _grade_from_score(total_score, max_score)
-        priorities = _priority_keys_from_score_map(score_map)
-        report = _build_detailed_lead_magnet_report(
-            total_score, max_score, grade, priorities, score_map
+        result, report = _build_lead_magnet_result(score_map)
+        cta_href = result["cta"]["href"]
+        cta_url = (
+            f"{reverse('landing:index')}{cta_href}"
+            if cta_href.startswith("#")
+            else cta_href
         )
         preview_reports.append(
             {
                 "title": title,
-                "score": total_score,
-                "max_score": max_score,
-                "grade": grade,
+                "score": result["score"],
+                "max_score": result["max_score"],
+                "grade": result["grade"],
+                "cta": result["cta"],
+                "cta_url": cta_url,
+                "priorities": result["priorities"],
+                "one_action": result["one_action"],
+                "category_insights": result["category_insights"],
+                "weakest_category_insight": result["weakest_category_insight"],
+                "weakest_axis_label": result["weakest_axis_label"],
                 "report": report,
             }
         )
@@ -655,38 +711,10 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
 
     data = form.cleaned_data
     score_keys = diagnosis_question_keys()
-    scored = [(key, int(data[key])) for key in score_keys]
-    total_score = sum(score for _, score in scored)
-    max_score = len(score_keys) * 2
-    grade = _grade_from_score(total_score, max_score)
-    score_map = {question_key: score for question_key, score in scored}
-    axis_scores = _axis_scores(score_map)
-    labels = _segmentation_labels(axis_scores)
-    priorities = _priority_keys_from_score_map(score_map)
-    support_summary = _build_support_summary(priorities)
-    profile_tools = _profile_tool_recommendations(priorities, labels)
-
-    result = {
-        "score": total_score,
-        "max_score": max_score,
-        "grade": grade,
-        "priorities": [DIAGNOSIS_QUESTIONS.get(key, key) for key in priorities],
-        "segmentation": labels,
-        "axis_summary": [
-            {
-                "label": DIAGNOSIS_AXES[axis_key]["label"],
-                "score": int(axis["score"]),
-                "max": int(axis["max"]),
-            }
-            for axis_key, axis in axis_scores.items()
-        ],
-        "profile_tools": profile_tools,
-        "support_summary": support_summary,
-        "cta": _bridge_cta(grade),
-    }
-    report_text = _build_detailed_lead_magnet_report(
-        total_score, max_score, grade, priorities, score_map
-    )
+    score_map = {key: int(data[key]) for key in score_keys}
+    result, report_text = _build_lead_magnet_result(score_map)
+    total_score = result["score"]
+    grade = result["grade"]
 
     marketing_opt_in = bool(data.get("agree_marketing"))
     inquiry = ContactInquiry.objects.create(
@@ -705,10 +733,11 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
             event_name="lead_magnet_email_sent",
             page_key="home",
             lead_source="founder_lead_magnet",
+            lead_magnet_result=result,
         )
         email_success = True
     else:
-        email_success = deliver_inquiry_email(inquiry)
+        email_success = deliver_inquiry_email(inquiry, lead_magnet_result=result)
 
     track_event(
         request,
@@ -735,7 +764,6 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
     return _render_lead_magnet_form(
         request,
         LeadMagnetForm(),
-        result=result,
         status="success",
         status_message=success_message,
     )
@@ -758,6 +786,9 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
     valid_types = {
         "all",
         "lead_magnet_diagnosis",
+        "ax_diagnosis",
+        "ax_build",
+        "infra_setup",
         "development",
         "outsourcing",
         "matching",
@@ -812,6 +843,22 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         .annotate(count=Count("id"))
         .order_by("-count")
     )
+    inquiry_type_labels = {
+        "lead_magnet_diagnosis": "무료 자동화 실행 진단",
+        "ax_diagnosis": "자동화 실행 진단",
+        "ax_build": "자동화 실행 구축",
+        "infra_setup": "창업 기본 인프라 구축",
+        "outsourcing": "외주용역 집중 트랙",
+        "network": "개발사 네트워크 연결",
+        "career": "취업/실무 커리어 상담",
+        "settlement": "정착/생활 연계 상담",
+        "other": "기타",
+        "development": "서비스 개발(기존 유형)",
+        "matching": "개발자 연계(기존 유형)",
+    }
+    for stat in inquiry_type_stats:
+        key = stat.get("inquiry_type", "")
+        stat["inquiry_type_label"] = inquiry_type_labels.get(key, key)
     event_counts = {
         "lp_view_home": FunnelEvent.objects.filter(
             event_name="lp_view", page_key="home"
@@ -839,12 +886,18 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         ).count(),
     }
 
+    recent_inquiries = list(inquiries[:25])
+    for inquiry in recent_inquiries:
+        inquiry.inquiry_type_label = inquiry_type_labels.get(
+            inquiry.inquiry_type, inquiry.inquiry_type
+        )
+
     context = {
         "status_counts": status_counts,
         "selected_status": selected_status,
         "selected_range": selected_range,
         "selected_type": selected_type,
-        "recent_inquiries": inquiries[:25],
+        "recent_inquiries": recent_inquiries,
         "inquiry_type_stats": inquiry_type_stats,
         "event_counts": event_counts,
     }

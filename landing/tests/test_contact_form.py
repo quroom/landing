@@ -4,6 +4,7 @@ from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from landing.ax_tool_stack import diagnosis_question_keys
 from landing.models import ContactInquiry, FunnelEvent
 
 
@@ -15,7 +16,7 @@ class ContactFormTests(TestCase):
             {
                 "name": "",
                 "email": "invalid-email",
-                "inquiry_type": "development",
+                "inquiry_type": "ax_build",
                 "message": "",
             },
         )
@@ -30,7 +31,7 @@ class ContactFormTests(TestCase):
                 "company_name": "QuRoom",
                 "contact": "https://linkedin.com/in/test",
                 "email": "tester@example.com",
-                "inquiry_type": "development",
+                "inquiry_type": "ax_build",
                 "message": "서비스 문의 테스트",
                 "agree_all": "on",
                 "agree_privacy": "on",
@@ -97,36 +98,41 @@ class ContactFormTests(TestCase):
         self.assertIsNotNone(inquiry.marketing_opted_in_at)
 
     def test_lead_magnet_submit_sends_two_emails_and_tracks_event(self) -> None:
+        question_values = ["2", "2", "1", "1", "2", "1", "2", "1"]
+        diagnosis_payload = {
+            key: question_values[idx]
+            for idx, key in enumerate(diagnosis_question_keys())
+        }
         response = self.client.post(
             reverse("landing:lead_magnet_submit"),
             {
                 "name": "리드 유저",
                 "email": "lead@example.com",
                 "company_name": "Lead Co",
-                "q1": "2",
-                "q2": "2",
-                "q3": "1",
-                "q4": "1",
-                "q5": "2",
-                "q6": "1",
-                "q7": "2",
-                "q8": "1",
-                "q9": "2",
-                "q10": "1",
                 "agree_privacy": "on",
                 "agree_marketing": "on",
                 "lead_source": "founder_lead_magnet",
+                **diagnosis_payload,
             },
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "진단이 완료되었습니다.")
+        self.assertNotContains(response, "진단 결과 요약")
         self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(mail.outbox[0].to, ["help@quroom.kr"])
         self.assertEqual(mail.outbox[1].to, ["lead@example.com"])
-        self.assertIn("3) 2주 실행 우선순위 Top 5", mail.outbox[1].body)
-        self.assertIn("- 운영 유형:", mail.outbox[1].body)
-        self.assertIn("추천 툴(실사용 중심):", mail.outbox[1].body)
-        self.assertIn("확장 추천 툴:", mail.outbox[1].body)
+        self.assertEqual(mail.outbox[1].subject, "[큐룸] 무료 자동화 실행 진단 결과")
+        self.assertIn("[핵심 보완 카테고리]", mail.outbox[1].body)
+        self.assertIn("[2주 실행 우선 1개]", mail.outbox[1].body)
+        self.assertIn("전체 항목 보기:", mail.outbox[1].body)
+        self.assertIn("자동화 실행 구축 상담 요청", mail.outbox[1].body)
+        self.assertNotIn("외국인 개발자", mail.outbox[1].body)
+        self.assertNotIn("Top 5", mail.outbox[1].body)
+        self.assertNotIn("확장 추천 툴", mail.outbox[1].body)
+        self.assertIn("[진단 요약]", mail.outbox[1].body)
+        self.assertIn("자동화 실행 구축 상담 요청", mail.outbox[1].alternatives[0][0])
+        self.assertNotIn("외국인 개발자", mail.outbox[1].alternatives[0][0])
+        self.assertNotIn("문의 남기기", mail.outbox[1].alternatives[0][0])
         inquiry = ContactInquiry.objects.get(email="lead@example.com")
         self.assertEqual(inquiry.inquiry_type, "lead_magnet_diagnosis")
         self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
@@ -135,3 +141,23 @@ class ContactFormTests(TestCase):
                 event_name="lead_magnet_submit", lead_source="founder_lead_magnet"
             ).exists()
         )
+
+    @override_settings(DEFAULT_FROM_EMAIL="큐룸 <help@quroom.kr>")
+    def test_lead_magnet_sender_display_name_uses_brand(self) -> None:
+        question_values = ["1", "1", "1", "1", "1", "1", "1", "1"]
+        diagnosis_payload = {
+            key: question_values[idx]
+            for idx, key in enumerate(diagnosis_question_keys())
+        }
+        response = self.client.post(
+            reverse("landing:lead_magnet_submit"),
+            {
+                "name": "브랜드 테스트",
+                "email": "brand@example.com",
+                "agree_privacy": "on",
+                **diagnosis_payload,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(mail.outbox[1].from_email, "큐룸 <help@quroom.kr>")

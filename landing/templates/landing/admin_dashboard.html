@@ -89,6 +89,9 @@
         <span class="text-sm font-medium text-navy/80">유형 필터</span>
         <a href="?status={{ selected_status }}&range={{ selected_range }}&type=all" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'all' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">전체</a>
         <a href="?status={{ selected_status }}&range={{ selected_range }}&type=lead_magnet_diagnosis" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'lead_magnet_diagnosis' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">리드마그넷</a>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=ax_diagnosis" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'ax_diagnosis' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">AX 진단</a>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=ax_build" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'ax_build' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">AX 구축</a>
+        <a href="?status={{ selected_status }}&range={{ selected_range }}&type=infra_setup" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'infra_setup' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">기본 인프라</a>
         <a href="?status={{ selected_status }}&range={{ selected_range }}&type=outsourcing" class="rounded-full px-3 py-1 text-sm {% if selected_type == 'outsourcing' %}bg-navy text-white{% else %}bg-navy/10 text-navy{% endif %}">외주</a>
       </div>
     </div>
@@ -113,7 +116,7 @@
               <tr class="border-b border-navy/5">
                 <td class="px-2 py-2 text-navy/70">{{ inquiry.created_at|date:"Y-m-d H:i" }}</td>
                 <td class="px-2 py-2">{{ inquiry.name }}</td>
-                <td class="px-2 py-2">{{ inquiry.inquiry_type }}</td>
+                <td class="px-2 py-2">{{ inquiry.inquiry_type_label }}</td>
                 <td class="px-2 py-2">{{ inquiry.email }}</td>
                 <td class="px-2 py-2">
                   {% if inquiry.email_delivery_status == "success" %}
@@ -150,7 +153,7 @@
         <ul class="mt-3 space-y-2 text-sm">
           {% for stat in inquiry_type_stats %}
           <li class="flex items-center justify-between rounded-lg bg-fog px-3 py-2">
-            <span class="text-navy">{{ stat.inquiry_type }}</span>
+            <span class="text-navy">{{ stat.inquiry_type_label }}</span>
             <span class="font-semibold text-navy">{{ stat.count }}</span>
           </li>
           {% empty %}

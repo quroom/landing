@@ -1,8 +1,5 @@
-# lead-magnet-result-bridging Specification
+## MODIFIED Requirements
 
-## Purpose
-Define grade-based action bridging from diagnosis result to next consultation CTA.
-## Requirements
 ### Requirement: Diagnosis result MUST bridge to graded next-action CTAs
 The system MUST map diagnosis grade to differentiated next-action CTAs that align with service tiers, include segmented execution guidance based on response patterns, and expose only one CTA button per result.
 
@@ -20,4 +17,3 @@ The system MUST map diagnosis grade to differentiated next-action CTAs that alig
 - **WHEN** a diagnosis result grade is C
 - **THEN** the result section MUST show exactly one CTA button for outsourcing-focused consultation
 - **AND** the message MUST include the concurrent-capacity policy (동시 1개사 진행)
-

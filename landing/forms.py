@@ -5,9 +5,10 @@ from .ax_tool_stack import DIAGNOSIS_QUESTIONS, diagnosis_question_keys
 
 class ContactForm(forms.Form):
     HOME_INQUIRY_CHOICES = [
-        ("development", "서비스 개발"),
-        ("matching", "외국인 개발자 연계"),
-        ("outsourcing", "고액 외주 상담"),
+        ("ax_diagnosis", "자동화 실행 진단"),
+        ("ax_build", "자동화 실행 구축"),
+        ("infra_setup", "창업 기본 인프라 구축"),
+        ("outsourcing", "외주용역 집중 트랙"),
         ("other", "기타"),
     ]
     FOREIGN_INQUIRY_CHOICES = [
