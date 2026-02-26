@@ -23,7 +23,7 @@ class LandingPageTests(TestCase):
     def test_free_diagnosis_page_renders(self) -> None:
         response = self.client.get(reverse("landing:free_diagnosis"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "무료 자동화 실행 진단 (3분 / 8문항)")
+        self.assertContains(response, "무료 자동화 실행 진단 (3분 / 10문항)")
 
     def test_free_diagnosis_report_preview_renders(self) -> None:
         response = self.client.get(reverse("landing:lead_magnet_report_preview"))

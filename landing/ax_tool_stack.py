@@ -50,17 +50,6 @@ POSSIBLE_TOOLS = [
     "Canva",
 ]
 
-DIAGNOSIS_QUESTIONS = {
-    "q1": "지난 2주 동안 3회 이상 반복된 업무를 목록화하고 시작/종료 지점을 정의했다",
-    "q2": "반복 업무를 규칙형(자동화 가능)과 판단형(AI 보조)으로 구분해두었다",
-    "q3": "고객/리드/진행상태 데이터를 Google Sheets 등 한 곳에서 관리한다",
-    "q4": "하루 30분 이상 소요되거나 복붙/누락이 발생하는 자동화 후보를 식별해두었다",
-    "q5": "문서/메일/콘텐츠 생성 업무를 GPT/Claude 템플릿으로 표준화했다",
-    "q6": "요약/리서치 흐름에 NotebookLM/Perplexity를 연결해 의사결정 속도를 높이고 있다",
-    "q7": "운영 표준 작업 문서(응대/배포/장애 대응)와 2주 점검 루틴이 문서화되어 있다",
-    "q8": "2주 내 시험 구현 가능성, 매출 연결성, 내부 구축(Django)과 외부 도구 도입 기준을 가지고 있다",
-}
-
 QUESTION_SUPPORT_SCOPE = {
     "q1": "direct",
     "q2": "direct",
@@ -70,4 +59,51 @@ QUESTION_SUPPORT_SCOPE = {
     "q6": "direct",
     "q7": "direct",
     "q8": "direct",
+    "q9": "direct",
+    "q10": "direct",
 }
+
+DIAGNOSIS_AXES = {
+    "operating_context": {
+        "label": "업무/운영 맥락",
+        "description": "지금 어떤 운영 업무를 중심으로 일하고 있는지 확인합니다.",
+        "questions": ["q1", "q2"],
+    },
+    "repetitive_bottlenecks": {
+        "label": "반복 불편/병목",
+        "description": "복붙/누락/지연처럼 반복되는 운영 손실을 점검합니다.",
+        "questions": ["q3", "q4"],
+    },
+    "data_consistency_visibility": {
+        "label": "데이터 정합성/가시성",
+        "description": "데이터가 한 곳에서 표준화되어 관리되는지 확인합니다.",
+        "questions": ["q5", "q6"],
+    },
+    "automation_fit": {
+        "label": "자동화 적합도",
+        "description": "규칙형 업무를 자동화로 전환할 준비 상태를 확인합니다.",
+        "questions": ["q7", "q8"],
+    },
+    "execution_readiness": {
+        "label": "실행 준비도",
+        "description": "2주 안에 실행 가능한 운영 루틴과 책임 구조를 점검합니다.",
+        "questions": ["q9", "q10"],
+    },
+}
+
+DIAGNOSIS_QUESTIONS = {
+    "q1": "현재 주요 업무(리드관리/고객응대/콘텐츠운영/내부협업)를 명확히 구분해 운영하고 있다",
+    "q2": "업무 시작부터 완료까지 담당자와 hand-off 구간이 문서로 정리되어 있다",
+    "q3": "반복되는 복붙/수작업이 어디서 발생하는지 최근 2주 기준으로 파악했다",
+    "q4": "누락/지연이 자주 발생하는 병목 구간(응대, 승인, 전달)을 특정해두었다",
+    "q5": "고객/리드/진행상태 데이터를 하나의 시트 또는 도구에서 관리한다",
+    "q6": "상태값과 필수 입력 항목이 표준화되어 같은 의미를 다르게 쓰지 않는다",
+    "q7": "규칙형 업무(분류/알림/리마인드/집계)를 자동화 후보로 정리해두었다",
+    "q8": "자동화가 필요한 업무를 우선순위(효과 대비 노력) 기준으로 정렬해두었다",
+    "q9": "2주 안에 실험할 수 있는 담당자/시간/검증 기준이 잡혀 있다",
+    "q10": "실행 후 점검 루틴(주간 리뷰/체크리스트/개선 로그)이 정해져 있다",
+}
+
+
+def diagnosis_question_keys() -> list[str]:
+    return list(DIAGNOSIS_QUESTIONS.keys())

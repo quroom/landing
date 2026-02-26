@@ -1,8 +1,5 @@
-# founder-lead-magnet-capture Specification
+## MODIFIED Requirements
 
-## Purpose
-Define the founder-focused free AX diagnosis capture flow and immediate result behavior on the main landing page.
-## Requirements
 ### Requirement: Founder landing MUST provide a free AX diagnosis lead magnet flow
 The system MUST provide a founder-focused free diagnosis flow on the main landing page that can be completed within a short interaction and capture both business context and execution friction.
 
@@ -18,4 +15,3 @@ The system MUST calculate and show an immediate partial result after valid diagn
 - **WHEN** a user submits all required diagnosis fields
 - **THEN** the system MUST calculate a diagnosis score and grade (A/B/C)
 - **AND** the system MUST show immediate partial result summary including top priorities and segmented labels
-

@@ -1,6 +1,6 @@
 from django import forms
 
-from .ax_tool_stack import DIAGNOSIS_QUESTIONS
+from .ax_tool_stack import DIAGNOSIS_QUESTIONS, diagnosis_question_keys
 
 
 class ContactForm(forms.Form):
@@ -130,46 +130,6 @@ class LeadMagnetForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"placeholder": "회사명 (선택)"}),
     )
-    q1 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q1"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q2 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q2"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q3 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q3"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q4 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q4"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q5 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q5"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q6 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q6"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q7 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q7"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
-    q8 = forms.ChoiceField(
-        label=DIAGNOSIS_QUESTIONS["q8"],
-        choices=SCORE_CHOICES,
-        widget=forms.RadioSelect(),
-    )
     agree_privacy = forms.BooleanField(
         label="개인정보 수집 및 이용에 동의합니다.",
         error_messages={"required": "리포트 제공을 위해 동의가 필요합니다."},
@@ -178,3 +138,12 @@ class LeadMagnetForm(forms.Form):
         required=False,
         label="(선택) 자동화 실행 진단/운영 가이드 메일 수신에 동의합니다.",
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for question_key in diagnosis_question_keys():
+            self.fields[question_key] = forms.ChoiceField(
+                label=DIAGNOSIS_QUESTIONS[question_key],
+                choices=self.SCORE_CHOICES,
+                widget=forms.RadioSelect(),
+            )

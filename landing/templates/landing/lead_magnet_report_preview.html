@@ -19,7 +19,7 @@
       <article class="rounded-2xl border border-navy/10 bg-white p-5 shadow-sm">
         <div class="flex items-center justify-between gap-3">
           <h2 class="font-space text-lg font-semibold text-navy">{{ item.title }}</h2>
-          <span class="rounded-full bg-fog px-3 py-1 text-xs text-navy/70">{{ item.score }}/16 · {{ item.grade }}</span>
+          <span class="rounded-full bg-fog px-3 py-1 text-xs text-navy/70">{{ item.score }}/{{ item.max_score }} · {{ item.grade }}</span>
         </div>
         <pre class="mt-4 overflow-x-auto rounded-xl bg-fog/70 p-4 text-xs leading-relaxed text-navy/85">{{ item.report }}</pre>
       </article>

@@ -12,10 +12,12 @@ from django.views.decorators.http import require_POST
 
 from .analytics import track_event
 from .ax_tool_stack import (
+    DIAGNOSIS_AXES,
     DIAGNOSIS_QUESTIONS,
     POSSIBLE_TOOLS,
     QUESTION_SUPPORT_SCOPE,
     USED_TOOLS,
+    diagnosis_question_keys,
 )
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm, LeadMagnetForm
@@ -61,15 +63,31 @@ def _build_metrics(content: dict, career_duration: str) -> list[dict]:
     return metrics
 
 
+def _diagnosis_field_groups(form: LeadMagnetForm) -> list[dict]:
+    groups = []
+    for axis_key, axis in DIAGNOSIS_AXES.items():
+        groups.append(
+            {
+                "key": axis_key,
+                "label": axis["label"],
+                "description": axis["description"],
+                "fields": [form[question_key] for question_key in axis["questions"]],
+            }
+        )
+    return groups
+
+
 def _base_context(content: dict, page_key: str) -> dict:
     career_duration = _career_duration()
+    lead_magnet_form = LeadMagnetForm()
     return {
         "content": content,
         "career_ranges": CAREER_RANGES,
         "career_duration": career_duration,
         "metrics": _build_metrics(content, career_duration),
         "form": ContactForm(page_key=page_key),
-        "lead_magnet_form": LeadMagnetForm(),
+        "lead_magnet_form": lead_magnet_form,
+        "lead_magnet_field_groups": _diagnosis_field_groups(lead_magnet_form),
         "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
         "page_key": page_key,
     }
@@ -138,10 +156,11 @@ def _render_contact_form(
     return HttpResponse(html, status=status_code)
 
 
-def _grade_from_score(score: int) -> str:
-    if score >= 13:
+def _grade_from_score(score: int, max_score: int) -> str:
+    ratio = score / max_score if max_score else 0
+    if ratio >= 0.8:
         return "A"
-    if score >= 8:
+    if ratio >= 0.5:
         return "B"
     return "C"
 
@@ -208,6 +227,14 @@ def _tools_for_priority(question_key: str) -> tuple[str, str]:
             "Impact/Effort 매트릭스, OpenClaw, Codex/Claude Code(바이브코딩)",
             "자동화 후보를 정리한 뒤 바이브코딩 기반 시험 구현을 빠르게 검증해 우선순위를 확정합니다.",
         ),
+        "q9": (
+            "Trello, Notion 스프린트 보드, Google Sheets",
+            "2주 실행 단위로 담당자/일정/검증 기준을 명확히 만들어 실행률을 높입니다.",
+        ),
+        "q10": (
+            "Notion 운영 체크리스트, Gmail 템플릿, Telegram/Discord 알림",
+            "운영 점검 루틴을 표준화해 누락 없이 개선 루프를 유지합니다.",
+        ),
     }
     return tools_map.get(
         question_key,
@@ -228,6 +255,8 @@ def _extended_tools_for_priority(question_key: str) -> str:
         "q6": "Slack, Zapier",
         "q7": "GitHub Projects",
         "q8": "Supabase, GitHub",
+        "q9": "Slack, GitHub Projects",
+        "q10": "Zapier, Slack",
     }
     return extended_map.get(question_key, ", ".join(POSSIBLE_TOOLS[:3]))
 
@@ -275,24 +304,114 @@ def _priority_keys_from_score_map(score_map: dict[str, int]) -> list[str]:
     return priorities
 
 
+def _axis_scores(score_map: dict[str, int]) -> dict[str, dict[str, float]]:
+    result: dict[str, dict[str, float]] = {}
+    for axis_key, axis in DIAGNOSIS_AXES.items():
+        axis_sum = sum(score_map.get(question_key, 0) for question_key in axis["questions"])
+        axis_max = 2 * len(axis["questions"])
+        result[axis_key] = {
+            "score": axis_sum,
+            "max": axis_max,
+            "ratio": axis_sum / axis_max if axis_max else 0,
+            "label": axis["label"],
+        }
+    return result
+
+
+def _segmentation_labels(axis_scores: dict[str, dict[str, float]]) -> dict[str, str]:
+    operating_ratio = axis_scores["operating_context"]["ratio"]
+    data_ratio = axis_scores["data_consistency_visibility"]["ratio"]
+    repetitive_ratio = axis_scores["repetitive_bottlenecks"]["ratio"]
+    automation_ratio = axis_scores["automation_fit"]["ratio"]
+    readiness_ratio = axis_scores["execution_readiness"]["ratio"]
+
+    if operating_ratio >= 0.75 and data_ratio >= 0.75:
+        operation_type = "운영 구조화형"
+    elif operating_ratio >= 0.5:
+        operation_type = "실행 확장형"
+    else:
+        operation_type = "초기 정리형"
+
+    if repetitive_ratio < 0.5:
+        bottleneck_type = "반복 병목 집중형"
+    elif data_ratio < 0.5:
+        bottleneck_type = "데이터 정합성 보완형"
+    elif automation_ratio < 0.5:
+        bottleneck_type = "자동화 설계 보완형"
+    else:
+        bottleneck_type = "운영 안정형"
+
+    if readiness_ratio >= 0.75:
+        readiness_type = "즉시 실행 가능형"
+    elif readiness_ratio >= 0.5:
+        readiness_type = "가이드 기반 실행형"
+    else:
+        readiness_type = "기초 정비 필요형"
+
+    return {
+        "operation_type": operation_type,
+        "bottleneck_type": bottleneck_type,
+        "readiness_type": readiness_type,
+    }
+
+
+def _profile_tool_recommendations(
+    priorities: list[str], labels: dict[str, str]
+) -> list[str]:
+    recommended = []
+    for question_key in priorities[:3]:
+        tools, _ = _tools_for_priority(question_key)
+        recommended.append(tools)
+
+    if labels["bottleneck_type"] == "반복 병목 집중형":
+        recommended.append("Make, Google Apps Script, Telegram/Discord 알림 웹훅")
+    if labels["readiness_type"] == "기초 정비 필요형":
+        recommended.append("Notion 운영 템플릿, Trello 실행 보드")
+
+    deduped: list[str] = []
+    for item in recommended:
+        if item not in deduped:
+            deduped.append(item)
+    return deduped[:4]
+
+
 def _build_detailed_lead_magnet_report(
     total_score: int,
+    max_score: int,
     grade: str,
     priorities: list[str],
     score_map: dict[str, int],
 ) -> str:
+    axis_scores = _axis_scores(score_map)
+    labels = _segmentation_labels(axis_scores)
+    profile_tools = _profile_tool_recommendations(priorities, labels)
     support_summary = _build_support_summary(priorities)
     lines = [
         "요청하신 무료 자동화 실행 진단 리포트입니다.",
         "본 리포트는 실제 사용 경험이 있는 툴 중심으로 작성되었습니다.",
         "",
         "1) 진단 요약",
-        f"- 총점: {total_score}/16",
+        f"- 총점: {total_score}/{max_score}",
         f"- 등급: {grade}",
         f"- 해석: {_grade_summary(grade)}",
+        f"- 운영 유형: {labels['operation_type']}",
+        f"- 병목 유형: {labels['bottleneck_type']}",
+        f"- 실행 준비도 유형: {labels['readiness_type']}",
         "",
-        "2) 2주 실행 우선순위 Top 5",
+        "2) 축별 점검 결과",
     ]
+    for axis_key, axis in DIAGNOSIS_AXES.items():
+        axis_score = axis_scores[axis_key]
+        lines.append(
+            f"- {axis['label']}: {int(axis_score['score'])}/{int(axis_score['max'])}"
+        )
+
+    lines.extend(
+        [
+            "",
+            "3) 2주 실행 우선순위 Top 5",
+        ]
+    )
     for idx, question_key in enumerate(priorities, start=1):
         tools, reason = _tools_for_priority(question_key)
         level = _score_level(score_map.get(question_key, 0))
@@ -311,18 +430,27 @@ def _build_detailed_lead_magnet_report(
     lines.extend(
         [
             "",
-            "3) 2주 실행 플랜(권장)",
+            "4) 프로파일 기반 추천 툴",
+        ]
+    )
+    for tool in profile_tools:
+        lines.append(f"- {tool}")
+
+    lines.extend(
+        [
+            "",
+            "5) 2주 실행 플랜(권장)",
             "- Week 1: 진단 결과 기준으로 현재 프로세스 시각화, 우선순위 1~2 자동화 파일럿 적용",
             "- Week 2: 우선순위 3~5 적용, 주간 운영 리뷰(문의/작업/진행상태)와 표준 작업 문서 정리",
             "",
-            "4) 체크리스트",
+            "6) 체크리스트",
             "- 반복업무 자동화 1개 이상 배포",
             "- 리드 응답 기준 시간 정의(예: 영업일 24시간)",
             "- 주간 운영 리뷰 루틴 운영",
             "- 핵심 운영 문서 템플릿 표준화",
             "- 다음 2주 실행 백로그 확정",
             "",
-            "5) 지원 가능 범위 진단",
+            "7) 지원 가능 범위 진단",
             f"- 직접 지원 가능 항목 수: {len(support_summary['direct'])}",
         ]
     )
@@ -338,11 +466,10 @@ def _build_detailed_lead_magnet_report(
     lines.extend(
         [
             "",
-            "6) 체크 결과 상세 피드백",
+            "8) 체크 결과 상세 피드백",
         ]
     )
-
-    for question_key in sorted(score_map.keys()):
+    for question_key in [key for key in diagnosis_question_keys() if key in score_map]:
         question_label = DIAGNOSIS_QUESTIONS.get(question_key, question_key)
         level = _score_level(score_map[question_key])
         feedback = _score_feedback(score_map[question_key], question_key)
@@ -357,7 +484,7 @@ def _build_detailed_lead_magnet_report(
     lines.extend(
         [
             "",
-            "7) 현재 기준 툴 스택",
+            "9) 현재 기준 툴 스택",
             f"- 자동화/워크플로우: {', '.join(USED_TOOLS['automation_workflow'])}",
             f"- 문서/지식관리: {', '.join(USED_TOOLS['knowledge_docs'])}",
             f"- AI/LLM: {', '.join(USED_TOOLS['ai_llm'])}",
@@ -373,27 +500,64 @@ def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
     scenarios = [
         (
             "A 등급 예시 (고도화 단계)",
-            {"q1": 2, "q2": 2, "q3": 2, "q4": 2, "q5": 1, "q6": 2, "q7": 2, "q8": 1},
+            {
+                "q1": 2,
+                "q2": 2,
+                "q3": 2,
+                "q4": 2,
+                "q5": 1,
+                "q6": 2,
+                "q7": 2,
+                "q8": 1,
+                "q9": 2,
+                "q10": 2,
+            },
         ),
         (
             "B 등급 예시 (집중 개선 단계)",
-            {"q1": 1, "q2": 1, "q3": 1, "q4": 2, "q5": 1, "q6": 1, "q7": 2, "q8": 1},
+            {
+                "q1": 1,
+                "q2": 1,
+                "q3": 1,
+                "q4": 2,
+                "q5": 1,
+                "q6": 1,
+                "q7": 2,
+                "q8": 1,
+                "q9": 1,
+                "q10": 1,
+            },
         ),
         (
             "C 등급 예시 (기초 정비 단계)",
-            {"q1": 0, "q2": 0, "q3": 1, "q4": 0, "q5": 1, "q6": 0, "q7": 1, "q8": 0},
+            {
+                "q1": 0,
+                "q2": 0,
+                "q3": 1,
+                "q4": 0,
+                "q5": 1,
+                "q6": 0,
+                "q7": 1,
+                "q8": 0,
+                "q9": 0,
+                "q10": 0,
+            },
         ),
     ]
     preview_reports = []
     for title, score_map in scenarios:
         total_score = sum(score_map.values())
-        grade = _grade_from_score(total_score)
+        max_score = len(score_map) * 2
+        grade = _grade_from_score(total_score, max_score)
         priorities = _priority_keys_from_score_map(score_map)
-        report = _build_detailed_lead_magnet_report(total_score, grade, priorities, score_map)
+        report = _build_detailed_lead_magnet_report(
+            total_score, max_score, grade, priorities, score_map
+        )
         preview_reports.append(
             {
                 "title": title,
                 "score": total_score,
+                "max_score": max_score,
                 "grade": grade,
                 "report": report,
             }
@@ -417,6 +581,7 @@ def _render_lead_magnet_form(
         "landing/partials/lead_magnet_form.html",
         {
             "form": form,
+            "lead_magnet_field_groups": _diagnosis_field_groups(form),
             "result": result,
             "status": status,
             "status_message": status_message,
@@ -489,23 +654,38 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
         )
 
     data = form.cleaned_data
-    score_keys = [f"q{i}" for i in range(1, 9)]
+    score_keys = diagnosis_question_keys()
     scored = [(key, int(data[key])) for key in score_keys]
     total_score = sum(score for _, score in scored)
-    grade = _grade_from_score(total_score)
+    max_score = len(score_keys) * 2
+    grade = _grade_from_score(total_score, max_score)
     score_map = {question_key: score for question_key, score in scored}
+    axis_scores = _axis_scores(score_map)
+    labels = _segmentation_labels(axis_scores)
     priorities = _priority_keys_from_score_map(score_map)
     support_summary = _build_support_summary(priorities)
+    profile_tools = _profile_tool_recommendations(priorities, labels)
 
     result = {
         "score": total_score,
+        "max_score": max_score,
         "grade": grade,
         "priorities": [DIAGNOSIS_QUESTIONS.get(key, key) for key in priorities],
+        "segmentation": labels,
+        "axis_summary": [
+            {
+                "label": DIAGNOSIS_AXES[axis_key]["label"],
+                "score": int(axis["score"]),
+                "max": int(axis["max"]),
+            }
+            for axis_key, axis in axis_scores.items()
+        ],
+        "profile_tools": profile_tools,
         "support_summary": support_summary,
         "cta": _bridge_cta(grade),
     }
     report_text = _build_detailed_lead_magnet_report(
-        total_score, grade, priorities, score_map
+        total_score, max_score, grade, priorities, score_map
     )
 
     marketing_opt_in = bool(data.get("agree_marketing"))

@@ -49,11 +49,15 @@ def deliver_inquiry_email(inquiry: ContactInquiry) -> bool:
 
     if success and inquiry.inquiry_type == "lead_magnet_diagnosis":
         try:
+            recipient_display_name = inquiry.name
+            if inquiry.company_name:
+                recipient_display_name = f"{inquiry.name} ({inquiry.company_name})"
             homepage_url = f"{settings.SITE_BASE_URL}/"
             contact_url = f"{settings.SITE_BASE_URL}/#contact"
             diagnosis_url = f"{settings.SITE_BASE_URL}/free-diagnosis/"
 
             text_body = (
+                f"{recipient_display_name}님,\n\n"
                 "요청하신 무료 자동화 실행 진단 리포트입니다.\n\n"
                 f"{inquiry.message}\n\n"
                 f"홈페이지 보기: {homepage_url}\n"
@@ -63,8 +67,9 @@ def deliver_inquiry_email(inquiry: ContactInquiry) -> bool:
             )
             html_body = f"""
             <div style="font-family: Pretendard, Arial, sans-serif; line-height: 1.6; color: #0f172a;">
+              <p style="margin: 0 0 10px;">{recipient_display_name}님,</p>
               <h2 style="margin: 0 0 12px;">무료 자동화 실행 진단 리포트</h2>
-              <p style="margin: 0 0 16px;">요청하신 진단 결과를 전달드립니다.</p>
+              <p style="margin: 0 0 16px;">요청하신 진단 결과(운영 유형/병목 유형/실행 준비도 세분화 포함)를 전달드립니다.</p>
               <div style="background: #f3f8ff; border: 1px solid #dbeafe; border-radius: 12px; padding: 14px; white-space: pre-line;">{inquiry.message}</div>
               <div style="margin-top: 20px;">
                 <a href="{homepage_url}" style="display: inline-block; margin-right: 8px; background: #0f172a; color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 10px;">홈페이지 보기</a>

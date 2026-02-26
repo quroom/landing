@@ -111,6 +111,8 @@ class ContactFormTests(TestCase):
                 "q6": "1",
                 "q7": "2",
                 "q8": "1",
+                "q9": "2",
+                "q10": "1",
                 "agree_privacy": "on",
                 "agree_marketing": "on",
                 "lead_source": "founder_lead_magnet",
@@ -121,7 +123,8 @@ class ContactFormTests(TestCase):
         self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(mail.outbox[0].to, ["help@quroom.kr"])
         self.assertEqual(mail.outbox[1].to, ["lead@example.com"])
-        self.assertIn("2) 2주 실행 우선순위 Top 5", mail.outbox[1].body)
+        self.assertIn("3) 2주 실행 우선순위 Top 5", mail.outbox[1].body)
+        self.assertIn("- 운영 유형:", mail.outbox[1].body)
         self.assertIn("추천 툴(실사용 중심):", mail.outbox[1].body)
         self.assertIn("확장 추천 툴:", mail.outbox[1].body)
         inquiry = ContactInquiry.objects.get(email="lead@example.com")
