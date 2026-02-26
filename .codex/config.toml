@@ -1,0 +1,5 @@
+tui.notifications = true
+# Use bell as fallback for unfocused-terminal notifications.
+tui.notification_method = "bel"
+# Run OS notification + sound command when Codex emits notifications.
+notify = ["bash", "/home/quroom/workspace/homepage/.codex/notify.sh"]
