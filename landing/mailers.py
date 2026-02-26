@@ -7,6 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django.utils import timezone
 
+from .lead_magnet_sections import build_lead_magnet_section_ast, render_sections_to_text
 from .models import ContactInquiry, FunnelEvent
 
 INQUIRY_TYPE_LABELS = {
@@ -168,59 +169,29 @@ def _build_lead_magnet_user_email(
     weakest_axis = payload.get("weakest_axis_key", "automation_design")
     intro_copy, action_copy = _grade_axis_mail_copy(grade, weakest_axis)
 
+    sections = payload.get("sections") or build_lead_magnet_section_ast(payload)
+    section_map = {item.get("id"): item for item in sections}
+    weakest_section = section_map.get("weakest_category", {})
+    one_action_section = section_map.get("one_action", {})
+    tools_section = section_map.get("tools", {})
+    next_action_section = section_map.get("next_action", {})
+    cta = next_action_section.get("cta", {})
+
     base_url = settings.SITE_BASE_URL.rstrip("/")
     homepage_url = f"{base_url}/"
-    cta = payload.get("cta") or {"label": "상담 문의하기", "href": "#contact", "note": ""}
-    cta_href = cta.get("href", "#contact")
-    if cta_href.startswith("#"):
-        cta_url = f"{homepage_url}{cta_href}"
+    normalized_cta_href = cta.get("href", "/#contact")
+    if normalized_cta_href.startswith("/"):
+        cta_url = f"{base_url}{normalized_cta_href}"
     else:
-        cta_url = cta_href
-
-    insights = payload.get("category_insights") or []
-    weakest_insight = payload.get("weakest_category_insight")
-    if not weakest_insight:
-        weakest_key = payload.get("weakest_axis_key")
-        weakest_insight = next(
-            (item for item in insights if item.get("key") == weakest_key),
-            insights[0] if insights else None,
-        )
-    one_action = payload.get("one_action") or {}
-    profile_tools = payload.get("profile_tools") or []
+        cta_url = normalized_cta_href
     preview_url = f"{base_url}/free-diagnosis/preview/"
-    if weakest_insight:
-        label = weakest_insight.get("label", "-")
-        grade_label = (
-            f" ({weakest_insight.get('grade')})"
-            if weakest_insight.get("grade_visible")
-            else ""
-        )
-        primary = weakest_insight.get("message_primary", "")
-        secondary = weakest_insight.get("message_secondary", "")
-        weakest_insight_text = (
-            f"- {label}{grade_label}\n"
-            f"  - {primary}\n"
-            f"  - {secondary}"
-        )
-    else:
-        weakest_insight_text = "- 핵심 보완 항목을 추출하지 못했습니다. 상담으로 확인해 주세요."
 
+    weakest_insight = weakest_section.get("weakest_category")
+    text_sections = render_sections_to_text(sections)
     text_body = (
         f"{recipient_display_name}님,\n\n"
         "요청하신 무료 자동화 실행 진단 결과입니다.\n\n"
-        "[진단 요약]\n"
-        f"- 점수: {payload.get('score', 0)}/{payload.get('max_score', 0)}\n"
-        f"- 등급: {grade}\n"
-        f"- 한 줄 요약: {payload.get('summary', intro_copy)}\n\n"
-        "[핵심 보완 카테고리]\n"
-        f"{weakest_insight_text}\n\n"
-        "[2주 실행 우선 1개]\n"
-        f"- 과제: {one_action.get('title', '-')}\n"
-        f"- 추천 툴: {one_action.get('tools', '-')}\n"
-        f"- 수행 기준: {one_action.get('execution', action_copy)}\n\n"
-        "[주요 추천 툴]\n"
-        f"- {', '.join(profile_tools) if profile_tools else 'Make, Google Sheets, Notion'}\n\n"
-        "[다음 액션]\n"
+        f"{text_sections}\n"
         f"- {cta.get('label', '상담 문의하기')}: {cta_url}\n"
         f"- 전체 항목 보기: {preview_url}\n"
         f"- 홈페이지: {homepage_url}\n\n"
@@ -245,6 +216,17 @@ def _build_lead_magnet_user_email(
             "</div>"
         )
 
+    summary_rows = section_map.get("summary", {}).get("rows", [])
+    one_action_rows = one_action_section.get("rows", [])
+    tools_value = (tools_section.get("rows") or ["Make, Google Sheets, Notion"])[0]
+    one_action_title = one_action_rows[0].replace("과제: ", "") if one_action_rows else "-"
+    one_action_tools = (
+        one_action_rows[1].replace("추천 툴: ", "") if len(one_action_rows) > 1 else "-"
+    )
+    one_action_exec = (
+        one_action_rows[2].replace("수행 기준: ", "") if len(one_action_rows) > 2 else action_copy
+    )
+
     html_body = f"""
     <div style="font-family: Pretendard, Arial, sans-serif; color: #0f172a; line-height: 1.8;">
       <p style="margin: 0 0 14px;">{escape(recipient_display_name)}님,</p>
@@ -252,22 +234,23 @@ def _build_lead_magnet_user_email(
 
       <div style="border: 1px solid #dbeafe; background: #f8fbff; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
         <p style="margin: 0 0 6px; font-weight: 700;">진단 요약</p>
-        <p style="margin: 0;">점수 {payload.get('score', 0)}/{payload.get('max_score', 0)} · 등급 <strong>{escape(grade)}</strong></p>
-        <p style="margin: 8px 0 0;">{escape(payload.get('summary', intro_copy))}</p>
+        <p style="margin: 0;">{escape(summary_rows[0] if summary_rows else f'점수: {payload.get("score", 0)}/{payload.get("max_score", 0)}')}</p>
+        <p style="margin: 8px 0 0;">{escape(summary_rows[1] if len(summary_rows) > 1 else f'등급: {grade}')}</p>
+        <p style="margin: 8px 0 0;">{escape(summary_rows[2] if len(summary_rows) > 2 else payload.get('summary', intro_copy))}</p>
       </div>
 
       {insight_html}
 
       <div style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
         <p style="margin: 0 0 6px; font-weight: 700;">2주 실행 우선 1개</p>
-        <p style="margin: 0;"><strong>{escape(one_action.get('title', '-'))}</strong></p>
-        <p style="margin: 6px 0 0;">추천 툴: {escape(one_action.get('tools', '-'))}</p>
-        <p style="margin: 4px 0 0;">수행 기준: {escape(one_action.get('execution', action_copy))}</p>
+        <p style="margin: 0;"><strong>{escape(one_action_title)}</strong></p>
+        <p style="margin: 6px 0 0;">추천 툴: {escape(one_action_tools)}</p>
+        <p style="margin: 4px 0 0;">수행 기준: {escape(one_action_exec)}</p>
       </div>
 
       <div style="margin-bottom: 16px;">
         <p style="margin: 0 0 6px; font-weight: 700;">주요 추천 툴</p>
-        <p style="margin: 0;">{escape(', '.join(profile_tools) if profile_tools else 'Make, Google Sheets, Notion')}</p>
+        <p style="margin: 0;">{escape(tools_value)}</p>
       </div>
 
       <div style="margin-top: 18px;">

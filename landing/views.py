@@ -18,6 +18,11 @@ from .ax_tool_stack import (
 )
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm, LeadMagnetForm
+from .lead_magnet_sections import (
+    build_lead_magnet_section_ast,
+    normalize_contact_cta_href,
+    render_sections_to_text,
+)
 from .mailers import deliver_inquiry_email, deliver_inquiry_email_async
 from .models import ContactInquiry, FunnelEvent
 
@@ -469,48 +474,29 @@ def _build_detailed_lead_magnet_report(
     profile_tools = _profile_tool_recommendations(priorities, labels)
     category_insights = _category_grade_insights(axis_scores)
     weakest_axis_key = _weakest_axis_key(axis_scores)
-    weakest_axis_label = DIAGNOSIS_AXES[weakest_axis_key]["label"]
     weakest_insight = next(
         (item for item in category_insights if item["key"] == weakest_axis_key),
         category_insights[0],
     )
     one_action = _best_single_action(score_map)
-    cta = _bridge_cta(grade)
-
-    lines = [
-        "요청하신 무료 자동화 실행 진단 리포트입니다.",
-        "",
-        f"[진단 요약] 점수 {total_score}/{max_score}, 등급 {grade}",
-        _grade_summary(grade),
-        "",
-        "[핵심 보완 카테고리]",
-        (
-            f"- {weakest_insight['label']}"
-            f"{f' ({weakest_insight['grade']})' if weakest_insight['grade_visible'] else ''}: "
-            f"{weakest_insight['message_primary']}"
-        ),
-        f"  -> {weakest_insight['message_secondary']}",
-        "",
-        "[2주 실행 우선 1개]",
-        f"- 실행 과제: {one_action['title']}",
-        f"- 추천 툴: {one_action['tools']}",
-        f"- 수행 기준: {one_action['execution']}",
-        f"- 선택 이유: {one_action['reason']}",
-    ]
-
-    lines.extend(
-        [
-            "",
-            "[주요 추천 툴]",
-            f"- {', '.join(profile_tools)}",
-            "",
-            "[다음 액션]",
-            f"- {cta['label']} ({cta['href']})",
-            "",
-            "추가 상담이 필요하면 이 메일에 회신하거나 홈페이지 문의를 남겨주세요.",
-        ]
+    payload = {
+        "score": total_score,
+        "max_score": max_score,
+        "grade": grade,
+        "summary": _grade_summary(grade),
+        "profile_tools": profile_tools,
+        "one_action": one_action,
+        "category_insights": category_insights,
+        "weakest_category_insight": weakest_insight,
+        "cta": _bridge_cta(grade),
+    }
+    sections = build_lead_magnet_section_ast(payload)
+    report_text = render_sections_to_text(sections, include_all_categories=False)
+    return (
+        "요청하신 무료 자동화 실행 진단 리포트입니다.\n\n"
+        f"{report_text}\n\n"
+        "추가 상담이 필요하면 이 메일에 회신하거나 홈페이지 문의를 남겨주세요."
     )
-    return "\n".join(lines)
 
 
 def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
@@ -552,6 +538,7 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "weakest_axis_key": weakest_axis_key,
         "weakest_axis_label": DIAGNOSIS_AXES[weakest_axis_key]["label"],
     }
+    result["sections"] = build_lead_magnet_section_ast(result)
     report_text = _build_detailed_lead_magnet_report(
         total_score, max_score, grade, priorities, score_map
     )
@@ -596,11 +583,11 @@ def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
     preview_reports = []
     for title, score_map in scenarios:
         result, report = _build_lead_magnet_result(score_map)
-        cta_href = result["cta"]["href"]
+        normalized_cta_href = normalize_contact_cta_href(result["cta"]["href"])
         cta_url = (
-            f"{reverse('landing:index')}{cta_href}"
-            if cta_href.startswith("#")
-            else cta_href
+            reverse("landing:index") + "#contact"
+            if normalized_cta_href == "/#contact"
+            else normalized_cta_href
         )
         preview_reports.append(
             {
@@ -615,6 +602,7 @@ def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
                 "category_insights": result["category_insights"],
                 "weakest_category_insight": result["weakest_category_insight"],
                 "weakest_axis_label": result["weakest_axis_label"],
+                "sections": result["sections"],
                 "report": report,
             }
         )
