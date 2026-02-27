@@ -1,9 +1,5 @@
-# lead-magnet-admin-segmentation Specification
+## MODIFIED Requirements
 
-## Purpose
-Define operational segmentation and funnel event tracking for lead-magnet submissions.
-
-## Requirements
 ### Requirement: Admin dashboard MUST segment lead-magnet records from general inquiries
 The system MUST allow operators to distinguish lead-magnet submissions from general contact inquiries in the dashboard.
 

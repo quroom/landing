@@ -1017,6 +1017,11 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
 
     data = form.cleaned_data
     lead_source = data.get("lead_source") or "contact_form"
+    lead_context = (
+        "lead_magnet_diagnosis"
+        if lead_source == "founder_contact_from_diagnosis"
+        else ""
+    )
     marketing_opt_in = bool(data.get("agree_marketing") or data.get("agree_all"))
     inquiry = ContactInquiry.objects.create(
         name=data["name"],
@@ -1041,6 +1046,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         metadata={
             "inquiry_type": data["inquiry_type"],
             "marketing_opt_in": marketing_opt_in,
+            "lead_context": lead_context,
         },
     )
 
@@ -1094,9 +1100,6 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
     if settings.CONTACT_EMAIL_ASYNC:
         deliver_inquiry_email_async(
             inquiry.id,
-            event_name="lead_magnet_email_sent",
-            page_key="home",
-            lead_source="founder_lead_magnet",
             lead_magnet_result=result,
         )
         email_success = True
@@ -1105,19 +1108,15 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
 
     track_event(
         request,
-        "lead_magnet_submit",
+        "lead_magnet_submit_user",
         page_key="home",
         lead_source=data.get("lead_source") or "founder_lead_magnet",
-        metadata={"score": total_score, "grade": grade},
+        metadata={
+            "score": total_score,
+            "grade": grade,
+            "lead_context": "lead_magnet_diagnosis",
+        },
     )
-    if email_success:
-        track_event(
-            request,
-            "lead_magnet_email_sent",
-            page_key="home",
-            lead_source="founder_lead_magnet",
-            metadata={"grade": grade},
-        )
 
     success_message = (
         "진단이 완료되었습니다. 전체 리포트/체크리스트를 이메일로 전달했습니다."
@@ -1243,11 +1242,64 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
             event_name="lead_magnet_start"
         ).count(),
         "lead_magnet_submit": FunnelEvent.objects.filter(
+            event_name="lead_magnet_submit_user"
+        ).count(),
+        "lead_magnet_submit_legacy": FunnelEvent.objects.filter(
             event_name="lead_magnet_submit"
         ).count(),
-        "lead_magnet_email_sent": FunnelEvent.objects.filter(
+        "lead_magnet_email_sent_user": FunnelEvent.objects.filter(
+            event_name="lead_magnet_email_sent_user"
+        ).count(),
+        "lead_magnet_email_sent_admin": FunnelEvent.objects.filter(
+            event_name="lead_magnet_email_sent_admin"
+        ).count(),
+        "lead_magnet_email_sent_legacy": FunnelEvent.objects.filter(
             event_name="lead_magnet_email_sent"
         ).count(),
+        "lead_magnet_contact_submit": FunnelEvent.objects.filter(
+            event_name="contact_submit",
+            lead_source="founder_contact_from_diagnosis",
+        ).count(),
+    }
+
+    def _rate(numerator: int, denominator: int) -> float:
+        if denominator <= 0:
+            return 0.0
+        return round((numerator / denominator) * 100, 1)
+
+    submit_count = event_counts["lead_magnet_submit"]
+    submit_legacy_count = event_counts["lead_magnet_submit_legacy"]
+    effective_submit_count = submit_count if submit_count > 0 else submit_legacy_count
+    user_mail_sent = event_counts["lead_magnet_email_sent_user"]
+    legacy_mail_sent = event_counts["lead_magnet_email_sent_legacy"]
+    # Backward compatibility for historical data before *_user/*_admin split.
+    effective_user_mail_sent = user_mail_sent if user_mail_sent > 0 else legacy_mail_sent
+    if submit_count > 0:
+        effective_user_mail_sent = min(effective_user_mail_sent, submit_count)
+
+    lead_magnet_funnel = {
+        "start": event_counts["lead_magnet_start"],
+        "submit": effective_submit_count,
+        "submit_user": submit_count,
+        "submit_legacy": submit_legacy_count,
+        "is_legacy_submit_fallback": submit_count == 0 and submit_legacy_count > 0,
+        "mail_sent_user": event_counts["lead_magnet_email_sent_user"],
+        "mail_sent_admin": event_counts["lead_magnet_email_sent_admin"],
+        "mail_sent_legacy": event_counts["lead_magnet_email_sent_legacy"],
+        "mail_sent_effective_user": effective_user_mail_sent,
+        "is_legacy_mail_fallback": user_mail_sent == 0 and legacy_mail_sent > 0,
+        "contact_submit": event_counts["lead_magnet_contact_submit"],
+        "submit_rate": _rate(
+            effective_submit_count, event_counts["lead_magnet_start"]
+        ),
+        "mail_success_rate": _rate(
+            effective_user_mail_sent,
+            effective_submit_count,
+        ),
+        "contact_conversion_rate": _rate(
+            event_counts["lead_magnet_contact_submit"],
+            effective_user_mail_sent,
+        ),
     }
 
     recent_inquiries = list(inquiries[:25])
@@ -1264,6 +1316,7 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "recent_inquiries": recent_inquiries,
         "inquiry_type_stats": inquiry_type_stats,
         "event_counts": event_counts,
+        "lead_magnet_funnel": lead_magnet_funnel,
     }
     return render(request, "landing/admin_dashboard.html", context)
 

@@ -7,6 +7,7 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
       <h1 class="text-2xl font-bold text-navy md:text-3xl">문의 운영 대시보드</h1>
       <div class="flex items-center gap-2 text-sm">
+        <a href="{% url 'landing:index' %}" class="rounded-lg border border-navy/20 bg-white px-3 py-2 text-navy hover:bg-navy/5">홈으로 이동</a>
         <a href="{% url 'admin:index' %}" class="rounded-lg border border-navy/20 bg-white px-3 py-2 text-navy hover:bg-navy/5">Django Admin</a>
         <a href="{% url 'admin:landing_contactinquiry_changelist' %}" class="rounded-lg border border-navy/20 bg-white px-3 py-2 text-navy hover:bg-navy/5">문의 목록</a>
         <form action="{% url 'admin:logout' %}" method="post" class="inline">
@@ -66,9 +67,44 @@
       </article>
       <article class="rounded-2xl bg-white p-4 shadow-sm">
         <p class="text-xs text-navy/60">리드마그넷 시작/제출</p>
-        <p class="mt-1 text-xl font-bold text-sky">{{ event_counts.lead_magnet_start }} / {{ event_counts.lead_magnet_submit }}</p>
+        <p class="mt-1 text-xl font-bold text-sky">{{ event_counts.lead_magnet_start }} / {{ lead_magnet_funnel.submit }}</p>
+        {% if lead_magnet_funnel.is_legacy_submit_fallback %}
+        <p class="mt-1 text-[11px] text-amber">제출은 legacy 이벤트 기준으로 임시 집계 중</p>
+        {% endif %}
       </article>
     </div>
+
+    <section class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold text-navy">리드마그넷 퍼널 (간단 확인)</h2>
+        <p class="text-xs text-navy/60">기준: start → submit → email_sent → contact_submit</p>
+      </div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="rounded-xl border border-navy/10 bg-fog p-3">
+          <p class="text-xs text-navy/60">시작</p>
+          <p class="mt-1 text-2xl font-bold text-navy">{{ lead_magnet_funnel.start }}</p>
+        </article>
+        <article class="rounded-xl border border-navy/10 bg-fog p-3">
+          <p class="text-xs text-navy/60">제출</p>
+          <p class="mt-1 text-2xl font-bold text-sky">{{ lead_magnet_funnel.submit }}</p>
+          <p class="mt-1 text-xs text-navy/70">전환율 {{ lead_magnet_funnel.submit_rate }}%</p>
+        </article>
+        <article class="rounded-xl border border-navy/10 bg-fog p-3">
+          <p class="text-xs text-navy/60">메일 발송 성공 (사용자)</p>
+          <p class="mt-1 text-2xl font-bold text-mint">{{ lead_magnet_funnel.mail_sent_effective_user }}</p>
+          <p class="mt-1 text-xs text-navy/70">성공률 {{ lead_magnet_funnel.mail_success_rate }}%</p>
+          <p class="mt-1 text-[11px] text-navy/55">관리자 알림: {{ lead_magnet_funnel.mail_sent_admin }}</p>
+          {% if lead_magnet_funnel.is_legacy_mail_fallback %}
+          <p class="mt-1 text-[11px] text-amber">legacy 이벤트 기준으로 임시 집계 중</p>
+          {% endif %}
+        </article>
+        <article class="rounded-xl border border-navy/10 bg-fog p-3">
+          <p class="text-xs text-navy/60">상담 제출</p>
+          <p class="mt-1 text-2xl font-bold text-amber">{{ lead_magnet_funnel.contact_submit }}</p>
+          <p class="mt-1 text-xs text-navy/70">전환율 {{ lead_magnet_funnel.contact_conversion_rate }}%</p>
+        </article>
+      </div>
+    </section>
 
     <div class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
       <div class="flex flex-wrap items-center gap-2">

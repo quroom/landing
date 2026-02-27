@@ -1,8 +1,5 @@
-# lead-magnet-email-followup Specification
+## MODIFIED Requirements
 
-## Purpose
-Define full follow-up report delivery behavior for free diagnosis submissions.
-## Requirements
 ### Requirement: Full diagnosis report MUST be delivered via email after submission
 The lead-magnet follow-up email MUST vary interpretation copy by severity pattern, MUST use action-oriented language, and MUST remain concise. Email text/HTML rendering MUST consume the same shared section model used by preview generation so copy and section order stay aligned.
 

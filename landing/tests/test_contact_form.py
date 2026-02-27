@@ -154,8 +154,34 @@ class ContactFormTests(TestCase):
         )
         self.assertTrue(
             FunnelEvent.objects.filter(
-                event_name="lead_magnet_submit", lead_source="founder_lead_magnet"
+                event_name="lead_magnet_submit_user",
+                lead_source="founder_lead_magnet",
             ).exists()
+        )
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="lead_magnet_email_sent_user",
+                lead_source="founder_lead_magnet",
+            ).exists()
+        )
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="lead_magnet_email_sent_admin",
+                lead_source="founder_lead_magnet",
+            ).exists()
+        )
+        submit_event = FunnelEvent.objects.filter(
+            event_name="lead_magnet_submit_user",
+            lead_source="founder_lead_magnet",
+        ).latest("created_at")
+        self.assertEqual(submit_event.metadata.get("lead_context"), "lead_magnet_diagnosis")
+        user_mail_event = FunnelEvent.objects.filter(
+            event_name="lead_magnet_email_sent_user",
+            lead_source="founder_lead_magnet",
+        ).latest("created_at")
+        self.assertEqual(user_mail_event.metadata.get("grade"), "B")
+        self.assertEqual(
+            user_mail_event.metadata.get("lead_context"), "lead_magnet_diagnosis"
         )
 
     def test_lead_magnet_submit_requires_all_questions(self) -> None:

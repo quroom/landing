@@ -361,6 +361,8 @@ def deliver_inquiry_email(
 ) -> bool:
     subject, body = _build_inquiry_mail(inquiry)
     success = True
+    admin_mail_sent = False
+    user_mail_sent = False
 
     try:
         send_mail(
@@ -370,6 +372,7 @@ def deliver_inquiry_email(
             recipient_list=[settings.QUROOM_CONTACT_EMAIL],
             fail_silently=False,
         )
+        admin_mail_sent = True
     except Exception as exc:
         success = False
         inquiry.email_error = str(exc)[:1000]
@@ -389,9 +392,34 @@ def deliver_inquiry_email(
             )
             message.attach_alternative(html_body, "text/html")
             message.send(fail_silently=False)
+            user_mail_sent = True
         except Exception as exc:
             success = False
             inquiry.email_error = str(exc)[:1000]
+
+    if success and inquiry.inquiry_type == "lead_magnet_diagnosis":
+        grade_value = (
+            str((lead_magnet_result or {}).get("grade", "")).strip()
+            or _extract_grade_from_report(inquiry.message)
+        )
+        base_metadata = {
+            "inquiry_id": inquiry.id,
+            "lead_context": "lead_magnet_diagnosis",
+        }
+        if admin_mail_sent:
+            FunnelEvent.objects.create(
+                event_name="lead_magnet_email_sent_admin",
+                page_key="home",
+                lead_source="founder_lead_magnet",
+                metadata=base_metadata,
+            )
+        if user_mail_sent:
+            FunnelEvent.objects.create(
+                event_name="lead_magnet_email_sent_user",
+                page_key="home",
+                lead_source="founder_lead_magnet",
+                metadata={**base_metadata, "grade": grade_value},
+            )
 
     if success:
         inquiry.email_delivery_status = ContactInquiry.DeliveryStatus.SUCCESS

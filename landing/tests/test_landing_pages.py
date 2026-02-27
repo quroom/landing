@@ -149,6 +149,7 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:admin_dashboard"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "문의 운영 대시보드")
+        self.assertContains(response, "리드마그넷 퍼널 (간단 확인)")
         self.assertContains(response, "대시보드 테스트")
 
     def test_admin_dashboard_filters_by_date_range(self) -> None:
@@ -207,6 +208,78 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "리드마그넷 문의")
         self.assertNotContains(response, "일반 문의")
+
+    def test_admin_dashboard_uses_user_mail_event_for_conversion_rate(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff6",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_start",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+        )
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_submit_user",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+            metadata={"grade": "B"},
+        )
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_email_sent_user",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+            metadata={"grade": "B", "lead_context": "lead_magnet_diagnosis"},
+        )
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_email_sent_admin",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+            metadata={"lead_context": "lead_magnet_diagnosis"},
+        )
+
+        response = self.client.get(reverse("landing:admin_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "메일 발송 성공 (사용자)")
+        self.assertContains(response, "관리자 알림: 1")
+        self.assertContains(response, "성공률 100.0%")
+
+    def test_admin_dashboard_falls_back_to_legacy_mail_event(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff7",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_start",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+        )
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_submit",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+            metadata={"grade": "B"},
+        )
+        FunnelEvent.objects.create(
+            event_name="lead_magnet_email_sent",
+            page_key="home",
+            lead_source="founder_lead_magnet",
+            metadata={"grade": "B"},
+        )
+
+        response = self.client.get(reverse("landing:admin_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "legacy 이벤트 기준으로 임시 집계 중")
+        self.assertContains(response, "제출은 legacy 이벤트 기준으로 임시 집계 중")
+        self.assertContains(response, "성공률 100.0%")
 
     def test_admin_resend_inquiry_updates_status(self) -> None:
         user_model = get_user_model()

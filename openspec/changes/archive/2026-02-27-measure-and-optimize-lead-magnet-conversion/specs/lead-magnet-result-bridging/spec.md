@@ -1,10 +1,7 @@
-# lead-magnet-result-bridging Specification
+## MODIFIED Requirements
 
-## Purpose
-Define grade-based action bridging from diagnosis result to next consultation CTA.
-## Requirements
 ### Requirement: Diagnosis result MUST bridge to graded next-action CTAs
-The system MUST map diagnosis grade to differentiated execution guidance while keeping one shared CTA expression across grades, and MUST preserve a single CTA button in each result.  
+The system MUST map diagnosis grade to differentiated execution guidance while keeping one shared CTA expression across grades, and MUST preserve a single CTA button in each result.
 The diagnosis-to-contact flow MUST carry diagnosis context so the contact form can start in a recommended pre-selected state.
 
 #### Scenario: Grade A result bridges with optimization guidance
