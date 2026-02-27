@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 
 def normalize_contact_cta_href(href: str) -> str:
@@ -13,8 +13,34 @@ def normalize_contact_cta_href(href: str) -> str:
         parsed = urlsplit(value)
         if parsed.fragment == "contact":
             path = parsed.path or "/"
-            return urlunsplit((parsed.scheme, parsed.netloc, path, parsed.query, "contact"))
+            return urlunsplit(
+                (parsed.scheme, parsed.netloc, path, parsed.query, "contact")
+            )
     return value
+
+
+def attach_diagnosis_contact_context(href: str, context: dict | None = None) -> str:
+    normalized_href = normalize_contact_cta_href(href)
+    if not context:
+        return normalized_href
+
+    inquiry_type = (context.get("inquiry_type") or "").strip()
+    lead_context = (context.get("lead_context") or "").strip()
+    if not inquiry_type and not lead_context:
+        return normalized_href
+
+    parsed = urlsplit(normalized_href)
+    if parsed.fragment != "contact":
+        return normalized_href
+
+    merged = dict(parse_qsl(parsed.query, keep_blank_values=True))
+    if inquiry_type:
+        merged["inquiry_type"] = inquiry_type
+    if lead_context:
+        merged["lead_context"] = lead_context
+    return urlunsplit(
+        (parsed.scheme, parsed.netloc, parsed.path, urlencode(merged), parsed.fragment)
+    )
 
 
 def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
@@ -30,7 +56,10 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
 
     one_action = payload.get("one_action") or {}
     cta = payload.get("cta") or {}
-    normalized_cta_href = normalize_contact_cta_href(cta.get("href", "#contact"))
+    normalized_cta_href = attach_diagnosis_contact_context(
+        cta.get("href", "#contact"),
+        payload.get("contact_context"),
+    )
     profile_tools = payload.get("profile_tools") or []
 
     return [
@@ -51,17 +80,22 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
         },
         {
             "id": "one_action",
-            "heading": "2주 실행 우선 1개",
+            "heading": "2주 내 끝낼 작업 1개",
             "rows": [
-                f"과제: {one_action.get('title', '-')}",
-                f"추천 툴: {one_action.get('tools', '-')}",
-                f"수행 기준: {one_action.get('execution', '-')}",
+                f"작업: {one_action.get('title', '-')}",
+                f"완료 기준: {one_action.get('execution', '-')}",
             ],
         },
         {
             "id": "tools",
             "heading": "주요 추천 툴",
-            "rows": [", ".join(profile_tools) if profile_tools else "Make, Google Sheets, Notion"],
+            "rows": [
+                (
+                    ", ".join(profile_tools)
+                    if profile_tools
+                    else "Make, Google Sheets, Notion"
+                )
+            ],
         },
         {
             "id": "next_action",
@@ -106,20 +140,26 @@ def render_sections_to_text(
                 lines.append(f"  - {weakest.get('message_primary', '')}")
                 lines.append(f"  - {weakest.get('message_secondary', '')}")
             else:
-                lines.append("- 핵심 보완 항목을 추출하지 못했습니다. 상담으로 확인해 주세요.")
+                lines.append(
+                    "- 핵심 보완 항목을 추출하지 못했습니다. 상담으로 확인해 주세요."
+                )
 
             if include_all_categories:
                 lines.append("- 다른 진단 항목(전체)")
                 for category in section.get("all_categories") or []:
                     grade_label = (
-                        f" ({category.get('grade')})" if category.get("grade_visible") else ""
+                        f" ({category.get('grade')})"
+                        if category.get("grade_visible")
+                        else ""
                     )
                     lines.append(f"  - {category.get('label', '-')}{grade_label}")
                     lines.append(f"    - {category.get('message_primary', '')}")
                     lines.append(f"    - {category.get('message_secondary', '')}")
         elif section_id == "next_action":
             cta = section.get("cta") or {}
-            lines.append(f"- {cta.get('label', '상담 문의하기')} ({cta.get('href', '/#contact')})")
+            lines.append(
+                f"- {cta.get('label', '상담 문의하기')} ({cta.get('href', '/#contact')})"
+            )
             if cta.get("note"):
                 lines.append(f"- {cta.get('note')}")
 

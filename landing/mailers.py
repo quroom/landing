@@ -139,15 +139,22 @@ def _default_result_from_report(report_text: str) -> dict:
         "summary": _grade_mail_copy(grade)[0],
         "category_insights": [],
         "one_action": {
-            "title": "핵심 보완 카테고리부터 1개 과제 실행",
+            "title": "핵심 보완 카테고리 기준으로 작업 1개 끝내기",
             "tools": "Make, Google Sheets",
-            "execution": "2주 동안 완료 기준을 정의해 1개 과제를 끝까지 실행하세요.",
+            "execution": (
+                "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n"
+                "  - 완료 기준 예시: 담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행."
+            ),
         },
         "profile_tools": ["Make", "Google Sheets", "Notion"],
         "cta": {
             "label": cta_label,
             "href": cta_anchor,
             "note": "홈페이지에서 상담으로 연결할 수 있습니다.",
+        },
+        "contact_context": {
+            "inquiry_type": "ax_diagnosis",
+            "lead_context": "lead_magnet_diagnosis",
         },
         "weakest_axis_key": weakest_axis,
     }
@@ -218,16 +225,14 @@ def _build_lead_magnet_user_email(
     one_action_rows = one_action_section.get("rows", [])
     tools_value = (tools_section.get("rows") or ["Make, Google Sheets, Notion"])[0]
     one_action_title = (
-        one_action_rows[0].replace("과제: ", "") if one_action_rows else "-"
-    )
-    one_action_tools = (
-        one_action_rows[1].replace("추천 툴: ", "") if len(one_action_rows) > 1 else "-"
+        one_action_rows[0].replace("작업: ", "") if one_action_rows else "-"
     )
     one_action_exec = (
-        one_action_rows[2].replace("수행 기준: ", "")
-        if len(one_action_rows) > 2
+        one_action_rows[1].replace("완료 기준: ", "")
+        if len(one_action_rows) > 1
         else action_copy
     )
+    one_action_exec_html = escape(one_action_exec).replace("\n", "<br>")
 
     html_body = f"""
     <div style="font-family: Pretendard, Arial, sans-serif; color: #0f172a; line-height: 1.8;">
@@ -244,10 +249,9 @@ def _build_lead_magnet_user_email(
       {insight_html}
 
       <div style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
-        <p style="margin: 0 0 6px; font-weight: 700;">2주 실행 우선 1개</p>
+        <p style="margin: 0 0 6px; font-weight: 700;">2주 내 끝낼 작업 1개</p>
         <p style="margin: 0;"><strong>{escape(one_action_title)}</strong></p>
-        <p style="margin: 6px 0 0;">추천 툴: {escape(one_action_tools)}</p>
-        <p style="margin: 4px 0 0;">수행 기준: {escape(one_action_exec)}</p>
+        <p style="margin: 4px 0 0;">완료 기준: {one_action_exec_html}</p>
       </div>
 
       <div style="margin-bottom: 16px;">

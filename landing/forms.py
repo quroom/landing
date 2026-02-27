@@ -82,7 +82,14 @@ class ContactForm(forms.Form):
         label="전체 동의 (필수 + 선택)",
     )
 
-    def __init__(self, *args, page_key: str = "home", **kwargs):
+    def __init__(
+        self,
+        *args,
+        page_key: str = "home",
+        recommended_inquiry_type: str = "",
+        lead_context: str = "",
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         normalized_key = (
             page_key if page_key in {"home", "foreign_developers"} else "home"
@@ -103,12 +110,20 @@ class ContactForm(forms.Form):
                 "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
             )
 
+        if lead_context == "lead_magnet_diagnosis" and normalized_key == "home":
+            self.fields["lead_source"].initial = "founder_contact_from_diagnosis"
+
+        if recommended_inquiry_type:
+            choice_values = {value for value, _ in self.fields["inquiry_type"].choices}
+            if recommended_inquiry_type in choice_values:
+                self.fields["inquiry_type"].initial = recommended_inquiry_type
+
 
 class LeadMagnetForm(forms.Form):
     SCORE_CHOICES = [
-        ("0", "해당 없음"),
-        ("1", "일부 해당"),
-        ("2", "강하게 해당"),
+        ("0", "하고 있지 않음"),
+        ("1", "어느 정도 하고 있음"),
+        ("2", "명확히 하고 있음"),
     ]
 
     lead_source = forms.CharField(

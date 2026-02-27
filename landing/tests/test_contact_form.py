@@ -127,7 +127,7 @@ class ContactFormTests(TestCase):
         self.assertEqual(mail.outbox[1].to, ["lead@example.com"])
         self.assertEqual(mail.outbox[1].subject, "[큐룸] 무료 자동화 실행 진단 결과")
         self.assertIn("[핵심 보완 카테고리]", mail.outbox[1].body)
-        self.assertIn("[2주 실행 우선 1개]", mail.outbox[1].body)
+        self.assertIn("[2주 내 끝낼 작업 1개]", mail.outbox[1].body)
         self.assertIn("생산성 개선 상담 요청", mail.outbox[1].body)
         self.assertNotIn("외국인 개발자", mail.outbox[1].body)
         self.assertNotIn("Top 5", mail.outbox[1].body)

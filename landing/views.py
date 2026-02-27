@@ -75,15 +75,26 @@ def _diagnosis_field_groups(form: LeadMagnetForm) -> list[dict]:
     return groups
 
 
-def _base_context(content: dict, page_key: str) -> dict:
+def _base_context(
+    content: dict,
+    page_key: str,
+    *,
+    recommended_inquiry_type: str = "",
+    lead_context: str = "",
+) -> dict:
     career_duration = _career_duration()
     lead_magnet_form = LeadMagnetForm()
+    form_kwargs: dict = {"page_key": page_key}
+    if recommended_inquiry_type.strip():
+        form_kwargs["recommended_inquiry_type"] = recommended_inquiry_type
+    if lead_context.strip():
+        form_kwargs["lead_context"] = lead_context
     return {
         "content": content,
         "career_ranges": CAREER_RANGES,
         "career_duration": career_duration,
         "metrics": _build_metrics(content, career_duration),
-        "form": ContactForm(page_key=page_key),
+        "form": ContactForm(**form_kwargs),
         "lead_magnet_form": lead_magnet_form,
         "lead_magnet_field_groups": _diagnosis_field_groups(lead_magnet_form),
         "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
@@ -100,7 +111,12 @@ def index(request: HttpRequest) -> HttpResponse:
             page_key="home",
             lead_source="founder_lead_magnet",
         )
-    context = _base_context(build_page_content(), page_key="home")
+    context = _base_context(
+        build_page_content(),
+        page_key="home",
+        recommended_inquiry_type=request.GET.get("inquiry_type", ""),
+        lead_context=request.GET.get("lead_context", ""),
+    )
     return render(request, "landing/index.html", context)
 
 
@@ -116,7 +132,10 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
         lead_source="foreign_developers",
     )
     context = _base_context(
-        build_page_content("foreign_developers"), page_key="foreign_developers"
+        build_page_content("foreign_developers"),
+        page_key="foreign_developers",
+        recommended_inquiry_type=request.GET.get("inquiry_type", ""),
+        lead_context=request.GET.get("lead_context", ""),
     )
     return render(request, "landing/foreign_developers.html", context)
 
@@ -135,7 +154,12 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
             page_key="free_diagnosis",
             lead_source="founder_lead_magnet",
         )
-    context = _base_context(build_page_content(), page_key="home")
+    context = _base_context(
+        build_page_content(),
+        page_key="home",
+        recommended_inquiry_type=request.GET.get("inquiry_type", ""),
+        lead_context=request.GET.get("lead_context", ""),
+    )
     return render(request, "landing/free_diagnosis.html", context)
 
 
@@ -167,16 +191,16 @@ def _bridge_cta(grade: str) -> dict[str, str]:
     return {
         "label": "생산성 개선 상담 요청",
         "href": "#contact",
-        "note": "빠른 실행 병목 해소 중심 상담으로 연결합니다.",
+        "note": "직접 진행이 어렵다면 상담으로 우선순위부터 함께 정리해드립니다.",
     }
 
 
 def _grade_summary(grade: str) -> str:
     if grade == "A":
-        return "실행 기반은 갖춰져 있으며, 1인 운영이든 팀 운영이든 자동화/표준화 최적화로 속도를 더 높일 단계입니다."
+        return "기본 운영은 잘 갖춰져 있습니다. 이제 반복 업무 자동화와 표준화로 속도를 더 높일 단계입니다."
     if grade == "B":
-        return "핵심 실행은 가능하지만 반복 운영 손실이 누적되는 단계입니다. 1인/팀 모두 2주 집중 개선이 효과적입니다."
-    return "구조화되지 않은 수작업 비중이 높아 1인/팀 운영 모두 우선순위 정리와 실행체계 재설계가 필요한 단계입니다."
+        return "기본 운영은 가능하지만 반복 업무에서 시간 손실이 큽니다. 2주 동안 핵심 작업 1개 개선을 권장합니다."
+    return "수작업 비중이 높아 운영이 자주 끊기는 상태입니다. 업무 우선순위와 반복 작업부터 정리하는 것이 좋습니다."
 
 
 def _result_summary(total_score: int, max_score: int, grade: str) -> str:
@@ -207,7 +231,7 @@ def _tools_for_priority(question_key: str) -> tuple[str, str]:
     tools_map = {
         k1: (
             "Google Sheets, Notion",
-            "핵심 업무 흐름을 한 화면에서 확인할 수 있게 정리합니다.",
+            "핵심 업무를 준비·실행·점검·개선 흐름으로 한 화면에 정리합니다.",
         ),
         k2: (
             "Google Sheets, Make",
@@ -445,14 +469,24 @@ def _category_grade_insights(
 def _best_single_action(score_map: dict[str, int]) -> dict[str, str]:
     lowest_key = min(score_map, key=lambda key: (score_map[key], key))
     action_titles = {
-        "q1": "핵심 업무를 4개 영역으로 먼저 구분하기",
-        "q2": "최근 2주 반복 수작업 1개를 먼저 특정하기",
+        "q1": "핵심 업무 10개를 준비·실행·점검·개선 4단계로 나누기",
+        "q2": "반복되는 작업 1개를 찾고 자동화 가능성 검토하기",
         "q3": "누락/지연 병목 구간 1개를 먼저 특정하기",
         "q4": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
-        "q5": "규칙형 업무 1개를 자동화 후보로 정하기",
-        "q6": "자동화 후보를 효과 대비 노력 기준으로 1순위 정하기",
+        "q5": "반복 작업 1개를 자동화 후보로 정하기",
+        "q6": "자동화 후보 3개 중 효과가 큰 1개 먼저 고르기",
         "q7": "2주 실험의 담당자·시간·검증 기준 확정하기",
         "q8": "주간 리뷰/체크리스트 기반 점검 루틴 고정하기",
+    }
+    execution_criteria = {
+        "q1": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 업무 10개를 준비·실행·점검·개선으로 나누고, 단계별로 누구 역할인지와 완료 기준을 한 줄씩 정리.",
+        "q2": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 반복 작업 1개를 선택해 소요시간·반복횟수를 적고, 자동화 도구 1~2개로 가능한지 검토.",
+        "q3": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 병목 구간 1개를 지정하고, 시작~종료 단계와 지연 원인 3가지를 문서화.",
+        "q4": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 고객/리드/진행상태 핵심 컬럼을 1개 시트로 통합하고 최신 상태로 갱신.",
+        "q5": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 자동화할 업무 1개를 정하고, 시작 조건·필요 정보·결과물을 한 줄씩 정리.",
+        "q6": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 후보 3개를 기대효과와 준비 난이도로 비교해, 효과가 큰 1개를 먼저 확정.",
+        "q7": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 담당자·일정·검증지표(성공/실패 기준)를 문서에 고정.",
+        "q8": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 주간 점검일을 고정하고 체크리스트 5개 이상으로 2회 이상 리뷰.",
     }
     tools, reason = _tools_for_priority(lowest_key)
     main_tools = ", ".join([item.strip() for item in tools.split(",")][:2])
@@ -462,7 +496,10 @@ def _best_single_action(score_map: dict[str, int]) -> dict[str, str]:
         ),
         "tools": main_tools,
         "reason": reason,
-        "execution": "2주 동안 이 항목 1개만 완료 기준으로 실행하세요.",
+        "execution": execution_criteria.get(
+            lowest_key,
+            "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행.",
+        ),
     }
 
 
@@ -493,6 +530,10 @@ def _build_detailed_lead_magnet_report(
         "category_insights": category_insights,
         "weakest_category_insight": weakest_insight,
         "cta": _bridge_cta(grade),
+        "contact_context": {
+            "inquiry_type": "ax_diagnosis",
+            "lead_context": "lead_magnet_diagnosis",
+        },
     }
     sections = build_lead_magnet_section_ast(payload)
     report_text = render_sections_to_text(sections, include_all_categories=False)
@@ -541,8 +582,21 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "weakest_category_insight": weakest_category_insight,
         "weakest_axis_key": weakest_axis_key,
         "weakest_axis_label": DIAGNOSIS_AXES[weakest_axis_key]["label"],
+        "contact_context": {
+            "inquiry_type": "ax_diagnosis",
+            "lead_context": "lead_magnet_diagnosis",
+        },
     }
     result["sections"] = build_lead_magnet_section_ast(result)
+    next_action = next(
+        (
+            section
+            for section in result["sections"]
+            if section.get("id") == "next_action"
+        ),
+        {},
+    )
+    result["cta"] = next_action.get("cta", result["cta"])
     report_text = _build_detailed_lead_magnet_report(
         total_score, max_score, grade, priorities, score_map
     )

@@ -31,9 +31,32 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "무료 진단 결과 메시지 시뮬레이션")
         self.assertContains(response, "핵심 보완 카테고리")
         self.assertContains(response, "전체 4개 항목 보기")
-        self.assertContains(response, "2주 실행 우선 1개")
-        self.assertContains(response, 'href="/#contact"')
+        self.assertContains(response, "2주 내 끝낼 작업 1개")
+        self.assertContains(
+            response,
+            'href="/?inquiry_type=ax_diagnosis&amp;lead_context=lead_magnet_diagnosis#contact"',
+        )
         self.assertNotContains(response, "Top 5")
+
+    def test_index_applies_recommended_inquiry_type_from_diagnosis_context(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "inquiry_type": "ax_diagnosis",
+                "lead_context": "lead_magnet_diagnosis",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<option value="ax_diagnosis" selected>자동화 실행 진단</option>',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            'name="lead_source" value="founder_contact_from_diagnosis"',
+            html=False,
+        )
 
     def test_founders_page_redirects_to_home(self) -> None:
         response = self.client.get(reverse("landing:founders"))

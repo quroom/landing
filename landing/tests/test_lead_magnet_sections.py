@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from landing.ax_tool_stack import diagnosis_question_keys
 from landing.lead_magnet_sections import (
+    normalize_contact_cta_href,
     render_sections_to_text,
     section_contract_signature,
 )
@@ -32,9 +33,12 @@ class LeadMagnetSectionContractTests(TestCase):
             (
                 ("summary", "진단 요약"),
                 ("weakest_category", "핵심 보완 카테고리"),
-                ("one_action", "2주 실행 우선 1개"),
+                ("one_action", "2주 내 끝낼 작업 1개"),
                 ("tools", "주요 추천 툴"),
-                ("next_action", "다음 액션/#contact"),
+                (
+                    "next_action",
+                    "다음 액션/?inquiry_type=ax_diagnosis&lead_context=lead_magnet_diagnosis#contact",
+                ),
             ),
         )
 
@@ -45,24 +49,24 @@ class LeadMagnetSectionContractTests(TestCase):
             """[진단 요약]
 - 점수: 12/16
 - 등급: B
-- 한 줄 요약: 핵심 실행은 가능하지만 반복 운영 손실이 누적되는 단계입니다. 1인/팀 모두 2주 집중 개선이 효과적입니다.
+- 한 줄 요약: 기본 운영은 가능하지만 반복 업무에서 시간 손실이 큽니다. 2주 동안 핵심 작업 1개 개선을 권장합니다.
 
 [핵심 보완 카테고리]
 - 데이터/운영 기반 (B)
   - 데이터는 모이지만 표준화가 약합니다.
   - 1인은 입력 규칙 단순화, 팀은 상태값 통일로 협업 혼선을 줄이세요.
 
-[2주 실행 우선 1개]
-- 과제: 누락/지연 병목 구간 1개를 먼저 특정하기
-- 추천 툴: Trello, Notion
-- 수행 기준: 2주 동안 이 항목 1개만 완료 기준으로 실행하세요.
+[2주 내 끝낼 작업 1개]
+- 작업: 누락/지연 병목 구간 1개를 먼저 특정하기
+- 완료 기준: 2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.
+  - 완료 기준 예시: 병목 구간 1개를 지정하고, 시작~종료 단계와 지연 원인 3가지를 문서화.
 
 [주요 추천 툴]
 - Trello, Notion, Google Sheets
 
 [다음 액션]
-- 생산성 개선 상담 요청 (/#contact)
-- 빠른 실행 병목 해소 중심 상담으로 연결합니다.""",
+- 생산성 개선 상담 요청 (/?inquiry_type=ax_diagnosis&lead_context=lead_magnet_diagnosis#contact)
+- 직접 진행이 어렵다면 상담으로 우선순위부터 함께 정리해드립니다.""",
         )
 
     def test_email_body_uses_same_section_order(self) -> None:
@@ -81,16 +85,27 @@ class LeadMagnetSectionContractTests(TestCase):
         headings = [
             "[진단 요약]",
             "[핵심 보완 카테고리]",
-            "[2주 실행 우선 1개]",
+            "[2주 내 끝낼 작업 1개]",
             "[주요 추천 툴]",
             "[다음 액션]",
         ]
         positions = [text_body.find(heading) for heading in headings]
         self.assertEqual(positions, sorted(positions))
-        self.assertIn("( /#contact)".replace(" ", ""), text_body.replace(" ", ""))
+        self.assertIn(
+            "(/?inquiry_type=ax_diagnosis&lead_context=lead_magnet_diagnosis#contact)",
+            text_body.replace(" ", ""),
+        )
 
     def test_perfect_score_summary_includes_consultation_prompt(self) -> None:
         result = self._perfect_result()
         self.assertEqual(result["score"], result["max_score"])
         self.assertIn("잘 유지하고 있습니다", result["summary"])
         self.assertIn("추가 질의가 있으면 상담을 요청해 주세요", result["summary"])
+
+    def test_contact_cta_normalization_keeps_contact_anchor(self) -> None:
+        self.assertEqual(normalize_contact_cta_href("#contact"), "/#contact")
+        self.assertEqual(normalize_contact_cta_href("/#contact"), "/#contact")
+        self.assertEqual(
+            normalize_contact_cta_href("https://example.com/path#contact"),
+            "https://example.com/path#contact",
+        )
