@@ -45,8 +45,8 @@ def attach_diagnosis_contact_context(href: str, context: dict | None = None) -> 
 
 def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
     grade = payload.get("grade", "B")
-    weakest = payload.get("weakest_category_insight")
-    category_insights = payload.get("category_insights") or []
+    weakest = payload.get("weakest_insight") or payload.get("weakest_category_insight")
+    category_insights = payload.get("category_insights") or payload.get("insights") or []
     if not weakest:
         weakest_key = payload.get("weakest_axis_key")
         weakest = next(
@@ -60,7 +60,16 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
         cta.get("href", "#contact"),
         payload.get("contact_context"),
     )
+    primary_tools = [
+        item.strip()
+        for item in (one_action.get("tools") or "").split(",")
+        if item.strip()
+    ]
     profile_tools = payload.get("profile_tools") or []
+    merged_tools: list[str] = []
+    for item in primary_tools + profile_tools:
+        if item and item not in merged_tools:
+            merged_tools.append(item)
 
     return [
         {
@@ -69,14 +78,19 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
             "rows": [
                 f"점수: {payload.get('score', 0)}/{payload.get('max_score', 0)}",
                 f"등급: {grade}",
+                (
+                    f"진단 유형: {payload.get('coverage_label', '')}"
+                    if payload.get("coverage_label")
+                    else ""
+                ),
                 f"한 줄 요약: {payload.get('summary', '')}",
             ],
         },
         {
-            "id": "weakest_category",
-            "heading": "핵심 보완 카테고리",
-            "weakest_category": weakest,
-            "all_categories": category_insights,
+            "id": "weakest",
+            "heading": "핵심 보완 포인트",
+            "weakest_insight": weakest,
+            "all_insights": category_insights,
         },
         {
             "id": "one_action",
@@ -91,8 +105,8 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
             "heading": "주요 추천 툴",
             "rows": [
                 (
-                    ", ".join(profile_tools)
-                    if profile_tools
+                    ", ".join(merged_tools[:3])
+                    if merged_tools
                     else "Make, Google Sheets, Notion"
                 )
             ],
@@ -129,9 +143,11 @@ def render_sections_to_text(
 
         if section_id in {"summary", "one_action", "tools"}:
             for row in section.get("rows", []):
+                if not row:
+                    continue
                 lines.append(f"- {row}")
-        elif section_id == "weakest_category":
-            weakest = section.get("weakest_category")
+        elif section_id in {"weakest", "weakest_category"}:
+            weakest = section.get("weakest_insight") or section.get("weakest_category")
             if weakest:
                 grade_label = (
                     f" ({weakest.get('grade')})" if weakest.get("grade_visible") else ""
@@ -145,8 +161,8 @@ def render_sections_to_text(
                 )
 
             if include_all_categories:
-                lines.append("- 다른 진단 항목(전체)")
-                for category in section.get("all_categories") or []:
+                lines.append("- 다른 진단 포인트(전체)")
+                for category in section.get("all_insights") or section.get("all_categories") or []:
                     grade_label = (
                         f" ({category.get('grade')})"
                         if category.get("grade_visible")

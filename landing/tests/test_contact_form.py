@@ -126,14 +126,25 @@ class ContactFormTests(TestCase):
         self.assertEqual(mail.outbox[0].to, ["help@quroom.kr"])
         self.assertEqual(mail.outbox[1].to, ["lead@example.com"])
         self.assertEqual(mail.outbox[1].subject, "[큐룸] 무료 자동화 실행 진단 결과")
-        self.assertIn("[핵심 보완 카테고리]", mail.outbox[1].body)
+        self.assertIn("[핵심 보완 포인트]", mail.outbox[1].body)
         self.assertIn("[2주 내 끝낼 작업 1개]", mail.outbox[1].body)
+        self.assertIn(
+            "완료 기준: 병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.",
+            mail.outbox[1].body,
+        )
+        self.assertIn("진단 유형: 정밀 진단 (8문항)", mail.outbox[1].body)
         self.assertIn("생산성 개선 상담 요청", mail.outbox[1].body)
         self.assertNotIn("외국인 개발자", mail.outbox[1].body)
         self.assertNotIn("Top 5", mail.outbox[1].body)
         self.assertNotIn("확장 추천 툴", mail.outbox[1].body)
+        self.assertNotIn("우선 항목", mail.outbox[1].body)
         self.assertIn("[진단 요약]", mail.outbox[1].body)
         self.assertIn("생산성 개선 상담 요청", mail.outbox[1].alternatives[0][0])
+        self.assertIn(
+            "완료 기준: 병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.",
+            mail.outbox[1].alternatives[0][0],
+        )
+        self.assertNotIn("우선 항목", mail.outbox[1].alternatives[0][0])
         self.assertNotIn("외국인 개발자", mail.outbox[1].alternatives[0][0])
         self.assertNotIn("문의 남기기", mail.outbox[1].alternatives[0][0])
         inquiry = ContactInquiry.objects.get(email="lead@example.com")
@@ -146,6 +157,47 @@ class ContactFormTests(TestCase):
                 event_name="lead_magnet_submit", lead_source="founder_lead_magnet"
             ).exists()
         )
+
+    def test_lead_magnet_submit_requires_all_questions(self) -> None:
+        payload = {
+            "name": "문항 누락 사용자",
+            "email": "missing@example.com",
+            "agree_privacy": "on",
+            "lead_source": "founder_lead_magnet",
+            "q1": "1",
+            "q2": "1",
+            "q3": "1",
+            "q4": "1",
+        }
+
+        response = self.client.post(reverse("landing:lead_magnet_submit"), payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(response, "필수 항목을 확인해 주세요.", status_code=400)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_lead_magnet_submit_perfect_score_email_matches_preview_contract(self) -> None:
+        payload = {
+            "name": "만점 사용자",
+            "email": "perfect@example.com",
+            "agree_privacy": "on",
+            "lead_source": "founder_lead_magnet",
+        }
+        for question_key in diagnosis_question_keys():
+            payload[question_key] = "2"
+
+        response = self.client.post(reverse("landing:lead_magnet_submit"), payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 2)
+        user_mail = mail.outbox[1]
+        self.assertIn("[진단 요약]", user_mail.body)
+        self.assertIn("[2주 내 끝낼 작업 1개]", user_mail.body)
+        self.assertNotIn("[핵심 보완 포인트]", user_mail.body)
+        self.assertNotIn("[주요 추천 툴]", user_mail.body)
+        self.assertNotIn("생산성 개선 상담 요청", user_mail.body)
+        self.assertNotIn("홈페이지 바로가기", user_mail.alternatives[0][0])
+        self.assertNotIn("핵심 보완 포인트", user_mail.alternatives[0][0])
+        self.assertNotIn("주요 추천 툴", user_mail.alternatives[0][0])
+        self.assertNotIn("생산성 개선 상담 요청", user_mail.alternatives[0][0])
 
     @override_settings(DEFAULT_FROM_EMAIL="큐룸 <help@quroom.kr>")
     def test_lead_magnet_sender_display_name_uses_brand(self) -> None:

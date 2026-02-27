@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.utils import timezone
 
+from .ax_tool_stack import DIAGNOSIS_AXES
 from .lead_magnet_sections import build_lead_magnet_section_ast, render_sections_to_text
 from .models import ContactInquiry, FunnelEvent
 
@@ -30,12 +31,26 @@ def _extract_grade_from_report(report_text: str) -> str:
 
 
 def _extract_weakest_axis_from_report(report_text: str) -> str:
-    match = re.search(r"핵심 보완 카테고리:\s*([a-z_]+)\s*\(", report_text)
-    return match.group(1) if match else "automation_design"
+    key_match = re.search(r"핵심 보완 (?:카테고리|포인트)[:\s]+([a-z_]+)\s*\(", report_text)
+    if key_match and key_match.group(1) in DIAGNOSIS_AXES:
+        return key_match.group(1)
+
+    label_match = re.search(
+        r"\[(?:핵심 보완 카테고리|핵심 보완 포인트)\]\s*-\s*([^\n(]+)",
+        report_text,
+        re.MULTILINE,
+    )
+    if label_match:
+        label = label_match.group(1).strip()
+        for axis_key, axis in DIAGNOSIS_AXES.items():
+            if axis["label"] == label:
+                return axis_key
+
+    return "automation_design"
 
 
 def _extract_score_and_max_from_report(report_text: str) -> tuple[int, int]:
-    match = re.search(r"점수\s+(\d+)\s*/\s*(\d+)", report_text)
+    match = re.search(r"점수[:\s]+(\d+)\s*/\s*(\d+)", report_text)
     if not match:
         return 0, 0
     return int(match.group(1)), int(match.group(2))
@@ -131,20 +146,20 @@ def _default_result_from_report(report_text: str) -> dict:
     score, max_score = _extract_score_and_max_from_report(report_text)
     grade = _extract_grade_from_report(report_text)
     weakest_axis = _extract_weakest_axis_from_report(report_text)
+    answered_count = max_score // 2 if max_score else 8
     cta_label, cta_anchor = _lead_magnet_cta_for_grade(grade)
     return {
         "score": score,
         "max_score": max_score,
         "grade": grade,
+        "coverage_mode": "detailed",
+        "coverage_label": f"정밀 진단 ({answered_count}문항)",
         "summary": _grade_mail_copy(grade)[0],
         "category_insights": [],
         "one_action": {
-            "title": "핵심 보완 카테고리 기준으로 작업 1개 끝내기",
+            "title": "핵심 보완 포인트 기준으로 작업 1개 끝내기",
             "tools": "Make, Google Sheets",
-            "execution": (
-                "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n"
-                "  - 완료 기준 예시: 담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행."
-            ),
+            "execution": "담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행하면 완료입니다.",
         },
         "profile_tools": ["Make", "Google Sheets", "Notion"],
         "cta": {
@@ -160,6 +175,12 @@ def _default_result_from_report(report_text: str) -> dict:
     }
 
 
+def _is_perfect_result(payload: dict) -> bool:
+    score = int(payload.get("score", 0) or 0)
+    max_score = int(payload.get("max_score", 0) or 0)
+    return max_score > 0 and score == max_score
+
+
 def _build_lead_magnet_user_email(
     inquiry: ContactInquiry,
     *,
@@ -171,13 +192,20 @@ def _build_lead_magnet_user_email(
         recipient_display_name = f"{inquiry.name} ({inquiry.company_name})"
 
     payload = result or _default_result_from_report(report_text)
+    is_perfect_result = _is_perfect_result(payload)
     grade = payload.get("grade", "B")
     weakest_axis = payload.get("weakest_axis_key", "automation_design")
-    intro_copy, action_copy = _grade_axis_mail_copy(grade, weakest_axis)
+    _, action_copy = _grade_axis_mail_copy(grade, weakest_axis)
 
     sections = payload.get("sections") or build_lead_magnet_section_ast(payload)
+    if is_perfect_result:
+        sections = [
+            section
+            for section in sections
+            if section.get("id") in {"summary", "one_action"}
+        ]
     section_map = {item.get("id"): item for item in sections}
-    weakest_section = section_map.get("weakest_category", {})
+    weakest_section = section_map.get("weakest") or section_map.get("weakest_category", {})
     one_action_section = section_map.get("one_action", {})
     tools_section = section_map.get("tools", {})
     next_action_section = section_map.get("next_action", {})
@@ -190,24 +218,33 @@ def _build_lead_magnet_user_email(
         cta_url = f"{base_url}{normalized_cta_href}"
     else:
         cta_url = normalized_cta_href
-    preview_url = f"{base_url}/free-diagnosis/preview/"
-
-    weakest_insight = weakest_section.get("weakest_category")
-    text_sections = render_sections_to_text(sections)
-    text_body = (
-        f"{recipient_display_name}님,\n\n"
-        "요청하신 무료 자동화 실행 진단 결과입니다.\n\n"
-        f"{text_sections}\n"
-        f"- {cta.get('label', '상담 문의하기')}: {cta_url}\n"
-        f"- 홈페이지: {homepage_url}\n\n"
-        "이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요.\n"
-        "바로 실행 가능한 다음 단계를 제안드리겠습니다."
+    weakest_insight = weakest_section.get("weakest_insight") or weakest_section.get(
+        "weakest_category"
     )
+    text_sections = render_sections_to_text(sections)
+    if is_perfect_result:
+        text_body = (
+            f"{recipient_display_name}님,\n\n"
+            "요청하신 무료 자동화 실행 진단 결과입니다.\n\n"
+            f"{text_sections}"
+        )
+    else:
+        text_body = (
+            f"{recipient_display_name}님,\n\n"
+            "요청하신 무료 자동화 실행 진단 결과입니다.\n\n"
+            f"{text_sections}\n"
+            f"- {cta.get('label', '상담 문의하기')}: {cta_url}\n"
+            f"- 홈페이지: {homepage_url}\n\n"
+            "이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요.\n"
+            "바로 실행 가능한 다음 단계를 제안드리겠습니다."
+        )
 
-    if weakest_insight:
+    if is_perfect_result:
+        insight_html = ""
+    elif weakest_insight:
         insight_html = (
             "<div style='border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;'>"
-            "<p style='margin: 0 0 8px; font-weight: 700;'>핵심 보완 카테고리</p>"
+            "<p style='margin: 0 0 8px; font-weight: 700;'>핵심 보완 포인트</p>"
             f"<p style='margin: 0; font-weight: 600;'>{escape(weakest_insight.get('label', '-'))}"
             f"{f' ({escape(weakest_insight.get('grade', ''))})' if weakest_insight.get('grade_visible') else ''}</p>"
             f"<p style='margin: 6px 0 0;'>- {escape(weakest_insight.get('message_primary', ''))}</p>"
@@ -224,6 +261,22 @@ def _build_lead_magnet_user_email(
     summary_rows = section_map.get("summary", {}).get("rows", [])
     one_action_rows = one_action_section.get("rows", [])
     tools_value = (tools_section.get("rows") or ["Make, Google Sheets, Notion"])[0]
+    score_row = next(
+        (row for row in summary_rows if row.startswith("점수:")),
+        f"점수: {payload.get('score', 0)}/{payload.get('max_score', 0)}",
+    )
+    grade_row = next(
+        (row for row in summary_rows if row.startswith("등급:")),
+        f"등급: {grade}",
+    )
+    coverage_row = next(
+        (row for row in summary_rows if row.startswith("진단 유형:")),
+        "",
+    )
+    summary_row = next(
+        (row for row in summary_rows if row.startswith("한 줄 요약:")),
+        f"한 줄 요약: {payload.get('summary', '')}",
+    )
     one_action_title = (
         one_action_rows[0].replace("작업: ", "") if one_action_rows else "-"
     )
@@ -233,6 +286,27 @@ def _build_lead_magnet_user_email(
         else action_copy
     )
     one_action_exec_html = escape(one_action_exec).replace("\n", "<br>")
+    tools_html = ""
+    cta_html = ""
+    footer_html = ""
+    if not is_perfect_result:
+        tools_html = f"""
+      <div style="margin-bottom: 16px;">
+        <p style="margin: 0 0 6px; font-weight: 700;">주요 추천 툴</p>
+        <p style="margin: 0;">{escape(tools_value)}</p>
+      </div>
+        """
+        cta_html = f"""
+      <div style="margin-top: 18px;">
+        <a href="{escape(cta_url)}" style="display: inline-block; background: #0ea5e9; color: #fff; text-decoration: none; padding: 11px 16px; border-radius: 10px; font-weight: 600;">
+          {escape(cta.get('label', '상담 문의하기'))}
+        </a>
+      </div>
+        """
+        footer_html = f"""
+      <p style="margin: 10px 0 0;"><a href="{escape(homepage_url)}" style="color: #0f172a;">홈페이지 바로가기</a></p>
+      <p style="margin: 14px 0 0;">이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요. 바로 실행 가능한 다음 단계를 제안드리겠습니다.</p>
+        """
 
     html_body = f"""
     <div style="font-family: Pretendard, Arial, sans-serif; color: #0f172a; line-height: 1.8;">
@@ -241,9 +315,10 @@ def _build_lead_magnet_user_email(
 
       <div style="border: 1px solid #dbeafe; background: #f8fbff; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
         <p style="margin: 0 0 6px; font-weight: 700;">진단 요약</p>
-        <p style="margin: 0;">{escape(summary_rows[0] if summary_rows else f'점수: {payload.get("score", 0)}/{payload.get("max_score", 0)}')}</p>
-        <p style="margin: 8px 0 0;">{escape(summary_rows[1] if len(summary_rows) > 1 else f'등급: {grade}')}</p>
-        <p style="margin: 8px 0 0;">{escape(summary_rows[2] if len(summary_rows) > 2 else payload.get('summary', intro_copy))}</p>
+        <p style="margin: 0;">{escape(score_row)}</p>
+        <p style="margin: 8px 0 0;">{escape(grade_row)}</p>
+        {f"<p style='margin: 8px 0 0;'>{escape(coverage_row)}</p>" if coverage_row else ""}
+        <p style="margin: 8px 0 0;">{escape(summary_row)}</p>
       </div>
 
       {insight_html}
@@ -254,18 +329,9 @@ def _build_lead_magnet_user_email(
         <p style="margin: 4px 0 0;">완료 기준: {one_action_exec_html}</p>
       </div>
 
-      <div style="margin-bottom: 16px;">
-        <p style="margin: 0 0 6px; font-weight: 700;">주요 추천 툴</p>
-        <p style="margin: 0;">{escape(tools_value)}</p>
-      </div>
-
-      <div style="margin-top: 18px;">
-        <a href="{escape(cta_url)}" style="display: inline-block; background: #0ea5e9; color: #fff; text-decoration: none; padding: 11px 16px; border-radius: 10px; font-weight: 600;">
-          {escape(cta.get('label', '상담 문의하기'))}
-        </a>
-      </div>
-      <p style="margin: 10px 0 0;"><a href="{escape(homepage_url)}" style="color: #0f172a;">홈페이지 바로가기</a></p>
-      <p style="margin: 14px 0 0;">이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요. 바로 실행 가능한 다음 단계를 제안드리겠습니다.</p>
+      {tools_html}
+      {cta_html}
+      {footer_html}
     </div>
     """
     return "[큐룸] 무료 자동화 실행 진단 결과", text_body, html_body

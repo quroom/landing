@@ -1,11 +1,7 @@
-# ax-diagnosis-question-segmentation Specification
-
-## Purpose
-TBD - created by archiving change refine-ax-diagnosis-question-flow. Update Purpose after archive.
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: AX diagnosis MUST collect responses across at least five diagnostic axes
-The system MUST collect free diagnosis responses across exactly four internal diagnostic categories to preserve interpretability, while keeping category constructs internal and aligning question tone by intent.
+The system MUST collect free diagnosis responses across exactly four internal diagnostic categories to preserve interpretability, while presenting the questionnaire in a category-hidden flow.
 
 #### Scenario: Diagnosis form and scoring axis are loaded
 - **WHEN** the diagnosis form is rendered and scoring axes are prepared
@@ -14,11 +10,10 @@ The system MUST collect free diagnosis responses across exactly four internal di
   - data operation base
   - automation design
   - execution system
-- **AND** the rendered form MUST NOT display category names/descriptions to users
-- **AND** each category pair (`q1/q2`, `q3/q4`, `q5/q6`, `q7/q8`) MUST share the same action unit and time frame so question intent remains coherent
+- **AND** the rendered form MUST show question statements without category headings
 - **AND** core questions `q1`, `q3`, `q5`, and `q7` MUST be required
 - **AND** optional questions `q2`, `q4`, `q6`, and `q8` MUST remain answerable in the same flow
-- **AND** axis summaries MUST reflect only these four internal categories
+- **AND** axis summaries MUST reflect only these four categories
 
 ### Requirement: Diagnosis submission MUST produce axis-level score breakdown
 The system MUST calculate and persist axis-level score breakdown in addition to overall score.

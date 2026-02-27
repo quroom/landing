@@ -1,6 +1,6 @@
 from django import forms
 
-from .ax_tool_stack import DIAGNOSIS_QUESTIONS, diagnosis_question_keys
+from .ax_tool_stack import DIAGNOSIS_QUESTION_META, DIAGNOSIS_QUESTIONS, diagnosis_question_keys
 
 
 class ContactForm(forms.Form):
@@ -158,8 +158,10 @@ class LeadMagnetForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for question_key in diagnosis_question_keys():
+            question_meta = DIAGNOSIS_QUESTION_META[question_key]
             self.fields[question_key] = forms.ChoiceField(
                 label=DIAGNOSIS_QUESTIONS[question_key],
                 choices=self.SCORE_CHOICES,
                 widget=forms.RadioSelect(),
+                required=bool(question_meta["required"]),
             )

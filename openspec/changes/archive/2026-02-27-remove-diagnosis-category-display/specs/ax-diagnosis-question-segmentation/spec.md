@@ -1,8 +1,4 @@
-# ax-diagnosis-question-segmentation Specification
-
-## Purpose
-TBD - created by archiving change refine-ax-diagnosis-question-flow. Update Purpose after archive.
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: AX diagnosis MUST collect responses across at least five diagnostic axes
 The system MUST collect free diagnosis responses across exactly four internal diagnostic categories to preserve interpretability, while keeping category constructs internal and aligning question tone by intent.

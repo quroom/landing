@@ -41,7 +41,7 @@ INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
         "병목 구간을 먼저 고정하면 실행 순서를 명확하게 잡을 수 있습니다.",
     ),
     "unify_operational_data": (
-        ["Google Sheets", "Airtable", "Notion"],
+        ["Google Sheets", "Codex", "Notion"],
         "데이터 기준을 하나로 맞추면 판단 속도와 정확도가 올라갑니다.",
     ),
     "pick_automation_candidate": (
