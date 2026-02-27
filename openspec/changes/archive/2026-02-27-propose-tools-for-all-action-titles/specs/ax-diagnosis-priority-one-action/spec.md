@@ -1,8 +1,5 @@
-# ax-diagnosis-priority-one-action Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change review-and-clarify-free-ax-diagnosis. Update Purpose after archive.
-## Requirements
 ### Requirement: Diagnosis result MUST propose exactly one 2-week priority action
 The system MUST output exactly one highest-leverage action for the next two weeks so users can start execution immediately, and that action MUST be derived from the same weakest-point anchor used for the primary improvement insight.
 
@@ -18,4 +15,3 @@ The system MUST output exactly one highest-leverage action for the next two week
 - **AND** completion criterion wording MUST NOT repeat an identical boilerplate prefix across different intent keys
 - **AND** the action MUST include matched tool recommendation text
 - **AND** user-facing output MUST NOT expose additional parallel "primary actions" beyond this one
-

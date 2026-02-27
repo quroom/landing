@@ -24,19 +24,63 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:free_diagnosis"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "무료 자동화 실행 진단 (3분 / 8문항)")
+        self.assertContains(response, "8개 문항 모두 필수 응답입니다.")
+        self.assertNotContains(response, "업무 흐름 명확성")
+        self.assertNotContains(response, "데이터/운영 기반")
 
-    def test_free_diagnosis_report_preview_renders(self) -> None:
+    def test_free_diagnosis_report_preview_requires_staff(self) -> None:
+        response = self.client.get(reverse("landing:lead_magnet_report_preview"))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/admin/login/", response.url)
+
+    def test_free_diagnosis_report_preview_renders_for_staff(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="preview_staff",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
         response = self.client.get(reverse("landing:lead_magnet_report_preview"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "무료 진단 결과 메시지 시뮬레이션")
-        self.assertContains(response, "핵심 보완 카테고리")
-        self.assertContains(response, "전체 4개 항목 보기")
+        self.assertContains(response, "16점 만점 시나리오 (정밀)")
+        self.assertContains(response, "16/16")
+        self.assertContains(response, "핵심 보완 포인트")
+        self.assertContains(response, "Intent Coverage")
+        preview_reports = response.context["preview_reports"]
+        perfect_items = [
+            item for item in preview_reports if item.get("is_perfect_preview")
+        ]
+        self.assertEqual(len(perfect_items), 1)
+        self.assertEqual(perfect_items[0]["score"], perfect_items[0]["max_score"])
+        one_action_titles = [
+            item["one_action"]["title"]
+            for item in preview_reports
+            if not item.get("is_perfect_preview")
+        ]
+        self.assertEqual(len(one_action_titles), len(set(one_action_titles)))
+        intent_keys = {
+            item["one_action"]["intent_key"]
+            for item in preview_reports
+            if not item.get("is_perfect_preview")
+        }
+        expected_cta_count = sum(
+            1 for item in preview_reports if not item.get("is_perfect_preview")
+        )
+        self.assertEqual(len(intent_keys), 8)
         self.assertContains(response, "2주 내 끝낼 작업 1개")
+        self.assertContains(response, "정밀 진단")
+        self.assertNotContains(response, "간단 진단")
         self.assertContains(
             response,
             'href="/?inquiry_type=ax_diagnosis&amp;lead_context=lead_magnet_diagnosis#contact"',
+            count=expected_cta_count,
         )
+        self.assertNotContains(response, "핵심 보완 카테고리")
         self.assertNotContains(response, "Top 5")
+        self.assertNotContains(response, "전체 4개 항목 보기")
 
     def test_index_applies_recommended_inquiry_type_from_diagnosis_context(self) -> None:
         response = self.client.get(

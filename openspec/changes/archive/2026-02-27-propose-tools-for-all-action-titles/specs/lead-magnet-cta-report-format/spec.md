@@ -1,8 +1,5 @@
-# lead-magnet-cta-report-format Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change refine-lead-magnet-report-readability-and-cta. Update Purpose after archive.
-## Requirements
 ### Requirement: Lead-magnet report MUST use a CTA-first concise format
 The report MUST avoid vague wording and MUST communicate one immediate execution task and one consultation CTA in a conversion-oriented format. Report content generation for preview and email MUST use the same channel-neutral section contract.
 
@@ -44,4 +41,3 @@ The system MUST apply readable spacing and line breaks in both web and email rep
 - **THEN** the system MUST verify shared section equivalence (section titles/order/CTA link target)
 - **AND** preview duplicate-grouping MUST compare response bodies while ignoring scenario title differences
 - **AND** the system MUST retain text snapshot coverage for rendered copy regression detection
-

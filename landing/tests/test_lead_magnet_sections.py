@@ -8,7 +8,7 @@ from landing.lead_magnet_sections import (
 )
 from landing.mailers import _build_lead_magnet_user_email
 from landing.models import ContactInquiry
-from landing.views import _build_lead_magnet_result
+from landing.views import _build_lead_magnet_result, _intent_pattern_coverage
 
 
 class LeadMagnetSectionContractTests(TestCase):
@@ -32,7 +32,7 @@ class LeadMagnetSectionContractTests(TestCase):
             signature,
             (
                 ("summary", "진단 요약"),
-                ("weakest_category", "핵심 보완 카테고리"),
+                ("weakest", "핵심 보완 포인트"),
                 ("one_action", "2주 내 끝낼 작업 1개"),
                 ("tools", "주요 추천 툴"),
                 (
@@ -49,17 +49,17 @@ class LeadMagnetSectionContractTests(TestCase):
             """[진단 요약]
 - 점수: 12/16
 - 등급: B
+- 진단 유형: 정밀 진단 (8문항)
 - 한 줄 요약: 기본 운영은 가능하지만 반복 업무에서 시간 손실이 큽니다. 2주 동안 핵심 작업 1개 개선을 권장합니다.
 
-[핵심 보완 카테고리]
+[핵심 보완 포인트]
 - 데이터/운영 기반 (B)
-  - 데이터는 모이지만 표준화가 약합니다.
-  - 1인은 입력 규칙 단순화, 팀은 상태값 통일로 협업 혼선을 줄이세요.
+  - 데이터는 모이지만 기준 통일이 부족합니다.
+  - 필수 입력값과 상태값을 먼저 고정하면 누락/혼선을 줄일 수 있습니다.
 
 [2주 내 끝낼 작업 1개]
-- 작업: 누락/지연 병목 구간 1개를 먼저 특정하기
-- 완료 기준: 2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.
-  - 완료 기준 예시: 병목 구간 1개를 지정하고, 시작~종료 단계와 지연 원인 3가지를 문서화.
+- 작업: 누락/지연이 자주 나는 병목 구간 1개를 먼저 특정하기
+- 완료 기준: 병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.
 
 [주요 추천 툴]
 - Trello, Notion, Google Sheets
@@ -84,7 +84,7 @@ class LeadMagnetSectionContractTests(TestCase):
         )
         headings = [
             "[진단 요약]",
-            "[핵심 보완 카테고리]",
+            "[핵심 보완 포인트]",
             "[2주 내 끝낼 작업 1개]",
             "[주요 추천 툴]",
             "[다음 액션]",
@@ -101,6 +101,32 @@ class LeadMagnetSectionContractTests(TestCase):
         self.assertEqual(result["score"], result["max_score"])
         self.assertIn("잘 유지하고 있습니다", result["summary"])
         self.assertIn("추가 질의가 있으면 상담을 요청해 주세요", result["summary"])
+
+    def test_detailed_result_uses_eight_question_coverage(self) -> None:
+        result = self._sample_result()
+        self.assertEqual(result["coverage_mode"], "detailed")
+        self.assertEqual(result["coverage_label"], "정밀 진단 (8문항)")
+        self.assertEqual(result["max_score"], 16)
+
+    def test_one_action_matches_weakest_anchor_question(self) -> None:
+        result = self._sample_result()
+        weakest = result["weakest_insight"]
+        one_action = result["one_action"]
+        self.assertEqual(one_action["question_key"], weakest["anchor_question_key"])
+        self.assertEqual(one_action["intent_key"], weakest["intent_key"])
+
+    def test_response_pattern_uses_one_action_intent(self) -> None:
+        result = self._sample_result()
+        response_pattern = result["response_pattern"]
+        self.assertTrue(response_pattern["id"])
+        self.assertEqual(
+            response_pattern["primary_intent"], result["one_action"]["intent_key"]
+        )
+
+    def test_intent_coverage_metadata_is_valid(self) -> None:
+        coverage = _intent_pattern_coverage()
+        self.assertTrue(coverage["is_pattern_count_valid"])
+        self.assertTrue(coverage["is_covered"])
 
     def test_contact_cta_normalization_keeps_contact_anchor(self) -> None:
         self.assertEqual(normalize_contact_cta_href("#contact"), "/#contact")

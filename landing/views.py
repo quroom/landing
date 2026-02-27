@@ -11,7 +11,12 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .analytics import track_event
-from .ax_tool_stack import DIAGNOSIS_AXES, DIAGNOSIS_QUESTIONS, diagnosis_question_keys
+from .ax_tool_stack import (
+    DIAGNOSIS_AXES,
+    DIAGNOSIS_QUESTION_META,
+    DIAGNOSIS_QUESTIONS,
+    diagnosis_question_keys,
+)
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm, LeadMagnetForm
 from .lead_magnet_sections import (
@@ -21,6 +26,89 @@ from .lead_magnet_sections import (
 )
 from .mailers import deliver_inquiry_email, deliver_inquiry_email_async
 from .models import ContactInquiry, FunnelEvent
+
+INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
+    "find_repetitive_work": (
+        ["Google Sheets", "Notion"],
+        "반복 작업을 먼저 가시화하면 자동화 후보를 빠르게 고를 수 있습니다.",
+    ),
+    "document_workflow": (
+        ["Notion", "Obsidian"],
+        "업무 흐름을 문서화하면 누락과 재작업을 줄일 수 있습니다.",
+    ),
+    "identify_bottleneck": (
+        ["Trello", "Notion", "Google Sheets"],
+        "병목 구간을 먼저 고정하면 실행 순서를 명확하게 잡을 수 있습니다.",
+    ),
+    "unify_operational_data": (
+        ["Google Sheets", "Airtable", "Notion"],
+        "데이터 기준을 하나로 맞추면 판단 속도와 정확도가 올라갑니다.",
+    ),
+    "pick_automation_candidate": (
+        ["Make", "n8n", "OpenClaw"],
+        "자동화 후보 1개를 확정하면 2주 파일럿이 현실화됩니다.",
+    ),
+    "prioritize_automation": (
+        ["Make", "Google Sheets", "GPT"],
+        "효과 대비 노력 기준으로 우선순위를 정하면 시행착오를 줄일 수 있습니다.",
+    ),
+    "set_owner_and_goal": (
+        ["Trello", "Notion", "Google Calendar"],
+        "담당자와 완료기준을 먼저 정하면 실행 지연을 크게 줄일 수 있습니다.",
+    ),
+    "run_review_loop": (
+        ["Notion", "Slack", "Google Docs"],
+        "주간 점검 루틴을 고정하면 개선이 누적됩니다.",
+    ),
+}
+
+INTENT_RESPONSE_PATTERNS: dict[str, dict] = {
+    "find_repetitive_work": {
+        "id": "intent-find-repetitive-work",
+        "name": "반복작업 가시화형",
+        "related_intents": ["document_workflow", "pick_automation_candidate"],
+    },
+    "document_workflow": {
+        "id": "intent-document-workflow",
+        "name": "흐름 문서화형",
+        "related_intents": ["find_repetitive_work", "set_owner_and_goal"],
+    },
+    "identify_bottleneck": {
+        "id": "intent-identify-bottleneck",
+        "name": "병목 진단형",
+        "related_intents": ["unify_operational_data", "prioritize_automation"],
+    },
+    "unify_operational_data": {
+        "id": "intent-unify-operational-data",
+        "name": "데이터 기준 통합형",
+        "related_intents": ["identify_bottleneck", "run_review_loop"],
+    },
+    "pick_automation_candidate": {
+        "id": "intent-pick-automation-candidate",
+        "name": "자동화 후보 확정형",
+        "related_intents": ["prioritize_automation", "find_repetitive_work"],
+    },
+    "prioritize_automation": {
+        "id": "intent-prioritize-automation",
+        "name": "자동화 우선순위형",
+        "related_intents": ["pick_automation_candidate", "set_owner_and_goal"],
+    },
+    "set_owner_and_goal": {
+        "id": "intent-set-owner-and-goal",
+        "name": "실행 책임 고정형",
+        "related_intents": ["run_review_loop", "document_workflow"],
+    },
+    "run_review_loop": {
+        "id": "intent-run-review-loop",
+        "name": "점검 루프 정착형",
+        "related_intents": ["set_owner_and_goal", "unify_operational_data"],
+    },
+}
+
+FALLBACK_TOOL_RECOMMENDATION = (
+    ["Notion", "Google Sheets"],
+    "기본 실행 구조를 먼저 정리하면 다음 개선 단계를 설계하기 쉬워집니다.",
+)
 
 
 def _parse_date(value: str) -> date:
@@ -61,18 +149,18 @@ def _build_metrics(content: dict, career_duration: str) -> list[dict]:
     return metrics
 
 
-def _diagnosis_field_groups(form: LeadMagnetForm) -> list[dict]:
-    groups = []
-    for axis_key, axis in DIAGNOSIS_AXES.items():
-        groups.append(
+def _diagnosis_fields(form: LeadMagnetForm) -> list[dict]:
+    items: list[dict] = []
+    for question_key in diagnosis_question_keys():
+        meta = DIAGNOSIS_QUESTION_META[question_key]
+        items.append(
             {
-                "key": axis_key,
-                "label": axis["label"],
-                "description": axis["description"],
-                "fields": [form[question_key] for question_key in axis["questions"]],
+                "key": question_key,
+                "field": form[question_key],
+                "required": bool(meta["required"]),
             }
         )
-    return groups
+    return items
 
 
 def _base_context(
@@ -96,7 +184,7 @@ def _base_context(
         "metrics": _build_metrics(content, career_duration),
         "form": ContactForm(**form_kwargs),
         "lead_magnet_form": lead_magnet_form,
-        "lead_magnet_field_groups": _diagnosis_field_groups(lead_magnet_form),
+        "lead_magnet_fields": _diagnosis_fields(lead_magnet_form),
         "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
         "page_key": page_key,
     }
@@ -212,82 +300,60 @@ def _result_summary(total_score: int, max_score: int, grade: str) -> str:
     return _grade_summary(grade)
 
 
-def _question_key(position: int) -> str:
-    keys = diagnosis_question_keys()
-    if 1 <= position <= len(keys):
-        return keys[position - 1]
-    return f"q{position}"
+def _question_meta(question_key: str) -> dict:
+    return DIAGNOSIS_QUESTION_META.get(question_key, {})
 
 
-def _tools_for_priority(question_key: str) -> tuple[str, str]:
-    k1 = _question_key(1)
-    k2 = _question_key(2)
-    k3 = _question_key(3)
-    k4 = _question_key(4)
-    k5 = _question_key(5)
-    k6 = _question_key(6)
-    k7 = _question_key(7)
-    k8 = _question_key(8)
-    tools_map = {
-        k1: (
-            "Google Sheets, Notion",
-            "핵심 업무를 준비·실행·점검·개선 흐름으로 한 화면에 정리합니다.",
-        ),
-        k2: (
-            "Google Sheets, Make",
-            "반복 수작업 구간을 수집하고 자동화 후보를 빠르게 찾습니다.",
-        ),
-        k3: (
-            "Trello, Notion",
-            "누락/지연이 나는 병목 지점을 우선순위로 정리합니다.",
-        ),
-        k4: (
-            "Google Sheets, Notion",
-            "업무/리드/진행상태 데이터를 한 곳에 통합합니다.",
-        ),
-        k5: (
-            "Make, Google Apps Script",
-            "규칙형 업무를 자동화 후보로 정리해 파일럿 대상을 명확히 합니다.",
-        ),
-        k6: (
-            "OpenClaw, Codex/Claude Code",
-            "효과 대비 노력 기준으로 자동화 우선순위를 정렬합니다.",
-        ),
-        k7: (
-            "Trello, Notion",
-            "2주 실험에 필요한 담당자/시간/검증 기준을 고정합니다.",
-        ),
-        k8: (
-            "Notion 체크리스트, Telegram/Discord",
-            "주간 점검 루틴을 고정해 실행 누락을 줄입니다.",
-        ),
+def _all_intent_keys() -> list[str]:
+    keys: list[str] = []
+    for question_key in diagnosis_question_keys():
+        intent_key = str(_question_meta(question_key).get("intent_key", "")).strip()
+        if intent_key and intent_key not in keys:
+            keys.append(intent_key)
+    return keys
+
+
+def _intent_pattern_coverage() -> dict[str, object]:
+    expected = set(_all_intent_keys())
+    pattern_keys = set(INTENT_RESPONSE_PATTERNS)
+    tool_keys = set(INTENT_TOOLS_MAP)
+    missing_patterns = sorted(expected - pattern_keys)
+    missing_tools = sorted(expected - tool_keys)
+    return {
+        "expected_intents": sorted(expected),
+        "pattern_count": len(INTENT_RESPONSE_PATTERNS),
+        "is_pattern_count_valid": len(INTENT_RESPONSE_PATTERNS) >= 8,
+        "missing_patterns": missing_patterns,
+        "missing_tools": missing_tools,
+        "is_covered": not missing_patterns and not missing_tools,
     }
-    return tools_map.get(
-        question_key,
-        (
-            "Notion, Google Sheets",
-            "기본 실행/협업 구조를 빠르게 정리합니다.",
-        ),
-    )
 
 
-def _score_level(score: int) -> str:
-    if score == 2:
-        return "운영 중"
-    if score == 1:
-        return "부분 적용"
-    return "미적용"
+def _resolve_response_pattern(intent_key: str) -> dict[str, object]:
+    pattern = INTENT_RESPONSE_PATTERNS.get(intent_key)
+    if pattern:
+        return {
+            "id": pattern["id"],
+            "name": pattern["name"],
+            "primary_intent": intent_key,
+            "related_intents": list(pattern.get("related_intents") or []),
+        }
+    return {
+        "id": "intent-fallback",
+        "name": "기본 실행 패턴",
+        "primary_intent": intent_key,
+        "related_intents": [],
+    }
 
 
-def _score_feedback(score: int, question_key: str) -> str:
-    if score == 2:
-        return "이미 운영 중입니다. 현재 방식의 반복 가능성과 문서화를 유지하세요."
-    if score == 1:
-        return "부분 적용 상태입니다. 템플릿/자동화 규칙을 추가해 운영 편차를 줄이는 것이 좋습니다."
-    tools, _ = _tools_for_priority(question_key)
-    return (
-        f"미적용 상태입니다. 우선 {tools} 조합으로 1개 파일럿을 2주 안에 실행해 보세요."
-    )
+def _tools_for_priority(question_key: str) -> tuple[list[str], str]:
+    intent_key = _question_meta(question_key).get("intent_key", "")
+    return INTENT_TOOLS_MAP.get(intent_key, FALLBACK_TOOL_RECOMMENDATION)
+
+
+def _coverage_mode(score_map: dict[str, int]) -> tuple[str, str, int]:
+    answered_count = len(score_map)
+    return "detailed", f"정밀 진단 ({answered_count}문항)", answered_count
 
 
 def _build_support_summary(priorities: list[str]) -> dict[str, list[str]]:
@@ -298,33 +364,64 @@ def _build_support_summary(priorities: list[str]) -> dict[str, list[str]]:
     return {"direct": direct_items}
 
 
-def _priority_keys_from_score_map(score_map: dict[str, int]) -> list[str]:
-    deficits = sorted(
-        [
-            (question_key, score)
-            for question_key, score in score_map.items()
-            if score < 2
-        ],
-        key=lambda item: item[1],
+def _priority_candidates(score_map: dict[str, int]) -> list[dict]:
+    candidates: list[dict] = []
+    for question_key, score in score_map.items():
+        if score >= 2:
+            continue
+        meta = _question_meta(question_key)
+        impact_weight = float(meta.get("impact_weight", 1.0))
+        priority_score = (2 - score) * impact_weight
+        candidates.append(
+            {
+                "key": question_key,
+                "score": score,
+                "impact_weight": impact_weight,
+                "priority_score": priority_score,
+                "order": int(meta.get("order", 99)),
+            }
+        )
+
+    if not candidates:
+        for question_key, score in score_map.items():
+            meta = _question_meta(question_key)
+            candidates.append(
+                {
+                    "key": question_key,
+                    "score": score,
+                    "impact_weight": float(meta.get("impact_weight", 1.0)),
+                    "priority_score": 0.0,
+                    "order": int(meta.get("order", 99)),
+                }
+            )
+
+    candidates.sort(
+        key=lambda item: (-item["priority_score"], item["score"], item["order"])
     )
-    priorities = [question_key for question_key, _ in deficits[:3]]
-    if not priorities:
-        priorities = list(score_map.keys())[:3]
-    return priorities
+    return candidates
+
+
+def _priority_keys_from_score_map(score_map: dict[str, int]) -> list[str]:
+    return [item["key"] for item in _priority_candidates(score_map)[:3]]
 
 
 def _axis_scores(score_map: dict[str, int]) -> dict[str, dict[str, float]]:
     result: dict[str, dict[str, float]] = {}
     for axis_key, axis in DIAGNOSIS_AXES.items():
-        axis_sum = sum(
-            score_map.get(question_key, 0) for question_key in axis["questions"]
-        )
-        axis_max = 2 * len(axis["questions"])
+        answered_scores = [
+            score_map[question_key]
+            for question_key in axis["questions"]
+            if question_key in score_map
+        ]
+        axis_sum = sum(answered_scores)
+        axis_max = 2 * len(answered_scores)
         result[axis_key] = {
             "score": axis_sum,
             "max": axis_max,
             "ratio": axis_sum / axis_max if axis_max else 0,
             "label": axis["label"],
+            "answered": len(answered_scores),
+            "total": len(axis["questions"]),
         }
     return result
 
@@ -366,15 +463,13 @@ def _segmentation_labels(axis_scores: dict[str, dict[str, float]]) -> dict[str, 
 
 
 def _profile_tool_recommendations(
-    priorities: list[str], labels: dict[str, str]
+    primary_question_key: str, labels: dict[str, str]
 ) -> list[str]:
-    recommended: list[str] = []
-    for question_key in priorities[:2]:
-        tools, _ = _tools_for_priority(question_key)
-        recommended.extend([item.strip() for item in tools.split(",")])
+    tools, _ = _tools_for_priority(primary_question_key)
+    recommended = list(tools)
 
     if labels["readiness_type"] == "기초 정비 필요형":
-        recommended.append("Trello")
+        recommended.append("Notion")
 
     deduped: list[str] = []
     for item in recommended:
@@ -384,67 +479,127 @@ def _profile_tool_recommendations(
 
 
 def _weakest_axis_key(axis_scores: dict[str, dict[str, float]]) -> str:
-    return min(axis_scores.items(), key=lambda item: item[1]["ratio"])[0]
+    return min(
+        axis_scores.items(),
+        key=lambda item: (item[1]["ratio"], item[1]["score"], item[0]),
+    )[0]
+
+
+def _axis_key_from_question(question_key: str) -> str:
+    axis_key = str(_question_meta(question_key).get("axis", "")).strip()
+    if axis_key in DIAGNOSIS_AXES:
+        return axis_key
+    for candidate_axis_key, axis in DIAGNOSIS_AXES.items():
+        if question_key in axis["questions"]:
+            return candidate_axis_key
+    return ""
+
+
+def _primary_axis_key(
+    axis_scores: dict[str, dict[str, float]],
+    score_map: dict[str, int],
+    preferred_question_key: str,
+) -> str:
+    preferred_axis_key = _axis_key_from_question(preferred_question_key)
+    if preferred_axis_key and preferred_axis_key in axis_scores:
+        if (
+            preferred_question_key in score_map
+            or axis_scores[preferred_axis_key]["answered"]
+        ):
+            return preferred_axis_key
+    return _weakest_axis_key(axis_scores)
+
+
+def _weakest_question_in_axis(
+    axis_key: str,
+    score_map: dict[str, int],
+    *,
+    preferred_question_key: str = "",
+) -> str:
+    axis_questions = [
+        question_key
+        for question_key in DIAGNOSIS_AXES[axis_key]["questions"]
+        if question_key in score_map
+    ]
+    if preferred_question_key and preferred_question_key in axis_questions:
+        return preferred_question_key
+
+    if not axis_questions:
+        return DIAGNOSIS_AXES[axis_key]["questions"][0]
+
+    def _sort_key(question_key: str) -> tuple:
+        score = score_map.get(question_key, 2)
+        meta = _question_meta(question_key)
+        return (
+            score,
+            -float(meta.get("impact_weight", 1.0)),
+            int(meta.get("order", 99)),
+        )
+
+    return sorted(axis_questions, key=_sort_key)[0]
 
 
 def _category_grade_insights(
     axis_scores: dict[str, dict[str, float]],
+    score_map: dict[str, int],
+    *,
+    preferred_anchor_question: str = "",
 ) -> list[dict[str, str]]:
     messages = {
         "workflow_clarity": {
             "A": (
-                "업무 흐름이 명확합니다.",
-                "1인 운영은 체크리스트 고정, 팀 운영은 인수인계 기준 고정으로 효율을 더 높일 수 있습니다.",
+                "업무 흐름이 안정적으로 정리되어 있습니다.",
+                "현재 문서를 기준으로 자동화 후보 1개를 연결해 실행 속도를 높여보세요.",
             ),
             "B": (
-                "흐름은 잡혀 있으나 인수 인계 기준이 약합니다.",
-                "1인 운영은 단계별 완료 기준을, 팀 운영은 역할별 인계 기준을 먼저 고정하세요.",
+                "업무 흐름은 있으나 단계 기준이 아직 느슨합니다.",
+                "시작-처리-완료 기준을 한 페이지로 고정하면 실행 편차를 줄일 수 있습니다.",
             ),
             "C": (
-                "업무 시작-종료 흐름이 불명확합니다.",
-                "1인/팀 모두 공통으로 쓰는 최소 프로세스(시작-처리-완료)를 1순위로 정의하세요.",
+                "업무 흐름 정의가 부족해 반복 손실이 큽니다.",
+                "핵심 업무 1개부터 시작-종료 단계를 정해 운영 기준을 먼저 만드세요.",
             ),
         },
         "data_operation_base": {
             "A": (
-                "데이터 관리 기반이 안정적입니다.",
-                "1인은 핵심 지표 1~2개, 팀은 공통 대시보드 1개로 운영 일관성을 높이세요.",
+                "데이터 운영 기반이 안정적입니다.",
+                "핵심 지표 1~2개를 주간 단위로 점검해 실행 정확도를 유지하세요.",
             ),
             "B": (
-                "데이터는 모이지만 표준화가 약합니다.",
-                "1인은 입력 규칙 단순화, 팀은 상태값 통일로 협업 혼선을 줄이세요.",
+                "데이터는 모이지만 기준 통일이 부족합니다.",
+                "필수 입력값과 상태값을 먼저 고정하면 누락/혼선을 줄일 수 있습니다.",
             ),
             "C": (
-                "데이터가 분산되어 판단이 어렵습니다.",
-                "1인/팀 모두 먼저 단일 데이터 보드를 만들고 그 위에서 자동화를 시작하세요.",
+                "데이터가 분산되어 판단과 대응이 늦어지고 있습니다.",
+                "고객/리드/진행상태를 한곳에 모아 운영 기준부터 맞추세요.",
             ),
         },
         "automation_design": {
             "A": (
-                "자동화 대상이 선별되어 있습니다.",
-                "1인은 시간 절감, 팀은 반복 품질 개선 효과가 큰 작업부터 우선 적용하세요.",
+                "자동화 후보가 명확하게 정리되어 있습니다.",
+                "효과가 큰 후보 1개를 파일럿으로 실행해 성과를 확정하세요.",
             ),
             "B": (
                 "자동화 후보는 있으나 우선순위 기준이 약합니다.",
-                "1인/팀 공통으로 효과 대비 노력 기준을 넣어 후보를 1개로 압축하세요.",
+                "효과 대비 노력 기준으로 후보를 1개로 압축해 먼저 실행하세요.",
             ),
             "C": (
-                "자동화 후보 정의가 없습니다.",
-                "1인은 가장 자주 하는 반복작업 1개, 팀은 누락이 많은 반복작업 1개를 먼저 지정하세요.",
+                "자동화 후보 선정이 아직 시작되지 않았습니다.",
+                "반복 빈도가 가장 높은 작업 1개를 먼저 골라 파일럿으로 지정하세요.",
             ),
         },
         "execution_system": {
             "A": (
-                "2주 실행 루틴이 안정적입니다.",
-                "1인은 실행 속도, 팀은 회고 품질 관점으로 루틴을 확장하면 됩니다.",
+                "실행 루틴이 안정적으로 운영되고 있습니다.",
+                "완료 기준과 점검 주기를 유지하며 개선 로그만 더 보강해보세요.",
             ),
             "B": (
-                "실행은 가능하지만 점검 루틴이 약합니다.",
-                "1인은 개인 주간 리뷰, 팀은 공통 주간 리뷰를 고정해 실행 편차를 줄이세요.",
+                "실행은 되고 있지만 점검 루틴이 약한 상태입니다.",
+                "주간 리뷰 기준을 고정해 완료/보류/개선 상태를 매주 점검하세요.",
             ),
             "C": (
-                "실행 체계가 불안정합니다.",
-                "1인/팀 모두 담당자(또는 책임자)·기준일·완료조건부터 먼저 설정하세요.",
+                "실행 체계가 불안정해 과제가 자주 밀리고 있습니다.",
+                "담당자·기한·완료기준을 먼저 정하고 2주 실행 루틴을 고정하세요.",
             ),
         },
     }
@@ -453,6 +608,17 @@ def _category_grade_insights(
         axis_score = axis_scores[axis_key]
         axis_grade = _grade_from_score(int(axis_score["score"]), int(axis_score["max"]))
         primary, secondary = messages[axis_key][axis_grade]
+        preferred_for_axis = (
+            preferred_anchor_question
+            if _axis_key_from_question(preferred_anchor_question) == axis_key
+            else ""
+        )
+        anchor_question_key = _weakest_question_in_axis(
+            axis_key,
+            score_map,
+            preferred_question_key=preferred_for_axis,
+        )
+        intent_key = _question_meta(anchor_question_key).get("intent_key", "")
         insights.append(
             {
                 "key": axis_key,
@@ -461,74 +627,193 @@ def _category_grade_insights(
                 "grade_visible": axis_grade != "A",
                 "message_primary": primary,
                 "message_secondary": secondary,
+                "anchor_question_key": anchor_question_key,
+                "intent_key": intent_key,
             }
         )
     return insights
 
 
-def _best_single_action(score_map: dict[str, int]) -> dict[str, str]:
-    lowest_key = min(score_map, key=lambda key: (score_map[key], key))
+def _primary_anchor_question(
+    axis_scores: dict[str, dict[str, float]],
+    score_map: dict[str, int],
+) -> tuple[str, str]:
+    weakest_axis_key = _weakest_axis_key(axis_scores)
+    anchor_question_key = _weakest_question_in_axis(weakest_axis_key, score_map)
+    return weakest_axis_key, anchor_question_key
+
+
+def _best_single_action(
+    score_map: dict[str, int], *, anchor_question_key: str = ""
+) -> dict[str, str]:
+    candidates = _priority_candidates(score_map)
+    fallback_primary = (
+        candidates[0]
+        if candidates
+        else {"key": diagnosis_question_keys()[0], "priority_score": 0.0}
+    )
+    question_key = (
+        anchor_question_key
+        if anchor_question_key and anchor_question_key in score_map
+        else fallback_primary["key"]
+    )
+    primary = next((item for item in candidates if item["key"] == question_key), None)
+    if not primary:
+        primary = {
+            "key": question_key,
+            "priority_score": (2 - score_map.get(question_key, 2))
+            * float(_question_meta(question_key).get("impact_weight", 1.0)),
+        }
+
+    intent_key = _question_meta(question_key).get("intent_key", "")
+
     action_titles = {
-        "q1": "핵심 업무 10개를 준비·실행·점검·개선 4단계로 나누기",
-        "q2": "반복되는 작업 1개를 찾고 자동화 가능성 검토하기",
-        "q3": "누락/지연 병목 구간 1개를 먼저 특정하기",
-        "q4": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
-        "q5": "반복 작업 1개를 자동화 후보로 정하기",
-        "q6": "자동화 후보 3개 중 효과가 큰 1개 먼저 고르기",
-        "q7": "2주 실험의 담당자·시간·검증 기준 확정하기",
-        "q8": "주간 리뷰/체크리스트 기반 점검 루틴 고정하기",
+        "document_workflow": "핵심 업무 1개의 시작-종료 흐름을 문서로 고정하기",
+        "find_repetitive_work": "반복 수작업 1개를 먼저 찾아 자동화 후보로 확정하기",
+        "identify_bottleneck": "누락/지연이 자주 나는 병목 구간 1개를 먼저 특정하기",
+        "unify_operational_data": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
+        "pick_automation_candidate": "자동화 후보 1개를 선정해 2주 파일럿 준비하기",
+        "prioritize_automation": "자동화 후보를 효과 대비 노력 기준으로 1개만 선택하기",
+        "set_owner_and_goal": "2주 실행의 담당자·기한·완료기준을 확정하기",
+        "run_review_loop": "주간 점검 루틴(리뷰/체크리스트)을 운영 캘린더에 고정하기",
     }
     execution_criteria = {
-        "q1": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 업무 10개를 준비·실행·점검·개선으로 나누고, 단계별로 누구 역할인지와 완료 기준을 한 줄씩 정리.",
-        "q2": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 반복 작업 1개를 선택해 소요시간·반복횟수를 적고, 자동화 도구 1~2개로 가능한지 검토.",
-        "q3": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 병목 구간 1개를 지정하고, 시작~종료 단계와 지연 원인 3가지를 문서화.",
-        "q4": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 고객/리드/진행상태 핵심 컬럼을 1개 시트로 통합하고 최신 상태로 갱신.",
-        "q5": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 자동화할 업무 1개를 정하고, 시작 조건·필요 정보·결과물을 한 줄씩 정리.",
-        "q6": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 후보 3개를 기대효과와 준비 난이도로 비교해, 효과가 큰 1개를 먼저 확정.",
-        "q7": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 담당자·일정·검증지표(성공/실패 기준)를 문서에 고정.",
-        "q8": "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 주간 점검일을 고정하고 체크리스트 5개 이상으로 2회 이상 리뷰.",
+        "find_repetitive_work": "반복 작업 1개를 지정하고 현재 소요시간·주간 반복 횟수를 기록하면 완료입니다.",
+        "document_workflow": "시작-처리-완료 단계와 담당자를 한 페이지 문서로 확정하면 완료입니다.",
+        "identify_bottleneck": "병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.",
+        "unify_operational_data": "고객/리드/진행상태 핵심 컬럼을 단일 시트로 통합하면 완료입니다.",
+        "pick_automation_candidate": "자동화 후보 1개를 선정하고 입력/출력 조건을 정의하면 완료입니다.",
+        "prioritize_automation": "후보별 기대효과와 준비 난이도를 비교해 1개를 자동화하면 완료입니다.",
+        "set_owner_and_goal": "담당자·일정·검증지표를 문서에 고정하고 1회 실행하면 완료입니다.",
+        "run_review_loop": "주간 리뷰 일정을 캘린더에 고정하고 체크리스트 점검 2회를 수행하면 완료입니다.",
     }
-    tools, reason = _tools_for_priority(lowest_key)
-    main_tools = ", ".join([item.strip() for item in tools.split(",")][:2])
+    tools, reason = _tools_for_priority(question_key)
     return {
+        "question_key": question_key,
+        "intent_key": intent_key,
         "title": action_titles.get(
-            lowest_key, DIAGNOSIS_QUESTIONS.get(lowest_key, lowest_key)
+            intent_key, DIAGNOSIS_QUESTIONS.get(question_key, question_key)
         ),
-        "tools": main_tools,
+        "tools": ", ".join(tools),
         "reason": reason,
         "execution": execution_criteria.get(
-            lowest_key,
-            "2주 동안 이 작업 1개를 꼭 완료 기준으로 달성해보세요.\n  - 완료 기준 예시: 담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행.",
+            intent_key,
+            "담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행하면 완료입니다.",
         ),
+        "priority_score": round(float(primary.get("priority_score", 0.0)), 2),
     }
+
+
+def _preview_report_signature(item: dict) -> tuple:
+    one_action = item.get("one_action") or {}
+    cta = item.get("cta") or {}
+    return (
+        bool(item.get("is_perfect_preview", False)),
+        one_action.get("title", ""),
+        one_action.get("execution", ""),
+        one_action.get("tools", ""),
+        cta.get("label", ""),
+        item.get("cta_url", ""),
+    )
+
+
+def _weakest_insight_signature(insight: dict) -> tuple:
+    return (
+        insight.get("label", ""),
+        insight.get("grade", ""),
+        bool(insight.get("grade_visible", False)),
+        insight.get("message_primary", ""),
+        insight.get("message_secondary", ""),
+    )
+
+
+def _group_preview_reports(preview_reports: list[dict]) -> list[dict]:
+    grouped: dict[tuple, dict] = {}
+    ordered_keys: list[tuple] = []
+    for item in preview_reports:
+        signature = _preview_report_signature(item)
+        title = item.get("title", "")
+        weakest_insight = item.get("weakest_insight") or {}
+        if signature not in grouped:
+            weakest_insights = [weakest_insight] if weakest_insight else []
+            grouped[signature] = {
+                **item,
+                "scenario_titles": [title] if title else [],
+                "scenario_count": 1,
+                "weakest_insights": weakest_insights,
+            }
+            ordered_keys.append(signature)
+            continue
+
+        group_item = grouped[signature]
+        if title and title not in group_item["scenario_titles"]:
+            group_item["scenario_titles"].append(title)
+        if weakest_insight:
+            existing_signatures = {
+                _weakest_insight_signature(candidate)
+                for candidate in group_item["weakest_insights"]
+            }
+            weakest_signature = _weakest_insight_signature(weakest_insight)
+            if weakest_signature not in existing_signatures:
+                group_item["weakest_insights"].append(weakest_insight)
+        group_item["scenario_count"] = len(group_item["scenario_titles"]) or 1
+
+    return [grouped[key] for key in ordered_keys]
 
 
 def _build_detailed_lead_magnet_report(
     total_score: int,
     max_score: int,
     grade: str,
-    priorities: list[str],
     score_map: dict[str, int],
 ) -> str:
+    intent_coverage = _intent_pattern_coverage()
     axis_scores = _axis_scores(score_map)
+    coverage_mode, coverage_label, answered_count = _coverage_mode(score_map)
     labels = _segmentation_labels(axis_scores)
-    profile_tools = _profile_tool_recommendations(priorities, labels)
-    category_insights = _category_grade_insights(axis_scores)
-    weakest_axis_key = _weakest_axis_key(axis_scores)
+    weakest_axis_key, anchor_question_key = _primary_anchor_question(
+        axis_scores, score_map
+    )
+    one_action = _best_single_action(
+        score_map,
+        anchor_question_key=anchor_question_key,
+    )
+    anchor_intent_key = _question_meta(anchor_question_key).get("intent_key", "")
+    if (
+        one_action.get("question_key") != anchor_question_key
+        or one_action.get("intent_key") != anchor_intent_key
+    ):
+        one_action = _best_single_action(
+            score_map,
+            anchor_question_key=anchor_question_key,
+        )
+    response_pattern = _resolve_response_pattern(one_action.get("intent_key", ""))
+    profile_tools = _profile_tool_recommendations(one_action["question_key"], labels)
+    category_insights = _category_grade_insights(
+        axis_scores,
+        score_map,
+        preferred_anchor_question=anchor_question_key,
+    )
     weakest_insight = next(
         (item for item in category_insights if item["key"] == weakest_axis_key),
         category_insights[0],
     )
-    one_action = _best_single_action(score_map)
     payload = {
         "score": total_score,
         "max_score": max_score,
         "grade": grade,
+        "coverage_mode": coverage_mode,
+        "coverage_label": coverage_label,
+        "answered_count": answered_count,
         "summary": _result_summary(total_score, max_score, grade),
+        "response_pattern": response_pattern,
+        "intent_coverage": intent_coverage,
         "profile_tools": profile_tools,
         "one_action": one_action,
         "category_insights": category_insights,
+        "weakest_insight": weakest_insight,
         "weakest_category_insight": weakest_insight,
+        "weakest_axis_key": weakest_axis_key,
         "cta": _bridge_cta(grade),
         "contact_context": {
             "inquiry_type": "ax_diagnosis",
@@ -545,17 +830,38 @@ def _build_detailed_lead_magnet_report(
 
 
 def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
+    intent_coverage = _intent_pattern_coverage()
+    coverage_mode, coverage_label, answered_count = _coverage_mode(score_map)
     total_score = sum(score_map.values())
-    max_score = len(score_map) * 2
+    max_score = answered_count * 2
     grade = _grade_from_score(total_score, max_score)
     axis_scores = _axis_scores(score_map)
     labels = _segmentation_labels(axis_scores)
     priorities = _priority_keys_from_score_map(score_map)
-    profile_tools = _profile_tool_recommendations(priorities, labels)
-    one_action = _best_single_action(score_map)
-    category_insights = _category_grade_insights(axis_scores)
-    weakest_axis_key = _weakest_axis_key(axis_scores)
-    weakest_category_insight = next(
+    weakest_axis_key, anchor_question_key = _primary_anchor_question(
+        axis_scores, score_map
+    )
+    one_action = _best_single_action(
+        score_map,
+        anchor_question_key=anchor_question_key,
+    )
+    anchor_intent_key = _question_meta(anchor_question_key).get("intent_key", "")
+    if (
+        one_action.get("question_key") != anchor_question_key
+        or one_action.get("intent_key") != anchor_intent_key
+    ):
+        one_action = _best_single_action(
+            score_map,
+            anchor_question_key=anchor_question_key,
+        )
+    response_pattern = _resolve_response_pattern(one_action.get("intent_key", ""))
+    profile_tools = _profile_tool_recommendations(one_action["question_key"], labels)
+    category_insights = _category_grade_insights(
+        axis_scores,
+        score_map,
+        preferred_anchor_question=anchor_question_key,
+    )
+    weakest_insight = next(
         (item for item in category_insights if item["key"] == weakest_axis_key),
         category_insights[0],
     )
@@ -563,6 +869,9 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "score": total_score,
         "max_score": max_score,
         "grade": grade,
+        "coverage_mode": coverage_mode,
+        "coverage_label": coverage_label,
+        "answered_count": answered_count,
         "priorities": [DIAGNOSIS_QUESTIONS.get(key, key) for key in priorities[:3]],
         "segmentation": labels,
         "axis_summary": [
@@ -570,6 +879,8 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
                 "label": DIAGNOSIS_AXES[axis_key]["label"],
                 "score": int(axis["score"]),
                 "max": int(axis["max"]),
+                "answered": int(axis["answered"]),
+                "total": int(axis["total"]),
             }
             for axis_key, axis in axis_scores.items()
         ],
@@ -577,9 +888,12 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "support_summary": _build_support_summary(priorities[:3]),
         "cta": _bridge_cta(grade),
         "summary": _result_summary(total_score, max_score, grade),
+        "response_pattern": response_pattern,
+        "intent_coverage": intent_coverage,
         "one_action": one_action,
         "category_insights": category_insights,
-        "weakest_category_insight": weakest_category_insight,
+        "weakest_insight": weakest_insight,
+        "weakest_category_insight": weakest_insight,
         "weakest_axis_key": weakest_axis_key,
         "weakest_axis_label": DIAGNOSIS_AXES[weakest_axis_key]["label"],
         "contact_context": {
@@ -598,48 +912,36 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
     )
     result["cta"] = next_action.get("cta", result["cta"])
     report_text = _build_detailed_lead_magnet_report(
-        total_score, max_score, grade, priorities, score_map
+        total_score, max_score, grade, score_map
     )
     return result, report_text
 
 
+@staff_member_required
 def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
     keys = diagnosis_question_keys()
+    intent_coverage = _intent_pattern_coverage()
 
-    axis_items = list(DIAGNOSIS_AXES.items())
-
-    def _make_score_map_for_preview(grade: str, weak_axis_key: str) -> dict[str, int]:
-        # Show all branches: overall grade(A/B/C) x weakest category(4)
-        if grade == "A":
-            score_map = {key: 2 for key in keys}
-            for q in DIAGNOSIS_AXES[weak_axis_key]["questions"]:
-                score_map[q] = 1
-            return score_map
-
-        if grade == "B":
-            score_map = {key: 1 for key in keys}
-            for axis_key, axis in axis_items:
-                if axis_key == weak_axis_key:
-                    continue
-                score_map[axis["questions"][0]] = 2
-            return score_map
-
-        # grade == "C"
-        score_map = {key: 0 for key in keys}
-        for axis_key, axis in axis_items:
-            if axis_key == weak_axis_key:
-                continue
-            for q in axis["questions"]:
-                score_map[q] = 1
+    def _make_intent_score_map(target_question_key: str) -> dict[str, int]:
+        score_map = {key: 2 for key in keys}
+        score_map[target_question_key] = 0
         return score_map
 
-    scenarios: list[tuple[str, dict[str, int]]] = []
-    for grade in ["A", "B", "C"]:
-        for axis_key, axis in axis_items:
-            title = f"{grade} 등급 · 핵심 보완: {axis['label']}"
-            scenarios.append((title, _make_score_map_for_preview(grade, axis_key)))
+    scenarios: list[tuple[str, dict[str, int], bool]] = [
+        ("16점 만점 시나리오 (정밀)", {key: 2 for key in keys}, True),
+    ]
+    for question_key in keys:
+        intent_key = _question_meta(question_key).get("intent_key", "")
+        label = DIAGNOSIS_QUESTIONS.get(question_key, question_key)
+        scenarios.append(
+            (
+                f"intent 시나리오 · {intent_key} · {label}",
+                _make_intent_score_map(question_key),
+                False,
+            )
+        )
     preview_reports = []
-    for title, score_map in scenarios:
+    for title, score_map, is_perfect_preview in scenarios:
         result, report = _build_lead_magnet_result(score_map)
         normalized_cta_href = normalize_contact_cta_href(result["cta"]["href"])
         cta_url = (
@@ -653,22 +955,28 @@ def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
                 "score": result["score"],
                 "max_score": result["max_score"],
                 "grade": result["grade"],
+                "coverage_label": result["coverage_label"],
+                "summary": result["summary"],
                 "cta": result["cta"],
                 "cta_url": cta_url,
                 "priorities": result["priorities"],
                 "one_action": result["one_action"],
-                "category_insights": result["category_insights"],
-                "weakest_category_insight": result["weakest_category_insight"],
+                "weakest_insight": result["weakest_insight"],
                 "weakest_axis_label": result["weakest_axis_label"],
                 "sections": result["sections"],
                 "report": report,
+                "is_perfect_preview": is_perfect_preview,
             }
         )
+    preview_reports = _group_preview_reports(preview_reports)
 
     return render(
         request,
         "landing/lead_magnet_report_preview.html",
-        {"preview_reports": preview_reports},
+        {
+            "preview_reports": preview_reports,
+            "intent_coverage": intent_coverage,
+        },
     )
 
 
@@ -683,7 +991,7 @@ def _render_lead_magnet_form(
         "landing/partials/lead_magnet_form.html",
         {
             "form": form,
-            "lead_magnet_field_groups": _diagnosis_field_groups(form),
+            "lead_magnet_fields": _diagnosis_fields(form),
             "result": result,
             "status": status,
             "status_message": status_message,
@@ -756,8 +1064,18 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
         )
 
     data = form.cleaned_data
-    score_keys = diagnosis_question_keys()
-    score_map = {key: int(data[key]) for key in score_keys}
+    question_keys = diagnosis_question_keys()
+    missing_keys = [key for key in question_keys if data.get(key) in {None, ""}]
+    if missing_keys:
+        return _render_lead_magnet_form(
+            request,
+            form,
+            status="error",
+            status_message="8개 문항 모두 응답해 주세요.",
+        )
+    score_map = {
+        question_key: int(data[question_key]) for question_key in question_keys
+    }
     result, report_text = _build_lead_magnet_result(score_map)
     total_score = result["score"]
     grade = result["grade"]

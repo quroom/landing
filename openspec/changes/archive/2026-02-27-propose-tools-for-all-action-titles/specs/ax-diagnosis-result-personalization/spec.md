@@ -1,8 +1,5 @@
-# ax-diagnosis-result-personalization Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change refine-ax-diagnosis-question-flow. Update Purpose after archive.
-## Requirements
 ### Requirement: Diagnosis result MUST include pattern-based segmentation labels
 The system MUST provide personalized interpretation using a severity-based response-pattern set, while ensuring the primary weakest-point guidance and the primary two-week action are generated from the same anchor question intent.
 
@@ -31,4 +28,3 @@ The system MUST generate personalized two-week priorities and tool recommendatio
 - **WHEN** the system validates response-pattern definitions
 - **THEN** the pattern catalog MUST cover all eight intent keys defined in `tools_map`
 - **AND** no intent key in `tools_map` MUST remain unmapped by the full pattern set
-
