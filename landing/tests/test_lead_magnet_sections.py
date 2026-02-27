@@ -18,6 +18,12 @@ class LeadMagnetSectionContractTests(TestCase):
         result, _ = _build_lead_magnet_result(score_map)
         return result
 
+    def _perfect_result(self) -> dict:
+        keys = diagnosis_question_keys()
+        score_map = {key: 2 for key in keys}
+        result, _ = _build_lead_magnet_result(score_map)
+        return result
+
     def test_section_contract_signature_is_stable(self) -> None:
         result = self._sample_result()
         signature = section_contract_signature(result["sections"])
@@ -47,7 +53,7 @@ class LeadMagnetSectionContractTests(TestCase):
   - 1인은 입력 규칙 단순화, 팀은 상태값 통일로 협업 혼선을 줄이세요.
 
 [2주 실행 우선 1개]
-- 과제: 누락/지연이 자주 발생하는 병목 구간(응대, 승인, 전달)을 특정해두었다
+- 과제: 누락/지연 병목 구간 1개를 먼저 특정하기
 - 추천 툴: Trello, Notion
 - 수행 기준: 2주 동안 이 항목 1개만 완료 기준으로 실행하세요.
 
@@ -55,8 +61,8 @@ class LeadMagnetSectionContractTests(TestCase):
 - Trello, Notion, Google Sheets
 
 [다음 액션]
-- 자동화 실행 구축 상담 요청 (/#contact)
-- 2~4주 실행체계 구축 상담으로 연결합니다.""",
+- 생산성 개선 상담 요청 (/#contact)
+- 빠른 실행 병목 해소 중심 상담으로 연결합니다.""",
         )
 
     def test_email_body_uses_same_section_order(self) -> None:
@@ -82,3 +88,9 @@ class LeadMagnetSectionContractTests(TestCase):
         positions = [text_body.find(heading) for heading in headings]
         self.assertEqual(positions, sorted(positions))
         self.assertIn("( /#contact)".replace(" ", ""), text_body.replace(" ", ""))
+
+    def test_perfect_score_summary_includes_consultation_prompt(self) -> None:
+        result = self._perfect_result()
+        self.assertEqual(result["score"], result["max_score"])
+        self.assertIn("잘 유지하고 있습니다", result["summary"])
+        self.assertIn("추가 질의가 있으면 상담을 요청해 주세요", result["summary"])

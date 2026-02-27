@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-
 CODE_ROOT = Path(__file__).resolve().parent.parent
 REPO_ROOT = CODE_ROOT.parent
 
@@ -58,7 +57,9 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -82,6 +83,16 @@ EMAIL_BACKEND = os.getenv(
     "DJANGO_EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend",
 )
+SITE_BASE_URL = os.getenv("DJANGO_SITE_BASE_URL", "http://127.0.0.1:8000")
+ALLOW_REAL_EMAIL = os.getenv("DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG", "0") == "1"
+
+
+# Force-safe mode unless real email delivery is explicitly allowed.
+if (
+    not ALLOW_REAL_EMAIL
+    and EMAIL_BACKEND == "django.core.mail.backends.smtp.EmailBackend"
+):
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
@@ -92,5 +103,7 @@ EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "20"))
 DEFAULT_FROM_EMAIL = os.getenv("DJANGO_DEFAULT_FROM_EMAIL", "help@quroom.kr")
 QUROOM_CONTACT_EMAIL = os.getenv("QUROOM_CONTACT_EMAIL", "help@quroom.kr")
 GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "")
-CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "0") == "1"
-SITE_BASE_URL = os.getenv("DJANGO_SITE_BASE_URL", "http://127.0.0.1:8000")
+CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "1") == "1"
+# If real email is not explicitly allowed, async is always disabled.
+if not ALLOW_REAL_EMAIL:
+    CONTACT_EMAIL_ASYNC = False

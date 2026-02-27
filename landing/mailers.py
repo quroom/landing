@@ -3,8 +3,7 @@ from html import escape
 from threading import Thread
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.utils import timezone
 
 from .lead_magnet_sections import build_lead_magnet_section_ast, render_sections_to_text
@@ -43,11 +42,7 @@ def _extract_score_and_max_from_report(report_text: str) -> tuple[int, int]:
 
 
 def _lead_magnet_cta_for_grade(grade: str) -> tuple[str, str]:
-    if grade == "A":
-        return ("단발성 생산성 개선 상담 요청", "#contact")
-    if grade == "B":
-        return ("자동화 실행 구축 상담 요청", "#contact")
-    return ("외주 집중 트랙 상담 요청", "#contact")
+    return ("생산성 개선 상담 요청", "#contact")
 
 
 def _grade_mail_copy(grade: str) -> tuple[str, str]:
@@ -149,7 +144,11 @@ def _default_result_from_report(report_text: str) -> dict:
             "execution": "2주 동안 완료 기준을 정의해 1개 과제를 끝까지 실행하세요.",
         },
         "profile_tools": ["Make", "Google Sheets", "Notion"],
-        "cta": {"label": cta_label, "href": cta_anchor, "note": "홈페이지에서 상담으로 연결할 수 있습니다."},
+        "cta": {
+            "label": cta_label,
+            "href": cta_anchor,
+            "note": "홈페이지에서 상담으로 연결할 수 있습니다.",
+        },
         "weakest_axis_key": weakest_axis,
     }
 
@@ -193,7 +192,6 @@ def _build_lead_magnet_user_email(
         "요청하신 무료 자동화 실행 진단 결과입니다.\n\n"
         f"{text_sections}\n"
         f"- {cta.get('label', '상담 문의하기')}: {cta_url}\n"
-        f"- 전체 항목 보기: {preview_url}\n"
         f"- 홈페이지: {homepage_url}\n\n"
         "이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요.\n"
         "바로 실행 가능한 다음 단계를 제안드리겠습니다."
@@ -219,12 +217,16 @@ def _build_lead_magnet_user_email(
     summary_rows = section_map.get("summary", {}).get("rows", [])
     one_action_rows = one_action_section.get("rows", [])
     tools_value = (tools_section.get("rows") or ["Make, Google Sheets, Notion"])[0]
-    one_action_title = one_action_rows[0].replace("과제: ", "") if one_action_rows else "-"
+    one_action_title = (
+        one_action_rows[0].replace("과제: ", "") if one_action_rows else "-"
+    )
     one_action_tools = (
         one_action_rows[1].replace("추천 툴: ", "") if len(one_action_rows) > 1 else "-"
     )
     one_action_exec = (
-        one_action_rows[2].replace("수행 기준: ", "") if len(one_action_rows) > 2 else action_copy
+        one_action_rows[2].replace("수행 기준: ", "")
+        if len(one_action_rows) > 2
+        else action_copy
     )
 
     html_body = f"""
@@ -258,7 +260,6 @@ def _build_lead_magnet_user_email(
           {escape(cta.get('label', '상담 문의하기'))}
         </a>
       </div>
-      <p style="margin: 10px 0 0;"><a href="{escape(preview_url)}" style="color: #0f172a;">전체 항목 보기</a></p>
       <p style="margin: 10px 0 0;"><a href="{escape(homepage_url)}" style="color: #0f172a;">홈페이지 바로가기</a></p>
       <p style="margin: 14px 0 0;">이 메일에 회신으로 지금 가장 불편한 반복업무 1가지만 알려주세요. 바로 실행 가능한 다음 단계를 제안드리겠습니다.</p>
     </div>
@@ -267,7 +268,9 @@ def _build_lead_magnet_user_email(
 
 
 def _build_inquiry_mail(inquiry: ContactInquiry) -> tuple[str, str]:
-    inquiry_type_label = INQUIRY_TYPE_LABELS.get(inquiry.inquiry_type, inquiry.inquiry_type)
+    inquiry_type_label = INQUIRY_TYPE_LABELS.get(
+        inquiry.inquiry_type, inquiry.inquiry_type
+    )
     subject = f"[QuRoom 문의] {inquiry.name} / {inquiry.inquiry_type}"
     body = (
         "큐룸 홈페이지 문의가 접수되었습니다.\n\n"
@@ -341,9 +344,7 @@ def deliver_inquiry_email_async(
 ) -> None:
     def _worker() -> None:
         inquiry = ContactInquiry.objects.get(id=inquiry_id)
-        success = deliver_inquiry_email(
-            inquiry, lead_magnet_result=lead_magnet_result
-        )
+        success = deliver_inquiry_email(inquiry, lead_magnet_result=lead_magnet_result)
         if success and event_name:
             FunnelEvent.objects.create(
                 event_name=event_name,

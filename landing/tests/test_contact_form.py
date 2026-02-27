@@ -45,7 +45,9 @@ class ContactFormTests(TestCase):
         self.assertEqual(mail.outbox[0].to, ["help@quroom.kr"])
         self.assertIn("테스트 사용자", mail.outbox[0].body)
         inquiry = ContactInquiry.objects.get(email="tester@example.com")
-        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
+        self.assertEqual(
+            inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS
+        )
         self.assertIsNotNone(inquiry.emailed_at)
         self.assertEqual(inquiry.email_error, "")
         self.assertTrue(inquiry.marketing_opt_in)
@@ -75,7 +77,9 @@ class ContactFormTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "문의가 접수되었습니다.")
         inquiry = ContactInquiry.objects.get(email="failure@example.com")
-        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED)
+        self.assertEqual(
+            inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED
+        )
         self.assertIn("smtp failed", inquiry.email_error)
         self.assertFalse(inquiry.marketing_opt_in)
         self.assertIsNone(inquiry.marketing_opted_in_at)
@@ -124,18 +128,19 @@ class ContactFormTests(TestCase):
         self.assertEqual(mail.outbox[1].subject, "[큐룸] 무료 자동화 실행 진단 결과")
         self.assertIn("[핵심 보완 카테고리]", mail.outbox[1].body)
         self.assertIn("[2주 실행 우선 1개]", mail.outbox[1].body)
-        self.assertIn("전체 항목 보기:", mail.outbox[1].body)
-        self.assertIn("자동화 실행 구축 상담 요청", mail.outbox[1].body)
+        self.assertIn("생산성 개선 상담 요청", mail.outbox[1].body)
         self.assertNotIn("외국인 개발자", mail.outbox[1].body)
         self.assertNotIn("Top 5", mail.outbox[1].body)
         self.assertNotIn("확장 추천 툴", mail.outbox[1].body)
         self.assertIn("[진단 요약]", mail.outbox[1].body)
-        self.assertIn("자동화 실행 구축 상담 요청", mail.outbox[1].alternatives[0][0])
+        self.assertIn("생산성 개선 상담 요청", mail.outbox[1].alternatives[0][0])
         self.assertNotIn("외국인 개발자", mail.outbox[1].alternatives[0][0])
         self.assertNotIn("문의 남기기", mail.outbox[1].alternatives[0][0])
         inquiry = ContactInquiry.objects.get(email="lead@example.com")
         self.assertEqual(inquiry.inquiry_type, "lead_magnet_diagnosis")
-        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
+        self.assertEqual(
+            inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS
+        )
         self.assertTrue(
             FunnelEvent.objects.filter(
                 event_name="lead_magnet_submit", lead_source="founder_lead_magnet"

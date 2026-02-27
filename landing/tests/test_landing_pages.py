@@ -30,7 +30,7 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "무료 진단 결과 메시지 시뮬레이션")
         self.assertContains(response, "핵심 보완 카테고리")
-        self.assertContains(response, "다른 진단 항목도 보기 (4개 전체)")
+        self.assertContains(response, "전체 4개 항목 보기")
         self.assertContains(response, "2주 실행 우선 1개")
         self.assertContains(response, 'href="/#contact"')
         self.assertNotContains(response, "Top 5")

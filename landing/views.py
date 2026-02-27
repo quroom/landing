@@ -11,11 +11,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .analytics import track_event
-from .ax_tool_stack import (
-    DIAGNOSIS_AXES,
-    DIAGNOSIS_QUESTIONS,
-    diagnosis_question_keys,
-)
+from .ax_tool_stack import DIAGNOSIS_AXES, DIAGNOSIS_QUESTIONS, diagnosis_question_keys
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .forms import ContactForm, LeadMagnetForm
 from .lead_magnet_sections import (
@@ -168,22 +164,10 @@ def _grade_from_score(score: int, max_score: int) -> str:
 
 
 def _bridge_cta(grade: str) -> dict[str, str]:
-    if grade == "A":
-        return {
-            "label": "단발성 생산성 개선 상담 요청",
-            "href": "#contact",
-            "note": "빠른 실행 병목 해소 중심 상담으로 연결합니다.",
-        }
-    if grade == "B":
-        return {
-            "label": "자동화 실행 구축 상담 요청",
-            "href": "#contact",
-            "note": "2~4주 실행체계 구축 상담으로 연결합니다.",
-        }
     return {
-        "label": "외주 집중 트랙 상담 요청",
+        "label": "생산성 개선 상담 요청",
         "href": "#contact",
-        "note": "외주 집중 트랙은 동시 1개사만 진행합니다.",
+        "note": "빠른 실행 병목 해소 중심 상담으로 연결합니다.",
     }
 
 
@@ -193,6 +177,15 @@ def _grade_summary(grade: str) -> str:
     if grade == "B":
         return "핵심 실행은 가능하지만 반복 운영 손실이 누적되는 단계입니다. 1인/팀 모두 2주 집중 개선이 효과적입니다."
     return "구조화되지 않은 수작업 비중이 높아 1인/팀 운영 모두 우선순위 정리와 실행체계 재설계가 필요한 단계입니다."
+
+
+def _result_summary(total_score: int, max_score: int, grade: str) -> str:
+    if max_score and total_score == max_score:
+        return (
+            "현재 운영 수준이 매우 안정적이며 실행 체계를 잘 유지하고 있습니다. "
+            "추가 질의가 있으면 상담을 요청해 주세요."
+        )
+    return _grade_summary(grade)
 
 
 def _question_key(position: int) -> str:
@@ -451,11 +444,22 @@ def _category_grade_insights(
 
 def _best_single_action(score_map: dict[str, int]) -> dict[str, str]:
     lowest_key = min(score_map, key=lambda key: (score_map[key], key))
-    question_label = DIAGNOSIS_QUESTIONS.get(lowest_key, lowest_key)
+    action_titles = {
+        "q1": "핵심 업무를 4개 영역으로 먼저 구분하기",
+        "q2": "최근 2주 반복 수작업 1개를 먼저 특정하기",
+        "q3": "누락/지연 병목 구간 1개를 먼저 특정하기",
+        "q4": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
+        "q5": "규칙형 업무 1개를 자동화 후보로 정하기",
+        "q6": "자동화 후보를 효과 대비 노력 기준으로 1순위 정하기",
+        "q7": "2주 실험의 담당자·시간·검증 기준 확정하기",
+        "q8": "주간 리뷰/체크리스트 기반 점검 루틴 고정하기",
+    }
     tools, reason = _tools_for_priority(lowest_key)
     main_tools = ", ".join([item.strip() for item in tools.split(",")][:2])
     return {
-        "title": question_label,
+        "title": action_titles.get(
+            lowest_key, DIAGNOSIS_QUESTIONS.get(lowest_key, lowest_key)
+        ),
         "tools": main_tools,
         "reason": reason,
         "execution": "2주 동안 이 항목 1개만 완료 기준으로 실행하세요.",
@@ -483,7 +487,7 @@ def _build_detailed_lead_magnet_report(
         "score": total_score,
         "max_score": max_score,
         "grade": grade,
-        "summary": _grade_summary(grade),
+        "summary": _result_summary(total_score, max_score, grade),
         "profile_tools": profile_tools,
         "one_action": one_action,
         "category_insights": category_insights,
@@ -531,7 +535,7 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "profile_tools": profile_tools,
         "support_summary": _build_support_summary(priorities[:3]),
         "cta": _bridge_cta(grade),
-        "summary": _grade_summary(grade),
+        "summary": _result_summary(total_score, max_score, grade),
         "one_action": one_action,
         "category_insights": category_insights,
         "weakest_category_insight": weakest_category_insight,
