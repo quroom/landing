@@ -1,9 +1,4 @@
-# Capability: career-credential-placement
-
-## Purpose
-홈페이지/신뢰 섹션에 경력 타임라인이 일관되게 반영되도록 관리한다.
-
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Career timeline MUST be consistently represented
 The system MUST use a single canonical timeline across landing content.

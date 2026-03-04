@@ -3,7 +3,7 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -1138,6 +1138,25 @@ def privacy(request: HttpRequest) -> HttpResponse:
 
 def terms(request: HttpRequest) -> HttpResponse:
     return render(request, "landing/terms.html", {"content": SHARED_CONTENT})
+
+
+def healthz(request: HttpRequest) -> HttpResponse:
+    return JsonResponse({"status": "ok"})
+
+
+@staff_member_required
+def admin_operation_links(request: HttpRequest) -> HttpResponse:
+    links = [
+        {"label": "헬스체크", "url": reverse("landing:healthz")},
+        {"label": "문의 대시보드", "url": reverse("landing:admin_dashboard")},
+        {"label": "홈페이지", "url": reverse("landing:index")},
+        {"label": "무료 진단", "url": reverse("landing:free_diagnosis")},
+        {
+            "label": "진단 시뮬레이션 Preview",
+            "url": reverse("landing:lead_magnet_report_preview"),
+        },
+    ]
+    return render(request, "landing/admin_operation_links.html", {"links": links})
 
 
 @staff_member_required

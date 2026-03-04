@@ -1,8 +1,5 @@
-# admin-dashboard-navigation Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change document-admin-dashboard-operations-improvements. Update Purpose after archive.
-## Requirements
 ### Requirement: Admin entry page MUST expose dashboard shortcut
 The admin interface MUST include a visible shortcut to inquiry dashboard so operators do not need to memorize direct URLs.
 

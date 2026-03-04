@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from unittest.mock import patch
 
+from landing.content import CAREER_RANGES
 from landing.models import ContactInquiry, FunnelEvent
 
 
@@ -16,6 +17,19 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "자동화 실행 파트")
         self.assertContains(response, "외주용역 집중 트랙")
         self.assertContains(response, "창업 기본 인프라 구축")
+        self.assertContains(response, "공인중개사 자격 취득")
+        self.assertContains(response, "중개업 활동, 자동화로 업무 효율화")
+        self.assertContains(response, "쉐어하우스 창업 및 확장")
+        self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
+        body = response.content.decode("utf-8")
+        self.assertLess(
+            body.index("공인중개사 자격 취득"),
+            body.index("중개업 활동, 자동화로 업무 효율화"),
+        )
+        self.assertLess(
+            body.index("중개업 활동, 자동화로 업무 효율화"),
+            body.index("쉐어하우스 창업 및 확장"),
+        )
         self.assertTrue(
             FunnelEvent.objects.filter(event_name="lp_view", page_key="home").exists()
         )
@@ -126,10 +140,50 @@ class LandingPageTests(TestCase):
         self.assertEqual(privacy.status_code, 200)
         self.assertEqual(terms.status_code, 200)
 
+    def test_healthz_returns_ok(self) -> None:
+        response = self.client.get(reverse("landing:healthz"))
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"status": "ok"})
+
     def test_admin_dashboard_requires_staff(self) -> None:
         response = self.client.get(reverse("landing:admin_dashboard"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("/admin/login/", response.url)
+
+    def test_admin_operation_links_requires_staff(self) -> None:
+        response = self.client.get(reverse("landing:admin_operation_links"))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/admin/login/", response.url)
+
+    def test_admin_operation_links_renders_for_staff(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_operation_links",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(reverse("landing:admin_operation_links"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "운영 링크 모음")
+        self.assertContains(response, reverse("landing:healthz"))
+        self.assertContains(response, reverse("landing:admin_dashboard"))
+
+    def test_admin_index_shows_operation_link_next_to_dashboard(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_admin_index",
+            password="pass1234",
+            is_staff=True,
+            is_superuser=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(reverse("admin:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "문의 대시보드")
+        self.assertContains(response, "운영 링크")
 
     def test_admin_dashboard_renders_for_staff(self) -> None:
         user_model = get_user_model()

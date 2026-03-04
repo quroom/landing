@@ -1,0 +1,48 @@
+name: Deploy Readiness
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Post-deploy smoke test target URL (e.g. https://app.up.railway.app)"
+        required: false
+        type: string
+
+jobs:
+  pre_deploy:
+    name: Pre-deploy checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Django verify
+        run: ./scripts/verify.sh
+
+      - name: Deploy readiness command
+        run: ./scripts/deploy-check.sh
+
+  post_deploy:
+    name: Post-deploy smoke checks
+    runs-on: ubuntu-latest
+    needs: pre_deploy
+    if: ${{ github.event.inputs.base_url != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run smoke checks
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url }}
+        run: ./scripts/post-deploy-smoke.sh

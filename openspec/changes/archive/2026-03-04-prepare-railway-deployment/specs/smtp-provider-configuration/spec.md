@@ -1,8 +1,5 @@
-# smtp-provider-configuration Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change build-free-low-volume-email-system. Update Purpose after archive.
-## Requirements
 ### Requirement: SMTP provider configuration via environment variables
 The system MUST support SMTP-based mail delivery using environment variables so operators can configure provider settings without code changes.
 

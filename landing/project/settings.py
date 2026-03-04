@@ -1,12 +1,19 @@
 import os
 from pathlib import Path
 
+from landing.deploy_validation import collect_runtime_validation_errors
+
 CODE_ROOT = Path(__file__).resolve().parent.parent
 REPO_ROOT = CODE_ROOT.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = [h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",") if h]
+CSRF_TRUSTED_ORIGINS = [
+    origin
+    for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -107,3 +114,11 @@ CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "1") == "1"
 # If real email is not explicitly allowed, async is always disabled.
 if not ALLOW_REAL_EMAIL:
     CONTACT_EMAIL_ASYNC = False
+
+_runtime_validation_errors = collect_runtime_validation_errors(globals())
+if _runtime_validation_errors:
+    error_lines = "\n".join(f"- {message}" for message in _runtime_validation_errors)
+    raise RuntimeError(
+        "Production runtime configuration validation failed:\n"
+        f"{error_lines}"
+    )

@@ -346,7 +346,15 @@ def build_page_content(persona: str | None = None) -> dict:
 SITE_CONTENT = SHARED_CONTENT
 
 # Date format: YYYY-MM-DD
+# Timeline label rule: "연도(또는 기간) + 핵심 행동/성과" 형식을 유지한다.
 CAREER_RANGES = [
     {"start": "2012-08-01", "end": "2014-10-31", "label": "삼성전자 S/W 엔지니어"},
-    {"start": "2018-06-01", "end": None, "label": "큐룸 개발/운영"},
+    {"start": "2015-01-01", "end": "2015-12-31", "label": "공인중개사 자격 취득"},
+    {
+        "start": "2016-01-01",
+        "end": "2016-12-31",
+        "label": "중개업 활동, 자동화로 업무 효율화",
+    },
+    {"start": "2017-01-01", "end": "2017-12-31", "label": "쉐어하우스 창업 및 확장"},
+    {"start": "2018-06-01", "end": None, "label": "소셜벤처 창업 및 큐룸 개발/운영"},
 ]

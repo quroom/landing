@@ -6,7 +6,13 @@ app_name = "landing"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("healthz/", views.healthz, name="healthz"),
     path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    path(
+        "admin-operation-links/",
+        views.admin_operation_links,
+        name="admin_operation_links",
+    ),
     path(
         "admin-dashboard/inquiries/<int:inquiry_id>/resend/",
         views.admin_resend_inquiry,
