@@ -52,13 +52,35 @@ Use this command as the default before applying or archiving OpenSpec changes.
 
 ## Pre-push test commands (before GitHub push)
 1. System check
+   - `./scripts/format-check.sh`
+2. Django system check
    - `./scripts/django-check.sh`
-2. Django test suite
+3. Django test suite
    - `./scripts/django-test.sh`
-3. One-shot verification
+4. One-shot verification
    - `./scripts/verify.sh`
 
 If both pass, push to GitHub.
+
+## Workspace format standard (`ruff + djlint`)
+- Python format/lint:
+  - apply: `./scripts/format-apply.sh`
+  - check: `./scripts/format-check.sh`
+- Django template format:
+  - `djlint` is the canonical formatter for `landing/templates/**`
+  - avoid formatting template files with generic HTML formatters
+- VS Code workspace defaults:
+  - Python: Ruff formatter
+  - Django template (`django-html`): djLint formatter
+  - generic HTML remains separate
+
+### Template guardrails
+- If a specific line must keep manual layout, use djLint ignore pragmas around the minimum block.
+- Prefer splitting long inline template expressions across tags/elements instead of relying on formatter behavior.
+
+### Known limitations / follow-up
+- In network-restricted environments, `ruff`/`djlint` installation can fail until package index access is available.
+- Once dependencies are available, run `./scripts/format-apply.sh` then `./scripts/verify.sh` to establish baseline formatting in changed files.
 
 ### Optional environment variables
 - `DJANGO_SECRET_KEY`
