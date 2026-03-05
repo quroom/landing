@@ -55,3 +55,17 @@ def collect_runtime_validation_errors(settings_obj: object | Mapping[str, object
             errors.append(f"SMTP backend requires values for: {', '.join(missing)}")
 
     return errors
+
+
+def collect_readiness_errors(settings_obj: object | Mapping[str, object]) -> list[str]:
+    errors = collect_runtime_validation_errors(settings_obj)
+
+    debug = bool(_get_setting(settings_obj, "DEBUG", True))
+    if debug:
+        return errors
+
+    static_root = _get_setting(settings_obj, "STATIC_ROOT", None)
+    if not static_root:
+        errors.append("STATIC_ROOT must be configured for deploy readiness.")
+
+    return errors

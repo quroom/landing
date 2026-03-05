@@ -33,6 +33,15 @@ jobs:
       - name: Deploy readiness command
         run: ./scripts/deploy-check.sh
 
+      - name: Summarize pre-deploy checks
+        run: |
+          echo "## Pre-deploy check" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f /tmp/quroom-deploy-status.json ]; then
+            cat /tmp/quroom-deploy-status.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- No deploy status file found" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   post_deploy:
     name: Post-deploy smoke checks
     runs-on: ubuntu-latest
@@ -46,3 +55,12 @@ jobs:
         env:
           BASE_URL: ${{ github.event.inputs.base_url }}
         run: ./scripts/post-deploy-smoke.sh
+
+      - name: Summarize post-deploy checks
+        run: |
+          echo "## Post-deploy smoke check" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f /tmp/quroom-deploy-status.json ]; then
+            cat /tmp/quroom-deploy-status.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- No smoke status file found" >> "$GITHUB_STEP_SUMMARY"
+          fi

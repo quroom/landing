@@ -31,7 +31,9 @@
 
 1. 운영 점검 링크 사용
 - `/admin-operation-links/` 접속
-- `/healthz/` 200 확인
+- `/healthz/` 요약 상태 확인 (`ok` 또는 `degraded`)
+- `/healthz/live/` 200 확인 (프로세스 생존)
+- `/healthz/ready/` 200 확인 (트래픽 수용 준비)
 - `/admin-dashboard/` 접근 확인
 - 핵심 submit 경로 동작 확인
 
@@ -44,11 +46,29 @@ BASE_URL="https://<railway-domain>" ./scripts/post-deploy-smoke.sh
 - GitHub Actions `Deploy Readiness` workflow 실행
 - `base_url` 입력 시 post-deploy smoke 단계까지 수행
 
+### Smoke 체크 기대 상태코드
+
+- `/healthz/` -> `200`
+- `/healthz/live/` -> `200`
+- `/healthz/ready/` -> `200`
+- `/admin-dashboard/` -> `302` (비인증 접근 시 로그인 리다이렉트)
+- `/admin-operation-links/` -> `302` (비인증 접근 시 로그인 리다이렉트)
+- `/contact/submit/` -> `405` (GET 불가)
+- `/lead-magnet/submit/` -> `405` (GET 불가)
+
+### 실패 시 조치 기준
+
+- `healthz/live` 실패: 앱 프로세스/런타임 장애 가능성, 즉시 재배포 또는 롤백 검토
+- `healthz/ready` 실패: 설정/DB 준비 실패 가능성, 환경변수와 DB 연결 우선 점검
+- Admin/submit 경로 상태코드 불일치: 라우팅/권한/메서드 정책 회귀 가능성, 최근 배포 변경점 우선 확인
+- 2회 연속 smoke 실패: 즉시 롤백 후 원인 분석
+
 ## 4) Rollback
 
 1. Railway에서 직전 안정 배포로 롤백
 2. 롤백 후 점검
-- `/healthz/` 200
+- `/healthz/live/` 200
+- `/healthz/ready/` 200
 - `/admin-dashboard/` 접근
 - 메일/문의 제출 경로 동작 확인
 

@@ -1,8 +1,5 @@
-# railway-deployment-readiness Specification
+## MODIFIED Requirements
 
-## Purpose
-Define runtime/deploy readiness checks for Railway deployment and operation verification.
-## Requirements
 ### Requirement: Railway deployment MUST provide a dedicated health endpoint
 The system MUST expose a dedicated health endpoint set for deployment and runtime verification without depending on landing-page rendering, and MUST separate liveness and readiness semantics.
 
@@ -26,32 +23,6 @@ The system MUST expose a dedicated health endpoint set for deployment and runtim
 - **THEN** the deployment pipeline MUST call `/healthz/live` and `/healthz/ready` as required checks
 - **AND** deployment verification MUST fail if either endpoint does not return HTTP 200
 
-### Requirement: Production startup MUST enforce required environment validation
-The system MUST validate required runtime configuration at startup in production mode to prevent partially configured releases.
-
-#### Scenario: Required environment values are missing in production mode
-- **WHEN** `DEBUG=False` and at least one required setting is missing
-- **THEN** the application MUST fail fast during startup
-- **AND** it MUST emit a clear validation error identifying missing configuration keys
-
-#### Scenario: Required environment values are complete in production mode
-- **WHEN** `DEBUG=False` and all required settings are provided
-- **THEN** the application MUST start successfully
-- **AND** runtime service initialization MUST continue without validation errors
-
-### Requirement: Deployment readiness MUST support pre-deploy command checks
-The system MUST provide a management command to validate deployment prerequisites before release.
-
-#### Scenario: Pre-deploy check command succeeds
-- **WHEN** operator or CI runs deployment readiness command with valid configuration
-- **THEN** the command MUST verify critical prerequisites including database connectivity and mail configuration contract
-- **AND** the command MUST exit with success status
-
-#### Scenario: Pre-deploy check command fails
-- **WHEN** deployment readiness command detects invalid configuration
-- **THEN** the command MUST exit with non-zero status
-- **AND** the command output MUST include actionable failure reasons for operators
-
 ### Requirement: Post-deploy checks MUST be automatable in CI/CD
 The system MUST support automated post-deploy verification for core operational routes and submit flows using route-specific expected status codes.
 
@@ -66,4 +37,3 @@ The system MUST support automated post-deploy verification for core operational 
 - **WHEN** a route response differs from expected status code
 - **THEN** the smoke check output MUST include the route, expected status code, and actual status code
 - **AND** operators MUST be able to decide retry vs rollback from the output alone
-

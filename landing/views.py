@@ -1,7 +1,10 @@
+import json
+import os
 from datetime import date, datetime, timedelta
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db import connections
 from django.db.models import Count
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -18,6 +21,7 @@ from .ax_tool_stack import (
     diagnosis_question_keys,
 )
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
+from .deploy_validation import collect_readiness_errors
 from .forms import ContactForm, LeadMagnetForm
 from .lead_magnet_sections import (
     build_lead_magnet_section_ast,
@@ -1140,14 +1144,100 @@ def terms(request: HttpRequest) -> HttpResponse:
     return render(request, "landing/terms.html", {"content": SHARED_CONTENT})
 
 
+def _readiness_check_items() -> list[dict[str, object]]:
+    items: list[dict[str, object]] = []
+
+    runtime_errors = collect_readiness_errors(settings)
+    items.append(
+        {
+            "name": "runtime_contract",
+            "ok": not runtime_errors,
+            "detail": "; ".join(runtime_errors) if runtime_errors else "ok",
+        }
+    )
+
+    try:
+        with connections["default"].cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+        items.append({"name": "database", "ok": True, "detail": "ok"})
+    except Exception as exc:
+        items.append(
+            {
+                "name": "database",
+                "ok": False,
+                "detail": f"Database connectivity check failed: {exc}",
+            }
+        )
+
+    return items
+
+
+def _read_status_history() -> list[dict]:
+    status_file = os.getenv("DEPLOY_STATUS_FILE", "/tmp/quroom-deploy-status.json").strip()
+    if not status_file:
+        return []
+
+    try:
+        with open(status_file, encoding="utf-8") as fp:
+            payload = json.load(fp)
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    if isinstance(payload, list):
+        return [item for item in payload if isinstance(item, dict)]
+    if isinstance(payload, dict):
+        return [payload]
+    return []
+
+
+def _latest_status_by_type(check_type: str) -> dict | None:
+    items = [
+        item
+        for item in _read_status_history()
+        if str(item.get("check_type", "")).strip() == check_type
+    ]
+    if not items:
+        return None
+    items.sort(key=lambda item: str(item.get("timestamp", "")), reverse=True)
+    return items[0]
+
+
 def healthz(request: HttpRequest) -> HttpResponse:
-    return JsonResponse({"status": "ok"})
+    readiness_items = _readiness_check_items()
+    readiness_ok = all(bool(item["ok"]) for item in readiness_items)
+    return JsonResponse(
+        {
+            "status": "ok" if readiness_ok else "degraded",
+            "liveness": "ok",
+            "readiness": "ok" if readiness_ok else "failed",
+        }
+    )
+
+
+def healthz_live(request: HttpRequest) -> HttpResponse:
+    return JsonResponse({"status": "ok", "check": "liveness"})
+
+
+def healthz_ready(request: HttpRequest) -> HttpResponse:
+    readiness_items = _readiness_check_items()
+    readiness_ok = all(bool(item["ok"]) for item in readiness_items)
+    return JsonResponse(
+        {
+            "status": "ok" if readiness_ok else "failed",
+            "check": "readiness",
+            "items": readiness_items,
+        },
+        status=200 if readiness_ok else 503,
+    )
 
 
 @staff_member_required
 def admin_operation_links(request: HttpRequest) -> HttpResponse:
     links = [
         {"label": "헬스체크", "url": reverse("landing:healthz")},
+        {"label": "Liveness", "url": reverse("landing:healthz_live")},
+        {"label": "Readiness", "url": reverse("landing:healthz_ready")},
         {"label": "문의 대시보드", "url": reverse("landing:admin_dashboard")},
         {"label": "홈페이지", "url": reverse("landing:index")},
         {"label": "무료 진단", "url": reverse("landing:free_diagnosis")},
@@ -1156,7 +1246,28 @@ def admin_operation_links(request: HttpRequest) -> HttpResponse:
             "url": reverse("landing:lead_magnet_report_preview"),
         },
     ]
-    return render(request, "landing/admin_operation_links.html", {"links": links})
+
+    deploy_check = _latest_status_by_type("deploy_check")
+    smoke_check = _latest_status_by_type("smoke_check")
+    if smoke_check is None:
+        smoke_check = _latest_status_by_type("post_deploy_smoke")
+
+    return render(
+        request,
+        "landing/admin_operation_links.html",
+        {
+            "links": links,
+            "check_summary": {
+                "deploy_check": deploy_check,
+                "smoke_check": smoke_check,
+                "checked_at": timezone.now(),
+            },
+            "check_commands": {
+                "deploy_check": "./scripts/deploy-check.sh",
+                "smoke_check": 'BASE_URL="https://<domain>" ./scripts/post-deploy-smoke.sh',
+            },
+        },
+    )
 
 
 @staff_member_required

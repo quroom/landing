@@ -10,4 +10,5 @@ if [[ ! -x "${VENV_PYTHON}" ]]; then
 fi
 
 cd "${ROOT_DIR}"
+export DEPLOY_STATUS_FILE="${DEPLOY_STATUS_FILE:-/tmp/quroom-deploy-status.json}"
 "${VENV_PYTHON}" manage.py check_deploy_ready

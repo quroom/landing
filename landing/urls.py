@@ -7,6 +7,8 @@ app_name = "landing"
 urlpatterns = [
     path("", views.index, name="index"),
     path("healthz/", views.healthz, name="healthz"),
+    path("healthz/live/", views.healthz_live, name="healthz_live"),
+    path("healthz/ready/", views.healthz_ready, name="healthz_ready"),
     path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path(
         "admin-operation-links/",

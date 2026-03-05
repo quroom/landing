@@ -14,6 +14,41 @@
 
     <p class="mt-3 text-sm text-navy/70">배포 직후 확인이 필요한 URL을 한 번에 열 수 있습니다.</p>
 
+    <section class="mt-6 grid gap-3 md:grid-cols-2">
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <h2 class="text-sm font-semibold text-navy">최근 Deploy Check</h2>
+        {% if check_summary.deploy_check %}
+        <p class="mt-2 text-sm text-navy/80">
+          상태:
+          <strong class="{% if check_summary.deploy_check.status == 'passed' %}text-emerald-700{% else %}text-rose-700{% endif %}">
+            {{ check_summary.deploy_check.status }}
+          </strong>
+        </p>
+        <p class="mt-1 text-xs text-navy/60">실행 시각: {{ check_summary.deploy_check.timestamp|default:"-" }}</p>
+        {% else %}
+        <p class="mt-2 text-sm text-navy/70">아직 결과 없음</p>
+        {% endif %}
+      </article>
+
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <h2 class="text-sm font-semibold text-navy">최근 Smoke Check</h2>
+        {% if check_summary.smoke_check %}
+        <p class="mt-2 text-sm text-navy/80">
+          상태:
+          <strong class="{% if check_summary.smoke_check.status == 'passed' %}text-emerald-700{% else %}text-rose-700{% endif %}">
+            {{ check_summary.smoke_check.status }}
+          </strong>
+        </p>
+        <p class="mt-1 text-xs text-navy/60">실행 시각: {{ check_summary.smoke_check.timestamp|default:"-" }}</p>
+        {% if check_summary.smoke_check.failed_items %}
+        <p class="mt-1 text-xs text-rose-700">실패 항목: {{ check_summary.smoke_check.failed_items|join:", " }}</p>
+        {% endif %}
+        {% else %}
+        <p class="mt-2 text-sm text-navy/70">아직 결과 없음</p>
+        {% endif %}
+      </article>
+    </section>
+
     <section class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
       <ul class="space-y-2">
         {% for link in links %}
@@ -23,6 +58,12 @@
         </li>
         {% endfor %}
       </ul>
+    </section>
+
+    <section class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
+      <h2 class="text-sm font-semibold text-navy">점검 재실행 커맨드</h2>
+      <p class="mt-2 rounded-lg bg-fog px-3 py-2 text-xs text-navy"><code>{{ check_commands.deploy_check }}</code></p>
+      <p class="mt-2 rounded-lg bg-fog px-3 py-2 text-xs text-navy"><code>{{ check_commands.smoke_check }}</code></p>
     </section>
   </section>
 </main>

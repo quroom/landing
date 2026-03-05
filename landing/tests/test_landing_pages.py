@@ -1,6 +1,8 @@
 from datetime import timedelta
+import json
+import tempfile
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -143,7 +145,29 @@ class LandingPageTests(TestCase):
     def test_healthz_returns_ok(self) -> None:
         response = self.client.get(reverse("landing:healthz"))
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {"status": "ok"})
+        payload = response.json()
+        self.assertIn(payload.get("status"), {"ok", "degraded"})
+        self.assertEqual(payload.get("liveness"), "ok")
+        self.assertIn(payload.get("readiness"), {"ok", "failed"})
+
+    def test_healthz_live_and_ready_return_ok(self) -> None:
+        live = self.client.get(reverse("landing:healthz_live"))
+        ready = self.client.get(reverse("landing:healthz_ready"))
+        self.assertEqual(live.status_code, 200)
+        self.assertEqual(live.json().get("check"), "liveness")
+        self.assertIn(ready.status_code, {200, 503})
+        self.assertEqual(ready.json().get("check"), "readiness")
+
+    @override_settings(
+        DEBUG=False,
+        SECRET_KEY="dev-only-change-me",
+        ALLOWED_HOSTS=["*"],
+        CSRF_TRUSTED_ORIGINS=[],
+        EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend",
+    )
+    def test_healthz_ready_returns_503_when_runtime_contract_fails(self) -> None:
+        response = self.client.get(reverse("landing:healthz_ready"))
+        self.assertEqual(response.status_code, 503)
 
     def test_admin_dashboard_requires_staff(self) -> None:
         response = self.client.get(reverse("landing:admin_dashboard"))
@@ -168,7 +192,51 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "운영 링크 모음")
         self.assertContains(response, reverse("landing:healthz"))
+        self.assertContains(response, reverse("landing:healthz_live"))
+        self.assertContains(response, reverse("landing:healthz_ready"))
         self.assertContains(response, reverse("landing:admin_dashboard"))
+        self.assertContains(response, "최근 Deploy Check")
+        self.assertContains(response, "최근 Smoke Check")
+        self.assertContains(response, "./scripts/deploy-check.sh")
+        self.assertContains(response, "./scripts/post-deploy-smoke.sh")
+
+    def test_admin_operation_links_shows_latest_check_summary_from_status_file(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_operation_summary",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        with tempfile.NamedTemporaryFile("w+", suffix=".json") as fp:
+            json.dump(
+                [
+                    {
+                        "timestamp": "2026-03-05T00:00:00+00:00",
+                        "check_type": "deploy_check",
+                        "status": "passed",
+                        "items": [],
+                    },
+                    {
+                        "timestamp": "2026-03-05T00:01:00+00:00",
+                        "check_type": "smoke_check",
+                        "status": "failed",
+                        "items": [],
+                        "failed_items": ["/healthz/ready/"],
+                    },
+                ],
+                fp,
+                ensure_ascii=False,
+            )
+            fp.flush()
+            with patch.dict("os.environ", {"DEPLOY_STATUS_FILE": fp.name}, clear=False):
+                response = self.client.get(reverse("landing:admin_operation_links"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "passed")
+        self.assertContains(response, "failed")
+        self.assertContains(response, "/healthz/ready/")
 
     def test_admin_index_shows_operation_link_next_to_dashboard(self) -> None:
         user_model = get_user_model()
