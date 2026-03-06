@@ -36,6 +36,7 @@
 
     var now = new Date();
     var totalMonths = ranges.reduce(function (sum, range) {
+      if (range.count_for_career === false) return sum;
       var start = parseDate(range.start);
       var end = range.end ? parseDate(range.end) : now;
       if (!start || !end) return sum;

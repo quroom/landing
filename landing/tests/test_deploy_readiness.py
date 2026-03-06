@@ -1,3 +1,5 @@
+from io import StringIO
+
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import SimpleTestCase, TestCase, override_settings
@@ -77,7 +79,7 @@ class DeployReadinessCommandTests(TestCase):
         EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend",
     )
     def test_check_deploy_ready_passes_in_default_debug_mode(self) -> None:
-        call_command("check_deploy_ready")
+        call_command("check_deploy_ready", stdout=StringIO(), stderr=StringIO())
 
     @override_settings(
         DEBUG=False,
@@ -88,4 +90,4 @@ class DeployReadinessCommandTests(TestCase):
     )
     def test_check_deploy_ready_fails_for_invalid_production_settings(self) -> None:
         with self.assertRaises(CommandError):
-            call_command("check_deploy_ready")
+            call_command("check_deploy_ready", stdout=StringIO(), stderr=StringIO())

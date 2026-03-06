@@ -100,6 +100,10 @@ If both pass, push to GitHub.
   - `DJANGO_DEBUG=1`
   - `DJANGO_EMAIL_BACKEND=smtp`
   - `DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG=1`
+- `.env.deploy`: production deployment template
+  - `DJANGO_DEBUG=0`
+  - real SMTP backend + async enabled
+  - domain/CSRF/secret must be replaced before use
 - Production should NOT use local files; set variables in Railway.
 
 #### Profile switch commands
@@ -107,6 +111,8 @@ If both pass, push to GitHub.
   - `cp .env.local .env`
 - Apply debug SMTP test profile:
   - `cp .env.debug .env`
+- Create deploy template copy (local dry run only):
+  - `cp .env.deploy .env`
 - (optional) load variables into current shell:
   - `set -a; source .env; set +a`
 

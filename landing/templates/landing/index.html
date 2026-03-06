@@ -360,7 +360,7 @@
   </footer>
   <script id="career-data" type="application/json">[
 {% for range in career_ranges %}
-{"start":"{{ range.start }}","end":{% if range.end %}"{{ range.end }}"{% else %}null{% endif %}}{% if not forloop.last %},{% endif %}
+{"start":"{{ range.start }}","end":{% if range.end %}"{{ range.end }}"{% else %}null{% endif %},"count_for_career":{% if range.count_for_career is False %}false{% else %}true{% endif %}}{% if not forloop.last %},{% endif %}
 {% endfor %}
 ]
   </script>

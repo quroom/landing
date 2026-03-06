@@ -278,6 +278,8 @@ def _career_duration() -> str:
     today = date.today()
     total_months = 0
     for item in CAREER_RANGES:
+        if not item.get("count_for_career", True):
+            continue
         start = _parse_date(item["start"])
         end = _parse_date(item["end"]) if item["end"] else today
         total_months += _months_between(start, end)

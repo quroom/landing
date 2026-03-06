@@ -24,7 +24,11 @@ require_module "ruff"
 require_module "djlint"
 
 run_djlint_check_per_file() {
-  mapfile -t template_files < <(rg --files landing/templates -g "*.html" | sort)
+  if command -v rg >/dev/null 2>&1; then
+    mapfile -t template_files < <(rg --files landing/templates -g "*.html" | sort)
+  else
+    mapfile -t template_files < <(find landing/templates -type f -name "*.html" | sort)
+  fi
   if [[ ${#template_files[@]} -eq 0 ]]; then
     echo "[format-check] No template files found under landing/templates"
     return 0

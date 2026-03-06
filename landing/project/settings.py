@@ -1,4 +1,5 @@
 import os
+from importlib.util import find_spec
 from pathlib import Path
 
 from landing.deploy_validation import collect_runtime_validation_errors
@@ -27,7 +28,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -84,12 +84,26 @@ STATICFILES_DIRS = [
     REPO_ROOT / "images",
 ]
 STATIC_ROOT = REPO_ROOT / "staticfiles"
+
+if DEBUG:
+    staticfiles_storage_backend = (
+        "django.contrib.staticfiles.storage.StaticFilesStorage"
+    )
+else:
+    if find_spec("whitenoise") is None:
+        raise RuntimeError(
+            "whitenoise is required when DJANGO_DEBUG=0. "
+            "Install requirements and redeploy."
+        )
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+    staticfiles_storage_backend = "whitenoise.storage.CompressedStaticFilesStorage"
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": staticfiles_storage_backend,
     },
 }
 
