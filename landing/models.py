@@ -33,7 +33,9 @@ class ContactInquiry(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.email}) - {self.get_email_delivery_status_display()}"
+        return (
+            f"{self.name} ({self.email}) - {self.get_email_delivery_status_display()}"
+        )
 
 
 class FunnelEvent(models.Model):

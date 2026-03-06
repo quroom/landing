@@ -1174,7 +1174,9 @@ def _readiness_check_items() -> list[dict[str, object]]:
 
 
 def _read_status_history() -> list[dict]:
-    status_file = os.getenv("DEPLOY_STATUS_FILE", "/tmp/quroom-deploy-status.json").strip()
+    status_file = os.getenv(
+        "DEPLOY_STATUS_FILE", "/tmp/quroom-deploy-status.json"
+    ).strip()
     if not status_file:
         return []
 
@@ -1403,7 +1405,9 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
     user_mail_sent = event_counts["lead_magnet_email_sent_user"]
     legacy_mail_sent = event_counts["lead_magnet_email_sent_legacy"]
     # Backward compatibility for historical data before *_user/*_admin split.
-    effective_user_mail_sent = user_mail_sent if user_mail_sent > 0 else legacy_mail_sent
+    effective_user_mail_sent = (
+        user_mail_sent if user_mail_sent > 0 else legacy_mail_sent
+    )
     if submit_count > 0:
         effective_user_mail_sent = min(effective_user_mail_sent, submit_count)
 
@@ -1419,9 +1423,7 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "mail_sent_effective_user": effective_user_mail_sent,
         "is_legacy_mail_fallback": user_mail_sent == 0 and legacy_mail_sent > 0,
         "contact_submit": event_counts["lead_magnet_contact_submit"],
-        "submit_rate": _rate(
-            effective_submit_count, event_counts["lead_magnet_start"]
-        ),
+        "submit_rate": _rate(effective_submit_count, event_counts["lead_magnet_start"]),
         "mail_success_rate": _rate(
             effective_user_mail_sent,
             effective_submit_count,

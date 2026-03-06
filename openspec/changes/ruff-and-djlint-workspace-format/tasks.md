@@ -18,6 +18,6 @@
 
 ## 4. Validation
 
-- [ ] 4.1 Run format commands on representative Python and template files to confirm deterministic output.
-- [ ] 4.2 Run full verification sequence to ensure formatting integration does not regress existing checks.
+- [x] 4.1 Run format commands on representative Python and template files to confirm deterministic output.
+- [x] 4.2 Run full verification sequence to ensure formatting integration does not regress existing checks.
 - [x] 4.3 Capture known limitations and follow-up items for incremental tightening of formatting scope.

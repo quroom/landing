@@ -1,12 +1,12 @@
-from datetime import timedelta
 import json
 import tempfile
+from datetime import timedelta
+from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 from django.utils import timezone
-from unittest.mock import patch
 
 from landing.content import CAREER_RANGES
 from landing.models import ContactInquiry, FunnelEvent
@@ -98,7 +98,9 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "Top 5")
         self.assertNotContains(response, "전체 4개 항목 보기")
 
-    def test_index_applies_recommended_inquiry_type_from_diagnosis_context(self) -> None:
+    def test_index_applies_recommended_inquiry_type_from_diagnosis_context(
+        self,
+    ) -> None:
         response = self.client.get(
             reverse("landing:index"),
             {
@@ -128,7 +130,9 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "외국인 개발자 제공 서비스")
         self.assertContains(response, "개발사 네트워크 연결 지원")
-        self.assertContains(response, "외국인 개발자 커리어/네트워크 관련 정보 메일 수신")
+        self.assertContains(
+            response, "외국인 개발자 커리어/네트워크 관련 정보 메일 수신"
+        )
         self.assertContains(response, "개발사 네트워크 연결")
         self.assertTrue(
             FunnelEvent.objects.filter(
@@ -200,7 +204,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "./scripts/deploy-check.sh")
         self.assertContains(response, "./scripts/post-deploy-smoke.sh")
 
-    def test_admin_operation_links_shows_latest_check_summary_from_status_file(self) -> None:
+    def test_admin_operation_links_shows_latest_check_summary_from_status_file(
+        self,
+    ) -> None:
         user_model = get_user_model()
         staff = user_model.objects.create_user(
             username="staff_operation_summary",
@@ -298,7 +304,9 @@ class LandingPageTests(TestCase):
         )
         self.client.force_login(staff)
 
-        response = self.client.get(reverse("landing:admin_dashboard"), {"range": "today"})
+        response = self.client.get(
+            reverse("landing:admin_dashboard"), {"range": "today"}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "오늘 문의")
         self.assertNotContains(response, "오래된 문의")
@@ -424,10 +432,14 @@ class LandingPageTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         inquiry.refresh_from_db()
-        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS)
+        self.assertEqual(
+            inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.SUCCESS
+        )
 
     @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
-    def test_admin_resend_inquiry_keeps_failed_on_send_error(self, _send_mail: object) -> None:
+    def test_admin_resend_inquiry_keeps_failed_on_send_error(
+        self, _send_mail: object
+    ) -> None:
         user_model = get_user_model()
         staff = user_model.objects.create_user(
             username="staff4",
@@ -448,5 +460,7 @@ class LandingPageTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         inquiry.refresh_from_db()
-        self.assertEqual(inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED)
+        self.assertEqual(
+            inquiry.email_delivery_status, ContactInquiry.DeliveryStatus.FAILED
+        )
         self.assertIn("smtp failed", inquiry.email_error)

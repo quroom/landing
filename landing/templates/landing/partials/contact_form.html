@@ -4,68 +4,73 @@
       {{ status_message }}
     </div>
   {% endif %}
-
-  <form hx-post="{% url 'landing:contact_submit' %}" hx-target="#contact-form-wrap" hx-swap="innerHTML" hx-indicator="#contact-loading" class="space-y-3">
+  <form hx-post="{% url 'landing:contact_submit' %}"
+        hx-target="#contact-form-wrap"
+        hx-swap="innerHTML"
+        hx-indicator="#contact-loading"
+        class="space-y-3">
     {% csrf_token %}
     {{ form.page_key }}
     {{ form.lead_source }}
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
       {{ form.name }}
       {% if form.name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.name.errors.0 }}</p>{% endif %}
     </div>
-
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
       {{ form.company_name }}
       {% if form.company_name.errors %}<p class="mt-1 text-xs text-red-600">{{ form.company_name.errors.0 }}</p>{% endif %}
     </div>
-
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.contact.id_for_label }}">{{ form.contact.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.contact.id_for_label }}">{{ form.contact.label }}</label>
       {{ form.contact }}
       {% if form.contact.errors %}<p class="mt-1 text-xs text-red-600">{{ form.contact.errors.0 }}</p>{% endif %}
     </div>
-
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
       {{ form.email }}
       {% if form.email.errors %}<p class="mt-1 text-xs text-red-600">{{ form.email.errors.0 }}</p>{% endif %}
     </div>
-
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.inquiry_type.id_for_label }}">{{ form.inquiry_type.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.inquiry_type.id_for_label }}">{{ form.inquiry_type.label }}</label>
       {{ form.inquiry_type }}
       {% if form.inquiry_type.errors %}<p class="mt-1 text-xs text-red-600">{{ form.inquiry_type.errors.0 }}</p>{% endif %}
     </div>
-
     <div>
-      <label class="mb-1 block text-xs font-medium" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+      <label class="mb-1 block text-xs font-medium"
+             for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
       {{ form.message }}
       {% if form.message.errors %}<p class="mt-1 text-xs text-red-600">{{ form.message.errors.0 }}</p>{% endif %}
     </div>
-
-    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_all.id_for_label }}">
+    <label class="flex items-start gap-2 text-xs text-navy/75"
+           for="{{ form.agree_all.id_for_label }}">
       {{ form.agree_all }}
       <span>{{ form.agree_all.label }}</span>
     </label>
-
-    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_privacy.id_for_label }}">
+    <label class="flex items-start gap-2 text-xs text-navy/75"
+           for="{{ form.agree_privacy.id_for_label }}">
       {{ form.agree_privacy }}
       <span>{{ form.agree_privacy.label }}</span>
     </label>
     {% if form.agree_privacy.errors %}<p class="text-xs text-red-600">{{ form.agree_privacy.errors.0 }}</p>{% endif %}
-
-    <label class="flex items-start gap-2 text-xs text-navy/75" for="{{ form.agree_marketing.id_for_label }}">
+    <label class="flex items-start gap-2 text-xs text-navy/75"
+           for="{{ form.agree_marketing.id_for_label }}">
       {{ form.agree_marketing }}
       <span>{{ form.agree_marketing.label }}</span>
     </label>
     <p class="text-[11px] text-navy/55">선택 동의는 문의 접수와 무관하며, 언제든 수신거부할 수 있습니다.</p>
-
-    <button type="submit" class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">
+    <button type="submit"
+            class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">
       문의 보내기
     </button>
-    <div id="contact-loading" class="htmx-indicator rounded-lg bg-sky/10 px-3 py-2 text-xs text-sky">
+    <div id="contact-loading"
+         class="htmx-indicator rounded-lg bg-sky/10 px-3 py-2 text-xs text-sky">
       처리 중입니다... 잠시만 기다려 주세요.
       <div class="mt-2 h-1 w-full overflow-hidden rounded bg-sky/20">
         <div class="loading-bar h-full w-1/3 bg-sky"></div>

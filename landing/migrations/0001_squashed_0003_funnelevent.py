@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     replaces = [
         ("landing", "0001_initial"),
         ("landing", "0002_contactinquiry_marketing_opt_in"),

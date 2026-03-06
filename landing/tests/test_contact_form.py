@@ -174,7 +174,9 @@ class ContactFormTests(TestCase):
             event_name="lead_magnet_submit_user",
             lead_source="founder_lead_magnet",
         ).latest("created_at")
-        self.assertEqual(submit_event.metadata.get("lead_context"), "lead_magnet_diagnosis")
+        self.assertEqual(
+            submit_event.metadata.get("lead_context"), "lead_magnet_diagnosis"
+        )
         user_mail_event = FunnelEvent.objects.filter(
             event_name="lead_magnet_email_sent_user",
             lead_source="founder_lead_magnet",
@@ -201,7 +203,9 @@ class ContactFormTests(TestCase):
         self.assertContains(response, "필수 항목을 확인해 주세요.", status_code=400)
         self.assertEqual(len(mail.outbox), 0)
 
-    def test_lead_magnet_submit_perfect_score_email_matches_preview_contract(self) -> None:
+    def test_lead_magnet_submit_perfect_score_email_matches_preview_contract(
+        self,
+    ) -> None:
         payload = {
             "name": "만점 사용자",
             "email": "perfect@example.com",

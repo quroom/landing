@@ -119,6 +119,5 @@ _runtime_validation_errors = collect_runtime_validation_errors(globals())
 if _runtime_validation_errors:
     error_lines = "\n".join(f"- {message}" for message in _runtime_validation_errors)
     raise RuntimeError(
-        "Production runtime configuration validation failed:\n"
-        f"{error_lines}"
+        f"Production runtime configuration validation failed:\n{error_lines}"
     )

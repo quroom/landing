@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-
 SMTP_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 LOCAL_ONLY_EMAIL_BACKENDS = {
     "django.core.mail.backends.console.EmailBackend",
@@ -11,13 +10,17 @@ LOCAL_ONLY_EMAIL_BACKENDS = {
 }
 
 
-def _get_setting(settings_obj: object | Mapping[str, object], key: str, default: object) -> object:
+def _get_setting(
+    settings_obj: object | Mapping[str, object], key: str, default: object
+) -> object:
     if isinstance(settings_obj, Mapping):
         return settings_obj.get(key, default)
     return getattr(settings_obj, key, default)
 
 
-def collect_runtime_validation_errors(settings_obj: object | Mapping[str, object]) -> list[str]:
+def collect_runtime_validation_errors(
+    settings_obj: object | Mapping[str, object],
+) -> list[str]:
     debug = bool(_get_setting(settings_obj, "DEBUG", True))
     if debug:
         return []
@@ -47,7 +50,9 @@ def collect_runtime_validation_errors(settings_obj: object | Mapping[str, object
             "EMAIL_HOST": _get_setting(settings_obj, "EMAIL_HOST", ""),
             "EMAIL_PORT": _get_setting(settings_obj, "EMAIL_PORT", ""),
             "EMAIL_HOST_USER": _get_setting(settings_obj, "EMAIL_HOST_USER", ""),
-            "EMAIL_HOST_PASSWORD": _get_setting(settings_obj, "EMAIL_HOST_PASSWORD", ""),
+            "EMAIL_HOST_PASSWORD": _get_setting(
+                settings_obj, "EMAIL_HOST_PASSWORD", ""
+            ),
             "DEFAULT_FROM_EMAIL": _get_setting(settings_obj, "DEFAULT_FROM_EMAIL", ""),
         }
         missing = [key for key, value in required_smtp_values.items() if not value]

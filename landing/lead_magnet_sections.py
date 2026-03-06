@@ -46,7 +46,9 @@ def attach_diagnosis_contact_context(href: str, context: dict | None = None) -> 
 def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
     grade = payload.get("grade", "B")
     weakest = payload.get("weakest_insight") or payload.get("weakest_category_insight")
-    category_insights = payload.get("category_insights") or payload.get("insights") or []
+    category_insights = (
+        payload.get("category_insights") or payload.get("insights") or []
+    )
     if not weakest:
         weakest_key = payload.get("weakest_axis_key")
         weakest = next(
@@ -162,7 +164,9 @@ def render_sections_to_text(
 
             if include_all_categories:
                 lines.append("- 다른 진단 포인트(전체)")
-                for category in section.get("all_insights") or section.get("all_categories") or []:
+                for category in (
+                    section.get("all_insights") or section.get("all_categories") or []
+                ):
                     grade_label = (
                         f" ({category.get('grade')})"
                         if category.get("grade_visible")

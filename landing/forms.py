@@ -1,6 +1,10 @@
 from django import forms
 
-from .ax_tool_stack import DIAGNOSIS_QUESTION_META, DIAGNOSIS_QUESTIONS, diagnosis_question_keys
+from .ax_tool_stack import (
+    DIAGNOSIS_QUESTION_META,
+    DIAGNOSIS_QUESTIONS,
+    diagnosis_question_keys,
+)
 
 
 class ContactForm(forms.Form):
@@ -103,10 +107,12 @@ class ContactForm(forms.Form):
 
         if normalized_key == "foreign_developers":
             self.fields["inquiry_type"].choices = self.FOREIGN_INQUIRY_CHOICES
-            self.fields["message"].widget.attrs[
-                "placeholder"
-            ] = "희망 직무/기술 스택, 현재 상황, 필요한 연결 지원을 작성해 주세요."
-            self.fields["agree_marketing"].label = (
+            self.fields["message"].widget.attrs["placeholder"] = (
+                "희망 직무/기술 스택, 현재 상황, 필요한 연결 지원을 작성해 주세요."
+            )
+            self.fields[
+                "agree_marketing"
+            ].label = (
                 "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
             )
 

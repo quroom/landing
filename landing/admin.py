@@ -49,4 +49,10 @@ class FunnelEventAdmin(admin.ModelAdmin):
     list_display = ("event_name", "page_key", "lead_source", "created_at")
     list_filter = ("event_name", "page_key", "lead_source", "created_at")
     search_fields = ("event_name", "page_key", "lead_source")
-    readonly_fields = ("event_name", "page_key", "lead_source", "metadata", "created_at")
+    readonly_fields = (
+        "event_name",
+        "page_key",
+        "lead_source",
+        "metadata",
+        "created_at",
+    )

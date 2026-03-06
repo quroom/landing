@@ -23,13 +23,33 @@ require_module() {
 require_module "ruff"
 require_module "djlint"
 
+run_djlint_reformat_per_file() {
+  mapfile -t template_files < <(rg --files landing/templates -g "*.html" | sort)
+  if [[ ${#template_files[@]} -eq 0 ]]; then
+    echo "[format-apply] No template files found under landing/templates"
+    return 0
+  fi
+
+  local file
+  local rc
+  for file in "${template_files[@]}"; do
+    set +e
+    "${VENV_PYTHON}" -m djlint --reformat "${file}"
+    rc=$?
+    set -e
+    if [[ ${rc} -gt 1 ]]; then
+      return "${rc}"
+    fi
+  done
+}
+
 echo "[format-apply] Ruff lint fix"
 "${VENV_PYTHON}" -m ruff check --fix .
 
 echo "[format-apply] Ruff format"
 "${VENV_PYTHON}" -m ruff format .
 
-echo "[format-apply] djLint reformat"
-"${VENV_PYTHON}" -m djlint --reformat landing/templates
+echo "[format-apply] djLint reformat (file-by-file)"
+run_djlint_reformat_per_file
 
 echo "Format apply completed."

@@ -46,7 +46,9 @@ class Command(BaseCommand):
             "status": "failed" if failed_checks else "passed",
             "items": checks,
         }
-        status_file = os.getenv("DEPLOY_STATUS_FILE", "/tmp/quroom-deploy-status.json").strip()
+        status_file = os.getenv(
+            "DEPLOY_STATUS_FILE", "/tmp/quroom-deploy-status.json"
+        ).strip()
         if status_file:
             history: list[dict[str, object]] = []
             try:
@@ -76,5 +78,7 @@ class Command(BaseCommand):
             raise CommandError("Deployment readiness check failed.")
 
         for check in checks:
-            self.stdout.write(self.style.SUCCESS(f"- [OK] {check['name']}: {check['detail']}"))
+            self.stdout.write(
+                self.style.SUCCESS(f"- [OK] {check['name']}: {check['detail']}")
+            )
         self.stdout.write(self.style.SUCCESS("Deployment readiness check passed."))

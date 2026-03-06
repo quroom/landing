@@ -13,7 +13,9 @@ class DeployValidationTests(SimpleTestCase):
         errors = collect_runtime_validation_errors({"DEBUG": True})
         self.assertEqual(errors, [])
 
-    def test_collect_runtime_validation_errors_detects_production_contract(self) -> None:
+    def test_collect_runtime_validation_errors_detects_production_contract(
+        self,
+    ) -> None:
         errors = collect_runtime_validation_errors(
             {
                 "DEBUG": False,

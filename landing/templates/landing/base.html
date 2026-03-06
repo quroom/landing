@@ -1,26 +1,33 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너{% endblock %}</title>
-  <meta name="description" content="{% block description %}큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발자의 실무 연계를 지원합니다.{% endblock %}" />
-  <meta name="keywords" content="큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발" />
-  <meta property="og:title" content="큐룸(QuRoom) 공식 홈페이지" />
-  <meta property="og:description" content="아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="{% static 'logo.jpg' %}" />
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="icon" href="{% static 'logo.jpg' %}" />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" />
-  <link rel="stylesheet" href="{% static 'landing/css/site.css' %}" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너{% endblock %}
+    </title>
+    <meta name="description"
+          content="{% block description %}큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발자의 실무 연계를 지원합니다.{% endblock %}" />
+    <meta name="keywords"
+          content="큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발" />
+    <meta property="og:title" content="큐룸(QuRoom) 공식 홈페이지" />
+    <meta property="og:description"
+          content="아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'logo.jpg' %}" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="icon" href="{% static 'logo.jpg' %}" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="{% static 'landing/css/site.css' %}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
     tailwind.config = {
       theme: {
         extend: {
@@ -34,20 +41,21 @@
         }
       }
     };
-  </script>
-  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-  {% if ga4_measurement_id %}
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga4_measurement_id }}"></script>
-  <script>
+    </script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    {% if ga4_measurement_id %}
+      <script async
+              src="https://www.googletagmanager.com/gtag/js?id={{ ga4_measurement_id }}"></script>
+      <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag("js", new Date());
     gtag("config", "{{ ga4_measurement_id }}");
-  </script>
-  {% endif %}
-</head>
-<body class="bg-fog text-navy antialiased">
-  {% block body %}{% endblock %}
-  <script src="{% static 'landing/js/site.js' %}"></script>
-</body>
+      </script>
+    {% endif %}
+  </head>
+  <body class="bg-fog text-navy antialiased">
+    {% block body %}{% endblock %}
+    <script src="{% static 'landing/js/site.js' %}"></script>
+  </body>
 </html>

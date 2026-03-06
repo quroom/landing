@@ -31,7 +31,9 @@ def _extract_grade_from_report(report_text: str) -> str:
 
 
 def _extract_weakest_axis_from_report(report_text: str) -> str:
-    key_match = re.search(r"핵심 보완 (?:카테고리|포인트)[:\s]+([a-z_]+)\s*\(", report_text)
+    key_match = re.search(
+        r"핵심 보완 (?:카테고리|포인트)[:\s]+([a-z_]+)\s*\(", report_text
+    )
     if key_match and key_match.group(1) in DIAGNOSIS_AXES:
         return key_match.group(1)
 
@@ -205,7 +207,9 @@ def _build_lead_magnet_user_email(
             if section.get("id") in {"summary", "one_action"}
         ]
     section_map = {item.get("id"): item for item in sections}
-    weakest_section = section_map.get("weakest") or section_map.get("weakest_category", {})
+    weakest_section = section_map.get("weakest") or section_map.get(
+        "weakest_category", {}
+    )
     one_action_section = section_map.get("one_action", {})
     tools_section = section_map.get("tools", {})
     next_action_section = section_map.get("next_action", {})
@@ -246,7 +250,7 @@ def _build_lead_magnet_user_email(
             "<div style='border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;'>"
             "<p style='margin: 0 0 8px; font-weight: 700;'>핵심 보완 포인트</p>"
             f"<p style='margin: 0; font-weight: 600;'>{escape(weakest_insight.get('label', '-'))}"
-            f"{f' ({escape(weakest_insight.get('grade', ''))})' if weakest_insight.get('grade_visible') else ''}</p>"
+            f"{f' ({escape(weakest_insight.get("grade", ""))})' if weakest_insight.get('grade_visible') else ''}</p>"
             f"<p style='margin: 6px 0 0;'>- {escape(weakest_insight.get('message_primary', ''))}</p>"
             f"<p style='margin: 4px 0 0;'>- {escape(weakest_insight.get('message_secondary', ''))}</p>"
             "</div>"
@@ -299,7 +303,7 @@ def _build_lead_magnet_user_email(
         cta_html = f"""
       <div style="margin-top: 18px;">
         <a href="{escape(cta_url)}" style="display: inline-block; background: #0ea5e9; color: #fff; text-decoration: none; padding: 11px 16px; border-radius: 10px; font-weight: 600;">
-          {escape(cta.get('label', '상담 문의하기'))}
+          {escape(cta.get("label", "상담 문의하기"))}
         </a>
       </div>
         """
@@ -398,10 +402,9 @@ def deliver_inquiry_email(
             inquiry.email_error = str(exc)[:1000]
 
     if success and inquiry.inquiry_type == "lead_magnet_diagnosis":
-        grade_value = (
-            str((lead_magnet_result or {}).get("grade", "")).strip()
-            or _extract_grade_from_report(inquiry.message)
-        )
+        grade_value = str(
+            (lead_magnet_result or {}).get("grade", "")
+        ).strip() or _extract_grade_from_report(inquiry.message)
         base_metadata = {
             "inquiry_id": inquiry.id,
             "lead_context": "lead_magnet_diagnosis",
