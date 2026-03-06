@@ -57,6 +57,23 @@ def build_lead_magnet_section_ast(payload: dict) -> list[dict]:
         )
 
     one_action = payload.get("one_action") or {}
+    one_action_intent = (one_action.get("intent_key") or "").strip()
+    weakest_intent = (weakest or {}).get("intent_key", "").strip() if weakest else ""
+    if (
+        weakest
+        and one_action_intent
+        and weakest_intent
+        and weakest_intent != one_action_intent
+    ):
+        weakest = next(
+            (
+                candidate
+                for candidate in category_insights
+                if (candidate.get("intent_key") or "").strip() == one_action_intent
+            ),
+            weakest,
+        )
+
     cta = payload.get("cta") or {}
     normalized_cta_href = attach_diagnosis_contact_context(
         cta.get("href", "#contact"),

@@ -53,9 +53,9 @@ class LeadMagnetSectionContractTests(TestCase):
 - 한 줄 요약: 기본 운영은 가능하지만 반복 업무에서 시간 손실이 큽니다. 2주 동안 핵심 작업 1개 개선을 권장합니다.
 
 [핵심 보완 포인트]
-- 데이터/운영 기반 (B)
-  - 데이터는 모이지만 기준 통일이 부족합니다.
-  - 필수 입력값과 상태값을 먼저 고정하면 누락/혼선을 줄일 수 있습니다.
+- 병목 구간 식별 (B)
+  - 누락/지연 구간은 보이지만 원인 기준이 아직 느슨합니다.
+  - 병목 구간 1개와 지연 원인 3가지를 먼저 고정해 실행 순서를 명확히 하세요.
 
 [2주 내 끝낼 작업 1개]
 - 작업: 누락/지연이 자주 나는 병목 구간 1개를 먼저 특정하기
@@ -122,6 +122,19 @@ class LeadMagnetSectionContractTests(TestCase):
         self.assertEqual(
             response_pattern["primary_intent"], result["one_action"]["intent_key"]
         )
+
+    def test_result_contract_includes_intent_alignment_metadata(self) -> None:
+        result = self._sample_result()
+        alignment = result["intent_alignment"]
+        self.assertEqual(
+            alignment["anchor_intent_key"],
+            result["one_action"]["intent_key"],
+        )
+        self.assertEqual(
+            alignment["anchor_intent_key"],
+            result["weakest_insight"]["intent_key"],
+        )
+        self.assertTrue(alignment["is_intent_aligned"])
 
     def test_intent_coverage_metadata_is_valid(self) -> None:
         coverage = _intent_pattern_coverage()

@@ -33,15 +33,15 @@ from .models import ContactInquiry, FunnelEvent
 
 INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
     "find_repetitive_work": (
-        ["Google Sheets", "Notion"],
+        ["Google Sheets", "Trello"],
         "반복 작업을 먼저 가시화하면 자동화 후보를 빠르게 고를 수 있습니다.",
     ),
     "document_workflow": (
-        ["Notion", "Obsidian"],
+        ["Trello", "Google Docs", "Obsidian"],
         "업무 흐름을 문서화하면 누락과 재작업을 줄일 수 있습니다.",
     ),
     "identify_bottleneck": (
-        ["Trello", "Notion", "Google Sheets"],
+        ["Trello", "Obsidian", "Google Docs"],
         "병목 구간을 먼저 고정하면 실행 순서를 명확하게 잡을 수 있습니다.",
     ),
     "unify_operational_data": (
@@ -61,7 +61,7 @@ INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
         "담당자와 완료기준을 먼저 정하면 실행 지연을 크게 줄일 수 있습니다.",
     ),
     "run_review_loop": (
-        ["Notion", "Slack", "Google Docs"],
+        ["Notion", "Trello", "Google Calendar"],
         "주간 점검 루틴을 고정하면 개선이 누적됩니다.",
     ),
 }
@@ -107,6 +107,154 @@ INTENT_RESPONSE_PATTERNS: dict[str, dict] = {
         "name": "점검 루프 정착형",
         "related_intents": ["set_owner_and_goal", "unify_operational_data"],
     },
+}
+
+INTENT_LABELS: dict[str, str] = {
+    "find_repetitive_work": "반복 작업 가시화",
+    "document_workflow": "업무 흐름 문서화",
+    "identify_bottleneck": "병목 구간 식별",
+    "unify_operational_data": "운영 데이터 통합",
+    "pick_automation_candidate": "자동화 후보 선정",
+    "prioritize_automation": "자동화 우선순위 확정",
+    "set_owner_and_goal": "담당자·목표 확정",
+    "run_review_loop": "주간 점검 루틴 운영",
+}
+
+INTENT_INSIGHT_MESSAGES: dict[str, dict[str, tuple[str, str]]] = {
+    "find_repetitive_work": {
+        "A": (
+            "반복 작업이 잘 파악되어 있습니다.",
+            "기록된 반복 업무 중 1개를 자동화 후보로 올려 실행 전환을 시작해 보세요.",
+        ),
+        "B": (
+            "반복 작업은 보이지만 우선 개선 대상을 아직 좁히지 못한 상태입니다.",
+            "시간이 많이 드는 작업 1개를 먼저 지정해 개선 우선순위를 고정하세요.",
+        ),
+        "C": (
+            "반복 손실이 어디서 나는지 아직 구조적으로 보이지 않습니다.",
+            "최근 2주 기준으로 반복 업무 1개를 지정해 소요시간부터 기록하세요.",
+        ),
+    },
+    "document_workflow": {
+        "A": (
+            "업무 흐름 문서화가 잘 되어 있습니다.",
+            "현재 문서를 기준으로 인수인계/자동화 포인트를 1개씩 연결해 보세요.",
+        ),
+        "B": (
+            "흐름은 있으나 시작-처리-완료 기준이 충분히 고정되지 않았습니다.",
+            "핵심 업무 1개를 문서 한 페이지로 고정해 실행 편차를 줄이세요.",
+        ),
+        "C": (
+            "업무 흐름 문서가 부족해 누락과 재작업이 반복되고 있습니다.",
+            "가장 자주 하는 업무 1개부터 단계와 담당 기준을 먼저 정리하세요.",
+        ),
+    },
+    "identify_bottleneck": {
+        "A": (
+            "병목 구간이 명확하게 관리되고 있습니다.",
+            "지연 위험이 높은 구간 1개를 주간 점검 항목으로 유지하세요.",
+        ),
+        "B": (
+            "누락/지연 구간은 보이지만 원인 기준이 아직 느슨합니다.",
+            "병목 구간 1개와 지연 원인 3가지를 먼저 고정해 실행 순서를 명확히 하세요.",
+        ),
+        "C": (
+            "병목 구간 정의가 부족해 대응 우선순위가 흔들리고 있습니다.",
+            "응대/승인/전달 중 가장 자주 밀리는 구간 1개를 먼저 특정하세요.",
+        ),
+    },
+    "unify_operational_data": {
+        "A": (
+            "운영 데이터 기준이 안정적으로 통일되어 있습니다.",
+            "핵심 지표 1~2개를 주간 리듬으로 유지해 정확도를 지켜보세요.",
+        ),
+        "B": (
+            "데이터는 모이지만 기준 통일이 아직 충분하지 않습니다.",
+            "고객/리드/진행상태 핵심 컬럼을 단일 시트로 먼저 통합하세요.",
+        ),
+        "C": (
+            "데이터 분산으로 판단과 실행 속도가 떨어지는 상태입니다.",
+            "업무에 꼭 필요한 필수 입력값부터 한곳에 모아 기준을 맞추세요.",
+        ),
+    },
+    "pick_automation_candidate": {
+        "A": (
+            "자동화 후보가 선명하게 준비되어 있습니다.",
+            "후보 1개를 2주 파일럿으로 실행해 성과를 확정하세요.",
+        ),
+        "B": (
+            "자동화가 필요하지만 실행 후보가 아직 넓게 퍼져 있습니다.",
+            "자동화할 작업 1개를 먼저 확정해 실행 준비를 끝내세요.",
+        ),
+        "C": (
+            "자동화 후보 선정이 늦어져 수작업 손실이 누적되고 있습니다.",
+            "반복 빈도가 가장 높은 업무 1개를 후보로 즉시 지정하세요.",
+        ),
+    },
+    "prioritize_automation": {
+        "A": (
+            "자동화 우선순위 기준이 명확합니다.",
+            "현재 기준으로 효과가 큰 후보 1개를 바로 실행 단계로 넘기세요.",
+        ),
+        "B": (
+            "자동화 후보는 있지만 우선순위 판단 기준이 약합니다.",
+            "효과 대비 노력 기준으로 후보를 1개만 선택해 집중하세요.",
+        ),
+        "C": (
+            "자동화 우선순위 부재로 실행이 지연되고 있습니다.",
+            "후보별 기대효과와 난이도를 비교해 이번 2주 과제 1개를 정하세요.",
+        ),
+    },
+    "set_owner_and_goal": {
+        "A": (
+            "담당자와 완료기준이 안정적으로 운영되고 있습니다.",
+            "지표 점검 주기만 유지하면 실행 속도를 더 높일 수 있습니다.",
+        ),
+        "B": (
+            "실행은 되고 있으나 담당·기한·완료 기준이 느슨한 상태입니다.",
+            "2주 실행의 책임자와 완료 기준을 한 문서에 고정해 지연을 줄이세요.",
+        ),
+        "C": (
+            "실행 책임과 목표 기준이 불명확해 과제가 자주 밀리고 있습니다.",
+            "담당자·일정·검증 지표를 먼저 확정하고 1회 실행으로 점검하세요.",
+        ),
+    },
+    "run_review_loop": {
+        "A": (
+            "주간 점검 루틴이 안정적으로 작동하고 있습니다.",
+            "현재 체크리스트를 유지하며 개선 로그 누적만 보강해 보세요.",
+        ),
+        "B": (
+            "실행 후 점검 루틴이 약해 개선 누적이 끊기는 상태입니다.",
+            "주간 리뷰 일정과 체크리스트 점검을 운영 캘린더에 고정하세요.",
+        ),
+        "C": (
+            "실행 점검 루프 부재로 개선이 반복되지 못하고 있습니다.",
+            "주간 점검 루틴을 먼저 만들고 2회 이상 운영해 기준을 고정하세요.",
+        ),
+    },
+}
+
+INTENT_ACTION_TITLES: dict[str, str] = {
+    "document_workflow": "핵심 업무 1개의 시작-종료 흐름을 문서로 고정하기",
+    "find_repetitive_work": "반복 수작업 1개를 먼저 찾아 자동화 후보로 확정하기",
+    "identify_bottleneck": "누락/지연이 자주 나는 병목 구간 1개를 먼저 특정하기",
+    "unify_operational_data": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
+    "pick_automation_candidate": "자동화 후보 1개를 선정해 2주 파일럿 준비하기",
+    "prioritize_automation": "자동화 후보를 효과 대비 노력 기준으로 1개만 선택하기",
+    "set_owner_and_goal": "2주 실행의 담당자·기한·완료기준을 확정하기",
+    "run_review_loop": "주간 점검 루틴(리뷰/체크리스트)을 운영 캘린더에 고정하기",
+}
+
+INTENT_EXECUTION_CRITERIA: dict[str, str] = {
+    "find_repetitive_work": "반복 작업 1개를 지정하고 현재 소요시간·주간 반복 횟수를 기록하면 완료입니다.",
+    "document_workflow": "시작-처리-완료 단계와 담당자를 한 페이지 문서로 확정하면 완료입니다.",
+    "identify_bottleneck": "병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.",
+    "unify_operational_data": "고객/리드/진행상태 핵심 컬럼을 단일 시트로 통합하면 완료입니다.",
+    "pick_automation_candidate": "자동화 후보 1개를 선정하고 입력/출력 조건을 정의하면 완료입니다.",
+    "prioritize_automation": "후보별 기대효과와 준비 난이도를 비교해 1개를 자동화하면 완료입니다.",
+    "set_owner_and_goal": "담당자·일정·검증지표를 문서에 고정하고 1회 실행하면 완료입니다.",
+    "run_review_loop": "주간 리뷰 일정을 캘린더에 고정하고 체크리스트 점검 2회를 수행하면 완료입니다.",
 }
 
 FALLBACK_TOOL_RECOMMENDATION = (
@@ -549,7 +697,7 @@ def _category_grade_insights(
     *,
     preferred_anchor_question: str = "",
 ) -> list[dict[str, str]]:
-    messages = {
+    axis_fallback_messages = {
         "workflow_clarity": {
             "A": (
                 "업무 흐름이 안정적으로 정리되어 있습니다.",
@@ -611,7 +759,6 @@ def _category_grade_insights(
     for axis_key, axis in DIAGNOSIS_AXES.items():
         axis_score = axis_scores[axis_key]
         axis_grade = _grade_from_score(int(axis_score["score"]), int(axis_score["max"]))
-        primary, secondary = messages[axis_key][axis_grade]
         preferred_for_axis = (
             preferred_anchor_question
             if _axis_key_from_question(preferred_anchor_question) == axis_key
@@ -623,10 +770,16 @@ def _category_grade_insights(
             preferred_question_key=preferred_for_axis,
         )
         intent_key = _question_meta(anchor_question_key).get("intent_key", "")
+        intent_messages = INTENT_INSIGHT_MESSAGES.get(intent_key, {})
+        primary, secondary = intent_messages.get(
+            axis_grade,
+            axis_fallback_messages[axis_key][axis_grade],
+        )
         insights.append(
             {
                 "key": axis_key,
-                "label": axis["label"],
+                "label": INTENT_LABELS.get(intent_key, axis["label"]),
+                "axis_label": axis["label"],
                 "grade": axis_grade,
                 "grade_visible": axis_grade != "A",
                 "message_primary": primary,
@@ -671,36 +824,16 @@ def _best_single_action(
 
     intent_key = _question_meta(question_key).get("intent_key", "")
 
-    action_titles = {
-        "document_workflow": "핵심 업무 1개의 시작-종료 흐름을 문서로 고정하기",
-        "find_repetitive_work": "반복 수작업 1개를 먼저 찾아 자동화 후보로 확정하기",
-        "identify_bottleneck": "누락/지연이 자주 나는 병목 구간 1개를 먼저 특정하기",
-        "unify_operational_data": "고객/리드/진행상태 데이터를 한곳으로 통합하기",
-        "pick_automation_candidate": "자동화 후보 1개를 선정해 2주 파일럿 준비하기",
-        "prioritize_automation": "자동화 후보를 효과 대비 노력 기준으로 1개만 선택하기",
-        "set_owner_and_goal": "2주 실행의 담당자·기한·완료기준을 확정하기",
-        "run_review_loop": "주간 점검 루틴(리뷰/체크리스트)을 운영 캘린더에 고정하기",
-    }
-    execution_criteria = {
-        "find_repetitive_work": "반복 작업 1개를 지정하고 현재 소요시간·주간 반복 횟수를 기록하면 완료입니다.",
-        "document_workflow": "시작-처리-완료 단계와 담당자를 한 페이지 문서로 확정하면 완료입니다.",
-        "identify_bottleneck": "병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.",
-        "unify_operational_data": "고객/리드/진행상태 핵심 컬럼을 단일 시트로 통합하면 완료입니다.",
-        "pick_automation_candidate": "자동화 후보 1개를 선정하고 입력/출력 조건을 정의하면 완료입니다.",
-        "prioritize_automation": "후보별 기대효과와 준비 난이도를 비교해 1개를 자동화하면 완료입니다.",
-        "set_owner_and_goal": "담당자·일정·검증지표를 문서에 고정하고 1회 실행하면 완료입니다.",
-        "run_review_loop": "주간 리뷰 일정을 캘린더에 고정하고 체크리스트 점검 2회를 수행하면 완료입니다.",
-    }
     tools, reason = _tools_for_priority(question_key)
     return {
         "question_key": question_key,
         "intent_key": intent_key,
-        "title": action_titles.get(
+        "title": INTENT_ACTION_TITLES.get(
             intent_key, DIAGNOSIS_QUESTIONS.get(question_key, question_key)
         ),
         "tools": ", ".join(tools),
         "reason": reason,
-        "execution": execution_criteria.get(
+        "execution": INTENT_EXECUTION_CRITERIA.get(
             intent_key,
             "담당자·기한·검증 기준을 문서에 남기고 실제로 1회 실행하면 완료입니다.",
         ),
@@ -711,8 +844,11 @@ def _best_single_action(
 def _preview_report_signature(item: dict) -> tuple:
     one_action = item.get("one_action") or {}
     cta = item.get("cta") or {}
+    alignment = item.get("alignment") or {}
     return (
         bool(item.get("is_perfect_preview", False)),
+        alignment.get("anchor_intent_key", one_action.get("intent_key", "")),
+        bool(alignment.get("is_intent_aligned", True)),
         one_action.get("title", ""),
         one_action.get("execution", ""),
         one_action.get("tools", ""),
@@ -740,16 +876,27 @@ def _group_preview_reports(preview_reports: list[dict]) -> list[dict]:
         weakest_insight = item.get("weakest_insight") or {}
         if signature not in grouped:
             weakest_insights = [weakest_insight] if weakest_insight else []
+            alignment = item.get("alignment") or {}
+            representative_intent = alignment.get("anchor_intent_key", "")
             grouped[signature] = {
                 **item,
                 "scenario_titles": [title] if title else [],
                 "scenario_count": 1,
                 "weakest_insights": weakest_insights,
+                "representative_intent_key": representative_intent,
+                "intent_keys": [representative_intent] if representative_intent else [],
             }
             ordered_keys.append(signature)
             continue
 
         group_item = grouped[signature]
+        alignment = item.get("alignment") or {}
+        representative_intent = alignment.get("anchor_intent_key", "")
+        if (
+            representative_intent
+            and representative_intent not in group_item["intent_keys"]
+        ):
+            group_item["intent_keys"].append(representative_intent)
         if title and title not in group_item["scenario_titles"]:
             group_item["scenario_titles"].append(title)
         if weakest_insight:
@@ -802,6 +949,18 @@ def _build_detailed_lead_magnet_report(
         (item for item in category_insights if item["key"] == weakest_axis_key),
         category_insights[0],
     )
+    intent_alignment = {
+        "anchor_question_key": anchor_question_key,
+        "anchor_intent_key": anchor_intent_key,
+        "weakest_intent_key": weakest_insight.get("intent_key", ""),
+        "one_action_intent_key": one_action.get("intent_key", ""),
+    }
+    intent_alignment["is_intent_aligned"] = (
+        bool(intent_alignment["anchor_intent_key"])
+        and intent_alignment["anchor_intent_key"]
+        == intent_alignment["weakest_intent_key"]
+        == intent_alignment["one_action_intent_key"]
+    )
     payload = {
         "score": total_score,
         "max_score": max_score,
@@ -818,6 +977,7 @@ def _build_detailed_lead_magnet_report(
         "weakest_insight": weakest_insight,
         "weakest_category_insight": weakest_insight,
         "weakest_axis_key": weakest_axis_key,
+        "intent_alignment": intent_alignment,
         "cta": _bridge_cta(grade),
         "contact_context": {
             "inquiry_type": "ax_diagnosis",
@@ -869,6 +1029,18 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         (item for item in category_insights if item["key"] == weakest_axis_key),
         category_insights[0],
     )
+    intent_alignment = {
+        "anchor_question_key": anchor_question_key,
+        "anchor_intent_key": anchor_intent_key,
+        "weakest_intent_key": weakest_insight.get("intent_key", ""),
+        "one_action_intent_key": one_action.get("intent_key", ""),
+    }
+    intent_alignment["is_intent_aligned"] = (
+        bool(intent_alignment["anchor_intent_key"])
+        and intent_alignment["anchor_intent_key"]
+        == intent_alignment["weakest_intent_key"]
+        == intent_alignment["one_action_intent_key"]
+    )
     result = {
         "score": total_score,
         "max_score": max_score,
@@ -900,6 +1072,7 @@ def _build_lead_magnet_result(score_map: dict[str, int]) -> tuple[dict, str]:
         "weakest_category_insight": weakest_insight,
         "weakest_axis_key": weakest_axis_key,
         "weakest_axis_label": DIAGNOSIS_AXES[weakest_axis_key]["label"],
+        "intent_alignment": intent_alignment,
         "contact_context": {
             "inquiry_type": "ax_diagnosis",
             "lead_context": "lead_magnet_diagnosis",
@@ -967,6 +1140,7 @@ def lead_magnet_report_preview(request: HttpRequest) -> HttpResponse:
                 "one_action": result["one_action"],
                 "weakest_insight": result["weakest_insight"],
                 "weakest_axis_label": result["weakest_axis_label"],
+                "alignment": result.get("intent_alignment", {}),
                 "sections": result["sections"],
                 "report": report,
                 "is_perfect_preview": is_perfect_preview,

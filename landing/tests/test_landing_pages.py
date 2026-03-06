@@ -82,11 +82,18 @@ class LandingPageTests(TestCase):
             for item in preview_reports
             if not item.get("is_perfect_preview")
         }
+        self.assertTrue(
+            all(
+                item.get("alignment", {}).get("is_intent_aligned", False)
+                for item in preview_reports
+            )
+        )
         expected_cta_count = sum(
             1 for item in preview_reports if not item.get("is_perfect_preview")
         )
         self.assertEqual(len(intent_keys), 8)
         self.assertContains(response, "2주 내 끝낼 작업 1개")
+        self.assertContains(response, "anchor intent:")
         self.assertContains(response, "정밀 진단")
         self.assertNotContains(response, "간단 진단")
         self.assertContains(
