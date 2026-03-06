@@ -18,4 +18,5 @@ The system MUST output exactly one highest-leverage action for the next two week
 - **AND** completion criterion wording MUST NOT repeat an identical boilerplate prefix across different intent keys
 - **AND** the action MUST include matched tool recommendation text
 - **AND** user-facing output MUST NOT expose additional parallel "primary actions" beyond this one
+- **AND** the weakest-point primary copy shown to users MUST resolve from the same `intent_key` used by this one action
 

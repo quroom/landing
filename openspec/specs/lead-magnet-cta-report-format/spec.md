@@ -18,6 +18,7 @@ The report MUST avoid vague wording and MUST communicate one immediate execution
 - **AND** weakest-point secondary text MUST NOT expose anchor-question disclosure text such as `우선 항목`
 - **AND** the weakest-point block and one-action block MUST resolve from the same anchor question intent lineage
 - **AND** user-facing report output MUST keep exactly one primary two-week action block
+- **AND** weakest-point primary copy visible to users MUST be generated from the same anchor `intent_key` as the one-action block
 
 #### Scenario: Report generated from full diagnosis mode
 - **WHEN** all eight diagnosis questions are answered
@@ -29,6 +30,7 @@ The report MUST avoid vague wording and MUST communicate one immediate execution
 - **WHEN** preview reports are generated for multiple simulation inputs
 - **THEN** items with identical response body text except title MUST be grouped into one preview card
 - **AND** each grouped card MUST expose all associated scenario titles so reviewers can trace grouped cases
+- **AND** each grouped card MUST expose the representative anchor intent used by both weakest-point and one-action blocks
 
 ### Requirement: Report output MUST preserve readability spacing across channels
 The system MUST apply readable spacing and line breaks in both web and email report outputs while preserving the same core copy contract.
@@ -44,4 +46,5 @@ The system MUST apply readable spacing and line breaks in both web and email rep
 - **THEN** the system MUST verify shared section equivalence (section titles/order/CTA link target)
 - **AND** preview duplicate-grouping MUST compare response bodies while ignoring scenario title differences
 - **AND** the system MUST retain text snapshot coverage for rendered copy regression detection
+- **AND** equivalence checks MUST include weakest-point/action anchor intent alignment
 

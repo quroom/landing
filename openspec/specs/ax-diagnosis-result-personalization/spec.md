@@ -14,6 +14,7 @@ The system MUST provide personalized interpretation using a severity-based respo
 - **AND** the output MUST avoid exposing internal axis keys in user-facing primary summary copy
 - **AND** the weakest-point secondary message MUST NOT expose per-question anchor text such as `우선 항목`
 - **AND** the weakest-point anchor question key MUST match the primary one-action anchor question key
+- **AND** the weakest-point primary message shown to users MUST use the same anchor `intent_key` as the one-action block
 - **AND** the output MUST preserve a concise structure suitable for immediate decision making
 
 ### Requirement: Personalized result MUST map to actionable two-week priorities and tool suggestions
@@ -26,6 +27,7 @@ The system MUST generate personalized two-week priorities and tool recommendatio
 - **AND** candidates with equal impact weight MUST rank `not doing` ahead of `partially doing`
 - **AND** the output MUST expose exactly one primary recommendation for immediate execution
 - **AND** recommended tools MUST be mapped to the same intent key used by the selected primary recommendation
+- **AND** weakest-point copy and one-action copy MUST be contractually traceable to the same intent lineage fields
 
 #### Scenario: Pattern catalog coverage is validated
 - **WHEN** the system validates response-pattern definitions
