@@ -91,6 +91,25 @@ If both pass, push to GitHub.
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
 - `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
 
+### Local env profiles (recommended)
+- `.env.local`: daily local development profile (safe mode)
+  - `DJANGO_DEBUG=1`
+  - `DJANGO_EMAIL_BACKEND=console`
+  - `DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG=0`
+- `.env.debug`: intentional debug profile for real SMTP tests
+  - `DJANGO_DEBUG=1`
+  - `DJANGO_EMAIL_BACKEND=smtp`
+  - `DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG=1`
+- Production should NOT use local files; set variables in Railway.
+
+#### Profile switch commands
+- Apply local safe profile:
+  - `cp .env.local .env`
+- Apply debug SMTP test profile:
+  - `cp .env.debug .env`
+- (optional) load variables into current shell:
+  - `set -a; source .env; set +a`
+
 ### SMTP mail settings (for real delivery)
 - `DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend`
 - `EMAIL_HOST` (example: `smtp.daum.net`)

@@ -62,7 +62,7 @@ class LeadMagnetSectionContractTests(TestCase):
 - 완료 기준: 병목 구간 1개와 지연 원인 3가지를 문서로 정리하면 완료입니다.
 
 [주요 추천 툴]
-- Trello, Notion, Google Sheets
+- Trello, Obsidian, Google Docs
 
 [다음 액션]
 - 생산성 개선 상담 요청 (/?inquiry_type=ax_diagnosis&lead_context=lead_magnet_diagnosis#contact)
