@@ -69,6 +69,34 @@ class DeployValidationTests(SimpleTestCase):
         )
         self.assertIn("STATIC_ROOT must be configured for deploy readiness.", errors)
 
+    def test_collect_readiness_errors_rejects_sqlite_in_production(self) -> None:
+        errors = collect_readiness_errors(
+            {
+                "DEBUG": False,
+                "SECRET_KEY": "secure-key",
+                "ALLOWED_HOSTS": ["example.com"],
+                "CSRF_TRUSTED_ORIGINS": ["https://example.com"],
+                "EMAIL_BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+                "EMAIL_HOST": "smtp.example.com",
+                "EMAIL_PORT": 587,
+                "EMAIL_HOST_USER": "user",
+                "EMAIL_HOST_PASSWORD": "pw",
+                "DEFAULT_FROM_EMAIL": "help@example.com",
+                "STATIC_ROOT": "/tmp/static",
+                "DATABASES": {
+                    "default": {
+                        "ENGINE": "django.db.backends.sqlite3",
+                        "NAME": "/tmp/db.sqlite3",
+                    }
+                },
+            }
+        )
+        self.assertIn(
+            "Production database cannot use sqlite3. "
+            "Configure PostgreSQL via DATABASE_URL or PG* variables.",
+            errors,
+        )
+
 
 class DeployReadinessCommandTests(TestCase):
     @override_settings(

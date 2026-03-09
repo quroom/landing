@@ -1,0 +1,9 @@
+name: homepage
+app: python@3.11
+options:
+  env:
+    - name: DJANGO_DEBUG
+      value: "0"
+  install: pip install -r requirements.txt
+  ports: 8080/http
+  start: python manage.py migrate --no-input && python manage.py collectstatic --no-input && gunicorn --workers=2 --threads=2 --bind 0.0.0.0:$PORT landing.project.wsgi:application

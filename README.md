@@ -86,10 +86,28 @@ If both pass, push to GitHub.
 - `DJANGO_SECRET_KEY`
 - `DJANGO_DEBUG` (`1` or `0`)
 - `DJANGO_ALLOWED_HOSTS` (comma-separated)
+- `DATABASE_URL` (preferred in production)
+- `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` (fallback if no `DATABASE_URL`)
+- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (Cloudtype-style fallback keys)
 - `GA4_MEASUREMENT_ID` (if you want GA4 tracking)
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
 - `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
+
+## Cloudtype deployment quickstart
+1. Build/install dependencies from `requirements.txt`.
+2. Set production env values:
+   - `DJANGO_DEBUG=0`
+   - `DJANGO_SECRET_KEY` (non-default)
+   - `DJANGO_ALLOWED_HOSTS` (no `*`)
+   - `DJANGO_CSRF_TRUSTED_ORIGINS`
+   - `DATABASE_URL` (or PG*/DB* variables)
+3. Use release command:
+   - `python manage.py migrate --no-input && python manage.py collectstatic --no-input`
+4. Use web command:
+   - `gunicorn --workers=2 --threads=2 --bind 0.0.0.0:${PORT:-8000} landing.project.wsgi:application`
+
+`Procfile` already contains matching `release`/`web` entries.
 
 ### Local env profiles (recommended)
 - `.env.local`: daily local development profile (safe mode)

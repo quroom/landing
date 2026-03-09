@@ -1,6 +1,7 @@
 import os
 from importlib.util import find_spec
 from pathlib import Path
+from urllib.parse import parse_qsl, urlparse
 
 from landing.deploy_validation import collect_runtime_validation_errors
 
@@ -56,13 +57,62 @@ TEMPLATES = [
 WSGI_APPLICATION = "landing.project.wsgi.application"
 ASGI_APPLICATION = "landing.project.asgi.application"
 
+
 # Contact form does not require DB persistence. SQLite is kept for Django defaults.
+def _first_env(*keys: str) -> str:
+    for key in keys:
+        value = os.getenv(key, "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _database_from_url(database_url: str) -> dict[str, object]:
+    parsed = urlparse(database_url)
+    if parsed.scheme not in {"postgres", "postgresql"}:
+        raise RuntimeError(
+            "Unsupported DATABASE_URL scheme. Use postgres:// or postgresql://."
+        )
+
+    db_config: dict[str, object] = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": (parsed.path or "").lstrip("/"),
+        "USER": parsed.username or "",
+        "PASSWORD": parsed.password or "",
+        "HOST": parsed.hostname or "",
+        "PORT": str(parsed.port or ""),
+    }
+    extra_options = dict(parse_qsl(parsed.query, keep_blank_values=False))
+    if extra_options:
+        db_config["OPTIONS"] = extra_options
+    return db_config
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": REPO_ROOT / "db.sqlite3",
     }
 }
+
+database_url = os.getenv("DATABASE_URL", "").strip()
+if database_url:
+    DATABASES["default"] = _database_from_url(database_url)
+else:
+    pg_host = _first_env("PGHOST", "DB_HOST")
+    pg_name = _first_env("PGDATABASE", "DB_NAME")
+    pg_user = _first_env("PGUSER", "DB_USER")
+    pg_password = _first_env("PGPASSWORD", "DB_PASSWORD")
+    pg_port = _first_env("PGPORT", "DB_PORT")
+    if pg_host and pg_name and pg_user:
+        DATABASES["default"] = {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": pg_name,
+            "USER": pg_user,
+            "PASSWORD": pg_password,
+            "HOST": pg_host,
+            "PORT": pg_port or "5432",
+        }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -73,4 +73,15 @@ def collect_readiness_errors(settings_obj: object | Mapping[str, object]) -> lis
     if not static_root:
         errors.append("STATIC_ROOT must be configured for deploy readiness.")
 
+    databases = _get_setting(settings_obj, "DATABASES", {})
+    if isinstance(databases, Mapping):
+        default_db = databases.get("default", {})
+        if isinstance(default_db, Mapping):
+            engine = str(default_db.get("ENGINE", "")).strip()
+            if engine == "django.db.backends.sqlite3":
+                errors.append(
+                    "Production database cannot use sqlite3. "
+                    "Configure PostgreSQL via DATABASE_URL or PG* variables."
+                )
+
     return errors
