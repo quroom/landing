@@ -1,3 +1,6 @@
+import secrets
+from datetime import timedelta
+
 from django.db import models
 from django.utils import timezone
 
@@ -50,3 +53,119 @@ class FunnelEvent(models.Model):
 
     def __str__(self) -> str:
         return f"{self.event_name} ({self.page_key or '-'})"
+
+
+class TestimonialInvite(models.Model):
+    token = models.CharField(max_length=64, unique=True, db_index=True)
+    target_note = models.CharField(max_length=200, blank=True)
+    expires_at = models.DateTimeField(db_index=True)
+    consumed_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    reissued_from = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="reissued_links",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"Invite({self.token[:8]})"
+
+    @staticmethod
+    def _generate_token() -> str:
+        return secrets.token_urlsafe(24)
+
+    @classmethod
+    def issue(
+        cls,
+        *,
+        target_note: str = "",
+        expires_in_days: int = 7,
+        reissued_from: "TestimonialInvite | None" = None,
+    ) -> "TestimonialInvite":
+        expires_at = timezone.now() + timedelta(days=expires_in_days)
+        invite = cls(
+            target_note=target_note.strip(),
+            expires_at=expires_at,
+            reissued_from=reissued_from,
+        )
+        invite.save()
+        return invite
+
+    @property
+    def is_expired(self) -> bool:
+        return timezone.now() >= self.expires_at
+
+    @property
+    def is_consumed(self) -> bool:
+        return self.consumed_at is not None
+
+    def is_usable(self) -> bool:
+        return self.is_active and not self.is_expired and not self.is_consumed
+
+    def mark_consumed(self) -> None:
+        self.consumed_at = timezone.now()
+        self.save(update_fields=["consumed_at", "updated_at"])
+
+    def reissue(self, *, expires_in_days: int = 7) -> "TestimonialInvite":
+        self.is_active = False
+        self.save(update_fields=["is_active", "updated_at"])
+        return self.issue(
+            target_note=self.target_note,
+            expires_in_days=expires_in_days,
+            reissued_from=self,
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = self._generate_token()
+        super().save(*args, **kwargs)
+
+
+class Testimonial(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
+
+    invite = models.ForeignKey(
+        TestimonialInvite,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="testimonials",
+    )
+    name = models.CharField(max_length=50)
+    role_title = models.CharField(max_length=80, blank=True)
+    company_name = models.CharField(max_length=100, blank=True)
+    content = models.TextField()
+    consent_public = models.BooleanField(default=False)
+    consent_collected_at = models.DateTimeField(default=timezone.now)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+        db_index=True,
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.get_status_display()})"
+
+    def save(self, *args, **kwargs):
+        if self.status == self.Status.APPROVED and self.approved_at is None:
+            self.approved_at = timezone.now()
+        if self.status != self.Status.APPROVED:
+            self.approved_at = None
+        super().save(*args, **kwargs)

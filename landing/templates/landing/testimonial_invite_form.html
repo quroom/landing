@@ -1,0 +1,61 @@
+{% extends "landing/base.html" %}
+{% block body %}
+  <main class="mx-auto w-full max-w-3xl px-4 py-16 md:px-8">
+    <section class="rounded-2xl border border-navy/10 bg-white p-6 shadow-[0_12px_36px_rgba(15,23,42,0.08)] md:p-8">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Testimonial Invite</p>
+      <h1 class="mt-2 font-space text-2xl font-bold text-navy">상담 후기 남기기</h1>
+      {% if invite and invite.target_note %}
+        <p class="mt-2 text-sm text-navy/70">요청 메모: {{ invite.target_note }}</p>
+      {% endif %}
+      {% if status == "success" %}
+        <div class="mt-6 rounded-xl border border-mint/40 bg-mint/10 px-4 py-3 text-sm text-navy">{{ status_message }}</div>
+      {% elif status == "error" %}
+        <div class="mt-6 rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          {{ status_message }}
+        </div>
+      {% elif form %}
+        <form method="post" class="mt-6 space-y-4">
+          {% csrf_token %}
+          <div>
+            <label class="text-sm font-semibold text-navy"
+                   for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% if form.name.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.name.errors|striptags }}</p>{% endif %}
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-navy"
+                   for="{{ form.role_title.id_for_label }}">{{ form.role_title.label }}</label>
+            {{ form.role_title }}
+            {% if form.role_title.errors %}
+              <p class="mt-1 text-xs text-rose-600">{{ form.role_title.errors|striptags }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-navy"
+                   for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
+            {{ form.company_name }}
+            {% if form.company_name.errors %}
+              <p class="mt-1 text-xs text-rose-600">{{ form.company_name.errors|striptags }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-navy"
+                   for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+            {{ form.content }}
+            {% if form.content.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.content.errors|striptags }}</p>{% endif %}
+          </div>
+          <div class="space-y-2 rounded-lg border border-navy/10 bg-fog/60 p-3 text-sm text-navy/80">
+            <p class="text-xs leading-relaxed text-navy/60">
+              제출해 주신 후기는 운영 검토 후 홈페이지/소개 자료에 활용될 수 있습니다.
+              불편하신 경우 상담 채널로 알려주시면 비공개 처리하겠습니다.
+            </p>
+          </div>
+          <button type="submit"
+                  class="rounded-xl bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky">
+            후기 제출하고 공유하기
+          </button>
+        </form>
+      {% endif %}
+    </section>
+  </main>
+{% endblock %}

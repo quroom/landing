@@ -138,6 +138,8 @@ CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "1") == "1"
 # In debug mode, disable async unless real email is explicitly allowed.
 if DEBUG and not ALLOW_REAL_EMAIL_IN_DEBUG:
     CONTACT_EMAIL_ASYNC = False
+TESTIMONIAL_PUBLIC_THRESHOLD = int(os.getenv("TESTIMONIAL_PUBLIC_THRESHOLD", "3"))
+TESTIMONIAL_INVITE_EXPIRY_DAYS = int(os.getenv("TESTIMONIAL_INVITE_EXPIRY_DAYS", "7"))
 
 _runtime_validation_errors = collect_runtime_validation_errors(globals())
 if _runtime_validation_errors:

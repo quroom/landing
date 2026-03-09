@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from landing.content import CAREER_RANGES
-from landing.models import ContactInquiry, FunnelEvent
+from landing.models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
 
 
 class LandingPageTests(TestCase):
@@ -190,6 +190,11 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn("/admin/login/", response.url)
 
+    def test_admin_review_guide_requires_staff(self) -> None:
+        response = self.client.get(reverse("landing:admin_review_guide"))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/admin/login/", response.url)
+
     def test_admin_operation_links_renders_for_staff(self) -> None:
         user_model = get_user_model()
         staff = user_model.objects.create_user(
@@ -206,10 +211,67 @@ class LandingPageTests(TestCase):
         self.assertContains(response, reverse("landing:healthz_live"))
         self.assertContains(response, reverse("landing:healthz_ready"))
         self.assertContains(response, reverse("landing:admin_dashboard"))
+        self.assertContains(response, reverse("landing:admin_review_guide"))
         self.assertContains(response, "최근 Deploy Check")
         self.assertContains(response, "최근 Smoke Check")
         self.assertContains(response, "./scripts/deploy-check.sh")
         self.assertContains(response, "./scripts/post-deploy-smoke.sh")
+
+    def test_admin_review_guide_renders_for_staff(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_review_guide",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(reverse("landing:admin_review_guide"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "리뷰 요청 운영 가이드")
+        self.assertContains(response, "Testimonial invites")
+        self.assertContains(response, "https://quroom.kr/testimonials/invite/")
+        self.assertContains(response, "링크 생성")
+        self.assertContains(response, "최근 초대 링크")
+        self.assertContains(response, "승인 대기 리뷰")
+
+    def test_admin_review_guide_post_creates_invite_and_shows_lists(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_review_guide_post",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        pending_invite = TestimonialInvite.issue(
+            target_note="기존 링크",
+            expires_in_days=7,
+        )
+        Testimonial.objects.create(
+            invite=pending_invite,
+            name="홍길동",
+            role_title="대표",
+            company_name="큐룸",
+            content="리뷰 내용",
+            consent_public=True,
+            status=Testimonial.Status.PENDING,
+        )
+
+        response = self.client.post(
+            reverse("landing:admin_review_guide"),
+            {"target_note": "신규 상담", "expiry_days": "10"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "리뷰 요청 링크가 생성되었습니다.")
+        self.assertContains(response, "신규 상담")
+        self.assertContains(response, "홍길동")
+        self.assertContains(response, "Pending")
+        self.assertContains(response, "/testimonials/invite/")
+        self.assertEqual(
+            TestimonialInvite.objects.filter(target_note="신규 상담").count(), 1
+        )
 
     def test_admin_operation_links_shows_latest_check_summary_from_status_file(
         self,

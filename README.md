@@ -163,3 +163,10 @@ If both pass, push to GitHub.
   - verify contact inquiry count increases after form submit
   - verify lead-magnet inquiry appears with type `lead_magnet_diagnosis`
   - verify funnel events (`lead_magnet_start`, `lead_magnet_submit`, `lead_magnet_email_sent`) are visible in dashboard metrics
+
+### Testimonial invite ops checklist (face-to-face meeting)
+1. Create an invite in Django Admin: `Testimonial invites` (set target note and expiry).
+2. Share URL `/testimonials/invite/<token>/` right after the consultation.
+3. Confirm submission is stored as `pending` and invite is marked consumed.
+4. Review testimonial in Admin and change status to `approved` only if publish-safe.
+5. Public testimonial section appears on homepage only when approved count reaches threshold (`TESTIMONIAL_PUBLIC_THRESHOLD`, default `3`).

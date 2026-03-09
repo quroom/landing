@@ -1,9 +1,4 @@
-# Capability: founder-first-homepage-positioning
-
-## Purpose
-메인 홈페이지(`/`)를 창업자 중심 메시지로 유지하기 위한 기준을 정의한다.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Main homepage MUST be founder-first
 The system MUST position `/` as a founder-focused page with startup execution outcomes as the primary narrative.
@@ -23,11 +18,3 @@ The system MUST position `/` as a founder-focused page with startup execution ou
 - **WHEN** a user requests `/` and approved testimonial count meets or exceeds configured threshold
 - **THEN** the page may show a testimonial section
 - **AND** only approved testimonials are rendered
-
-### Requirement: Main homepage MUST not include foreign-developer practical-linkage detail
-The system MUST avoid practical-linkage detail for foreign developers on the main homepage.
-
-#### Scenario: Main route avoids mixed-detail messaging
-- **WHEN** a user reads the services area on `/`
-- **THEN** foreign-developer practical-linkage detail is absent
-- **AND** users are directed to `/for-foreign-developers/` for that content

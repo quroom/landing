@@ -16,6 +16,11 @@ urlpatterns = [
         name="admin_operation_links",
     ),
     path(
+        "admin-review-guide/",
+        views.admin_review_guide,
+        name="admin_review_guide",
+    ),
+    path(
         "admin-dashboard/inquiries/<int:inquiry_id>/resend/",
         views.admin_resend_inquiry,
         name="admin_resend_inquiry",
@@ -34,6 +39,11 @@ urlpatterns = [
     ),
     path("contact/submit/", views.contact_submit, name="contact_submit"),
     path("lead-magnet/submit/", views.lead_magnet_submit, name="lead_magnet_submit"),
+    path(
+        "testimonials/invite/<str:token>/",
+        views.testimonial_invite,
+        name="testimonial_invite",
+    ),
     path("privacy/", views.privacy, name="privacy"),
     path("terms/", views.terms, name="terms"),
 ]

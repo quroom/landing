@@ -22,14 +22,14 @@ from .ax_tool_stack import (
 )
 from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
 from .deploy_validation import collect_readiness_errors
-from .forms import ContactForm, LeadMagnetForm
+from .forms import ContactForm, LeadMagnetForm, TestimonialSubmissionForm
 from .lead_magnet_sections import (
     build_lead_magnet_section_ast,
     normalize_contact_cta_href,
     render_sections_to_text,
 )
 from .mailers import deliver_inquiry_email, deliver_inquiry_email_async
-from .models import ContactInquiry, FunnelEvent
+from .models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
 
 INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
     "find_repetitive_work": (
@@ -326,6 +326,9 @@ def _base_context(
 ) -> dict:
     career_duration = _career_duration()
     lead_magnet_form = LeadMagnetForm()
+    testimonials, testimonial_threshold, approved_testimonial_count = (
+        _public_testimonials()
+    )
     form_kwargs: dict = {"page_key": page_key}
     if recommended_inquiry_type.strip():
         form_kwargs["recommended_inquiry_type"] = recommended_inquiry_type
@@ -341,7 +344,26 @@ def _base_context(
         "lead_magnet_fields": _diagnosis_fields(lead_magnet_form),
         "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
         "page_key": page_key,
+        "testimonials": testimonials,
+        "testimonial_threshold": testimonial_threshold,
+        "approved_testimonial_count": approved_testimonial_count,
     }
+
+
+def _public_testimonials() -> tuple[list[Testimonial], int, int]:
+    threshold = max(int(settings.TESTIMONIAL_PUBLIC_THRESHOLD), 1)
+    approved_qs = Testimonial.objects.filter(
+        status=Testimonial.Status.APPROVED,
+        consent_public=True,
+    )
+    approved_count = approved_qs.count()
+    if approved_count < threshold:
+        return [], threshold, approved_count
+    return (
+        list(approved_qs.order_by("-approved_at", "-created_at")[:6]),
+        threshold,
+        approved_count,
+    )
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -1312,6 +1334,75 @@ def lead_magnet_submit(request: HttpRequest) -> HttpResponse:
     )
 
 
+def _invite_error_reason(invite: TestimonialInvite) -> str:
+    if not invite.is_active:
+        return "inactive"
+    if invite.is_expired:
+        return "expired"
+    if invite.is_consumed:
+        return "consumed"
+    return "invalid"
+
+
+def testimonial_invite(request: HttpRequest, token: str) -> HttpResponse:
+    invite = get_object_or_404(TestimonialInvite, token=token)
+
+    if not invite.is_usable():
+        reason = _invite_error_reason(invite)
+        return render(
+            request,
+            "landing/testimonial_invite_form.html",
+            {
+                "invite": invite,
+                "form": None,
+                "status": "error",
+                "status_message": "후기 작성 링크가 만료되었거나 이미 사용되었습니다. 상담 담당자에게 새 링크를 요청해 주세요.",
+                "invite_reason": reason,
+            },
+            status=403,
+        )
+
+    if request.method == "POST":
+        form = TestimonialSubmissionForm(request.POST)
+        if form.is_valid():
+            Testimonial.objects.create(
+                invite=invite,
+                name=form.cleaned_data["name"],
+                role_title=form.cleaned_data.get("role_title", ""),
+                company_name=form.cleaned_data.get("company_name", ""),
+                content=form.cleaned_data["content"],
+                # Invite-based review submission implies internal review/public usage notice.
+                consent_public=True,
+                status=Testimonial.Status.PENDING,
+            )
+            invite.mark_consumed()
+            return render(
+                request,
+                "landing/testimonial_invite_form.html",
+                {
+                    "invite": invite,
+                    "form": None,
+                    "status": "success",
+                    "status_message": "후기가 접수되었습니다. 검토 후 반영 여부를 안내드리겠습니다.",
+                    "invite_reason": "",
+                },
+            )
+    else:
+        form = TestimonialSubmissionForm()
+
+    return render(
+        request,
+        "landing/testimonial_invite_form.html",
+        {
+            "invite": invite,
+            "form": form,
+            "status": None,
+            "status_message": "",
+            "invite_reason": "",
+        },
+    )
+
+
 def privacy(request: HttpRequest) -> HttpResponse:
     return render(request, "landing/privacy.html", {"content": SHARED_CONTENT})
 
@@ -1417,6 +1508,7 @@ def admin_operation_links(request: HttpRequest) -> HttpResponse:
         {"label": "Liveness", "url": reverse("landing:healthz_live")},
         {"label": "Readiness", "url": reverse("landing:healthz_ready")},
         {"label": "문의 대시보드", "url": reverse("landing:admin_dashboard")},
+        {"label": "리뷰 요청 가이드", "url": reverse("landing:admin_review_guide")},
         {"label": "홈페이지", "url": reverse("landing:index")},
         {"label": "무료 진단", "url": reverse("landing:free_diagnosis")},
         {
@@ -1444,6 +1536,86 @@ def admin_operation_links(request: HttpRequest) -> HttpResponse:
                 "deploy_check": "./scripts/deploy-check.sh",
                 "smoke_check": 'BASE_URL="https://<domain>" ./scripts/post-deploy-smoke.sh',
             },
+        },
+    )
+
+
+@staff_member_required
+def admin_review_guide(request: HttpRequest) -> HttpResponse:
+    status_message = ""
+    status_level = ""
+    created_invite_url = ""
+
+    if request.method == "POST":
+        target_note = str(request.POST.get("target_note", "")).strip()
+        expiry_raw = str(request.POST.get("expiry_days", "")).strip()
+        default_expiry_days = int(settings.TESTIMONIAL_INVITE_EXPIRY_DAYS)
+        expiry_days = default_expiry_days
+        if expiry_raw:
+            try:
+                expiry_days = int(expiry_raw)
+            except ValueError:
+                status_level = "error"
+                status_message = "만료일은 숫자로 입력해 주세요."
+                expiry_days = default_expiry_days
+
+        if not status_message:
+            if expiry_days < 1:
+                expiry_days = 1
+            if expiry_days > 30:
+                expiry_days = 30
+            invite = TestimonialInvite.issue(
+                target_note=target_note,
+                expires_in_days=expiry_days,
+            )
+            created_invite_url = request.build_absolute_uri(
+                reverse("landing:testimonial_invite", kwargs={"token": invite.token})
+            )
+            status_level = "success"
+            status_message = "리뷰 요청 링크가 생성되었습니다."
+
+    recent_invites = list(TestimonialInvite.objects.all()[:20])
+    invite_rows = []
+    for invite in recent_invites:
+        invite_url = request.build_absolute_uri(
+            reverse("landing:testimonial_invite", kwargs={"token": invite.token})
+        )
+        if invite.is_consumed:
+            invite_state = "사용 완료"
+        elif invite.is_expired:
+            invite_state = "만료"
+        elif not invite.is_active:
+            invite_state = "비활성"
+        else:
+            invite_state = "사용 가능"
+        invite_rows.append(
+            {
+                "invite": invite,
+                "invite_url": invite_url,
+                "invite_state": invite_state,
+            }
+        )
+
+    pending_testimonials = list(
+        Testimonial.objects.filter(status=Testimonial.Status.PENDING)[:20]
+    )
+    recent_testimonials = list(Testimonial.objects.all()[:20])
+
+    return render(
+        request,
+        "landing/admin_review_guide.html",
+        {
+            "invite_admin_url": reverse("admin:landing_testimonialinvite_changelist"),
+            "testimonial_admin_url": reverse("admin:landing_testimonial_changelist"),
+            "invite_path_example": "/testimonials/invite/<token>/",
+            "default_expiry_days": settings.TESTIMONIAL_INVITE_EXPIRY_DAYS,
+            "public_threshold": settings.TESTIMONIAL_PUBLIC_THRESHOLD,
+            "recent_invites": invite_rows,
+            "pending_testimonials": pending_testimonials,
+            "recent_testimonials": recent_testimonials,
+            "status_message": status_message,
+            "status_level": status_level,
+            "created_invite_url": created_invite_url,
         },
     )
 

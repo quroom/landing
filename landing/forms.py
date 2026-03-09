@@ -171,3 +171,32 @@ class LeadMagnetForm(forms.Form):
                 widget=forms.RadioSelect(),
                 required=bool(question_meta["required"]),
             )
+
+
+class TestimonialSubmissionForm(forms.Form):
+    name = forms.CharField(
+        label="이름",
+        max_length=50,
+        widget=forms.TextInput(attrs={"placeholder": "이름 또는 이니셜"}),
+    )
+    role_title = forms.CharField(
+        label="직무/역할",
+        max_length=80,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "예: 대표, 운영 매니저 (선택)"}),
+    )
+    company_name = forms.CharField(
+        label="회사명",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "회사명 (선택)"}),
+    )
+    content = forms.CharField(
+        label="후기 내용",
+        widget=forms.Textarea(
+            attrs={
+                "rows": 6,
+                "placeholder": "상담에서 특히 도움이 된 점과 실행 변화 계획을 적어 주세요.",
+            }
+        ),
+    )
