@@ -3,12 +3,13 @@ import tempfile
 from datetime import timedelta
 from unittest.mock import patch
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from landing.content import CAREER_RANGES
+from landing.content import CAREER_RANGES, build_career_ranges
 from landing.models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
 
 
@@ -16,6 +17,7 @@ class LandingPageTests(TestCase):
     def test_home_page_renders(self) -> None:
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, "자동화 실행 파트")
         self.assertContains(response, "외주용역 집중 트랙")
         self.assertContains(response, "창업 기본 인프라 구축")
@@ -34,6 +36,22 @@ class LandingPageTests(TestCase):
         )
         self.assertTrue(
             FunnelEvent.objects.filter(event_name="lp_view", page_key="home").exists()
+        )
+
+    def test_home_page_supports_english_override_for_career_timeline(self) -> None:
+        response = self.client.get(reverse("landing:index"), {"lang": "en"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="en">', html=False)
+        self.assertContains(response, "Samsung Electronics S/W Engineer")
+        self.assertContains(
+            response, "Social venture founding and QuRoom development/operations"
+        )
+        self.assertContains(response, "Present")
+        self.assertContains(response, "y ")
+        self.assertContains(response, " m")
+        self.assertEqual(
+            response.context["career_ranges"],
+            build_career_ranges(locale="en", page_default_locale="ko"),
         )
 
     def test_free_diagnosis_page_renders(self) -> None:
@@ -135,16 +153,47 @@ class LandingPageTests(TestCase):
     def test_foreign_developers_page_renders(self) -> None:
         response = self.client.get(reverse("landing:foreign_developers"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "외국인 개발자 제공 서비스")
-        self.assertContains(response, "개발사 네트워크 연결 지원")
-        self.assertContains(
-            response, "외국인 개발자 커리어/네트워크 관련 정보 메일 수신"
-        )
-        self.assertContains(response, "개발사 네트워크 연결")
+        self.assertContains(response, '<html lang="en">', html=False)
+        self.assertContains(response, "Services for Foreign Developers")
+        self.assertContains(response, "Developer Network Connection Support")
+        self.assertContains(response, "career/network updates")
+        self.assertContains(response, "Request Network Matching")
         self.assertTrue(
             FunnelEvent.objects.filter(
                 event_name="lp_view", page_key="foreign_developers"
             ).exists()
+        )
+
+    def test_foreign_developers_page_supports_korean_override(self) -> None:
+        response = self.client.get(
+            reverse("landing:foreign_developers"), {"lang": "ko"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="ko">', html=False)
+        self.assertContains(response, "외국인 개발자 제공 서비스")
+        self.assertContains(response, "개발사 네트워크 연결 지원")
+
+    def test_locale_resolution_priority_query_over_session(self) -> None:
+        session = self.client.session
+        session[settings.LANGUAGE_COOKIE_NAME] = "ko"
+        session.save()
+
+        response = self.client.get(
+            reverse("landing:foreign_developers"), {"lang": "en"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="en">', html=False)
+
+    def test_set_language_endpoint_updates_language_session(self) -> None:
+        response = self.client.post(
+            reverse("set_language"),
+            {"language": "en", "next": reverse("landing:index")},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(settings.LANGUAGE_COOKIE_NAME, response.cookies)
+        self.assertEqual(
+            response.cookies[settings.LANGUAGE_COOKIE_NAME].value,
+            "en",
         )
 
     def test_policy_pages_render(self) -> None:

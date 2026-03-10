@@ -58,6 +58,45 @@ class ContactFormTests(TestCase):
             ).exists()
         )
 
+    def test_contact_submit_invalid_returns_english_message_when_locale_en(
+        self,
+    ) -> None:
+        self.client.cookies["django_language"] = "en"
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "name": "",
+                "email": "invalid-email",
+                "inquiry_type": "ax_build",
+                "message": "",
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(response, "Please check required fields.", status_code=400)
+
+    def test_contact_submit_valid_returns_english_success_when_locale_en(self) -> None:
+        self.client.cookies["django_language"] = "en"
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "name": "English User",
+                "company_name": "QuRoom",
+                "contact": "https://linkedin.com/in/test",
+                "email": "eng-success@example.com",
+                "inquiry_type": "ax_build",
+                "message": "Testing English flow",
+                "agree_all": "on",
+                "agree_privacy": "on",
+                "agree_marketing": "on",
+                "lead_source": "founder_contact",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Your inquiry has been received. We will respond within 1-2 business days.",
+        )
+
     @patch("landing.mailers.send_mail", side_effect=RuntimeError("smtp failed"))
     def test_contact_submit_email_failure_still_persists_and_returns_success(
         self, _send_mail: object

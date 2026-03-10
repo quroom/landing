@@ -10,7 +10,8 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from .analytics import track_event
@@ -20,7 +21,14 @@ from .ax_tool_stack import (
     DIAGNOSIS_QUESTIONS,
     diagnosis_question_keys,
 )
-from .content import CAREER_RANGES, SHARED_CONTENT, build_page_content
+from .content import (
+    CAREER_RANGES,
+    SAFE_LOCALE,
+    SHARED_CONTENT,
+    SUPPORTED_LOCALE_SET,
+    build_career_ranges,
+    build_page_content,
+)
 from .deploy_validation import collect_readiness_errors
 from .forms import ContactForm, LeadMagnetForm, TestimonialSubmissionForm
 from .lead_magnet_sections import (
@@ -261,6 +269,40 @@ FALLBACK_TOOL_RECOMMENDATION = (
     ["Notion", "Google Sheets"],
     "기본 실행 구조를 먼저 정리하면 다음 개선 단계를 설계하기 쉬워집니다.",
 )
+PAGE_DEFAULT_LOCALES = {
+    "home": "ko",
+    "foreign_developers": "en",
+    "free_diagnosis": "ko",
+}
+LOCALE_SESSION_KEY = settings.LANGUAGE_COOKIE_NAME
+
+
+def _normalize_locale(value: str | None) -> str | None:
+    if value in SUPPORTED_LOCALE_SET:
+        return str(value)
+    return None
+
+
+def _page_default_locale(page_key: str) -> str:
+    default_locale = PAGE_DEFAULT_LOCALES.get(page_key, SAFE_LOCALE)
+    return default_locale if default_locale in SUPPORTED_LOCALE_SET else SAFE_LOCALE
+
+
+def _resolve_landing_locale(request: HttpRequest, page_key: str) -> tuple[str, str]:
+    page_default = _page_default_locale(page_key)
+    requested = _normalize_locale(request.GET.get("lang"))
+    if requested:
+        translation.activate(requested)
+        request.session[LOCALE_SESSION_KEY] = requested
+        return requested, page_default
+    persisted = _normalize_locale(request.session.get(LOCALE_SESSION_KEY))
+    if not persisted:
+        persisted = _normalize_locale(request.COOKIES.get("django_language"))
+    if persisted:
+        translation.activate(persisted)
+        return persisted, page_default
+    translation.activate(page_default)
+    return page_default, page_default
 
 
 def _parse_date(value: str) -> date:
@@ -274,7 +316,7 @@ def _months_between(start: date, end: date) -> int:
     return max(months, 0)
 
 
-def _career_duration() -> str:
+def _career_duration(locale: str = SAFE_LOCALE) -> str:
     today = date.today()
     total_months = 0
     for item in CAREER_RANGES:
@@ -285,6 +327,8 @@ def _career_duration() -> str:
         total_months += _months_between(start, end)
 
     years, months = divmod(total_months, 12)
+    if locale == "en":
+        return f"{years}y {months}m"
     return f"{years}년 {months}개월"
 
 
@@ -321,10 +365,12 @@ def _base_context(
     content: dict,
     page_key: str,
     *,
+    locale: str = SAFE_LOCALE,
+    page_default_locale: str = SAFE_LOCALE,
     recommended_inquiry_type: str = "",
     lead_context: str = "",
 ) -> dict:
-    career_duration = _career_duration()
+    career_duration = _career_duration(locale)
     lead_magnet_form = LeadMagnetForm()
     testimonials, testimonial_threshold, approved_testimonial_count = (
         _public_testimonials()
@@ -336,7 +382,10 @@ def _base_context(
         form_kwargs["lead_context"] = lead_context
     return {
         "content": content,
-        "career_ranges": CAREER_RANGES,
+        "career_ranges": build_career_ranges(
+            locale=locale,
+            page_default_locale=page_default_locale,
+        ),
         "career_duration": career_duration,
         "metrics": _build_metrics(content, career_duration),
         "form": ContactForm(**form_kwargs),
@@ -347,6 +396,9 @@ def _base_context(
         "testimonials": testimonials,
         "testimonial_threshold": testimonial_threshold,
         "approved_testimonial_count": approved_testimonial_count,
+        "locale": locale,
+        "page_default_locale": page_default_locale,
+        "html_lang": locale,
     }
 
 
@@ -367,6 +419,7 @@ def _public_testimonials() -> tuple[list[Testimonial], int, int]:
 
 
 def index(request: HttpRequest) -> HttpResponse:
+    locale, page_default_locale = _resolve_landing_locale(request, "home")
     track_event(request, "lp_view", page_key="home", lead_source="landing")
     if request.GET.get("lead_magnet") == "start":
         track_event(
@@ -376,8 +429,13 @@ def index(request: HttpRequest) -> HttpResponse:
             lead_source="founder_lead_magnet",
         )
     context = _base_context(
-        build_page_content(),
+        build_page_content(
+            locale=locale,
+            page_default_locale=page_default_locale,
+        ),
         page_key="home",
+        locale=locale,
+        page_default_locale=page_default_locale,
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
@@ -389,6 +447,7 @@ def founders(request: HttpRequest) -> HttpResponse:
 
 
 def foreign_developers(request: HttpRequest) -> HttpResponse:
+    locale, page_default_locale = _resolve_landing_locale(request, "foreign_developers")
     track_event(
         request,
         "lp_view",
@@ -396,8 +455,14 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
         lead_source="foreign_developers",
     )
     context = _base_context(
-        build_page_content("foreign_developers"),
+        build_page_content(
+            "foreign_developers",
+            locale=locale,
+            page_default_locale=page_default_locale,
+        ),
         page_key="foreign_developers",
+        locale=locale,
+        page_default_locale=page_default_locale,
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
@@ -405,6 +470,7 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
 
 
 def free_diagnosis(request: HttpRequest) -> HttpResponse:
+    locale, page_default_locale = _resolve_landing_locale(request, "free_diagnosis")
     track_event(
         request,
         "lp_view",
@@ -419,8 +485,13 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
             lead_source="founder_lead_magnet",
         )
     context = _base_context(
-        build_page_content(),
+        build_page_content(
+            locale=locale,
+            page_default_locale=page_default_locale,
+        ),
         page_key="home",
+        locale=locale,
+        page_default_locale=page_default_locale,
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
@@ -1214,7 +1285,7 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
             request,
             form,
             status="error",
-            status_message="필수 항목을 확인해 주세요.",
+            status_message=_("필수 항목을 확인해 주세요."),
         )
 
     data = form.cleaned_data
@@ -1256,7 +1327,9 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         request,
         ContactForm(page_key=page_key),
         status="success",
-        status_message="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
+        status_message=_(
+            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        ),
     )
 
 

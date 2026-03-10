@@ -64,18 +64,18 @@
       {{ form.agree_marketing }}
       <span>{{ form.agree_marketing.label }}</span>
     </label>
-    <p class="text-[11px] text-navy/55">선택 동의는 문의 접수와 무관하며, 언제든 수신거부할 수 있습니다.</p>
+    <p class="text-[11px] text-navy/55">{{ form.ui_copy.optional_note }}</p>
     <button type="submit"
             class="w-full rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky">
-      문의 보내기
+      {{ form.ui_copy.submit_label }}
     </button>
     <div id="contact-loading"
          class="htmx-indicator rounded-lg bg-sky/10 px-3 py-2 text-xs text-sky">
-      처리 중입니다... 잠시만 기다려 주세요.
+      {{ form.ui_copy.loading_message }}
       <div class="mt-2 h-1 w-full overflow-hidden rounded bg-sky/20">
         <div class="loading-bar h-full w-1/3 bg-sky"></div>
       </div>
     </div>
-    <p class="text-xs text-navy/60">영업일 기준 1~2일 내 회신합니다.</p>
+    <p class="text-xs text-navy/60">{{ form.ui_copy.response_sla }}</p>
   </form>
 </div>

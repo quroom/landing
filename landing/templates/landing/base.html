@@ -1,19 +1,21 @@
-{% load static %}
+{% load i18n static %}
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="{{ html_lang|default:'ko' }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      {% block title %}큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너{% endblock %}
+      {% block title %}
+        {% trans "큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너" %}
+      {% endblock %}
     </title>
     <meta name="description"
-          content="{% block description %}큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발자의 실무 연계를 지원합니다.{% endblock %}" />
+          content="{% block description %}{% trans "큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발자의 실무 연계를 지원합니다." %}{% endblock %}" />
     <meta name="keywords"
-          content="큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발" />
-    <meta property="og:title" content="큐룸(QuRoom) 공식 홈페이지" />
+          content="{% trans '큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발' %}" />
+    <meta property="og:title" content="{% trans '큐룸(QuRoom) 공식 홈페이지' %}" />
     <meta property="og:description"
-          content="아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸" />
+          content="{% trans '아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸' %}" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{% static 'logo.jpg' %}" />
     <meta name="theme-color" content="#0f172a" />
@@ -55,6 +57,25 @@
     {% endif %}
   </head>
   <body class="bg-fog text-navy antialiased">
+    {% get_current_language as CURRENT_LANGUAGE %}
+    <form action="{% url 'set_language' %}"
+          method="post"
+          class="fixed right-4 top-4 z-50 flex items-center gap-1 rounded-xl border border-navy/20 bg-white/90 px-2 py-1 text-xs shadow-sm backdrop-blur">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+      <button type="submit"
+              name="language"
+              value="ko"
+              class="rounded-md px-2 py-1 {% if CURRENT_LANGUAGE == 'ko' %}bg-navy text-white{% else %}text-navy/70{% endif %}">
+        KO
+      </button>
+      <button type="submit"
+              name="language"
+              value="en"
+              class="rounded-md px-2 py-1 {% if CURRENT_LANGUAGE == 'en' %}bg-navy text-white{% else %}text-navy/70{% endif %}">
+        EN
+      </button>
+    </form>
     {% block body %}{% endblock %}
     <script src="{% static 'landing/js/site.js' %}"></script>
   </body>

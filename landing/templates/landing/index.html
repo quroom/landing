@@ -1,5 +1,5 @@
 {% extends "landing/base.html" %}
-{% load static %}
+{% load i18n static %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.13),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(74,222,128,0.1),transparent_45%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>
@@ -8,7 +8,7 @@
     <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:px-8">
       <a href="#hero" class="flex items-center gap-3">
         <img src="{% static 'logo.jpg' %}"
-             alt="큐룸 로고"
+             alt="{% trans '큐룸 로고' %}"
              class="h-9 w-9 rounded-full border border-navy/15 object-cover" />
         <div>
           <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>
@@ -17,26 +17,28 @@
       </a>
       <button id="menu-toggle"
               type="button"
-              class="rounded-xl border border-navy/20 px-3 py-2 text-sm font-semibold md:hidden">메뉴</button>
+              class="rounded-xl border border-navy/20 px-3 py-2 text-sm font-semibold md:hidden">
+        {% trans "메뉴" %}
+      </button>
       <nav id="menu"
            class="hidden items-center gap-5 text-sm font-medium md:flex">
-        <a href="#about" class="hover:text-sky">회사 소개</a>
-        <a href="#services" class="hover:text-sky">서비스</a>
-        <a href="#portfolio" class="hover:text-sky">포트폴리오</a>
-        <a href="#contact" class="hover:text-sky">문의</a>
+        <a href="#about" class="hover:text-sky">{% trans "회사 소개" %}</a>
+        <a href="#services" class="hover:text-sky">{% trans "서비스" %}</a>
+        <a href="#portfolio" class="hover:text-sky">{% trans "포트폴리오" %}</a>
+        <a href="#contact" class="hover:text-sky">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">상담 문의하기</a>
+           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">{% trans "상담 문의하기" %}</a>
       </nav>
     </div>
     <nav id="mobile-menu"
          class="mx-auto hidden w-full max-w-6xl border-t border-navy/10 bg-white px-4 py-3 md:hidden">
       <div class="flex flex-col gap-3 text-sm font-medium">
-        <a href="#about" class="mobile-link">회사 소개</a>
-        <a href="#services" class="mobile-link">서비스</a>
-        <a href="#portfolio" class="mobile-link">포트폴리오</a>
-        <a href="#contact" class="mobile-link">문의</a>
+        <a href="#about" class="mobile-link">{% trans "회사 소개" %}</a>
+        <a href="#services" class="mobile-link">{% trans "서비스" %}</a>
+        <a href="#portfolio" class="mobile-link">{% trans "포트폴리오" %}</a>
+        <a href="#contact" class="mobile-link">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-center text-white">상담 문의하기</a>
+           class="rounded-xl bg-navy px-4 py-2 text-center text-white">{% trans "상담 문의하기" %}</a>
       </div>
     </nav>
   </header>
@@ -44,7 +46,7 @@
     <section id="hero" class="relative overflow-hidden pt-28 md:pt-36">
       <div class="absolute inset-0 -z-10">
         <img src="{% static 'hero-quroom.jpg' %}"
-             alt="협업과 개발을 상징하는 히어로 배경 이미지"
+             alt="{% trans '협업과 개발을 상징하는 히어로 배경 이미지' %}"
              class="h-full w-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/75 to-navy/50"></div>
         <div class="absolute bottom-8 right-8 h-24 w-24 rounded-full bg-sky/30 blur-2xl"></div>
@@ -58,39 +60,36 @@
           <h1 class="font-space text-3xl font-bold leading-tight md:text-5xl">{{ content.headline }}</h1>
           <p class="max-w-2xl text-sm text-white/85 md:text-base">{{ content.subcopy }}</p>
           <p class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90">
-            2018.06 설립 · 총 개발 경력 <strong id="career-duration">{{ career_duration }}</strong> · 총 7개 프로젝트(법인 5, 외주 2)
+            {% trans "2018.06 설립 · 총 개발 경력" %} <strong id="career-duration">{{ career_duration }}</strong> · {% trans "총 7개 프로젝트(법인 5, 외주 2)" %}
           </p>
           <div class="flex flex-wrap gap-3">
             <a href="#contact"
-               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white transition hover:bg-cyan-500">상담
-            문의하기</a>
+               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white transition hover:bg-cyan-500">{% trans "상담 문의하기" %}</a>
             <a href="#services"
-               class="rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20">서비스
-            보기</a>
+               class="rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20">{% trans "서비스 보기" %}</a>
             <a href="{% url 'landing:free_diagnosis' %}?lead_magnet=start"
-               class="rounded-xl border border-mint/70 bg-mint/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-mint/30">무료
-            자동화 실행 진단</a>
+               class="rounded-xl border border-mint/70 bg-mint/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-mint/30">{% trans "무료 자동화 실행 진단" %}</a>
           </div>
           <p class="text-xs text-white/80">
-            외국인 개발자 실무 연계가 필요한 경우
+            {% trans "외국인 개발자 실무 연계가 필요한 경우" %}
             <a href="{% url 'landing:foreign_developers' %}"
-               class="underline underline-offset-2">외국인 개발자 전용 페이지</a>
-            에서 상세 내용을 확인하세요.
+               class="underline underline-offset-2">{% trans "외국인 개발자 전용 페이지" %}</a>
+            {% trans "에서 상세 내용을 확인하세요." %}
           </p>
         </div>
         <aside class="self-end rounded-2xl border border-white/25 bg-white/15 p-5 text-white backdrop-blur">
-          <p class="text-xs font-semibold tracking-wide text-white/80">대표자 신뢰 링크 (개인 계정)</p>
+          <p class="text-xs font-semibold tracking-wide text-white/80">{% trans "대표자 신뢰 링크 (개인 계정)" %}</p>
           <div class="mt-3 space-y-2 text-sm">
             <a href="{{ content.links.linkedin }}"
                target="_blank"
                rel="noreferrer"
-               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">LinkedIn (대표자 개인)</a>
+               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">{% trans "LinkedIn (대표자 개인)" %}</a>
             <a href="{{ content.links.threads }}"
                target="_blank"
                rel="noreferrer"
-               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">Threads (대표자 개인)</a>
+               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">{% trans "Threads (대표자 개인)" %}</a>
           </div>
-          <p class="mt-3 text-[11px] text-white/70">회사 공식 계정이 아닌 대표자 개인 계정입니다.</p>
+          <p class="mt-3 text-[11px] text-white/70">{% trans "회사 공식 계정이 아닌 대표자 개인 계정입니다." %}</p>
         </aside>
       </div>
     </section>
@@ -112,7 +111,7 @@
                     {% if range.end %}
                       {{ range.end|slice:":7" }}
                     {% else %}
-                      현재
+                      {% trans "현재" %}
                     {% endif %}
                     ·
                   {{ range.label }}</span>
@@ -136,11 +135,11 @@
     <section id="services" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
       <div class="mb-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Services</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">제공 서비스</h2>
+        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "제공 서비스" %}</h2>
       </div>
       <div class="mb-4">
-        <h3 class="font-space text-xl font-semibold text-navy">자동화 실행 파트</h3>
-        <p class="mt-1 text-sm text-navy/70">아이디어를 실행 가능한 제품/자동화 체계로 연결하는 핵심 서비스입니다.</p>
+        <h3 class="font-space text-xl font-semibold text-navy">{% trans "자동화 실행 파트" %}</h3>
+        <p class="mt-1 text-sm text-navy/70">{% trans "아이디어를 실행 가능한 제품/자동화 체계로 연결하는 핵심 서비스입니다." %}</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
         {% for service in content.services %}
@@ -156,9 +155,9 @@
                 {% endfor %}
               </ul>
               <div class="mt-4 border-t border-navy/10 pt-4 text-xs text-navy/70">
-                <p>예상 기간: {{ service.duration }}</p>
-                <p class="mt-1">예상 비용: {{ service.price }}</p>
-                <p class="mt-1">권장 고객: {{ service.audience }}</p>
+                <p>{% trans "예상 기간" %}: {{ service.duration }}</p>
+                <p class="mt-1">{% trans "예상 비용" %}: {{ service.price }}</p>
+                <p class="mt-1">{% trans "권장 고객" %}: {{ service.audience }}</p>
                 {% if service.capacity_note %}<p class="mt-1 text-amber-700">{{ service.capacity_note }}</p>{% endif %}
               </div>
               <a href="{{ service.cta_href }}"
@@ -170,8 +169,8 @@
         {% endfor %}
       </div>
       <div class="mt-8 mb-4">
-        <h3 class="font-space text-xl font-semibold text-navy">외주용역 집중 트랙</h3>
-        <p class="mt-1 text-sm text-navy/70">고난도 구축 과제를 전담으로 수행하는 1:1 집중 트랙입니다.</p>
+        <h3 class="font-space text-xl font-semibold text-navy">{% trans "외주용역 집중 트랙" %}</h3>
+        <p class="mt-1 text-sm text-navy/70">{% trans "고난도 구축 과제를 전담으로 수행하는 1:1 집중 트랙입니다." %}</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
         {% for service in content.services %}
@@ -187,9 +186,9 @@
                 {% endfor %}
               </ul>
               <div class="mt-4 border-t border-navy/10 pt-4 text-xs text-navy/70">
-                <p>예상 기간: {{ service.duration }}</p>
-                <p class="mt-1">예상 비용: {{ service.price }}</p>
-                <p class="mt-1">권장 고객: {{ service.audience }}</p>
+                <p>{% trans "예상 기간" %}: {{ service.duration }}</p>
+                <p class="mt-1">{% trans "예상 비용" %}: {{ service.price }}</p>
+                <p class="mt-1">{% trans "권장 고객" %}: {{ service.audience }}</p>
                 {% if service.capacity_note %}<p class="mt-1 text-amber-700">{{ service.capacity_note }}</p>{% endif %}
               </div>
               <a href="{{ service.cta_href }}"
@@ -201,17 +200,17 @@
         {% endfor %}
       </div>
       <div class="mt-8 rounded-2xl border border-navy/10 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
-        <h3 class="font-space text-lg font-semibold text-navy">창업 기본 인프라 구축</h3>
-        <p class="mt-1 text-xs text-navy/65">창업 초기에 필요한 핵심 운영 인프라를 빠르게 갖추도록 지원합니다.</p>
+        <h3 class="font-space text-lg font-semibold text-navy">{% trans "창업 기본 인프라 구축" %}</h3>
+        <p class="mt-1 text-xs text-navy/65">{% trans "창업 초기에 필요한 핵심 운영 인프라를 빠르게 갖추도록 지원합니다." %}</p>
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           {% for addon in content.service_addons %}
             <article class="rounded-xl border border-navy/10 bg-fog/50 p-4">
               <h4 class="font-semibold text-navy">{{ addon.title }}</h4>
               <p class="mt-2 text-sm text-navy/75">{{ addon.summary }}</p>
               <div class="mt-3 text-xs text-navy/70">
-                <p>예상 기간: {{ addon.duration }}</p>
-                <p class="mt-1">예상 비용: {{ addon.price }}</p>
-                <p class="mt-1">권장 고객: {{ addon.audience }}</p>
+                <p>{% trans "예상 기간" %}: {{ addon.duration }}</p>
+                <p class="mt-1">{% trans "예상 비용" %}: {{ addon.price }}</p>
+                <p class="mt-1">{% trans "권장 고객" %}: {{ addon.audience }}</p>
                 <p class="mt-1 text-navy/60">{{ addon.note }}</p>
               </div>
             </article>
@@ -223,14 +222,14 @@
       <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Portfolio</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">포트폴리오</h2>
+          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "포트폴리오" %}</h2>
         </div>
         <p class="max-w-xl text-xs text-navy/70">
           {{ content.trust_note }}
           <a href="{{ content.links.linkedin }}"
              target="_blank"
              rel="noreferrer"
-             class="underline decoration-sky decoration-2 underline-offset-4">LinkedIn 보기</a>
+             class="underline decoration-sky decoration-2 underline-offset-4">{% trans "LinkedIn 보기" %}</a>
         </p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
@@ -238,7 +237,7 @@
           <article class="overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
             <div class="flex h-52 w-full items-center justify-center bg-fog/70 p-2">
               <img src="{% static project.image %}"
-                   alt="{{ project.name }} 썸네일"
+                   alt="{{ project.name }} {% trans '썸네일' %}"
                    class="max-h-full w-full object-contain" />
             </div>
             <div class="space-y-3 p-5">
@@ -249,25 +248,25 @@
               <p class="text-sm text-navy/75">{{ project.summary }}</p>
               <div class="space-y-2 rounded-xl bg-fog/70 p-3 text-xs text-navy/80">
                 <p>
-                  <strong>Problem</strong> {{ project.problem }}
+                  <strong>{% trans "Problem" %}</strong> {{ project.problem }}
                 </p>
                 <p>
-                  <strong>Solution</strong> {{ project.solution }}
+                  <strong>{% trans "Solution" %}</strong> {{ project.solution }}
                 </p>
                 <p>
-                  <strong>Result</strong> {{ project.result }}
+                  <strong>{% trans "Result" %}</strong> {{ project.result }}
                 </p>
                 <p>
-                  <strong>Tech</strong> {{ project.tech }}
+                  <strong>{% trans "Tech" %}</strong> {{ project.tech }}
                 </p>
               </div>
               {% if project.link %}
                 <a href="{{ project.link }}"
                    target="_blank"
                    rel="noreferrer"
-                   class="inline-flex text-sm font-semibold text-sky hover:underline">링크 확인하기</a>
+                   class="inline-flex text-sm font-semibold text-sky hover:underline">{% trans "링크 확인하기" %}</a>
               {% else %}
-                <p class="text-xs text-navy/60">보안 또는 운영 정책으로 상세 링크는 비공개입니다.</p>
+                <p class="text-xs text-navy/60">{% trans "보안 또는 운영 정책으로 상세 링크는 비공개입니다." %}</p>
               {% endif %}
             </div>
           </article>
@@ -278,8 +277,8 @@
       <section id="testimonials" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
         <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Testimonials</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">상담 후기</h2>
-          <p class="mt-2 text-sm text-navy/70">검토 후 공개 동의된 후기만 노출합니다.</p>
+          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "상담 후기" %}</h2>
+          <p class="mt-2 text-sm text-navy/70">{% trans "검토 후 공개 동의된 후기만 노출합니다." %}</p>
           <div class="mt-6 grid gap-4 md:grid-cols-3">
             {% for testimonial in testimonials %}
               <article class="rounded-2xl border border-navy/10 bg-fog/70 p-4">
@@ -299,7 +298,7 @@
     <section id="faq" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
       <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">FAQ</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">창업자 실행 FAQ</h2>
+        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "창업자 실행 FAQ" %}</h2>
         <div class="mt-6 grid gap-4 md:grid-cols-3">
           {% for item in content.faq %}
             <article class="rounded-2xl border border-navy/10 bg-fog/70 p-4">
@@ -313,7 +312,7 @@
     <section id="trust-policy" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
       <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Trust Policy</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">신뢰 문구/증빙 정책</h2>
+        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "신뢰 문구/증빙 정책" %}</h2>
         <ul class="mt-5 space-y-2 text-sm text-navy/80">
           {% for item in content.evidence_policy %}
             <li class="flex items-start gap-2">
@@ -327,20 +326,20 @@
       <div class="grid gap-6 rounded-3xl bg-navy p-6 text-white md:grid-cols-[1fr_1fr] md:p-8">
         <div class="space-y-4">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Contact</p>
-          <h2 class="font-space text-2xl font-bold">프로젝트 아이디어가 있다면 먼저 이야기해보세요</h2>
-          <p class="text-sm text-white/80">기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다.</p>
+          <h2 class="font-space text-2xl font-bold">{% trans "프로젝트 아이디어가 있다면 먼저 이야기해보세요" %}</h2>
+          <p class="text-sm text-white/80">{% trans "기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다." %}</p>
           <div class="space-y-2 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm">
             <p>
-              <strong>일반 상담 CTA:</strong> 서비스 문의하기
+              <strong>{% trans "일반 상담 CTA:" %}</strong> {% trans "서비스 문의하기" %}
             </p>
             <p>
-              <strong>고액 외주 CTA:</strong> 1,000만원 이상 외주 상담 신청
+              <strong>{% trans "고액 외주 CTA:" %}</strong> {% trans "1,000만원 이상 외주 상담 신청" %}
             </p>
             <p>
-              <strong>이메일:</strong> {{ content.company.email }}
+              <strong>{% trans "이메일:" %}</strong> {{ content.company.email }}
             </p>
             <p>
-              <strong>LinkedIn DM:</strong> <a class="underline underline-offset-2"
+              <strong>{% trans "LinkedIn DM:" %}</strong> <a class="underline underline-offset-2"
     href="{{ content.links.linkedin }}"
     target="_blank"
     rel="noreferrer">{{ content.links.linkedin }}</a>
@@ -357,26 +356,24 @@
       <div>
         <p class="font-space text-base font-semibold text-navy">{{ content.company.name }}</p>
         <p class="mt-2">{{ content.company.address }}</p>
-        <p class="mt-1">연락처: {{ content.company.email }} / LinkedIn DM</p>
+        <p class="mt-1">{% trans "연락처:" %} {{ content.company.email }} / LinkedIn DM</p>
         <p class="mt-1">
-          사업자 정보: 상호 {{ content.company.name }} | 대표 {{ content.company.owner }} | 사업자등록번호 {{ content.company.biz_number }}
+          {% trans "사업자 정보: 상호" %} {{ content.company.name }} | {% trans "대표" %} {{ content.company.owner }} | {% trans "사업자등록번호" %} {{ content.company.biz_number }}
         </p>
-        <p class="mt-1">통신판매업 신고번호: {{ content.company.mail_order_number }}</p>
+        <p class="mt-1">{% trans "통신판매업 신고번호:" %} {{ content.company.mail_order_number }}</p>
         <p class="mt-3 text-xs text-navy/60">Copyright {% now "Y" %} QuRoom. All rights reserved.</p>
       </div>
       <div class="space-y-2">
-        <a href="{% url 'landing:privacy' %}" class="block hover:text-sky">개인정보처리방침</a>
-        <a href="{% url 'landing:terms' %}" class="block hover:text-sky">이용약관</a>
+        <a href="{% url 'landing:privacy' %}" class="block hover:text-sky">{% trans "개인정보처리방침" %}</a>
+        <a href="{% url 'landing:terms' %}" class="block hover:text-sky">{% trans "이용약관" %}</a>
         <a href="{{ content.links.linkedin }}"
            target="_blank"
            rel="noreferrer"
-           class="block hover:text-sky">LinkedIn (대표자
-        개인)</a>
+           class="block hover:text-sky">{% trans "LinkedIn (대표자 개인)" %}</a>
         <a href="{{ content.links.threads }}"
            target="_blank"
            rel="noreferrer"
-           class="block hover:text-sky">Threads (대표자
-        개인)</a>
+           class="block hover:text-sky">{% trans "Threads (대표자 개인)" %}</a>
       </div>
     </div>
   </footer>

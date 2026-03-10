@@ -1,0 +1,511 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-10 10:22+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: _portfolio_code/art-trip-main/user/models.py:57
+msgid "주관기업"
+msgstr ""
+
+#: _portfolio_code/art-trip-main/user/models.py:58
+msgid "일반 회원"
+msgstr ""
+
+#: _portfolio_code/art-trip-main/user/models.py:59
+msgid "미술관"
+msgstr ""
+
+#: _portfolio_code/art-trip-main/user/models.py:60
+msgid "작가"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/backend/settings.py:167
+msgid "Korean"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/backend/settings.py:168
+msgid "English"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:18
+msgid "last logout"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:20
+msgid "last notification check"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:99
+msgid "Common"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:100
+msgid "Schedule"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:101
+msgid "Prayer"
+msgstr ""
+
+#: _portfolio_code/obible-main/backend/users/models.py:102
+msgid "Repentance"
+msgstr ""
+
+#: landing/forms.py:13
+msgid "자동화 실행 진단"
+msgstr ""
+
+#: landing/forms.py:14
+msgid "자동화 실행 구축"
+msgstr ""
+
+#: landing/forms.py:15 landing/templates/landing/index.html:203
+msgid "창업 기본 인프라 구축"
+msgstr ""
+
+#: landing/forms.py:16 landing/templates/landing/index.html:172
+msgid "외주용역 집중 트랙"
+msgstr ""
+
+#: landing/forms.py:17 landing/forms.py:23
+msgid "기타"
+msgstr ""
+
+#: landing/forms.py:20
+msgid "개발사 네트워크 연결"
+msgstr ""
+
+#: landing/forms.py:21
+msgid "취업/실무 커리어 상담"
+msgstr ""
+
+#: landing/forms.py:22
+msgid "정착/생활 연계 상담"
+msgstr ""
+
+#: landing/forms.py:38
+msgid "이름"
+msgstr ""
+
+#: landing/forms.py:41
+msgid "이름을 입력해 주세요"
+msgstr ""
+
+#: landing/forms.py:45
+msgid "회사명"
+msgstr ""
+
+#: landing/forms.py:48
+msgid "회사명 (선택)"
+msgstr ""
+
+#: landing/forms.py:51
+msgid "연락 채널"
+msgstr ""
+
+#: landing/forms.py:55
+msgid "이메일 또는 LinkedIn 프로필 URL (선택)"
+msgstr ""
+
+#: landing/forms.py:59
+msgid "이메일"
+msgstr ""
+
+#: landing/forms.py:61
+msgid "회신 받을 이메일"
+msgstr ""
+
+#: landing/forms.py:65
+msgid "문의 유형"
+msgstr ""
+
+#: landing/forms.py:69
+msgid "문의 내용"
+msgstr ""
+
+#: landing/forms.py:74
+msgid "프로젝트 목표, 예산 범위, 원하는 일정 등을 자유롭게 작성해 주세요."
+msgstr ""
+
+#: landing/forms.py:80
+msgid "개인정보 수집 및 이용에 동의합니다."
+msgstr ""
+
+#: landing/forms.py:81
+msgid "문의 접수를 위해 동의가 필요합니다."
+msgstr ""
+
+#: landing/forms.py:85
+msgid "(선택) 자동화 진단/운영 팁 등 관련 정보 메일 수신에 동의합니다."
+msgstr ""
+
+#: landing/forms.py:89
+msgid "전체 동의 (필수 + 선택)"
+msgstr ""
+
+#: landing/forms.py:103
+msgid "선택 동의는 문의 접수와 무관하며, 언제든 수신거부할 수 있습니다."
+msgstr ""
+
+#: landing/forms.py:105
+msgid "문의 보내기"
+msgstr ""
+
+#: landing/forms.py:106
+msgid "처리 중입니다... 잠시만 기다려 주세요."
+msgstr ""
+
+#: landing/forms.py:107
+msgid "영업일 기준 1~2일 내 회신합니다."
+msgstr ""
+
+#: landing/forms.py:123
+msgid "희망 직무/기술 스택, 현재 상황, 필요한 연결 지원을 작성해 주세요."
+msgstr ""
+
+#: landing/forms.py:126
+msgid "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
+msgstr ""
+
+#: landing/templates/landing/base.html:9
+msgid "큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너"
+msgstr ""
+
+#: landing/templates/landing/base.html:13
+msgid ""
+"큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발"
+"자의 실무 연계를 지원합니다."
+msgstr ""
+
+#: landing/templates/landing/base.html:15
+msgid ""
+"큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발"
+"자, 개발자 연계, 스타트업 개발"
+msgstr ""
+
+#: landing/templates/landing/base.html:16
+msgid "큐룸(QuRoom) 공식 홈페이지"
+msgstr ""
+
+#: landing/templates/landing/base.html:18
+msgid ""
+"아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 "
+"큐룸"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:4
+msgid "외국인 개발자 전용 | 큐룸"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:16
+#: landing/templates/landing/index.html:21
+msgid "메뉴"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:19
+#: landing/templates/landing/foreign_developers.html:31
+msgid "홈"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:20
+#: landing/templates/landing/foreign_developers.html:32
+#: landing/templates/landing/index.html:138
+msgid "제공 서비스"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:21
+#: landing/templates/landing/foreign_developers.html:33
+#: landing/templates/landing/foreign_developers.html:80
+msgid "신뢰 근거"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:22
+#: landing/templates/landing/foreign_developers.html:34
+msgid "FAQ"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:23
+#: landing/templates/landing/foreign_developers.html:35
+#: landing/templates/landing/index.html:28
+#: landing/templates/landing/index.html:39
+msgid "문의"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:25
+#: landing/templates/landing/foreign_developers.html:37
+msgid "네트워크 연결 문의"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:54
+msgid "외국인 개발자 제공 서비스"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:60
+#: landing/templates/landing/index.html:160
+#: landing/templates/landing/index.html:191
+#: landing/templates/landing/index.html:213
+msgid "권장 고객"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:68
+#: landing/templates/landing/index.html:158
+#: landing/templates/landing/index.html:189
+#: landing/templates/landing/index.html:211
+msgid "예상 기간"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:70
+msgid "비용"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:72
+msgid "예상 결과물"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:89
+msgid "지원 범위 안내"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:93
+msgid "외국인 개발자 서비스 FAQ"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:104
+msgid "외국인 개발자 네트워크 연결 문의"
+msgstr ""
+
+#: landing/templates/landing/foreign_developers.html:105
+msgid "연결 가능한 개발사 네트워크와 협업 방향을 함께 정리합니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:11
+msgid "큐룸 로고"
+msgstr ""
+
+#: landing/templates/landing/index.html:25
+#: landing/templates/landing/index.html:36
+msgid "회사 소개"
+msgstr ""
+
+#: landing/templates/landing/index.html:26
+#: landing/templates/landing/index.html:37
+msgid "서비스"
+msgstr ""
+
+#: landing/templates/landing/index.html:27
+#: landing/templates/landing/index.html:38
+#: landing/templates/landing/index.html:225
+msgid "포트폴리오"
+msgstr ""
+
+#: landing/templates/landing/index.html:30
+#: landing/templates/landing/index.html:41
+#: landing/templates/landing/index.html:67
+msgid "상담 문의하기"
+msgstr ""
+
+#: landing/templates/landing/index.html:49
+msgid "협업과 개발을 상징하는 히어로 배경 이미지"
+msgstr ""
+
+#: landing/templates/landing/index.html:63
+msgid "2018.06 설립 · 총 개발 경력"
+msgstr ""
+
+#: landing/templates/landing/index.html:63
+msgid "총 7개 프로젝트(법인 5, 외주 2)"
+msgstr ""
+
+#: landing/templates/landing/index.html:69
+msgid "서비스 보기"
+msgstr ""
+
+#: landing/templates/landing/index.html:71
+msgid "무료 자동화 실행 진단"
+msgstr ""
+
+#: landing/templates/landing/index.html:74
+msgid "외국인 개발자 실무 연계가 필요한 경우"
+msgstr ""
+
+#: landing/templates/landing/index.html:76
+msgid "외국인 개발자 전용 페이지"
+msgstr ""
+
+#: landing/templates/landing/index.html:77
+msgid "에서 상세 내용을 확인하세요."
+msgstr ""
+
+#: landing/templates/landing/index.html:81
+msgid "대표자 신뢰 링크 (개인 계정)"
+msgstr ""
+
+#: landing/templates/landing/index.html:86
+#: landing/templates/landing/index.html:372
+msgid "LinkedIn (대표자 개인)"
+msgstr ""
+
+#: landing/templates/landing/index.html:90
+#: landing/templates/landing/index.html:376
+msgid "Threads (대표자 개인)"
+msgstr ""
+
+#: landing/templates/landing/index.html:92
+msgid "회사 공식 계정이 아닌 대표자 개인 계정입니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:114
+msgid "현재"
+msgstr ""
+
+#: landing/templates/landing/index.html:141
+msgid "자동화 실행 파트"
+msgstr ""
+
+#: landing/templates/landing/index.html:142
+msgid "아이디어를 실행 가능한 제품/자동화 체계로 연결하는 핵심 서비스입니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:159
+#: landing/templates/landing/index.html:190
+#: landing/templates/landing/index.html:212
+msgid "예상 비용"
+msgstr ""
+
+#: landing/templates/landing/index.html:173
+msgid "고난도 구축 과제를 전담으로 수행하는 1:1 집중 트랙입니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:204
+msgid "창업 초기에 필요한 핵심 운영 인프라를 빠르게 갖추도록 지원합니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:232
+msgid "LinkedIn 보기"
+msgstr ""
+
+#: landing/templates/landing/index.html:240
+msgid "썸네일"
+msgstr ""
+
+#: landing/templates/landing/index.html:251
+msgid "Problem"
+msgstr ""
+
+#: landing/templates/landing/index.html:254
+msgid "Solution"
+msgstr ""
+
+#: landing/templates/landing/index.html:257
+msgid "Result"
+msgstr ""
+
+#: landing/templates/landing/index.html:260
+msgid "Tech"
+msgstr ""
+
+#: landing/templates/landing/index.html:267
+msgid "링크 확인하기"
+msgstr ""
+
+#: landing/templates/landing/index.html:269
+msgid "보안 또는 운영 정책으로 상세 링크는 비공개입니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:280
+msgid "상담 후기"
+msgstr ""
+
+#: landing/templates/landing/index.html:281
+msgid "검토 후 공개 동의된 후기만 노출합니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:301
+msgid "창업자 실행 FAQ"
+msgstr ""
+
+#: landing/templates/landing/index.html:315
+msgid "신뢰 문구/증빙 정책"
+msgstr ""
+
+#: landing/templates/landing/index.html:329
+msgid "프로젝트 아이디어가 있다면 먼저 이야기해보세요"
+msgstr ""
+
+#: landing/templates/landing/index.html:330
+msgid "기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다."
+msgstr ""
+
+#: landing/templates/landing/index.html:333
+msgid "일반 상담 CTA:"
+msgstr ""
+
+#: landing/templates/landing/index.html:333
+msgid "서비스 문의하기"
+msgstr ""
+
+#: landing/templates/landing/index.html:336
+msgid "고액 외주 CTA:"
+msgstr ""
+
+#: landing/templates/landing/index.html:336
+msgid "1,000만원 이상 외주 상담 신청"
+msgstr ""
+
+#: landing/templates/landing/index.html:339
+msgid "이메일:"
+msgstr ""
+
+#: landing/templates/landing/index.html:342
+msgid "LinkedIn DM:"
+msgstr ""
+
+#: landing/templates/landing/index.html:359
+msgid "연락처:"
+msgstr ""
+
+#: landing/templates/landing/index.html:361
+msgid "사업자 정보: 상호"
+msgstr ""
+
+#: landing/templates/landing/index.html:361
+msgid "대표"
+msgstr ""
+
+#: landing/templates/landing/index.html:361
+msgid "사업자등록번호"
+msgstr ""
+
+#: landing/templates/landing/index.html:363
+msgid "통신판매업 신고번호:"
+msgstr ""
+
+#: landing/templates/landing/index.html:367
+msgid "개인정보처리방침"
+msgstr ""
+
+#: landing/templates/landing/index.html:368
+msgid "이용약관"
+msgstr ""
+
+#: landing/views.py:1288
+msgid "필수 항목을 확인해 주세요."
+msgstr ""
+
+#: landing/views.py:1331
+msgid "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+msgstr ""

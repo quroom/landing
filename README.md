@@ -82,6 +82,19 @@ If both pass, push to GitHub.
 - In network-restricted environments, `ruff`/`djlint` installation can fail until package index access is available.
 - Once dependencies are available, run `./scripts/format-apply.sh` then `./scripts/verify.sh` to establish baseline formatting in changed files.
 
+## Django gettext i18n workflow
+- Prerequisite:
+  - GNU gettext binaries (`msguniq`, `msgfmt`) must be installed on your OS.
+  - macOS: `brew install gettext` (then ensure PATH includes gettext bin)
+  - Ubuntu/Debian: `sudo apt-get install gettext`
+- Generate catalogs:
+  - `.venv/bin/python manage.py makemessages -l ko -l en`
+- Compile catalogs:
+  - `.venv/bin/python manage.py compilemessages`
+- Notes:
+  - Keep user-facing strings in templates/forms/views under `{% trans %}` / `gettext(_lazy)` so `makemessages` can extract them.
+  - After translation edits, always run `compilemessages` and `./scripts/verify.sh`.
+
 ### Optional environment variables
 - `DJANGO_SECRET_KEY`
 - `DJANGO_DEBUG` (`1` or `0`)
