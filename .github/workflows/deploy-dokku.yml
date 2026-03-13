@@ -11,16 +11,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: Deploy landing to Dokku
+  verify:
+    name: Verify before deploy
     runs-on: ubuntu-latest
-    env:
-      DOKKU_HOST: 43.200.44.34
-      DOKKU_APP: landing
-      BASE_URL: http://43.200.44.34
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Run verify
+        run: ./scripts/verify.sh
+
+      - name: Run deploy readiness checks
+        run: ./scripts/deploy-check.sh
+
+  deploy:
+    name: Deploy landing to Dokku
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      DOKKU_HOST: 43.200.44.34
+      DOKKU_APP: landing
+      BASE_URL: https://quroom.kr
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup SSH key
         run: |
@@ -29,12 +56,35 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${DOKKU_HOST}" >> ~/.ssh/known_hosts
 
-      - name: Deploy to Dokku
+      - name: Capture currently deployed SHA
+        id: prev
         run: |
+          PREV_SHA="$(ssh dokku@${DOKKU_HOST} "git:report ${DOKKU_APP}" | awk '/Git sha:/{print $3}')"
+          echo "previous_sha=${PREV_SHA}" >> "$GITHUB_OUTPUT"
+          echo "Previous deployed SHA: ${PREV_SHA}"
+
+      - name: Deploy to Dokku
+        id: deploy_step
+        run: |
+          git remote remove dokku >/dev/null 2>&1 || true
           git remote add dokku "dokku@${DOKKU_HOST}:${DOKKU_APP}"
           git push dokku "HEAD:main" --force
 
       - name: Post-deploy smoke checks
+        id: smoke
+        run: ./scripts/post-deploy-smoke.sh
+
+      - name: Auto rollback to previous SHA when deploy validation fails
+        if: failure() && steps.prev.outputs.previous_sha != ''
+        run: |
+          PREV_SHA="${{ steps.prev.outputs.previous_sha }}"
+          echo "Rolling back to ${PREV_SHA}"
+          git fetch origin "${PREV_SHA}" --depth=1 || true
+          git cat-file -e "${PREV_SHA}^{commit}"
+          git push dokku "${PREV_SHA}:main" --force
+
+      - name: Post-rollback smoke checks
+        if: failure() && steps.prev.outputs.previous_sha != ''
         run: ./scripts/post-deploy-smoke.sh
 
       - name: Summarize deployment checks
@@ -43,6 +93,8 @@ jobs:
           echo "## Dokku deploy result" >> "$GITHUB_STEP_SUMMARY"
           echo "- Host: ${DOKKU_HOST}" >> "$GITHUB_STEP_SUMMARY"
           echo "- App: ${DOKKU_APP}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Previous SHA: ${{ steps.prev.outputs.previous_sha }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- New SHA: ${GITHUB_SHA}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f /tmp/quroom-deploy-status.json ]; then
             cat /tmp/quroom-deploy-status.json >> "$GITHUB_STEP_SUMMARY"
           else

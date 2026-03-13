@@ -83,17 +83,55 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 - 관리자 대시보드: `/admin-dashboard/`
 - 헬스체크: `/healthz/`, `/healthz/live/`, `/healthz/ready/`
 
-## 7) 롤백
+## 7) 롤백 리허설 시나리오 및 메뉴얼
+
+이 서버 Dokku 버전은 `releases:list`/`releases:rollback` 대신 `git:sync` 기반으로 복구를 수행합니다.
+
+### 시나리오
+
+- 목표: 문제 배포 발생 시, 직전 안정 커밋으로 5분 내 복구 가능 여부 확인
+- 성공 기준:
+- 롤백 후 `/healthz/ready/`가 `200`
+- `post-deploy-smoke.sh` 전체 통과
+- 복구(원복)까지 동일 절차로 재진입 가능
+
+### 사전 준비
 
 ```bash
-# 배포 히스토리 확인
-dokku releases:list landing
+# 1) 현재 배포 커밋(원복용) 기록
+ssh ubuntu@43.200.44.34 "sudo -n dokku git:report landing | grep 'Git sha:'"
 
-# 이전 릴리즈로 롤백
-dokku releases:rollback landing <version>
+# 2) 롤백 대상 커밋 선정 (직전 안정 커밋)
+git log --oneline -n 10
 ```
 
-롤백 후에도 `post-deploy-smoke.sh`를 다시 실행해 상태를 확인합니다.
+### 롤백 실행
+
+```bash
+# <rollback_sha>를 직전 안정 커밋으로 교체
+ssh ubuntu@43.200.44.34 \
+  "sudo -n dokku git:sync landing git@github.com:quroom/landing.git <rollback_sha>"
+
+# 롤백 검증
+BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
+```
+
+### 원복(최신으로 복귀)
+
+```bash
+# <current_sha>를 사전 준비에서 기록한 현재 배포 커밋으로 교체
+ssh ubuntu@43.200.44.34 \
+  "sudo -n dokku git:sync landing git@github.com:quroom/landing.git <current_sha>"
+
+# 원복 검증
+BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
+```
+
+### 운영 주의사항
+
+- 롤백 리허설은 트래픽이 낮은 시간대에 수행
+- 수행 전/후 `dokku ps:report landing`로 프로세스 상태 확인
+- DB 마이그레이션이 비가역인 배포는 롤백 전에 데이터 호환성 검토 필수
 
 ## 8) Git push 자동 재배포 (GitHub Actions)
 
@@ -103,6 +141,11 @@ dokku releases:rollback landing <version>
 - `DOKKU_SSH_PRIVATE_KEY`: `dokku@43.200.44.34`에 push 가능한 개인키
 
 동작 순서:
-1. Dokku 서버 SSH known_hosts 등록
-2. `git push dokku HEAD:main --force`
-3. `BASE_URL=http://43.200.44.34`로 smoke check 실행
+1. `./scripts/verify.sh` + `./scripts/deploy-check.sh` 선행 실행
+2. 현재 배포 SHA 조회(`dokku git:report`)
+3. `git push dokku HEAD:main --force` 배포
+4. `BASE_URL=https://quroom.kr` smoke check 실행
+5. 배포/스모크 실패 시 직전 SHA로 자동 롤백(`git push dokku <previous_sha>:main --force`)
+
+주의:
+- 롤백이 성공해도 워크플로우는 실패 상태로 종료되어, 운영자가 이슈를 확인할 수 있게 합니다.
