@@ -209,3 +209,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 _portfolio_code/
+
+# Local agent/tooling artifacts
+.omx/
+.tmp_ssh/
+package.json
+package-lock.json
