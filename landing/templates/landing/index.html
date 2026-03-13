@@ -132,6 +132,45 @@
         </div>
       </div>
     </section>
+    <section id="process" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
+      <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Process</p>
+        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.execution_process_title }}</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          {% for step in content.execution_process %}
+            <article class="rounded-2xl border border-navy/10 bg-fog/60 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Step {{ forloop.counter }}</p>
+              <h3 class="mt-2 font-semibold text-navy">{{ step.title }}</h3>
+              <p class="mt-2 text-sm text-navy/75">{{ step.description }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <section id="fit" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+          <h2 class="font-space text-xl font-bold text-emerald-900">{{ content.engagement_fit.good_fit_title }}</h2>
+          <ul class="mt-4 space-y-2 text-sm text-emerald-900/90">
+            {% for item in content.engagement_fit.good_fit %}
+              <li class="flex items-start gap-2">
+                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500"></span><span>{{ item }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </article>
+        <article class="rounded-3xl border border-amber-200 bg-amber-50 p-6">
+          <h2 class="font-space text-xl font-bold text-amber-900">{{ content.engagement_fit.not_fit_title }}</h2>
+          <ul class="mt-4 space-y-2 text-sm text-amber-900/90">
+            {% for item in content.engagement_fit.not_fit %}
+              <li class="flex items-start gap-2">
+                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-amber-500"></span><span>{{ item }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </article>
+      </div>
+    </section>
     <section id="services" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
       <div class="mb-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Services</p>

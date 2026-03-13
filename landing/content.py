@@ -47,6 +47,23 @@ EN_TRANSLATIONS = {
     "큐룸은 실행 가능한 제품을 만듭니다": "QuRoom builds products that can be executed in the real market.",
     "큐룸은 아이디어 검증부터 최소 기능 제품 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.": "QuRoom focuses on software that works in real markets, from idea validation to MVP development and operational improvement.",
     "창업자의 실행 속도를 높이는 자동화 실행 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.": "We design execution loops connected to monetization through automation packages (diagnosis/build/outsourcing) that accelerate founder execution.",
+    "문의부터 실행까지 진행 방식": "How We Work From Inquiry to Delivery",
+    "사전 진단 상담": "Initial Diagnosis Call",
+    "현재 상황, 목표, 제약을 함께 정리해 우선순위를 확정합니다.": "We align your current situation, goals, and constraints to set priorities.",
+    "실행 범위 설계": "Execution Scope Design",
+    "2주~8주 단위 실행 범위, 일정, 산출물 기준을 명확히 합의합니다.": "We align execution scope, timeline, and deliverable criteria for a 2-8 week cycle.",
+    "구현 및 점검": "Implementation and Review",
+    "주차별 결과 공유와 리스크 점검을 통해 일정/품질을 안정적으로 관리합니다.": "We manage schedule and quality through weekly updates and risk reviews.",
+    "운영 이관 및 다음 단계": "Handover and Next Step",
+    "운영 가이드 전달 후 다음 자동화 과제까지 이어지는 실행 루프를 제안합니다.": "After handover guidance, we propose the next automation loop to sustain momentum.",
+    "이런 팀과 잘 맞습니다": "Good Fit",
+    "아직 맞지 않을 수 있습니다": "Not a Fit Yet",
+    "실행해야 할 과제는 명확한데 내부 리소스가 부족한 팀": "Teams with clear execution goals but limited internal resources",
+    "아이디어 검증 이후 실제 제품/운영 자동화로 빠르게 넘어가려는 팀": "Teams moving quickly from validation to real product and operations automation",
+    "짧은 주기로 가설 검증과 개선 반복을 원하는 팀": "Teams that want short cycles of hypothesis testing and improvement",
+    "요구사항이 아직 정리되지 않아 우선순위 합의가 어려운 상태": "Cases where requirements are not yet organized enough to align priorities",
+    "내부 의사결정 구조가 불명확해 담당자/기한 확정이 어려운 상태": "Cases where internal decision-making is unclear and ownership/timelines cannot be fixed",
+    "단기 성과보다 장기 연구 성격이 강해 즉시 실행이 어려운 과제": "Projects that are primarily long-term research and not ready for immediate execution",
     "총 개발 경력": "Total Development Experience",
     "법인 + 회사 개발 경력 합산": "Combined corporate and company development experience",
     "프로젝트 수": "Number of Projects",
@@ -281,6 +298,39 @@ SHARED_CONTENT = {
         "큐룸은 아이디어 검증부터 최소 기능 제품 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.",
         "창업자의 실행 속도를 높이는 자동화 실행 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.",
     ],
+    "execution_process_title": "문의부터 실행까지 진행 방식",
+    "execution_process": [
+        {
+            "title": "사전 진단 상담",
+            "description": "현재 상황, 목표, 제약을 함께 정리해 우선순위를 확정합니다.",
+        },
+        {
+            "title": "실행 범위 설계",
+            "description": "2주~8주 단위 실행 범위, 일정, 산출물 기준을 명확히 합의합니다.",
+        },
+        {
+            "title": "구현 및 점검",
+            "description": "주차별 결과 공유와 리스크 점검을 통해 일정/품질을 안정적으로 관리합니다.",
+        },
+        {
+            "title": "운영 이관 및 다음 단계",
+            "description": "운영 가이드 전달 후 다음 자동화 과제까지 이어지는 실행 루프를 제안합니다.",
+        },
+    ],
+    "engagement_fit": {
+        "good_fit_title": "이런 팀과 잘 맞습니다",
+        "good_fit": [
+            "실행해야 할 과제는 명확한데 내부 리소스가 부족한 팀",
+            "아이디어 검증 이후 실제 제품/운영 자동화로 빠르게 넘어가려는 팀",
+            "짧은 주기로 가설 검증과 개선 반복을 원하는 팀",
+        ],
+        "not_fit_title": "아직 맞지 않을 수 있습니다",
+        "not_fit": [
+            "요구사항이 아직 정리되지 않아 우선순위 합의가 어려운 상태",
+            "내부 의사결정 구조가 불명확해 담당자/기한 확정이 어려운 상태",
+            "단기 성과보다 장기 연구 성격이 강해 즉시 실행이 어려운 과제",
+        ],
+    },
     "metrics": [
         {
             "label": "총 개발 경력",

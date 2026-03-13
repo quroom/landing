@@ -21,6 +21,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "자동화 실행 파트")
         self.assertContains(response, "외주용역 집중 트랙")
         self.assertContains(response, "창업 기본 인프라 구축")
+        self.assertContains(response, "문의부터 실행까지 진행 방식")
+        self.assertContains(response, "이런 팀과 잘 맞습니다")
+        self.assertContains(response, "아직 맞지 않을 수 있습니다")
         self.assertContains(response, "공인중개사 자격 취득")
         self.assertContains(response, "중개업 활동, 자동화로 업무 효율화")
         self.assertContains(response, "쉐어하우스 창업 및 확장")
@@ -49,6 +52,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "Present")
         self.assertContains(response, "y ")
         self.assertContains(response, " m")
+        self.assertContains(response, "How We Work From Inquiry to Delivery")
+        self.assertContains(response, "Good Fit")
+        self.assertContains(response, "Not a Fit Yet")
         self.assertEqual(
             response.context["career_ranges"],
             build_career_ranges(locale="en", page_default_locale="ko"),
