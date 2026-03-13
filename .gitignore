@@ -139,6 +139,7 @@ celerybeat.pid
 .env.local
 .env.debug
 .env.deploy
+.env*.backup*
 .envrc
 .venv
 env/
