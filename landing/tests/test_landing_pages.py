@@ -222,6 +222,29 @@ class LandingPageTests(TestCase):
             "en",
         )
 
+    def test_language_switcher_does_not_use_top_right_overlay_on_shared_pages(
+        self,
+    ) -> None:
+        targets = [
+            reverse("landing:index"),
+            reverse("landing:foreign_developers"),
+            reverse("landing:free_diagnosis"),
+        ]
+        for target in targets:
+            with self.subTest(target=target):
+                response = self.client.get(target)
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(
+                    response,
+                    "fixed bottom-4 right-4 z-30 flex items-center gap-1",
+                    html=False,
+                )
+                self.assertNotContains(
+                    response,
+                    "fixed right-4 top-4 z-50",
+                    html=False,
+                )
+
     def test_policy_pages_render(self) -> None:
         privacy = self.client.get(reverse("landing:privacy"))
         terms = self.client.get(reverse("landing:terms"))

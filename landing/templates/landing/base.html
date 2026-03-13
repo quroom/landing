@@ -60,7 +60,7 @@
     {% get_current_language as CURRENT_LANGUAGE %}
     <form action="{% url 'set_language' %}"
           method="post"
-          class="fixed right-4 top-4 z-50 hidden items-center gap-1 rounded-xl border border-navy/20 bg-white/90 px-2 py-1 text-xs shadow-sm backdrop-blur lg:flex">
+          class="fixed bottom-4 right-4 z-30 flex items-center gap-1 rounded-xl border border-navy/20 bg-white/90 px-2 py-1 text-xs shadow-sm backdrop-blur">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.get_full_path }}" />
       <button type="submit"
