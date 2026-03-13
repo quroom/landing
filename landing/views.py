@@ -1609,6 +1609,7 @@ def admin_operation_links(request: HttpRequest) -> HttpResponse:
                 "deploy_check": "./scripts/deploy-check.sh",
                 "smoke_check": 'BASE_URL="https://<domain>" ./scripts/post-deploy-smoke.sh',
             },
+            "handover_template": SHARED_CONTENT.get("handover_template", {}),
         },
     )
 

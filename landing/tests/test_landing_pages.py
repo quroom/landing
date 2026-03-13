@@ -24,6 +24,26 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "문의부터 실행까지 진행 방식")
         self.assertContains(response, "이런 팀과 잘 맞습니다")
         self.assertContains(response, "아직 맞지 않을 수 있습니다")
+        self.assertContains(
+            response,
+            "90분 안에 지금 막힌 지점을 잡고, 바로 실행할 자동화 1순위를 정합니다.",
+        )
+        self.assertNotContains(response, "안정화 지원")
+        service_map = {
+            item["id"]: item for item in response.context["content"]["services"]
+        }
+        self.assertEqual(
+            service_map["founder-ax-diagnosis"]["deliverable"],
+            "진단 요약 문서 + 2주 실행 후보 리스트",
+        )
+        self.assertEqual(
+            service_map["founder-ax-build"]["deliverable"],
+            "운영 가능한 자동화 구성 + 자동화 운영 가이드 문서",
+        )
+        self.assertEqual(
+            service_map["founder-outsourcing-track"]["deliverable"],
+            "구축 결과물 + 운영 이관 문서 (후속 지원 범위 별도 합의)",
+        )
         self.assertContains(response, "공인중개사 자격 취득")
         self.assertContains(response, "중개업 활동, 자동화로 업무 효율화")
         self.assertContains(response, "쉐어하우스 창업 및 확장")
@@ -271,6 +291,12 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "최근 Smoke Check")
         self.assertContains(response, "./scripts/deploy-check.sh")
         self.assertContains(response, "./scripts/post-deploy-smoke.sh")
+        self.assertContains(response, "운영 이관 문서 템플릿")
+        self.assertContains(response, "카드별 목차")
+        self.assertContains(response, "#handover-outsourcing")
+        self.assertContains(
+            response, "구축 결과물 + 운영 이관 문서 (후속 지원 범위 별도 합의)"
+        )
 
     def test_admin_review_guide_renders_for_staff(self) -> None:
         user_model = get_user_model()
