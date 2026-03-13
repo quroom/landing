@@ -7,16 +7,16 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: dokku-deploy-homepage
+  group: dokku-deploy-landing
   cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Deploy homepage to Dokku
+    name: Deploy landing to Dokku
     runs-on: ubuntu-latest
     env:
       DOKKU_HOST: 43.200.44.34
-      DOKKU_APP: homepage
+      DOKKU_APP: landing
       BASE_URL: http://43.200.44.34
     steps:
       - name: Checkout

@@ -4,16 +4,34 @@
 
 ```bash
 # Dokku 서버에서 1회 실행
-dokku apps:create homepage
+dokku apps:create landing
 
 # 로컬 저장소에서 실행
-git remote add dokku dokku@<dokku-host>:homepage
+git remote add dokku dokku@<dokku-host>:landing
+```
+
+### 서버 로컬 저장소(`~/projects/landing`) 배포 방식
+
+```bash
+# Dokku 서버(ubuntu 계정)에서 1회 실행
+mkdir -p ~/projects
+cd ~/projects
+git clone git@github.com:quroom/landing.git landing
+cd landing
+git remote add dokku dokku@127.0.0.1:landing
+```
+
+서버에서 재배포할 때는 아래만 실행합니다.
+
+```bash
+cd ~/projects/landing
+git pull origin main && git push dokku main
 ```
 
 ## 2) 필수 환경변수
 
 ```bash
-dokku config:set --no-restart homepage \
+dokku config:set --no-restart landing \
   DJANGO_DEBUG=0 \
   DJANGO_SECRET_KEY='<strong-random-secret>' \
   DJANGO_ALLOWED_HOSTS='<your-domain>' \
@@ -69,10 +87,10 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 
 ```bash
 # 배포 히스토리 확인
-dokku releases:list homepage
+dokku releases:list landing
 
 # 이전 릴리즈로 롤백
-dokku releases:rollback homepage <version>
+dokku releases:rollback landing <version>
 ```
 
 롤백 후에도 `post-deploy-smoke.sh`를 다시 실행해 상태를 확인합니다.
