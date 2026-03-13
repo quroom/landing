@@ -3,7 +3,7 @@ set -euo pipefail
 
 BASE_URL="${BASE_URL:-}"
 if [[ -z "${BASE_URL}" ]]; then
-  echo "BASE_URL is required (example: https://your-app.up.railway.app)" >&2
+  echo "BASE_URL is required (example: https://your-app.example.com)" >&2
   exit 1
 fi
 DEPLOY_STATUS_FILE="${DEPLOY_STATUS_FILE:-/tmp/quroom-deploy-status.json}"

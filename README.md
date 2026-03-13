@@ -20,6 +20,7 @@
 
 ## Quick links
 - Landing spec: `openspec/changes/consolidate-codex-docs-into-openspec/docs/quroom-landing-spec.md`
+- Dokku deploy runbook: `codex-document/dokku-deploy-runbook.md`
 - AX tool stack + diagnosis question source: `landing/ax_tool_stack.py`
 - Vibe coding guides & prompt library:
   - `openspec/changes/consolidate-codex-docs-into-openspec/docs/general-vibe-coding-guide-for-beginners.md`
@@ -61,6 +62,12 @@ Use this command as the default before applying or archiving OpenSpec changes.
    - `./scripts/verify.sh`
 
 If both pass, push to GitHub.
+
+## Dokku auto deploy (GitHub Actions)
+- Workflow: `.github/workflows/deploy-dokku.yml`
+- Trigger: `main` branch push (or manual dispatch)
+- Required secret:
+  - `DOKKU_SSH_PRIVATE_KEY` (dokku push 권한이 있는 개인키)
 
 ## Workspace format standard (`ruff + djlint`)
 - Python format/lint:

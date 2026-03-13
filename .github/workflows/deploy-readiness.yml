@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       base_url:
-        description: "Post-deploy smoke test target URL (e.g. https://app.up.railway.app)"
+        description: "Post-deploy smoke test target URL (e.g. https://your-app.example.com)"
         required: false
         type: string
 
