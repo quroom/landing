@@ -11,8 +11,12 @@
 
 body {
   margin: 0;
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--navy);
+}
+
+html[lang="en"] body {
+  font-family: "Source Sans 3", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 html {
@@ -30,7 +34,25 @@ section[id] {
 }
 
 .font-space {
-  font-family: "Space Grotesk", "Pretendard", sans-serif;
+  font-family: "Space Grotesk", "Noto Sans KR", sans-serif;
+}
+
+.timeline-range {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+html[lang="ko"] .timeline-range {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+html[lang="en"] .timeline-range {
+  font-family: "Source Sans 3", "Noto Sans KR", sans-serif;
+}
+
+.timeline-separator {
+  width: 1.4ch;
+  margin: 0 0.2ch;
 }
 
 .mobile-link {
