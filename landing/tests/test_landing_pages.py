@@ -18,10 +18,11 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "사업을 이해하고, 실제 일을 맡길 수 있는 파트너")
+        self.assertContains(response, "사업을 이해하고")
+        self.assertContains(response, "믿고 맡길 수 있는 파트너")
         self.assertContains(
             response,
-            "범위와 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.",
+            "업무 범위와 우선순위를 먼저 조율하고, 필요한 부분은 직접 맡아 진행합니다.",
         )
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
@@ -102,8 +103,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, " m")
         self.assertContains(
             response,
-            "A partner who understands the business and can be trusted with the actual work.",
+            "Understands the business",
         )
+        self.assertContains(response, "and is a partner you can trust with the work.")
         self.assertContains(response, "30-min Free Coffee Chat")
         self.assertContains(response, "Services")
         self.assertContains(
