@@ -12,6 +12,7 @@ Each service card MUST include service name, target audience, scope summary, CTA
 - **AND** ambiguous commitments (e.g., unspecified stabilization support period) are avoided or explicitly marked as separately agreed
 - **AND** outsourcing-track handover content includes operational minimums (stack/PaaS context, restart basics, troubleshooting/log entry points, support channels)
 - **AND** service summaries avoid internal-only phrasing that obscures the founder value proposition
+- **AND** service summaries avoid exaggerated or overly polished wording that makes operational boundaries unclear
 
 ### Requirement: Service offerings SHALL remain consistent across spec and implementation
 The documented service offerings in `quroom-landing-spec.md` MUST match the implemented service content structure.

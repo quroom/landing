@@ -1,12 +1,7 @@
-# Capability: founder-ax-service-offer
-
-## Purpose
-창업자 여정에서 AX 실행 서비스를 명확히 제안하도록 정의한다.
-
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Founder pages MUST present AX execution services
-The system MUST present AX services for founders using founder-value language that prioritizes business problems, execution speed, and accountable outcomes over internal tool or methodology names.
+The system MUST present AX services for founders using founder-value language that prioritizes business problems, execution speed, and accountable outcomes over internal tool or methodology names. Service copy MUST read as practical decision support rather than polished promotional copy.
 
 #### Scenario: AX services are visible for founder journey
 - **WHEN** a user views `/` or `/for-founders/`

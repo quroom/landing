@@ -18,24 +18,26 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "사업 맥락까지 보는 실행 파트너")
+        self.assertContains(response, "사업을 보고 같이 실행 정리하는 파트너")
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
         self.assertContains(response, "외주용역 집중 트랙")
         self.assertContains(response, "추가로 도와드릴 수 있는 것")
         self.assertContains(response, "문의부터 실행까지 진행 방식")
-        self.assertContains(response, "지금 상담이 맞는 팀인지 먼저 확인하세요")
+        self.assertContains(response, "이런 상황이라면 함께하기 좋습니다")
         self.assertContains(response, "이런 팀과 잘 맞습니다")
         self.assertContains(response, "아직 맞지 않을 수 있습니다")
         self.assertContains(
             response,
-            "무엇을 먼저 만들고 줄여야 하는지 90분 안에 정리합니다.",
+            "무엇을 먼저 할지, 무엇은 미뤄도 될지 90분 안에 정리합니다.",
         )
         self.assertContains(
             response,
-            "이런 근거로 상담을 맡길 수 있습니다",
+            "이런 경험과 기준으로 일합니다",
         )
-        self.assertContains(response, "외주용역 집중 트랙은 한 타임 1고객만 진행")
+        self.assertContains(
+            response, "외주 집중 트랙은 한 타임 1고객만 진행해 집중도를 높입니다"
+        )
         self.assertNotContains(response, "OpenClaw")
         self.assertNotContains(response, "바이브코딩")
         self.assertNotContains(response, "안정화 지원")
@@ -44,7 +46,7 @@ class LandingPageTests(TestCase):
         }
         self.assertEqual(
             service_map["founder-ax-coffee-chat"]["deliverable"],
-            "커피챗 후 다음 액션 1~2개 정리",
+            "대화 후 다음 액션 1~2개 정리",
         )
         self.assertEqual(
             service_map["founder-ax-diagnosis"]["deliverable"],
@@ -65,7 +67,7 @@ class LandingPageTests(TestCase):
         body = response.content.decode("utf-8")
         self.assertLess(
             body.index("이런 팀과 잘 맞습니다"),
-            body.index("창업자의 막힌 실행을 풀어냅니다"),
+            body.index("막힌 실행부터 같이 정리합니다"),
         )
         self.assertLess(
             body.index("30분 무료 커피챗"),
@@ -96,11 +98,13 @@ class LandingPageTests(TestCase):
         self.assertContains(response, " m")
         self.assertContains(
             response,
-            "An execution partner who sees the business context.",
+            "A partner who looks at the business and helps organize execution.",
         )
         self.assertContains(response, "30-min Free Coffee Chat")
         self.assertContains(response, "Services")
-        self.assertContains(response, "Why founders trust the engagement")
+        self.assertContains(
+            response, "This is the experience and standard I work from."
+        )
         self.assertContains(response, "How We Work From Inquiry to Delivery")
         self.assertContains(response, "Good Fit")
         self.assertContains(response, "Not a Fit Yet")
