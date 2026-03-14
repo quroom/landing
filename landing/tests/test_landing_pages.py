@@ -18,20 +18,34 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "자동화 실행 파트")
+        self.assertContains(response, "사업 맥락까지 보는 실행 파트너")
+        self.assertContains(response, "30분 무료 커피챗")
+        self.assertContains(response, "제공 서비스")
         self.assertContains(response, "외주용역 집중 트랙")
-        self.assertContains(response, "창업 기본 인프라 구축")
+        self.assertContains(response, "추가로 도와드릴 수 있는 것")
         self.assertContains(response, "문의부터 실행까지 진행 방식")
+        self.assertContains(response, "지금 상담이 맞는 팀인지 먼저 확인하세요")
         self.assertContains(response, "이런 팀과 잘 맞습니다")
         self.assertContains(response, "아직 맞지 않을 수 있습니다")
         self.assertContains(
             response,
-            "90분 안에 지금 막힌 지점을 잡고, 바로 실행할 자동화 1순위를 정합니다.",
+            "무엇을 먼저 만들고 줄여야 하는지 90분 안에 정리합니다.",
         )
+        self.assertContains(
+            response,
+            "이런 근거로 상담을 맡길 수 있습니다",
+        )
+        self.assertContains(response, "외주용역 집중 트랙은 한 타임 1고객만 진행")
+        self.assertNotContains(response, "OpenClaw")
+        self.assertNotContains(response, "바이브코딩")
         self.assertNotContains(response, "안정화 지원")
         service_map = {
             item["id"]: item for item in response.context["content"]["services"]
         }
+        self.assertEqual(
+            service_map["founder-ax-coffee-chat"]["deliverable"],
+            "커피챗 후 다음 액션 1~2개 정리",
+        )
         self.assertEqual(
             service_map["founder-ax-diagnosis"]["deliverable"],
             "진단 요약 문서 + 2주 실행 후보 리스트",
@@ -49,6 +63,14 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "쉐어하우스 창업 및 확장")
         self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
         body = response.content.decode("utf-8")
+        self.assertLess(
+            body.index("이런 팀과 잘 맞습니다"),
+            body.index("창업자의 막힌 실행을 풀어냅니다"),
+        )
+        self.assertLess(
+            body.index("30분 무료 커피챗"),
+            body.index("문의부터 실행까지 진행 방식"),
+        )
         self.assertLess(
             body.index("공인중개사 자격 취득"),
             body.index("중개업 활동, 자동화로 업무 효율화"),
@@ -72,6 +94,13 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "Present")
         self.assertContains(response, "y ")
         self.assertContains(response, " m")
+        self.assertContains(
+            response,
+            "An execution partner who sees the business context.",
+        )
+        self.assertContains(response, "30-min Free Coffee Chat")
+        self.assertContains(response, "Services")
+        self.assertContains(response, "Why founders trust the engagement")
         self.assertContains(response, "How We Work From Inquiry to Delivery")
         self.assertContains(response, "Good Fit")
         self.assertContains(response, "Not a Fit Yet")
@@ -171,6 +200,15 @@ class LandingPageTests(TestCase):
             html=False,
         )
 
+    def test_index_defaults_contact_form_to_coffee_chat(self) -> None:
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
+            html=False,
+        )
+
     def test_founders_page_redirects_to_home(self) -> None:
         response = self.client.get(reverse("landing:founders"))
         self.assertEqual(response.status_code, 302)
@@ -181,9 +219,9 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="en">', html=False)
         self.assertContains(response, "Services for Foreign Developers")
-        self.assertContains(response, "Developer Network Connection Support")
+        self.assertContains(response, "Get a Korea Job Strategy Tailored to Your Stage")
         self.assertContains(response, "career/network updates")
-        self.assertContains(response, "Request Network Matching")
+        self.assertContains(response, "Get My Job Search Strategy")
         self.assertTrue(
             FunnelEvent.objects.filter(
                 event_name="lp_view", page_key="foreign_developers"
@@ -197,7 +235,7 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, "외국인 개발자 제공 서비스")
-        self.assertContains(response, "개발사 네트워크 연결 지원")
+        self.assertContains(response, "취업 전략 및 매칭 준비 지원")
 
     def test_locale_resolution_priority_query_over_session(self) -> None:
         session = self.client.session

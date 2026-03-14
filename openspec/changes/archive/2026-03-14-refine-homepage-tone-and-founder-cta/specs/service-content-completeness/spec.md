@@ -1,8 +1,5 @@
-# Capability: service-content-completeness
+## MODIFIED Requirements
 
-## Purpose
-서비스 카드의 필수 필드 누락을 방지하고 명세와 구현의 정합성을 유지한다.
-## Requirements
 ### Requirement: Service content SHALL include required fields per card
 Each service card MUST include service name, target audience, scope summary, CTA mapping, and accountable deliverable wording, and the summary MUST remain understandable to a non-technical founder audience.
 

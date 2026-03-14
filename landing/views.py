@@ -30,7 +30,14 @@ from .content import (
     build_page_content,
 )
 from .deploy_validation import collect_readiness_errors
-from .forms import ContactForm, LeadMagnetForm, TestimonialSubmissionForm
+from .forms import (
+    ContactForm,
+    ForeignCommunityWaitlistForm,
+    ForeignMatchingProfileForm,
+    ForeignQuickIntakeForm,
+    LeadMagnetForm,
+    TestimonialSubmissionForm,
+)
 from .lead_magnet_sections import (
     build_lead_magnet_section_ast,
     normalize_contact_cta_href,
@@ -347,6 +354,19 @@ def _build_metrics(content: dict, career_duration: str) -> list[dict]:
     return metrics
 
 
+def _format_runtime_copy(value: object, career_duration: str) -> object:
+    if isinstance(value, str):
+        return value.format(career_duration=career_duration)
+    if isinstance(value, list):
+        return [_format_runtime_copy(item, career_duration) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _format_runtime_copy(item, career_duration)
+            for key, item in value.items()
+        }
+    return value
+
+
 def _diagnosis_fields(form: LeadMagnetForm) -> list[dict]:
     items: list[dict] = []
     for question_key in diagnosis_question_keys():
@@ -381,7 +401,7 @@ def _base_context(
     if lead_context.strip():
         form_kwargs["lead_context"] = lead_context
     return {
-        "content": content,
+        "content": _format_runtime_copy(content, career_duration),
         "career_ranges": build_career_ranges(
             locale=locale,
             page_default_locale=page_default_locale,
@@ -466,6 +486,12 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
+    context.update(
+        {
+            "foreign_quick_intake_form": ForeignQuickIntakeForm(),
+            "foreign_matching_profile_form": ForeignMatchingProfileForm(),
+        }
+    )
     return render(request, "landing/foreign_developers.html", context)
 
 
@@ -506,6 +532,51 @@ def _render_contact_form(
 ) -> HttpResponse:
     html = render_to_string(
         "landing/partials/contact_form.html",
+        {"form": form, "status": status, "status_message": status_message},
+        request=request,
+    )
+    status_code = 200 if status != "error" else 400
+    return HttpResponse(html, status=status_code)
+
+
+def _render_foreign_quick_intake_form(
+    request: HttpRequest,
+    form: ForeignQuickIntakeForm,
+    status: str | None = None,
+    status_message: str = "",
+) -> HttpResponse:
+    html = render_to_string(
+        "landing/partials/foreign_quick_intake_form.html",
+        {"form": form, "status": status, "status_message": status_message},
+        request=request,
+    )
+    status_code = 200 if status != "error" else 400
+    return HttpResponse(html, status=status_code)
+
+
+def _render_foreign_matching_profile_form(
+    request: HttpRequest,
+    form: ForeignMatchingProfileForm,
+    status: str | None = None,
+    status_message: str = "",
+) -> HttpResponse:
+    html = render_to_string(
+        "landing/partials/foreign_matching_profile_form.html",
+        {"form": form, "status": status, "status_message": status_message},
+        request=request,
+    )
+    status_code = 200 if status != "error" else 400
+    return HttpResponse(html, status=status_code)
+
+
+def _render_foreign_community_waitlist_form(
+    request: HttpRequest,
+    form: ForeignCommunityWaitlistForm,
+    status: str | None = None,
+    status_message: str = "",
+) -> HttpResponse:
+    html = render_to_string(
+        "landing/partials/foreign_community_waitlist_form.html",
         {"form": form, "status": status, "status_message": status_message},
         request=request,
     )
@@ -1326,6 +1397,198 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
     return _render_contact_form(
         request,
         ContactForm(page_key=page_key),
+        status="success",
+        status_message=_(
+            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        ),
+    )
+
+
+@require_POST
+def foreign_quick_intake_submit(request: HttpRequest) -> HttpResponse:
+    form = ForeignQuickIntakeForm(request.POST)
+    if not form.is_valid():
+        return _render_foreign_quick_intake_form(
+            request,
+            form,
+            status="error",
+            status_message=_("필수 항목을 확인해 주세요."),
+        )
+
+    data = form.cleaned_data
+    marketing_opt_in = bool(data.get("agree_marketing"))
+    community_waitlist_opt_in = bool(data.get("join_community_waitlist"))
+    payload = {
+        "funnel_stage": "quick_intake",
+        "lifecycle_state": "new",
+        "target_role": data["target_role"],
+        "notes": data.get("notes", ""),
+        "community_waitlist_opt_in": community_waitlist_opt_in,
+    }
+    inquiry = ContactInquiry.objects.create(
+        name=data["nickname"],
+        company_name="",
+        contact="",
+        email=data["email"],
+        inquiry_type="foreign_quick_intake",
+        message=json.dumps(payload, ensure_ascii=False),
+        marketing_opt_in=marketing_opt_in,
+        marketing_opted_in_at=timezone.now() if marketing_opt_in else None,
+    )
+    if settings.CONTACT_EMAIL_ASYNC:
+        deliver_inquiry_email_async(inquiry.id)
+    else:
+        deliver_inquiry_email(inquiry)
+    track_event(
+        request,
+        "foreign_quick_intake_submit",
+        page_key="foreign_developers",
+        lead_source="foreign_developer_contact",
+        metadata={
+            "funnel_stage": "quick_intake",
+            "lifecycle_state": "new",
+            "target_role": data["target_role"],
+            "community_waitlist_opt_in": community_waitlist_opt_in,
+        },
+    )
+    if community_waitlist_opt_in:
+        track_event(
+            request,
+            "foreign_community_waitlist_submit",
+            page_key="foreign_developers",
+            lead_source="foreign_developer_contact",
+            metadata={
+                "funnel_stage": "quick_intake",
+                "source_form": "quick_intake",
+                "lifecycle_state": "new",
+            },
+        )
+
+    return _render_foreign_quick_intake_form(
+        request,
+        ForeignQuickIntakeForm(),
+        status="success",
+        status_message=_(
+            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        ),
+    )
+
+
+@require_POST
+def foreign_matching_profile_submit(request: HttpRequest) -> HttpResponse:
+    form = ForeignMatchingProfileForm(request.POST)
+    if not form.is_valid():
+        return _render_foreign_matching_profile_form(
+            request,
+            form,
+            status="error",
+            status_message=_("필수 항목을 확인해 주세요."),
+        )
+
+    data = form.cleaned_data
+    community_waitlist_opt_in = bool(data.get("join_community_waitlist"))
+    payload = {
+        "funnel_stage": "matching_profile",
+        "lifecycle_state": "matching_pending",
+        "cv_or_linkedin": data["cv_or_linkedin"],
+        "github_or_portfolio": data["github_or_portfolio"],
+        "tech_stack": data["tech_stack"],
+        "experience_level": data["experience_level"],
+        "visa_status": data["visa_status"],
+        "work_preference": data["work_preference"],
+        "location_preference": data["location_preference"],
+        "available_from": data["available_from"],
+        "community_waitlist_opt_in": community_waitlist_opt_in,
+    }
+    inquiry = ContactInquiry.objects.create(
+        name="Foreign Matching Profile",
+        company_name="",
+        contact="",
+        email=data["email"],
+        inquiry_type="foreign_matching_profile",
+        message=json.dumps(payload, ensure_ascii=False),
+    )
+    if settings.CONTACT_EMAIL_ASYNC:
+        deliver_inquiry_email_async(inquiry.id)
+    else:
+        deliver_inquiry_email(inquiry)
+    track_event(
+        request,
+        "foreign_matching_profile_complete",
+        page_key="foreign_developers",
+        lead_source="foreign_developer_contact",
+        metadata={
+            "funnel_stage": "matching_profile",
+            "lifecycle_state": "matching_pending",
+            "community_waitlist_opt_in": community_waitlist_opt_in,
+        },
+    )
+    if community_waitlist_opt_in:
+        track_event(
+            request,
+            "foreign_community_waitlist_submit",
+            page_key="foreign_developers",
+            lead_source="foreign_developer_contact",
+            metadata={
+                "funnel_stage": "matching_profile",
+                "source_form": "matching_profile",
+                "lifecycle_state": "matching_pending",
+            },
+        )
+
+    return _render_foreign_matching_profile_form(
+        request,
+        ForeignMatchingProfileForm(),
+        status="success",
+        status_message=_(
+            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        ),
+    )
+
+
+@require_POST
+def foreign_community_waitlist_submit(request: HttpRequest) -> HttpResponse:
+    form = ForeignCommunityWaitlistForm(request.POST)
+    if not form.is_valid():
+        return _render_foreign_community_waitlist_form(
+            request,
+            form,
+            status="error",
+            status_message=_("필수 항목을 확인해 주세요."),
+        )
+
+    data = form.cleaned_data
+    payload = {
+        "funnel_stage": "community_waitlist",
+        "lifecycle_state": "new",
+        "note": data.get("note", ""),
+    }
+    inquiry = ContactInquiry.objects.create(
+        name="Foreign Community Waitlist",
+        company_name="",
+        contact="",
+        email=data["email"],
+        inquiry_type="foreign_community_waitlist",
+        message=json.dumps(payload, ensure_ascii=False),
+    )
+    if settings.CONTACT_EMAIL_ASYNC:
+        deliver_inquiry_email_async(inquiry.id)
+    else:
+        deliver_inquiry_email(inquiry)
+    track_event(
+        request,
+        "foreign_community_waitlist_submit",
+        page_key="foreign_developers",
+        lead_source="foreign_developer_contact",
+        metadata={
+            "funnel_stage": "community_waitlist",
+            "lifecycle_state": "new",
+        },
+    )
+
+    return _render_foreign_community_waitlist_form(
+        request,
+        ForeignCommunityWaitlistForm(),
         status="success",
         status_message=_(
             "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."

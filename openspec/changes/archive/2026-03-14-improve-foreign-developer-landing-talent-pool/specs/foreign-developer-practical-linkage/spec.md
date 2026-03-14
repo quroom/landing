@@ -1,9 +1,6 @@
 # Capability: foreign-developer-practical-linkage
 
-## Purpose
-외국인 개발자 전용 페이지의 실무 연계 범위와 경계를 명확히 정의한다.
-
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Practical-linkage support MUST be confined to foreign-developer page
 The system MUST present practical-linkage support for foreign developers only on `/for-foreign-developers/`, and MUST frame the support as staged job-search strategy and profile-readiness assistance rather than guaranteed placement.
@@ -21,6 +18,8 @@ The system MUST clearly state that visa/legal agency work is out of scope, MUST 
 - **THEN** out-of-scope items include visa/legal agency handling
 - **AND** non-guaranteed placement policy is explicitly visible
 - **AND** profile-fit prerequisite for introductions is explicitly visible
+
+## ADDED Requirements
 
 ### Requirement: Foreign-developer page MUST define regional support mode
 The system MUST state that Gwangju/Jeonnam candidates can receive local in-person support when appropriate, while other regions are supported online first.

@@ -64,12 +64,15 @@
           </p>
           <div class="flex flex-wrap gap-3">
             <a href="#contact"
-               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white transition hover:bg-cyan-500">{% trans "상담 문의하기" %}</a>
-            <a href="#services"
-               class="rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20">{% trans "서비스 보기" %}</a>
-            <a href="{% url 'landing:free_diagnosis' %}?lead_magnet=start"
-               class="rounded-xl border border-mint/70 bg-mint/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-mint/30">{% trans "무료 자동화 실행 진단" %}</a>
+               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,165,233,0.35)] transition hover:bg-cyan-500">{% trans "상담 문의하기" %}</a>
+            <a href="#contact"
+               class="rounded-xl border border-white/35 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 transition hover:bg-white/10">{% trans "30분 무료 커피챗" %}</a>
           </div>
+          <p class="text-xs text-white/80">
+            <a href="{% url 'landing:free_diagnosis' %}?lead_magnet=start"
+               class="underline underline-offset-2">{% trans "무료 자동화 실행 진단" %}</a>
+            {% trans "은 별도 페이지에서도 진행할 수 있습니다." %}
+          </p>
           <p class="text-xs text-white/80">
             {% trans "외국인 개발자 실무 연계가 필요한 경우" %}
             <a href="{% url 'landing:foreign_developers' %}"
@@ -78,19 +81,56 @@
           </p>
         </div>
         <aside class="self-end rounded-2xl border border-white/25 bg-white/15 p-5 text-white backdrop-blur">
-          <p class="text-xs font-semibold tracking-wide text-white/80">{% trans "대표자 신뢰 링크 (개인 계정)" %}</p>
-          <div class="mt-3 space-y-2 text-sm">
+          <p class="text-xs font-semibold tracking-wide text-white/80">{{ content.hero_trust_title }}</p>
+          <ul class="mt-3 space-y-2 text-sm text-white/90">
+            {% for item in content.hero_trust_points %}
+              <li class="flex items-start gap-2">
+                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span>
+                <span>{{ item|safe }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+          <div class="mt-4 space-y-2 text-sm">
             <a href="{{ content.links.linkedin }}"
                target="_blank"
                rel="noreferrer"
                class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">{% trans "LinkedIn (대표자 개인)" %}</a>
-            <a href="{{ content.links.threads }}"
-               target="_blank"
-               rel="noreferrer"
-               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">{% trans "Threads (대표자 개인)" %}</a>
           </div>
           <p class="mt-3 text-[11px] text-white/70">{% trans "회사 공식 계정이 아닌 대표자 개인 계정입니다." %}</p>
         </aside>
+      </div>
+    </section>
+    <section id="fit" class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8">
+      <div class="rounded-3xl border border-navy/10 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)] md:p-8">
+        <div class="mb-6 max-w-2xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Fit</p>
+          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.fit_section_title }}</h2>
+          <p class="mt-3 text-sm text-navy/70 md:text-base">{{ content.fit_section_intro }}</p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <article class="h-full rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">Good Fit</p>
+            <h3 class="mt-2 font-space text-xl font-bold text-emerald-900">{{ content.engagement_fit.good_fit_title }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-emerald-900/90">
+              {% for item in content.engagement_fit.good_fit %}
+                <li class="flex items-start gap-2">
+                  <span class="mt-1 inline-block h-2.5 w-2.5 flex-none rounded-full bg-emerald-600"></span><span>{{ item }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </article>
+          <article class="h-full rounded-3xl border border-navy/10 bg-white p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-navy/50">Not Yet</p>
+            <h3 class="mt-2 font-space text-xl font-bold text-navy/80">{{ content.engagement_fit.not_fit_title }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-navy/70">
+              {% for item in content.engagement_fit.not_fit %}
+                <li class="flex items-start gap-2">
+                  <span class="mt-1 inline-block h-2.5 w-2.5 flex-none rounded-full bg-navy/25"></span><span>{{ item }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </article>
+        </div>
       </div>
     </section>
     <section id="about" class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8">
@@ -99,9 +139,11 @@
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">About</p>
           <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.about_title }}</h2>
           {% for paragraph in content.about_body %}
-            <p class="mt-4 text-sm leading-relaxed text-navy/75 md:text-base">{{ paragraph }}</p>
+            <p class="mt-4 text-sm leading-relaxed md:text-base {% if forloop.first %}font-medium text-navy/88{% else %}text-navy/68{% endif %}">
+              {{ paragraph }}
+            </p>
           {% endfor %}
-          <div class="mt-6 rounded-2xl border border-navy/10 bg-fog/60 p-4">
+          <div class="mt-7 rounded-2xl border border-navy/10 bg-fog/60 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.12em] text-navy/70">Career Timeline</p>
             <ul class="mt-3 space-y-2 text-sm text-navy/80">
               {% for range in career_ranges %}
@@ -139,57 +181,15 @@
         </div>
       </div>
     </section>
-    <section id="process" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Process</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.execution_process_title }}</h2>
-        <div class="mt-6 grid gap-4 md:grid-cols-2">
-          {% for step in content.execution_process %}
-            <article class="rounded-2xl border border-navy/10 bg-fog/60 p-4">
-              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Step {{ forloop.counter }}</p>
-              <h3 class="mt-2 font-semibold text-navy">{{ step.title }}</h3>
-              <p class="mt-2 text-sm text-navy/75">{{ step.description }}</p>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <section id="fit" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="grid gap-4 md:grid-cols-2">
-        <article class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
-          <h2 class="font-space text-xl font-bold text-emerald-900">{{ content.engagement_fit.good_fit_title }}</h2>
-          <ul class="mt-4 space-y-2 text-sm text-emerald-900/90">
-            {% for item in content.engagement_fit.good_fit %}
-              <li class="flex items-start gap-2">
-                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500"></span><span>{{ item }}</span>
-              </li>
-            {% endfor %}
-          </ul>
-        </article>
-        <article class="rounded-3xl border border-amber-200 bg-amber-50 p-6">
-          <h2 class="font-space text-xl font-bold text-amber-900">{{ content.engagement_fit.not_fit_title }}</h2>
-          <ul class="mt-4 space-y-2 text-sm text-amber-900/90">
-            {% for item in content.engagement_fit.not_fit %}
-              <li class="flex items-start gap-2">
-                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-amber-500"></span><span>{{ item }}</span>
-              </li>
-            {% endfor %}
-          </ul>
-        </article>
-      </div>
-    </section>
     <section id="services" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
       <div class="mb-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Services</p>
         <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "제공 서비스" %}</h2>
-      </div>
-      <div class="mb-4">
-        <h3 class="font-space text-xl font-semibold text-navy">{% trans "자동화 실행 파트" %}</h3>
-        <p class="mt-1 text-sm text-navy/70">{% trans "아이디어를 실행 가능한 제품/자동화 체계로 연결하는 핵심 서비스입니다." %}</p>
+        <p class="mt-1 text-sm text-navy/70">{{ content.services_section_subtitle }}</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
         {% for service in content.services %}
-          {% if "founder-ax" in service.id %}
+          {% if "founders" in service.persona_targets %}
             <article class="rounded-2xl border border-navy/10 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
               <h3 class="font-space text-lg font-semibold text-navy">{{ service.title }}</h3>
               <p class="mt-2 text-sm text-navy/75">{{ service.summary }}</p>
@@ -214,40 +214,9 @@
           {% endif %}
         {% endfor %}
       </div>
-      <div class="mt-8 mb-4">
-        <h3 class="font-space text-xl font-semibold text-navy">{% trans "외주용역 집중 트랙" %}</h3>
-        <p class="mt-1 text-sm text-navy/70">{% trans "고난도 구축 과제를 전담으로 수행하는 1:1 집중 트랙입니다." %}</p>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {% for service in content.services %}
-          {% if service.id == "founder-outsourcing-track" %}
-            <article class="rounded-2xl border border-navy/10 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-              <h3 class="font-space text-lg font-semibold text-navy">{{ service.title }}</h3>
-              <p class="mt-2 text-sm text-navy/75">{{ service.summary }}</p>
-              <ul class="mt-4 space-y-2 text-sm text-navy/80">
-                {% for service_item in service.items %}
-                  <li class="flex items-start gap-2">
-                    <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span><span>{{ service_item }}</span>
-                  </li>
-                {% endfor %}
-              </ul>
-              <div class="mt-4 border-t border-navy/10 pt-4 text-xs text-navy/70">
-                <p>{% trans "예상 기간" %}: {{ service.duration }}</p>
-                <p class="mt-1">{% trans "예상 비용" %}: {{ service.price }}</p>
-                <p class="mt-1">{% trans "권장 고객" %}: {{ service.audience }}</p>
-                {% if service.capacity_note %}<p class="mt-1 text-amber-700">{{ service.capacity_note }}</p>{% endif %}
-              </div>
-              <a href="{{ service.cta_href }}"
-                 class="mt-4 inline-flex rounded-lg border border-sky/30 bg-sky/10 px-3 py-2 text-xs font-semibold text-sky hover:bg-sky hover:text-white">
-                {{ service.cta_label }}
-              </a>
-            </article>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <div class="mt-8 rounded-2xl border border-navy/10 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
-        <h3 class="font-space text-lg font-semibold text-navy">{% trans "창업 기본 인프라 구축" %}</h3>
-        <p class="mt-1 text-xs text-navy/65">{% trans "창업 초기에 필요한 핵심 운영 인프라를 빠르게 갖추도록 지원합니다." %}</p>
+      <div class="mt-8 rounded-2xl border border-navy/10 bg-fog/40 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+        <h3 class="font-space text-lg font-semibold text-navy">{{ content.addon_section_title }}</h3>
+        <p class="mt-1 text-xs text-navy/65">{{ content.addon_section_subtitle }}</p>
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           {% for addon in content.service_addons %}
             <article class="rounded-xl border border-navy/10 bg-fog/50 p-4">
@@ -259,6 +228,21 @@
                 <p class="mt-1">{% trans "권장 고객" %}: {{ addon.audience }}</p>
                 <p class="mt-1 text-navy/60">{{ addon.note }}</p>
               </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <section id="process" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
+      <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Process</p>
+        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.execution_process_title }}</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          {% for step in content.execution_process %}
+            <article class="rounded-2xl border border-navy/10 bg-fog/60 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Step {{ forloop.counter }}</p>
+              <h3 class="mt-2 font-semibold text-navy">{{ step.title }}</h3>
+              <p class="mt-2 text-sm text-navy/75">{{ step.description }}</p>
             </article>
           {% endfor %}
         </div>
@@ -372,15 +356,10 @@
       <div class="grid gap-6 rounded-3xl bg-navy p-6 text-white md:grid-cols-[1fr_1fr] md:p-8">
         <div class="space-y-4">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Contact</p>
-          <h2 class="font-space text-2xl font-bold">{% trans "프로젝트 아이디어가 있다면 먼저 이야기해보세요" %}</h2>
-          <p class="text-sm text-white/80">{% trans "기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다." %}</p>
+          <h2 class="font-space text-2xl font-bold">{{ content.contact_title }}</h2>
+          <p class="text-sm text-white/80">{{ content.contact_intro }}</p>
           <div class="space-y-2 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm">
-            <p>
-              <strong>{% trans "일반 상담 CTA:" %}</strong> {% trans "서비스 문의하기" %}
-            </p>
-            <p>
-              <strong>{% trans "고액 외주 CTA:" %}</strong> {% trans "1,000만원 이상 외주 상담 신청" %}
-            </p>
+            {% for item in content.contact_points %}<p>{{ item }}</p>{% endfor %}
             <p>
               <strong>{% trans "이메일:" %}</strong> {{ content.company.email }}
             </p>

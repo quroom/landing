@@ -10,6 +10,7 @@ from .ax_tool_stack import (
 
 class ContactForm(forms.Form):
     HOME_INQUIRY_CHOICES = [
+        ("coffee_chat", _("30분 무료 커피챗")),
         ("ax_diagnosis", _("자동화 실행 진단")),
         ("ax_build", _("자동화 실행 구축")),
         ("infra_setup", _("창업 기본 인프라 구축")),
@@ -116,6 +117,8 @@ class ContactForm(forms.Form):
             if normalized_key == "foreign_developers"
             else "founder_contact"
         )
+        if normalized_key == "home":
+            self.fields["inquiry_type"].initial = "coffee_chat"
 
         if normalized_key == "foreign_developers":
             self.fields["inquiry_type"].choices = self.FOREIGN_INQUIRY_CHOICES
@@ -133,6 +136,164 @@ class ContactForm(forms.Form):
             choice_values = {value for value, _ in self.fields["inquiry_type"].choices}
             if recommended_inquiry_type in choice_values:
                 self.fields["inquiry_type"].initial = recommended_inquiry_type
+
+
+class ForeignQuickIntakeForm(forms.Form):
+    nickname = forms.CharField(
+        label="Nickname",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={"placeholder": "Your name or nickname", "autocomplete": "name"}
+        ),
+    )
+    email = forms.EmailField(
+        label=_("이메일"),
+        widget=forms.EmailInput(
+            attrs={"placeholder": _("회신 받을 이메일"), "autocomplete": "email"}
+        ),
+    )
+    target_role = forms.CharField(
+        label="Target Role",
+        max_length=80,
+        widget=forms.TextInput(
+            attrs={"placeholder": "e.g., Backend Engineer, AI Engineer"}
+        ),
+    )
+    notes = forms.CharField(
+        label="Anything you'd like to add (Optional)",
+        required=False,
+        max_length=300,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 3,
+                "placeholder": "Share your current concerns, prep status, or preferred work style.",
+            }
+        ),
+    )
+    agree_privacy = forms.BooleanField(
+        label=_("개인정보 수집 및 이용에 동의합니다."),
+        error_messages={"required": _("문의 접수를 위해 동의가 필요합니다.")},
+    )
+    agree_marketing = forms.BooleanField(
+        required=False,
+        label=_(
+            "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
+        ),
+    )
+    join_community_waitlist = forms.BooleanField(
+        required=False,
+        label="(Optional) Join Community Waitlist updates",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui_copy = {
+            "submit_label": "Get My Job Search Strategy",
+            "helper": "2-minute quick intake. No resume required.",
+            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
+            "response_sla": _("영업일 기준 1~2일 내 회신합니다."),
+        }
+
+
+class ForeignMatchingProfileForm(forms.Form):
+    email = forms.EmailField(
+        label=_("이메일"),
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": _("1차 등록에 사용한 이메일"),
+                "autocomplete": "email",
+            }
+        ),
+    )
+    cv_or_linkedin = forms.CharField(
+        label="CV or LinkedIn",
+        max_length=300,
+        widget=forms.TextInput(attrs={"placeholder": _("CV 링크 또는 LinkedIn URL")}),
+    )
+    github_or_portfolio = forms.CharField(
+        label="GitHub or Portfolio",
+        max_length=300,
+        widget=forms.TextInput(attrs={"placeholder": _("GitHub/Portfolio URL")}),
+    )
+    tech_stack = forms.CharField(
+        label="Tech Stack",
+        max_length=200,
+        widget=forms.TextInput(
+            attrs={"placeholder": _("예: Python, Django, React, AWS")}
+        ),
+    )
+    experience_level = forms.CharField(
+        label="Experience Level",
+        max_length=60,
+        widget=forms.TextInput(attrs={"placeholder": _("예: 3 years, Mid-level")}),
+    )
+    visa_status = forms.CharField(
+        label="Visa / Stay Status",
+        max_length=120,
+        widget=forms.TextInput(attrs={"placeholder": _("예: D-10, F-2, E-7 준비 중")}),
+    )
+    work_preference = forms.CharField(
+        label="Work Preference",
+        max_length=120,
+        widget=forms.TextInput(
+            attrs={"placeholder": _("예: Full-time, Hybrid, Remote")}
+        ),
+    )
+    location_preference = forms.CharField(
+        label="Location Preference",
+        max_length=120,
+        widget=forms.TextInput(attrs={"placeholder": _("예: Seoul, Gwangju")}),
+    )
+    available_from = forms.CharField(
+        label="Available From",
+        max_length=120,
+        widget=forms.TextInput(attrs={"placeholder": _("예: Immediately, 2026-06")}),
+    )
+    agree_privacy = forms.BooleanField(
+        label=_("개인정보 수집 및 이용에 동의합니다."),
+        error_messages={"required": _("문의 접수를 위해 동의가 필요합니다.")},
+    )
+    join_community_waitlist = forms.BooleanField(
+        required=False,
+        label="(Optional) Join Community Waitlist updates",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui_copy = {
+            "submit_label": "Complete My Matching Profile",
+            "helper": "Add profile details for matching review.",
+            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
+        }
+
+
+class ForeignCommunityWaitlistForm(forms.Form):
+    email = forms.EmailField(
+        label=_("이메일"),
+        widget=forms.EmailInput(
+            attrs={"placeholder": _("커뮤니티 대기열 안내를 받을 이메일")}
+        ),
+    )
+    note = forms.CharField(
+        label="Topic you'd like to share (Optional)",
+        required=False,
+        max_length=240,
+        widget=forms.TextInput(
+            attrs={"placeholder": _("예: 면접 준비, 한국어 학습, 비자 준비 경험")}
+        ),
+    )
+    agree_privacy = forms.BooleanField(
+        label=_("개인정보 수집 및 이용에 동의합니다."),
+        error_messages={"required": _("문의 접수를 위해 동의가 필요합니다.")},
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ui_copy = {
+            "submit_label": "Join Community Waitlist",
+            "helper": "Community channel opens after operational threshold is reached.",
+            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
+        }
 
 
 class LeadMagnetForm(forms.Form):

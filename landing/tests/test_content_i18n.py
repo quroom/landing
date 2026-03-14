@@ -12,7 +12,7 @@ class ContentI18nTests(TestCase):
         )
         self.assertEqual(
             content["persona"]["title"],
-            "Local Developer Network Access for Foreign Developers",
+            "Get a Korea Job Strategy Tailored to Your Stage",
         )
 
     def test_localize_value_falls_back_to_page_default_locale(self) -> None:

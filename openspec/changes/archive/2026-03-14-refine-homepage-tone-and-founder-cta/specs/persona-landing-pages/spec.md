@@ -1,9 +1,4 @@
-# Capability: persona-landing-pages
-
-## Purpose
-창업자/외국인 개발자 대상 랜딩을 분리해 전환 목적을 명확히 한다.
-
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Persona-specific landing pages SHALL be independently accessible
 The system SHALL provide dedicated landing pages for founders and foreign developers, each with a unique route and focused messaging.
@@ -19,7 +14,7 @@ The system SHALL provide dedicated landing pages for founders and foreign develo
 - **AND** the page includes practical-linkage/career-link CTA and support-boundary content
 
 ### Requirement: Main landing page SHALL stay as a trust-oriented hub
-The system SHALL keep `/` as the common company landing page focused on credibility and shared value without persona-mixed CTA overload.
+The system SHALL keep `/` as the common company landing page focused on credibility and founder-priority value without persona-mixed CTA overload.
 
 #### Scenario: Main route presents founder-priority common narrative
 - **WHEN** a user requests `/`
@@ -28,17 +23,8 @@ The system SHALL keep `/` as the common company landing page focused on credibil
 - **AND** foreign-developer practical-linkage detail is deferred to `/for-foreign-developers/`
 
 ### Requirement: Persona pages SHALL define separate FAQ and KPI ownership
-The system SHALL define separate FAQ focus and KPI tracking per persona journey, and foreign-developer journeys SHALL use a staged funnel KPI model instead of a single inquiry-submit KPI.
+The system SHALL define separate FAQ focus and KPI tracking per persona journey.
 
 #### Scenario: Persona FAQ/KPI boundaries are maintained
 - **WHEN** content owners update FAQ or KPI definitions
 - **THEN** founder and foreign-developer entries remain separated by page intent
-- **AND** foreign-developer KPI definitions include stage-based funnel checkpoints (quick intake, profile completion, introduction start)
-
-### Requirement: Foreign-developer persona journey SHALL support staged CTA progression
-The system SHALL provide a low-friction first CTA and a separate second-stage CTA for detailed profile completion on `/for-foreign-developers/`.
-
-#### Scenario: Staged CTA progression is presented
-- **WHEN** a user lands on `/for-foreign-developers/`
-- **THEN** the page presents an initial quick-intake CTA with minimal required fields
-- **AND** the page presents or links to a second-stage profile completion CTA for matching readiness

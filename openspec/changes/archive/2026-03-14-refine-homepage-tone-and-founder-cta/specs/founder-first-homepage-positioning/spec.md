@@ -1,16 +1,11 @@
-# Capability: founder-first-homepage-positioning
-
-## Purpose
-메인 홈페이지(`/`)를 창업자 중심 메시지로 유지하기 위한 기준을 정의한다.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Main homepage MUST be founder-first
 The system MUST position `/` as a founder-focused page with startup execution outcomes as the primary narrative, and it MUST keep founder consultation as the clear first action.
 
 #### Scenario: Main route presents founder-first value
 - **WHEN** a user requests `/`
-- **THEN** the page highlights founder problems and execution outcomes
+- **THEN** the page highlights founder problems and execution outcomes before internal tools or delivery methods
 - **AND** founder consultation is shown as the primary CTA
 - **AND** any secondary CTA is visually subordinate to the consultation CTA
 - **AND** founder services are organized as AX execution, outsourcing-focused track, and startup foundation infrastructure

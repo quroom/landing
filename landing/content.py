@@ -41,12 +41,12 @@ EN_TRANSLATIONS = {
     "미술관마다 작품 해설 지원 수준이 다르고 전시를 관통하는 스토리 제공이 부족해 관람 경험이 단절되는 시장 문제": "A market issue where artwork commentary support varied by museum and cross-exhibition storytelling was limited, causing fragmented viewing experiences.",
     "Django 백엔드와 Vue 프론트엔드 기반으로 작품 정보, 큐레이션 스토리, 오디오 해설을 통합 제공하는 구조 설계": "Designed an architecture that integrates artwork information, curation stories, and audio guides with a Django backend and Vue frontend.",
     "부동산 거래 시장에서 법정 양식 준수 요구와 비대면 계약 수요가 동시에 커지며 디지털 전환 마찰이 발생하는 문제": "In the real estate market, compliance requirements for statutory forms and demand for non-face-to-face contracts grew simultaneously, creating digital transformation friction.",
-    "창업자의 아이디어를 실행 가능한 제품과 자동화로 연결합니다": "We connect founders' ideas to executable products and automation.",
-    "큐룸은 창업자/소상공인을 위해 OpenClaw와 바이브코딩 기반 자동화 실행 서비스를 제공하고, 아이디어 검증부터 운영 자동화까지 빠르게 연결합니다.": "QuRoom provides OpenClaw and vibe-coding-based automation execution services for founders and small businesses, from idea validation to operational automation.",
+    "사업 맥락까지 보는 실행 파트너": "An execution partner who sees the business context.",
+    "무엇을 먼저 만들고 어디까지 맡길지, 사업 흐름에 맞춰 함께 정리합니다.": "We help define what to build first, what to delegate, and how it fits the business flow.",
     "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
-    "큐룸은 실행 가능한 제품을 만듭니다": "QuRoom builds products that can be executed in the real market.",
-    "큐룸은 아이디어 검증부터 최소 기능 제품 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.": "QuRoom focuses on software that works in real markets, from idea validation to MVP development and operational improvement.",
-    "창업자의 실행 속도를 높이는 자동화 실행 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.": "We design execution loops connected to monetization through automation packages (diagnosis/build/outsourcing) that accelerate founder execution.",
+    "창업자의 막힌 실행을 풀어냅니다": "QuRoom helps unblock founder execution.",
+    "아이디어 검증 이후에도 제품화, 운영 정리, 외주 실행이 한 번에 이어지지 않으면 출시와 수익화 속도가 느려집니다.": "Even after validation, launches and monetization slow down when productization, operations, and outsourced execution do not move in one sequence.",
+    "지금 가장 막힌 병목을 찾고, 2주~8주 단위로 실제 운영 가능한 결과물까지 연결합니다.": "QuRoom identifies the current bottleneck and carries it through to an operational result in a 2-8 week cycle.",
     "문의부터 실행까지 진행 방식": "How We Work From Inquiry to Delivery",
     "사전 진단 상담": "Initial Diagnosis Call",
     "현재 상황, 목표, 제약을 함께 정리해 우선순위를 확정합니다.": "We align your current situation, goals, and constraints to set priorities.",
@@ -74,6 +74,7 @@ EN_TRANSLATIONS = {
     "문의 응답": "Response Time",
     "영업일 1~2일": "1-2 business days",
     "급한 경우 LinkedIn DM": "Use LinkedIn DM for urgent cases",
+    "무엇을 먼저 만들고 줄여야 하는지 90분 안에 정리합니다.": "In 90 minutes, we clarify what to build first and what to reduce.",
     "자동화 실행 진단 (90분)": "Automation Execution Diagnosis (90 min)",
     "90분 안에 지금 막힌 지점을 잡고, 바로 실행할 자동화 1순위를 정합니다.": "In 90 minutes, we pinpoint current bottlenecks and define the top automation priority to execute next.",
     "현재 흐름에서 시간·비용이 새는 구간 1~2개를 특정": "Identify 1-2 points where time and cost are leaking in the current flow",
@@ -83,7 +84,7 @@ EN_TRANSLATIONS = {
     "초기 창업팀, 1인기업, 소규모 운영팀": "Early-stage founder teams, solo businesses, small operations teams",
     "자동화 실행 진단 신청": "Request Automation Diagnosis",
     "자동화 실행 구축 (2주 ~ 4주)": "Automation Execution Build (2-4 weeks)",
-    "2~4주 안에 반복 업무가 줄어드는 실행 시스템을 운영 가능한 상태로 만듭니다.": "Within 2-4 weeks, we build an execution system that reduces repetitive work into an operable state.",
+    "반복 업무와 운영 흐름을 2~4주 안에 실제 돌아가는 체계로 정리합니다.": "Within 2-4 weeks, we organize repetitive work and operations into a system that actually runs.",
     "핵심 업무 플로우를 실제 운영 기준에 맞게 설계": "Design core workflows based on real operational criteria",
     "반복 작업 자동화 적용 및 실패 케이스 점검": "Apply automation to repetitive tasks and review failure cases",
     "팀이 바로 이어받을 수 있는 운영 가이드 제공": "Provide operational guides your team can immediately take over",
@@ -91,7 +92,7 @@ EN_TRANSLATIONS = {
     "실행 체계 고도화가 필요한 창업팀/사업자": "Founders/business owners needing advanced execution systems",
     "자동화 실행 구축 상담": "Request Automation Build Consultation",
     "외주용역 집중 트랙 (1,000만원+)": "Dedicated Outsourcing Track (KRW 10M+)",
-    "중요한 빌드를 한 번에 끝내야 할 때, 전담 트랙으로 일정과 품질을 끝까지 책임집니다.": "When a critical build must be completed in one run, this dedicated track takes responsibility for schedule and quality through delivery.",
+    "핵심 기능 출시나 리빌드가 급한 팀을 위해 일정과 품질을 전담 트랙으로 끝까지 책임집니다.": "For teams that need to launch or rebuild critical functionality quickly, this dedicated track owns schedule and quality through delivery.",
     "첫 주에 범위·일정·완료 기준 고정": "Lock scope, timeline, and completion criteria in week 1",
     "주차별 마일스톤으로 진행 상황 투명하게 공유": "Share progress transparently with weekly milestones",
     "운영 이관과 초기 이슈 점검 범위를 별도 합의로 정리": "Define operations handover and initial issue-review scope through separate agreement",
@@ -102,6 +103,22 @@ EN_TRANSLATIONS = {
     "고난도 실행이 필요한 창업팀/사업자": "Founders/business owners needing high-complexity execution",
     "외주용역 상담 신청": "Request Outsourcing Consultation",
     "품질 유지를 위해 한 타임에 한 고객사만 진행합니다.": "To maintain quality, we handle one client at a time.",
+    "제품화·운영 실행 파트": "Productization and Operations Execution",
+    "아이디어를 실제 운영 가능한 제품과 반복 가능한 업무 흐름으로 연결하는 핵심 서비스입니다.": "Core services that connect ideas to operable products and repeatable workflows.",
+    "이런 근거로 상담을 맡길 수 있습니다": "Why founders trust the engagement",
+    "삼성전자 경력 포함 총 개발 경력 {career_duration}": "Total development experience {career_duration}, including Samsung Electronics",
+    "총 7개 프로젝트 경험과 운영 이관 기준 정리": "Experience across 7 projects with explicit handover criteria",
+    "외주용역 집중 트랙은 한 타임 1고객만 진행": "The dedicated outsourcing track runs one client at a time",
+    "대표자 경력과 프로젝트 근거는 LinkedIn에서 바로 확인 가능": "The founder's career and project evidence can be checked directly on LinkedIn",
+    "지금 상담이 맞는 팀인지 먼저 확인하세요": "Check whether this is the right stage to talk",
+    "범위와 목표가 어느 정도 정리된 팀일수록 상담에서 바로 실행 우선순위를 잡기 쉽습니다.": "Teams with a roughly defined scope and goal can move into execution priorities faster during consultation.",
+    "범위와 목표가 어느 정도 정리됐다면 바로 상담하세요": "If your scope and goals are roughly defined, this is the right time to talk.",
+    "서비스 범위와 일정이 대략 정리된 상태라면 상담에서 바로 다음 단계를 잡을 수 있습니다.": "If your service scope and timeline are roughly defined, the consultation can move directly into next steps.",
+    "이번 분기 안에 출시·개선이 필요한 과제가 있는 팀": "Teams with something to launch or improve within this quarter",
+    "담당자와 의사결정자가 정해져 있어 범위 합의가 가능한 팀": "Teams with a clear owner and decision-maker who can align scope",
+    "기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다.": "The primary contact channel is email, and LinkedIn DM can be used for urgent matters.",
+    "추가로 도와드릴 수 있는 것": "Additional Founder Infrastructure Support",
+    "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.": "Beyond the main execution work, we can quickly set up common operating infrastructure founders need early on.",
     "비즈니스 메일 구축": "Business Email Setup",
     "다음 스마트워크 기준으로 도메인 구매 / 연결 / DNS 레코드 설정을 지원합니다.": "Support domain purchase/connection and DNS records based on Daum Smartwork standards.",
     "초기 창업팀, 소상공인, 1인 사업자": "Early-stage teams, small merchants, solo founders",
@@ -135,6 +152,14 @@ EN_TRANSLATIONS = {
     "착수금/중간금/잔금 3단계 또는 월 단위 청구를 프로젝트별로 협의합니다.": "We agree per project on either 3-stage payments or monthly billing.",
     "급한 문의는 어떻게 하나요?": "How can I contact you for urgent requests?",
     "기본 채널은 help@quroom.kr이며, 긴급한 경우 LinkedIn DM으로도 문의 가능합니다.": "The primary channel is help@quroom.kr, and for urgent cases you can also use LinkedIn DM.",
+    "30분 무료 커피챗": "30-min Free Coffee Chat",
+    "자동화, 제품화, 사업 실행에 대해 가볍게 이야기해보는 첫 대화입니다.": "A lightweight first conversation about automation, productization, and business execution.",
+    "지금 가장 막힌 실행 포인트를 함께 정리": "Clarify the most blocked execution point right now",
+    "자동화나 제품화가 필요한 구간을 가볍게 점검": "Lightly review where automation or productization is needed",
+    "정식 상담이나 구축이 필요한지 함께 판단": "Decide together whether a formal consultation or build is needed",
+    "커피챗 후 다음 액션 1~2개 정리": "1-2 next actions after the coffee chat",
+    "가볍게 방향을 점검해보고 싶은 창업자/소규모 팀": "Founders and small teams who want a light directional check-in",
+    "커피챗 신청하기": "Book Coffee Chat",
     "범위는 어떻게 확정하나요?": "How is scope finalized?",
     "초기 진단에서 우선순위를 정하고, 범위/일정/비용을 합의한 뒤 시작합니다.": "We set priorities in initial diagnosis, then start after agreeing scope/schedule/cost.",
     "비용과 일정은 어떻게 책정되나요?": "How are cost and schedule determined?",
@@ -147,6 +172,8 @@ EN_TRANSLATIONS = {
     "2018.06 설립 · 총 개발 경력": "Founded 2018.06 · Total development experience",
     "총 7개 프로젝트(법인 5, 외주 2)": "Total 7 projects (5 corporate, 2 outsourced)",
     "현재": "Present",
+    "30분": "30 min",
+    "무료": "Free",
     "삼성전자 S/W 엔지니어": "Samsung Electronics S/W Engineer",
     "공인중개사 자격 취득": "Licensed Real-Estate Agent",
     "중개업 활동, 자동화로 업무 효율화": "Brokerage operations with automation-driven efficiency",
@@ -156,9 +183,26 @@ EN_TRANSLATIONS = {
 
 SERVICE_CARDS = [
     {
+        "id": "founder-ax-coffee-chat",
+        "title": "30분 무료 커피챗",
+        "summary": "자동화, 제품화, 사업 실행에 대해 가볍게 이야기해보는 첫 대화입니다.",
+        "items": [
+            "지금 가장 막힌 실행 포인트를 함께 정리",
+            "자동화나 제품화가 필요한 구간을 가볍게 점검",
+            "정식 상담이나 구축이 필요한지 함께 판단",
+        ],
+        "duration": "30분",
+        "price": "무료",
+        "deliverable": "커피챗 후 다음 액션 1~2개 정리",
+        "audience": "가볍게 방향을 점검해보고 싶은 창업자/소규모 팀",
+        "cta_label": "커피챗 신청하기",
+        "cta_href": "#contact",
+        "persona_targets": ["founders"],
+    },
+    {
         "id": "founder-ax-diagnosis",
         "title": "자동화 실행 진단 (90분)",
-        "summary": "90분 안에 지금 막힌 지점을 잡고, 바로 실행할 자동화 1순위를 정합니다.",
+        "summary": "무엇을 먼저 만들고 줄여야 하는지 90분 안에 정리합니다.",
         "items": [
             "현재 흐름에서 시간·비용이 새는 구간 1~2개를 특정",
             "자동화 효과가 큰 후보를 우선순위로 정리",
@@ -175,7 +219,7 @@ SERVICE_CARDS = [
     {
         "id": "founder-ax-build",
         "title": "자동화 실행 구축 (2주 ~ 4주)",
-        "summary": "2~4주 안에 반복 업무가 줄어드는 실행 시스템을 운영 가능한 상태로 만듭니다.",
+        "summary": "반복 업무와 운영 흐름을 2~4주 안에 실제 돌아가는 체계로 정리합니다.",
         "items": [
             "핵심 업무 플로우를 실제 운영 기준에 맞게 설계",
             "반복 작업 자동화 적용 및 실패 케이스 점검",
@@ -192,7 +236,7 @@ SERVICE_CARDS = [
     {
         "id": "founder-outsourcing-track",
         "title": "외주용역 집중 트랙 (1,000만원+)",
-        "summary": "중요한 빌드를 한 번에 끝내야 할 때, 전담 트랙으로 일정과 품질을 끝까지 책임집니다.",
+        "summary": "핵심 기능 출시나 리빌드가 급한 팀을 위해 일정과 품질을 전담 트랙으로 끝까지 책임집니다.",
         "items": [
             "첫 주에 범위·일정·완료 기준 고정",
             "주차별 마일스톤으로 진행 상황 투명하게 공유",
@@ -210,12 +254,12 @@ SERVICE_CARDS = [
     {
         "id": "foreign-dev-network-build",
         "title": {
-            "ko": "개발사 네트워크 연결 지원",
-            "en": "Developer Network Connection Support",
+            "ko": "취업 전략 및 매칭 준비 지원",
+            "en": "Job Strategy and Matching Readiness Support",
         },
         "summary": {
-            "ko": "국내 개발사 네트워크와 연결될 수 있도록 포지셔닝과 소개 흐름을 설계합니다.",
-            "en": "We design your positioning and introduction flow to connect you with local development companies.",
+            "ko": "지원 전략, 포지셔닝, 소개 준비도를 함께 정리해 실제 매칭 가능성을 높입니다.",
+            "en": "We help shape your strategy, positioning, and introduction readiness to improve matching potential.",
         },
         "items": [
             {
@@ -234,26 +278,26 @@ SERVICE_CARDS = [
         "duration": "상시 운영",
         "price": "상담 후 결정",
         "deliverable": {
-            "ko": "네트워크 연결용 프로필 패키지 + 미팅 가이드",
-            "en": "Network-ready profile package + meeting guide",
+            "ko": "매칭 준비 프로필 패키지 + 미팅 가이드",
+            "en": "Matching-ready profile package + meeting guide",
         },
         "audience": {
             "ko": "한국 실무 연결이 필요한 외국인 개발자",
             "en": "Foreign developers seeking practical collaboration in Korea",
         },
-        "cta_label": {"ko": "네트워크 연결 문의", "en": "Request Network Matching"},
+        "cta_label": {"ko": "전략 상담 시작", "en": "Start Strategy Intake"},
         "cta_href": "#contact",
         "persona_targets": ["foreign_developers"],
     },
     {
         "id": "foreign-dev-settlement-network",
         "title": {
-            "ko": "정착 지원 네트워크 연계",
-            "en": "Settlement Support Network Connection",
+            "ko": "지역 적응 및 정착 가이드",
+            "en": "Regional Adaptation and Settlement Guidance",
         },
         "summary": {
-            "ko": "언어, 비자 행정, 주거 정착 관련 실무 네트워크를 연결해 초기 적응을 돕습니다.",
-            "en": "We connect practical networks for language, visa administration, and housing settlement.",
+            "ko": "한국어, 비자 행정, 주거 정보 등 초기 적응에 필요한 실무 가이드를 연결합니다.",
+            "en": "We connect practical guidance for Korean learning, visa administration, and housing adaptation.",
         },
         "items": [
             {
@@ -272,14 +316,14 @@ SERVICE_CARDS = [
         "duration": "요청 시 수시",
         "price": "상담 후 결정",
         "deliverable": {
-            "ko": "정착 지원 연결 플랜 + 파트너 안내",
-            "en": "Settlement support connection plan + partner guidance",
+            "ko": "정착 가이드 플랜 + 파트너 안내",
+            "en": "Settlement guidance plan + partner guidance",
         },
         "audience": {
             "ko": "한국 생활/업무 적응이 필요한 외국인 개발자",
             "en": "Foreign developers adapting to work and life in Korea",
         },
-        "cta_label": {"ko": "정착 지원 문의", "en": "Request Settlement Support"},
+        "cta_label": {"ko": "적응 가이드 받기", "en": "Get Adaptation Guidance"},
         "cta_href": "#contact",
         "persona_targets": ["foreign_developers"],
     },
@@ -287,19 +331,16 @@ SERVICE_CARDS = [
 
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
-    "headline": "창업자의 아이디어를 실행 가능한 제품과 자동화로 연결합니다",
-    "subcopy": (
-        "큐룸은 창업자/소상공인을 위해 OpenClaw와 바이브코딩 기반 자동화 실행 서비스를 제공하고, "
-        "아이디어 검증부터 운영 자동화까지 빠르게 연결합니다."
-    ),
+    "headline": "사업 맥락까지 보는 실행 파트너",
+    "subcopy": "무엇을 먼저 만들고 어디까지 맡길지, 사업 흐름에 맞춰 함께 정리합니다.",
     "founder_capacity_policy": "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.",
     "hero_support_text": (
         "2018.06 설립 · 총 개발 경력 {career_duration} · 총 7개 프로젝트(법인 5, 외주 2)"
     ),
-    "about_title": "큐룸은 실행 가능한 제품을 만듭니다",
+    "about_title": "창업자의 막힌 실행을 풀어냅니다",
     "about_body": [
-        "큐룸은 아이디어 검증부터 최소 기능 제품 개발, 운영 개선까지 실제 시장에서 작동하는 소프트웨어를 만드는 데 집중합니다.",
-        "창업자의 실행 속도를 높이는 자동화 실행 패키지(진단/구축/용역)로 수익화까지 연결되는 실행 루프를 설계합니다.",
+        "아이디어 검증 이후에도 제품화, 운영 정리, 외주 실행이 한 번에 이어지지 않으면 출시와 수익화 속도가 느려집니다.",
+        "지금 가장 막힌 병목을 찾고, 2주~8주 단위로 실제 운영 가능한 결과물까지 연결합니다.",
     ],
     "execution_process_title": "문의부터 실행까지 진행 방식",
     "execution_process": [
@@ -356,13 +397,33 @@ SHARED_CONTENT = {
             "description": "급한 경우 LinkedIn DM",
         },
     ],
+    "services_section_title": "제품화·운영 실행 파트",
+    "services_section_subtitle": "아이디어를 실제 운영 가능한 제품과 반복 가능한 업무 흐름으로 연결하는 핵심 서비스입니다.",
+    "fit_section_title": "지금 상담이 맞는 팀인지 먼저 확인하세요",
+    "fit_section_intro": "범위와 목표가 어느 정도 정리된 팀일수록 상담에서 바로 실행 우선순위를 잡기 쉽습니다.",
+    "hero_trust_title": "이런 근거로 상담을 맡길 수 있습니다",
+    "hero_trust_points": [
+        "삼성전자 경력 포함 총 개발 경력 {career_duration}",
+        "총 7개 프로젝트 경험과 운영 이관 기준 정리",
+        "외주용역 집중 트랙은 한 타임 1고객만 진행",
+        "대표자 경력과 프로젝트 근거는 LinkedIn에서 바로 확인 가능",
+    ],
+    "contact_title": "범위와 목표가 어느 정도 정리됐다면 바로 상담하세요",
+    "contact_intro": "서비스 범위와 일정이 대략 정리된 상태라면 상담에서 바로 다음 단계를 잡을 수 있습니다.",
+    "contact_points": [
+        "이번 분기 안에 출시·개선이 필요한 과제가 있는 팀",
+        "담당자와 의사결정자가 정해져 있어 범위 합의가 가능한 팀",
+        "기본 연락 채널은 이메일이며, 급한 경우 LinkedIn DM을 함께 사용합니다.",
+    ],
+    "addon_section_title": "추가로 도와드릴 수 있는 것",
+    "addon_section_subtitle": "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.",
     "services": SERVICE_CARDS,
     "service_addons": [
         {
             "title": "비즈니스 메일 구축",
             "summary": "다음 스마트워크 기준으로 도메인 구매 / 연결 / DNS 레코드 설정을 지원합니다.",
             "duration": "1일",
-            "price": "1만원 ~ 20만원",
+            "price": "10만원 ~ 20만원",
             "audience": "초기 창업팀, 소상공인, 1인 사업자",
             "note": "메일 계정 발급/초기 발신 안정화까지 포함하며 운영 중 추가 정책 변경은 별도 협의",
         },
@@ -542,6 +603,10 @@ PERSONA_CONTENT = {
                 "a": "초기 진단에서 우선순위를 정하고, 범위/일정/비용을 합의한 뒤 시작합니다.",
             },
             {
+                "q": "커피챗에서는 무엇을 이야기하나요?",
+                "a": "자동화, 제품화, 사업 실행에 대해 현재 막힌 지점을 가볍게 점검하고 다음 액션을 정리합니다.",
+            },
+            {
                 "q": "비용과 일정은 어떻게 책정되나요?",
                 "a": "패키지 단위 기본안(90분/2~4주/외주용역)에서 시작하고 확장 범위는 별도 협의합니다.",
             },
@@ -555,16 +620,20 @@ PERSONA_CONTENT = {
     "foreign_developers": {
         "label": "For Foreign Developers",
         "title": {
-            "ko": "외국인 개발자를 위한 국내 개발 네트워크 연결",
-            "en": "Local Developer Network Access for Foreign Developers",
+            "ko": "외국인 개발자를 위한 한국 취업 전략 파트너",
+            "en": "Get a Korea Job Strategy Tailored to Your Stage",
         },
         "description": {
-            "ko": "대기업 실무 경험과 로컬 개발사 네트워크를 바탕으로 국내 협업 기회를 연결합니다.",
-            "en": "We connect practical collaboration opportunities in Korea based on enterprise experience and local partner networks.",
+            "ko": "처음에는 간단히 시작하고, 준비가 되면 매칭 프로필을 완성해 연결 가능성을 높입니다.",
+            "en": "Start simple, move at your pace, and grow into a matching-ready profile.",
+        },
+        "regional_support_note": {
+            "ko": "광주/전남은 로컬 맥락을 살린 대면 지원을 우선하고, 다른 지역은 온라인 매칭과 원격 가이드를 기본으로 지원합니다.",
+            "en": "Based in Gwangju. In-person support is prioritized for Gwangju/Jeonnam, while other regions are supported through online matching and remote guidance.",
         },
         "primary_cta": {
-            "label": {"ko": "네트워크 연결 문의", "en": "Request Network Matching"},
-            "href": "#contact",
+            "label": {"ko": "취업 전략 받기", "en": "Get My Job Search Strategy"},
+            "href": "#quick-intake",
         },
         "secondary_cta": {
             "label": {"ko": "제공 서비스 보기", "en": "View Services"},
@@ -632,6 +701,16 @@ PERSONA_CONTENT = {
                 "a": {
                     "ko": "요청 범위와 연결 난이도에 따라 상담 후 개별 안내합니다.",
                     "en": "Pricing is provided after consultation based on requested scope and matching complexity.",
+                },
+            },
+            {
+                "q": {
+                    "ko": "광주만 지원하나요?",
+                    "en": "Do you only support Gwangju?",
+                },
+                "a": {
+                    "ko": "광주/전남은 로컬 맥락을 살린 대면 지원을 우선할 수 있고, 다른 지역은 온라인 매칭과 원격 가이드를 기본으로 진행합니다.",
+                    "en": "Gwangju/Jeonnam candidates can be supported with local in-person context when needed, while other regions are supported online first.",
                 },
             },
         ],

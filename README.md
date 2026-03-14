@@ -85,6 +85,32 @@ If both pass, push to GitHub.
 - If a specific line must keep manual layout, use djLint ignore pragmas around the minimum block.
 - Prefer splitting long inline template expressions across tags/elements instead of relying on formatter behavior.
 
+## CSS responsibility split (`site.css` vs Tailwind CDN)
+- Tailwind utility classes are the default choice for page-level layout, spacing, color, borders, typography sizing, and one-off visual adjustments inside templates.
+- `landing/static/landing/css/site.css` is reserved for:
+  - global element defaults (`body`, form fields, anchors/offset behavior)
+  - reusable project-specific classes not worth expressing repeatedly in templates
+  - font-family hooks like `.font-space`
+  - small custom animations/utilities such as `.loading-bar`
+- Do not duplicate the same concern in both places.
+  - Example: if spacing/color/border can be expressed with template utility classes, keep it in Tailwind classes.
+  - Example: if a behavior is global across many templates, keep it in `site.css`.
+
+### Tailwind color rule in this project
+- Tailwind is loaded from CDN and extended in [base.html](/home/quroom/workspace/homepage/landing/templates/landing/base.html) with single custom color tokens:
+  - `navy`
+  - `sky`
+  - `fog`
+  - `mint`
+  - `amber`
+- Because `amber` is defined as a single custom token, shade classes like `bg-amber-100` or `border-amber-300` are not reliable in this project.
+- Use these forms instead:
+  - `bg-amber`
+  - `bg-amber/10`
+  - `border-amber/30`
+  - `text-amber-700` only when relying on Tailwind default palette classes already available
+- When in doubt, prefer the custom-token style (`bg-amber/...`, `border-amber/...`) for project-specific colors.
+
 ### Known limitations / follow-up
 - In network-restricted environments, `ruff`/`djlint` installation can fail until package index access is available.
 - Once dependencies are available, run `./scripts/format-apply.sh` then `./scripts/verify.sh` to establish baseline formatting in changed files.

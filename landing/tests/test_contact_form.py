@@ -10,6 +10,15 @@ from landing.models import ContactInquiry, FunnelEvent
 
 @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
 class ContactFormTests(TestCase):
+    def test_contact_form_defaults_to_coffee_chat_for_home(self) -> None:
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
+            html=False,
+        )
+
     def test_contact_submit_invalid_returns_400(self) -> None:
         response = self.client.post(
             reverse("landing:contact_submit"),
@@ -139,6 +148,94 @@ class ContactFormTests(TestCase):
         inquiry = ContactInquiry.objects.get(email="all@example.com")
         self.assertTrue(inquiry.marketing_opt_in)
         self.assertIsNotNone(inquiry.marketing_opted_in_at)
+
+    def test_foreign_quick_intake_submit_creates_inquiry_and_event(self) -> None:
+        response = self.client.post(
+            reverse("landing:foreign_quick_intake_submit"),
+            {
+                "nickname": "DevA",
+                "email": "foreign-quick@example.com",
+                "target_role": "Backend Engineer",
+                "notes": "Need strategy first",
+                "agree_privacy": "on",
+                "agree_marketing": "on",
+                "join_community_waitlist": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="foreign-quick@example.com")
+        self.assertEqual(inquiry.inquiry_type, "foreign_quick_intake")
+        self.assertIn('"funnel_stage": "quick_intake"', inquiry.message)
+        self.assertTrue(inquiry.marketing_opt_in)
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="foreign_quick_intake_submit",
+                page_key="foreign_developers",
+            ).exists()
+        )
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="foreign_community_waitlist_submit",
+                page_key="foreign_developers",
+                metadata__source_form="quick_intake",
+            ).exists()
+        )
+
+    def test_foreign_matching_profile_submit_creates_matching_pending_record(
+        self,
+    ) -> None:
+        response = self.client.post(
+            reverse("landing:foreign_matching_profile_submit"),
+            {
+                "email": "foreign-match@example.com",
+                "cv_or_linkedin": "https://linkedin.com/in/foreign-dev",
+                "github_or_portfolio": "https://github.com/foreign-dev",
+                "tech_stack": "Python, Django, AWS",
+                "experience_level": "Mid-level",
+                "visa_status": "D-10",
+                "work_preference": "Full-time, Hybrid",
+                "location_preference": "Seoul",
+                "available_from": "Immediately",
+                "agree_privacy": "on",
+                "join_community_waitlist": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="foreign-match@example.com")
+        self.assertEqual(inquiry.inquiry_type, "foreign_matching_profile")
+        self.assertIn('"lifecycle_state": "matching_pending"', inquiry.message)
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="foreign_matching_profile_complete",
+                page_key="foreign_developers",
+            ).exists()
+        )
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="foreign_community_waitlist_submit",
+                page_key="foreign_developers",
+                metadata__source_form="matching_profile",
+            ).exists()
+        )
+
+    def test_foreign_community_waitlist_submit_creates_event(self) -> None:
+        response = self.client.post(
+            reverse("landing:foreign_community_waitlist_submit"),
+            {
+                "email": "waitlist@example.com",
+                "note": "Interview prep tips",
+                "agree_privacy": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="waitlist@example.com")
+        self.assertEqual(inquiry.inquiry_type, "foreign_community_waitlist")
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="foreign_community_waitlist_submit",
+                page_key="foreign_developers",
+            ).exists()
+        )
 
     def test_lead_magnet_submit_sends_two_emails_and_tracks_event(self) -> None:
         question_values = ["2", "2", "1", "1", "2", "1", "2", "1"]

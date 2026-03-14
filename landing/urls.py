@@ -37,6 +37,21 @@ urlpatterns = [
         views.foreign_developers,
         name="foreign_developers",
     ),
+    path(
+        "foreign/quick-intake/submit/",
+        views.foreign_quick_intake_submit,
+        name="foreign_quick_intake_submit",
+    ),
+    path(
+        "foreign/matching-profile/submit/",
+        views.foreign_matching_profile_submit,
+        name="foreign_matching_profile_submit",
+    ),
+    path(
+        "foreign/community-waitlist/submit/",
+        views.foreign_community_waitlist_submit,
+        name="foreign_community_waitlist_submit",
+    ),
     path("contact/submit/", views.contact_submit, name="contact_submit"),
     path("lead-magnet/submit/", views.lead_magnet_submit, name="lead_magnet_submit"),
     path(

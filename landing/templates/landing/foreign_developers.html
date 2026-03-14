@@ -22,7 +22,7 @@
         <a href="#faq" class="hover:text-sky">{% trans "FAQ" %}</a>
         <a href="#contact" class="hover:text-sky">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">{% trans "네트워크 연결 문의" %}</a>
+           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">Start Strategy</a>
       </nav>
     </div>
     <nav id="mobile-menu"
@@ -34,7 +34,7 @@
         <a href="#faq" class="mobile-link">{% trans "FAQ" %}</a>
         <a href="#contact" class="mobile-link">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-center text-white">{% trans "네트워크 연결 문의" %}</a>
+           class="rounded-xl bg-navy px-4 py-2 text-center text-white">Start Strategy</a>
       </div>
     </nav>
   </header>
@@ -43,6 +43,10 @@
       <p class="text-xs font-semibold tracking-[0.2em] text-mint">{{ content.persona.label }}</p>
       <h1 class="mt-3 font-space text-3xl font-bold md:text-4xl">{{ content.persona.title }}</h1>
       <p class="mt-4 max-w-3xl text-sm text-white/85 md:text-base">{{ content.persona.description }}</p>
+      <p class="mt-3 text-xs text-white/75">
+        We support strategy and introductions, not guaranteed placement. Visa/legal advisory is referred to licensed partners.
+      </p>
+      <p class="mt-2 text-xs text-white/70">{{ content.persona.regional_support_note }}</p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href="{{ content.persona.primary_cta.href }}"
            class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white">{{ content.persona.primary_cta.label }}</a>
@@ -101,9 +105,33 @@
       </div>
     </section>
     <section id="contact" class="mt-10 rounded-3xl bg-white p-6">
-      <h2 class="font-space text-2xl font-bold text-navy">{% trans "외국인 개발자 네트워크 연결 문의" %}</h2>
-      <p class="mt-2 text-sm text-navy/75">{% trans "연결 가능한 개발사 네트워크와 협업 방향을 함께 정리합니다." %}</p>
-      <div class="mt-4" id="contact-form-wrap">{% include "landing/partials/contact_form.html" %}</div>
+      <h2 class="font-space text-2xl font-bold text-navy">Start Your Job Strategy</h2>
+      <p class="mt-2 text-sm text-navy/75">
+        Start with a quick intake, then complete your matching profile when you're ready.
+      </p>
+      <article id="quick-intake"
+               class="mt-5 rounded-2xl border border-navy/10 bg-fog/50 p-4">
+        <h3 class="font-space text-lg font-semibold text-navy">Step 1. Quick Intake</h3>
+        <p class="mt-1 text-xs text-navy/65">Nickname, email, target role + optional note</p>
+        <div class="mt-3" id="foreign-quick-intake-wrap">
+          {% include "landing/partials/foreign_quick_intake_form.html" with form=foreign_quick_intake_form %}
+        </div>
+      </article>
+      <details open class="mt-4 rounded-2xl border border-navy/10 bg-white p-4">
+        <summary class="cursor-pointer text-sm font-semibold text-navy">After Step 1 (Optional Next Actions)</summary>
+        <div class="mt-4">
+          <article id="matching-profile"
+                   class="rounded-2xl border border-navy/10 bg-fog/50 p-4">
+            <h3 class="font-space text-lg font-semibold text-navy">Step 2. Matching Profile</h3>
+            <p class="mt-1 text-xs text-navy/65">CV/profile links, visa status, and work preferences</p>
+            <div class="mt-3" id="foreign-matching-profile-wrap">
+              {% include "landing/partials/foreign_matching_profile_form.html" with form=foreign_matching_profile_form %}
+            </div>
+          </article>
+          <p class="mt-3 text-xs text-navy/60">Community waitlist can be joined directly in Step 1 or Step 2 forms.</p>
+        </div>
+      </details>
+      <p class="mt-3 text-xs text-navy/60">Start with one action only: submit Step 1 Quick Intake.</p>
     </section>
   </main>
 {% endblock %}
