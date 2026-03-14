@@ -19,6 +19,10 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, "사업을 이해하고, 실제 일을 맡길 수 있는 파트너")
+        self.assertContains(
+            response,
+            "범위와 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.",
+        )
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
         self.assertContains(response, "외주용역 집중 트랙")

@@ -57,8 +57,10 @@
           <p class="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
             QuRoom Official Landing
           </p>
-          <h1 class="font-space text-3xl font-bold leading-tight md:text-5xl">{{ content.headline }}</h1>
-          <p class="max-w-2xl text-sm text-white/85 md:text-base">{{ content.subcopy }}</p>
+          <h1 class="max-w-[11ch] font-space text-3xl font-bold leading-[1.1] md:max-w-[13ch] md:text-5xl">
+            {{ content.headline }}
+          </h1>
+          <p class="max-w-xl text-sm text-white/85 md:text-base">{{ content.subcopy }}</p>
           <p class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90">
             {% trans "2018.06 설립 · 총 개발 경력" %} <strong id="career-duration">{{ career_duration }}</strong> · {% trans "총 7개 프로젝트(법인 5, 외주 2)" %}
           </p>

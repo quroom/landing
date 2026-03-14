@@ -42,7 +42,7 @@ EN_TRANSLATIONS = {
     "Django 백엔드와 Vue 프론트엔드 기반으로 작품 정보, 큐레이션 스토리, 오디오 해설을 통합 제공하는 구조 설계": "Designed an architecture that integrates artwork information, curation stories, and audio guides with a Django backend and Vue frontend.",
     "부동산 거래 시장에서 법정 양식 준수 요구와 비대면 계약 수요가 동시에 커지며 디지털 전환 마찰이 발생하는 문제": "In the real estate market, compliance requirements for statutory forms and demand for non-face-to-face contracts grew simultaneously, creating digital transformation friction.",
     "사업을 이해하고, 실제 일을 맡길 수 있는 파트너": "A partner who understands the business and can be trusted with the actual work.",
-    "범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope and priorities first, then take on the work that needs to move.",
+    "범위와 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope and priorities first, then take on the work that needs to move.",
     "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
     "막힌 실행부터 같이 정리합니다": "We start by sorting out what is blocked in execution.",
     "제품, 운영, 외주가 따로 움직이면 속도가 바로 떨어집니다.": "When product, operations, and outsourcing move separately, speed drops immediately.",
@@ -334,7 +334,7 @@ SERVICE_CARDS = [
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
     "headline": "사업을 이해하고, 실제 일을 맡길 수 있는 파트너",
-    "subcopy": "범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.",
+    "subcopy": "범위와 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.",
     "founder_capacity_policy": "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.",
     "hero_support_text": (
         "2018.06 설립 · 총 개발 경력 {career_duration} · 총 7개 프로젝트(법인 5, 외주 2)"
