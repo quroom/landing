@@ -10,7 +10,13 @@ from django.urls import reverse
 from django.utils import timezone
 
 from landing.content import CAREER_RANGES, build_career_ranges
-from landing.models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
+from landing.models import (
+    AnalyticsExcludedIP,
+    ContactInquiry,
+    FunnelEvent,
+    Testimonial,
+    TestimonialInvite,
+)
 
 
 class LandingPageTests(TestCase):
@@ -500,6 +506,100 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "문의 운영 대시보드")
         self.assertContains(response, "리드마그넷 퍼널 (간단 확인)")
         self.assertContains(response, "대시보드 테스트")
+        self.assertContains(response, "유입 제외 IP 관리")
+
+    def test_admin_dashboard_shows_current_client_ip(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_ip",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(
+            reverse("landing:admin_dashboard"),
+            REMOTE_ADDR="203.0.113.50",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "현재 접속 IP")
+        self.assertContains(response, "203.0.113.50")
+
+    def test_admin_dashboard_shows_cf_connecting_ip_when_proxy_is_trusted(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_cf_ip",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(
+            reverse("landing:admin_dashboard"),
+            REMOTE_ADDR="10.0.0.1",
+            HTTP_X_FORWARDED_FOR="173.245.48.7",
+            HTTP_CF_CONNECTING_IP="198.51.100.44",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "현재 접속 IP")
+        self.assertContains(response, "198.51.100.44")
+
+    def test_admin_dashboard_can_add_excluded_ip(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_ip_add",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            reverse("landing:admin_dashboard"),
+            {
+                "action": "exclude_ip_add",
+                "ip_address": "198.51.100.77",
+                "note": "personal office ip",
+            },
+            REMOTE_ADDR="198.51.100.77",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "제외 IP로 추가했습니다.")
+        self.assertTrue(
+            AnalyticsExcludedIP.objects.filter(
+                ip_address="198.51.100.77",
+                is_active=True,
+            ).exists()
+        )
+
+    def test_admin_dashboard_can_deactivate_excluded_ip(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff_ip_disable",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+        AnalyticsExcludedIP.objects.create(
+            ip_address="198.51.100.90",
+            note="temp",
+            is_active=True,
+        )
+
+        response = self.client.post(
+            reverse("landing:admin_dashboard"),
+            {
+                "action": "exclude_ip_deactivate",
+                "ip_address": "198.51.100.90",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "비활성화했습니다.")
+        self.assertTrue(
+            AnalyticsExcludedIP.objects.filter(
+                ip_address="198.51.100.90",
+                is_active=False,
+            ).exists()
+        )
 
     def test_admin_dashboard_filters_by_date_range(self) -> None:
         user_model = get_user_model()

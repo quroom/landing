@@ -136,6 +136,7 @@ If both pass, push to GitHub.
 - `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` (fallback if no `DATABASE_URL`)
 - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (Cloudtype-style fallback keys)
 - `GA4_MEASUREMENT_ID` (if you want GA4 tracking)
+- `ANALYTICS_EXCLUDED_IPS` (comma-separated IPs to exclude from FunnelEvent tracking, e.g. `203.0.113.10,198.51.100.7`)
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
 - `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
@@ -227,6 +228,7 @@ If both pass, push to GitHub.
   - verify contact inquiry count increases after form submit
   - verify lead-magnet inquiry appears with type `lead_magnet_diagnosis`
   - verify funnel events (`lead_magnet_start`, `lead_magnet_submit`, `lead_magnet_email_sent`) are visible in dashboard metrics
+  - verify your current IP is shown in `유입 제외 IP 관리` and can be added/deactivated from the dashboard
 
 ### Testimonial invite ops checklist (face-to-face meeting)
 1. Create an invite in Django Admin: `Testimonial invites` (set target note and expiry).

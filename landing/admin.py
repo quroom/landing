@@ -5,7 +5,13 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .mailers import deliver_inquiry_email
-from .models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
+from .models import (
+    AnalyticsExcludedIP,
+    ContactInquiry,
+    FunnelEvent,
+    Testimonial,
+    TestimonialInvite,
+)
 
 
 @admin.register(ContactInquiry)
@@ -50,16 +56,25 @@ class ContactInquiryAdmin(admin.ModelAdmin):
 
 @admin.register(FunnelEvent)
 class FunnelEventAdmin(admin.ModelAdmin):
-    list_display = ("event_name", "page_key", "lead_source", "created_at")
+    list_display = ("event_name", "page_key", "lead_source", "client_ip", "created_at")
     list_filter = ("event_name", "page_key", "lead_source", "created_at")
-    search_fields = ("event_name", "page_key", "lead_source")
+    search_fields = ("event_name", "page_key", "lead_source", "client_ip")
     readonly_fields = (
         "event_name",
         "page_key",
         "lead_source",
+        "client_ip",
         "metadata",
         "created_at",
     )
+
+
+@admin.register(AnalyticsExcludedIP)
+class AnalyticsExcludedIPAdmin(admin.ModelAdmin):
+    list_display = ("ip_address", "is_active", "note", "updated_at", "created_at")
+    list_filter = ("is_active", "updated_at", "created_at")
+    search_fields = ("ip_address", "note")
+    readonly_fields = ("created_at", "updated_at")
 
 
 @admin.register(Testimonial)

@@ -45,6 +45,7 @@ class FunnelEvent(models.Model):
     event_name = models.CharField(max_length=80, db_index=True)
     page_key = models.CharField(max_length=40, blank=True)
     lead_source = models.CharField(max_length=80, blank=True)
+    client_ip = models.GenericIPAddressField(null=True, blank=True, db_index=True)
     metadata = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
@@ -53,6 +54,23 @@ class FunnelEvent(models.Model):
 
     def __str__(self) -> str:
         return f"{self.event_name} ({self.page_key or '-'})"
+
+
+class AnalyticsExcludedIP(models.Model):
+    ip_address = models.GenericIPAddressField(unique=True)
+    note = models.CharField(max_length=200, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at", "-created_at"]
+        verbose_name = "Analytics Excluded IP"
+        verbose_name_plural = "Analytics Excluded IPs"
+
+    def __str__(self) -> str:
+        state = "active" if self.is_active else "inactive"
+        return f"{self.ip_address} ({state})"
 
 
 class TestimonialInvite(models.Model):

@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import date, datetime, timedelta
+from ipaddress import ip_address
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -14,7 +15,7 @@ from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from .analytics import track_event
+from .analytics import client_ip_from_request, track_event
 from .ax_tool_stack import (
     DIAGNOSIS_AXES,
     DIAGNOSIS_QUESTION_META,
@@ -44,7 +45,13 @@ from .lead_magnet_sections import (
     render_sections_to_text,
 )
 from .mailers import deliver_inquiry_email, deliver_inquiry_email_async
-from .models import ContactInquiry, FunnelEvent, Testimonial, TestimonialInvite
+from .models import (
+    AnalyticsExcludedIP,
+    ContactInquiry,
+    FunnelEvent,
+    Testimonial,
+    TestimonialInvite,
+)
 
 INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
     "find_repetitive_work": (
@@ -1959,6 +1966,45 @@ def admin_review_guide(request: HttpRequest) -> HttpResponse:
 
 @staff_member_required
 def admin_dashboard(request: HttpRequest) -> HttpResponse:
+    dashboard_notice = ""
+    dashboard_notice_level = ""
+    current_client_ip = client_ip_from_request(request)
+
+    if request.method == "POST":
+        action = str(request.POST.get("action", "")).strip()
+        if action == "exclude_ip_add":
+            raw_ip = str(request.POST.get("ip_address", "")).strip()
+            note = str(request.POST.get("note", "")).strip()
+            try:
+                normalized_ip = str(ip_address(raw_ip))
+            except ValueError:
+                dashboard_notice = "유효한 IP 주소를 입력해 주세요."
+                dashboard_notice_level = "error"
+            else:
+                excluded_ip, created = AnalyticsExcludedIP.objects.update_or_create(
+                    ip_address=normalized_ip,
+                    defaults={"is_active": True, "note": note},
+                )
+                if created:
+                    dashboard_notice = f"{normalized_ip} 를 제외 IP로 추가했습니다."
+                else:
+                    dashboard_notice = (
+                        f"{normalized_ip} 를 제외 IP 목록에서 활성화했습니다."
+                    )
+                dashboard_notice_level = "success"
+                current_client_ip = normalized_ip
+        elif action == "exclude_ip_deactivate":
+            target_ip = str(request.POST.get("ip_address", "")).strip()
+            updated = AnalyticsExcludedIP.objects.filter(
+                ip_address=target_ip, is_active=True
+            ).update(is_active=False)
+            if updated:
+                dashboard_notice = f"{target_ip} 를 제외 IP 목록에서 비활성화했습니다."
+                dashboard_notice_level = "success"
+            else:
+                dashboard_notice = "대상 IP를 찾지 못했거나 이미 비활성화 상태입니다."
+                dashboard_notice_level = "error"
+
     selected_status = request.GET.get("status", "all")
     selected_range = request.GET.get("range", "all")
     selected_type = request.GET.get("type", "all")
@@ -2126,6 +2172,10 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         )
 
     context = {
+        "dashboard_notice": dashboard_notice,
+        "dashboard_notice_level": dashboard_notice_level,
+        "current_client_ip": current_client_ip,
+        "excluded_ips": list(AnalyticsExcludedIP.objects.all()[:20]),
         "status_counts": status_counts,
         "selected_status": selected_status,
         "selected_range": selected_range,

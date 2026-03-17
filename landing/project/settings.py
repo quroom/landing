@@ -197,6 +197,11 @@ if DEBUG and not ALLOW_REAL_EMAIL_IN_DEBUG:
     CONTACT_EMAIL_ASYNC = False
 TESTIMONIAL_PUBLIC_THRESHOLD = int(os.getenv("TESTIMONIAL_PUBLIC_THRESHOLD", "3"))
 TESTIMONIAL_INVITE_EXPIRY_DAYS = int(os.getenv("TESTIMONIAL_INVITE_EXPIRY_DAYS", "7"))
+ANALYTICS_EXCLUDED_IPS = [
+    ip.strip()
+    for ip in os.getenv("ANALYTICS_EXCLUDED_IPS", "").split(",")
+    if ip.strip()
+]
 
 _runtime_validation_errors = collect_runtime_validation_errors(globals())
 if _runtime_validation_errors:
