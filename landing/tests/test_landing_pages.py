@@ -72,7 +72,7 @@ class LandingPageTests(TestCase):
         body = response.content.decode("utf-8")
         self.assertLess(
             body.index("이런 팀과 잘 맞습니다"),
-            body.index("막힌 실행부터 같이 정리합니다"),
+            body.index("요구사항부터 같이 정리합니다."),
         )
         self.assertLess(
             body.index("30분 무료 커피챗"),
