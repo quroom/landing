@@ -107,6 +107,18 @@ git log --oneline -n 10
 
 ### 롤백 실행
 
+자동 롤백(권장):
+
+```bash
+# 기본: 현재 배포 SHA의 직전 커밋으로 롤백 + 스모크 체크
+./scripts/dokku-rollback.sh
+
+# 특정 SHA로 롤백
+./scripts/dokku-rollback.sh --target-sha <rollback_sha>
+```
+
+수동 롤백:
+
 ```bash
 # <rollback_sha>를 직전 안정 커밋으로 교체
 ssh ubuntu@43.200.44.34 \
@@ -117,6 +129,15 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 ```
 
 ### 원복(최신으로 복귀)
+
+자동 원복(권장):
+
+```bash
+# 롤백 완료 로그에 출력된 이전 SHA 사용
+./scripts/dokku-rollback.sh --target-sha <current_sha>
+```
+
+수동 원복:
 
 ```bash
 # <current_sha>를 사전 준비에서 기록한 현재 배포 커밋으로 교체

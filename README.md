@@ -69,6 +69,12 @@ If both pass, push to GitHub.
 - Required secret:
   - `DOKKU_SSH_PRIVATE_KEY` (dokku push 권한이 있는 개인키)
 
+### Emergency rollback (manual operator command)
+- Roll back to previous deployed commit + smoke checks:
+  - `./scripts/dokku-rollback.sh`
+- Roll back to explicit commit SHA:
+  - `./scripts/dokku-rollback.sh --target-sha <sha>`
+
 ## Workspace format standard (`ruff + djlint`)
 - Python format/lint:
   - apply: `./scripts/format-apply.sh`
