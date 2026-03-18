@@ -163,9 +163,16 @@ class ContactFormTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Your inquiry has been received. We usually reply within 1-2 business days.",
+        )
+        self.assertContains(response, "Send Inquiry")
         inquiry = ContactInquiry.objects.get(email="foreign-quick@example.com")
         self.assertEqual(inquiry.inquiry_type, "foreign_quick_intake")
         self.assertIn('"funnel_stage": "quick_intake"', inquiry.message)
+        self.assertIn('"fit_track": "foreign_software_engineer"', inquiry.message)
+        self.assertIn('"recommended_next_step": "matching_profile"', inquiry.message)
         self.assertTrue(inquiry.marketing_opt_in)
         self.assertTrue(
             FunnelEvent.objects.filter(
@@ -179,6 +186,44 @@ class ContactFormTests(TestCase):
                 page_key="foreign_developers",
                 metadata__source_form="quick_intake",
             ).exists()
+        )
+        quick_event = FunnelEvent.objects.get(
+            event_name="foreign_quick_intake_submit",
+            page_key="foreign_developers",
+        )
+        self.assertEqual(quick_event.metadata["fit_track"], "foreign_software_engineer")
+        self.assertEqual(
+            quick_event.metadata["recommended_next_step"], "matching_profile"
+        )
+
+    def test_foreign_quick_intake_submit_marks_adjacent_talent_path(self) -> None:
+        response = self.client.post(
+            reverse("landing:foreign_quick_intake_submit"),
+            {
+                "nickname": "DesignA",
+                "email": "foreign-adjacent@example.com",
+                "target_role": "Industrial Designer",
+                "notes": "Exploring work in Korea",
+                "agree_privacy": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="foreign-adjacent@example.com")
+        self.assertIn('"fit_track": "adjacent_international_talent"', inquiry.message)
+        self.assertIn(
+            '"recommended_next_step": "community_or_manual_follow_up"',
+            inquiry.message,
+        )
+        quick_event = FunnelEvent.objects.get(
+            event_name="foreign_quick_intake_submit",
+            page_key="foreign_developers",
+        )
+        self.assertEqual(
+            quick_event.metadata["fit_track"], "adjacent_international_talent"
+        )
+        self.assertEqual(
+            quick_event.metadata["recommended_next_step"],
+            "community_or_manual_follow_up",
         )
 
     def test_foreign_matching_profile_submit_creates_matching_pending_record(
@@ -201,14 +246,20 @@ class ContactFormTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Your inquiry has been received. We usually reply within 1-2 business days.",
+        )
+        self.assertContains(response, "Submit My Profile")
         inquiry = ContactInquiry.objects.get(email="foreign-match@example.com")
         self.assertEqual(inquiry.inquiry_type, "foreign_matching_profile")
         self.assertIn('"lifecycle_state": "matching_pending"', inquiry.message)
-        self.assertTrue(
-            FunnelEvent.objects.filter(
-                event_name="foreign_matching_profile_complete",
-                page_key="foreign_developers",
-            ).exists()
+        matching_event = FunnelEvent.objects.get(
+            event_name="foreign_matching_profile_complete",
+            page_key="foreign_developers",
+        )
+        self.assertEqual(
+            matching_event.metadata["fit_track"], "foreign_software_engineer"
         )
         self.assertTrue(
             FunnelEvent.objects.filter(

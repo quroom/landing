@@ -76,9 +76,9 @@
             {% trans "은 별도 페이지에서도 진행할 수 있습니다." %}
           </p>
           <p class="text-xs text-white/80">
-            {% trans "외국인 개발자 실무 연계가 필요한 경우" %}
+            {% trans "글로벌 인재 채용·연결이 필요한 경우" %}
             <a href="{% url 'landing:foreign_developers' %}"
-               class="underline underline-offset-2">{% trans "외국인 개발자 전용 페이지" %}</a>
+               class="underline underline-offset-2">{% trans "글로벌 인재 지원 페이지" %}</a>
             {% trans "에서 상세 내용을 확인하세요." %}
           </p>
         </div>
@@ -352,7 +352,7 @@
               {% for item in content.contact_points %}
                 {% if forloop.counter <= 3 %}
                   <li class="flex items-start gap-2">
-                    <span class="mt-1 inline-block h-2 w-2 rounded-full bg-white/80"></span>
+                    <span class="my-auto inline-block h-2 w-2 rounded-full bg-white/80"></span>
                     <span>{{ item }}</span>
                   </li>
                 {% else %}

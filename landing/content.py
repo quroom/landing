@@ -259,76 +259,114 @@ SERVICE_CARDS = [
     {
         "id": "foreign-dev-network-build",
         "title": {
-            "ko": "취업 전략 및 매칭 준비 지원",
-            "en": "Job Strategy and Matching Readiness Support",
+            "ko": "커리어 전략",
+            "en": "Career Strategy",
         },
         "summary": {
-            "ko": "지원 전략, 포지셔닝, 소개 준비도를 함께 정리해 실제 매칭 가능성을 높입니다.",
-            "en": "We help shape your strategy, positioning, and introduction readiness to improve matching potential.",
+            "ko": "한국에서 어떤 방향으로 시작할지, 지금 단계에서 무엇부터 준비할지 함께 정리합니다.",
+            "en": "Clarify where to start and what to prepare first for working in Korea.",
         },
         "items": [
             {
-                "ko": "개발사/협업 파트너 연결용 프로필 정리",
-                "en": "Profile preparation tailored for developer and partner matching",
+                "ko": "현재 준비 상태와 목표 방향 점검",
+                "en": "Review your current readiness and direction",
             },
             {
-                "ko": "기술 스택/희망 역할 기준 소개 포맷 제공",
-                "en": "Introduction format based on your tech stack and preferred role",
+                "ko": "우선순위가 선명한 다음 액션 정리",
+                "en": "Set the next action with practical priority",
             },
             {
-                "ko": "초기 미팅 연결을 위한 커뮤니케이션 가이드",
-                "en": "Communication guide for initial meetings and introductions",
+                "ko": "한국 취업·연결을 위한 시작 가이드",
+                "en": "Start guidance for entering work opportunities and networks in Korea",
             },
         ],
         "duration": "상시 운영",
         "price": "상담 후 결정",
         "deliverable": {
-            "ko": "매칭 준비 프로필 패키지 + 미팅 가이드",
-            "en": "Matching-ready profile package + meeting guide",
+            "ko": "현재 단계 요약 + 다음 액션 가이드",
+            "en": "Current-stage summary + next-step guidance",
         },
         "audience": {
-            "ko": "한국 실무 연결이 필요한 외국인 개발자",
-            "en": "Foreign developers seeking practical collaboration in Korea",
+            "ko": "한국에서 일하거나 기회를 넓히고 싶은 외국인 인재",
+            "en": "International talent who want a clearer starting point for working in Korea",
         },
-        "cta_label": {"ko": "전략 상담 시작", "en": "Start Strategy Intake"},
+        "cta_label": {"ko": "문의하기", "en": "Send Inquiry"},
         "cta_href": "#contact",
+        "persona_targets": ["foreign_developers"],
+    },
+    {
+        "id": "foreign-dev-profile-readiness",
+        "title": {
+            "ko": "이력서 · 포트폴리오 준비",
+            "en": "Resume / Portfolio Readiness",
+        },
+        "summary": {
+            "ko": "이력서, LinkedIn, GitHub, 포트폴리오를 매칭 검토에 맞게 정리합니다.",
+            "en": "Sharpen your resume, LinkedIn, GitHub, and portfolio for matching review.",
+        },
+        "items": [
+            {
+                "ko": "이력서와 LinkedIn 핵심 정보 정리",
+                "en": "Tighten your resume and LinkedIn essentials",
+            },
+            {
+                "ko": "GitHub·포트폴리오 링크 구조 점검",
+                "en": "Review GitHub and portfolio link structure",
+            },
+            {
+                "ko": "소개 메시지와 프로필 문장 다듬기",
+                "en": "Refine intro copy and profile messaging",
+            },
+        ],
+        "duration": "상시 운영",
+        "price": "상담 후 결정",
+        "deliverable": {
+            "ko": "프로필 체크리스트 + 개선 가이드",
+            "en": "Profile checklist + improvement guidance",
+        },
+        "audience": {
+            "ko": "특히 외국인 소프트웨어 엔지니어로서 한국 취업 준비를 구체화하려는 분",
+            "en": "Especially for foreign software engineers preparing for practical review",
+        },
+        "cta_label": {"ko": "프로필 작성하기", "en": "Open Profile Form"},
+        "cta_href": "#matching-profile",
         "persona_targets": ["foreign_developers"],
     },
     {
         "id": "foreign-dev-settlement-network",
         "title": {
-            "ko": "지역 적응 및 정착 가이드",
-            "en": "Regional Adaptation and Settlement Guidance",
+            "ko": "한국 적응 가이드",
+            "en": "Korea Guidance",
         },
         "summary": {
-            "ko": "한국어, 비자 행정, 주거 정보 등 초기 적응에 필요한 실무 가이드를 연결합니다.",
-            "en": "We connect practical guidance for Korean learning, visa administration, and housing adaptation.",
+            "ko": "한국 생활과 일 적응에 필요한 언어, 행정, 주거 관련 실무 가이드를 연결합니다.",
+            "en": "Connect practical guidance for language, administration, and settling into work and life in Korea.",
         },
         "items": [
             {
-                "ko": "한국어 학습/커뮤니케이션 코치 연결",
-                "en": "Connection to Korean language and communication coaches",
+                "ko": "한국어 학습·커뮤니케이션 가이드 안내",
+                "en": "Connect Korean learning and communication guidance",
             },
             {
-                "ko": "비자/체류 이슈 대응을 위한 행정사 네트워크 연결",
-                "en": "Connection to licensed administrative networks for visa and stay issues",
+                "ko": "비자·체류 이슈를 위한 전문 파트너 연결",
+                "en": "Connect licensed partners for visa and stay issues",
             },
             {
-                "ko": "주거 탐색/계약 관련 초기 가이드 및 정보 연결",
-                "en": "Initial guidance and partner links for housing search and contracts",
+                "ko": "주거 탐색과 생활 적응을 위한 초기 정보 연결",
+                "en": "Connect early guidance for housing search and life setup",
             },
         ],
         "duration": "요청 시 수시",
         "price": "상담 후 결정",
         "deliverable": {
-            "ko": "정착 가이드 플랜 + 파트너 안내",
-            "en": "Settlement guidance plan + partner guidance",
+            "ko": "적응 가이드 + 파트너 안내",
+            "en": "Korea guidance plan + partner referrals",
         },
         "audience": {
-            "ko": "한국 생활/업무 적응이 필요한 외국인 개발자",
-            "en": "Foreign developers adapting to work and life in Korea",
+            "ko": "한국에서 일하고 적응하는 데 실무 가이드가 필요한 외국인 인재",
+            "en": "International talent who need practical guidance for working in Korea",
         },
-        "cta_label": {"ko": "적응 가이드 받기", "en": "Get Adaptation Guidance"},
+        "cta_label": {"ko": "가이드 문의하기", "en": "Ask About Korea Guidance"},
         "cta_href": "#contact",
         "persona_targets": ["foreign_developers"],
     },
@@ -624,26 +662,126 @@ PERSONA_CONTENT = {
         "kpi": ["founder_consult_submit", "founder_consult_qualified"],
     },
     "foreign_developers": {
-        "label": "For Foreign Developers",
+        "meta_title": {
+            "ko": "글로벌 인재 지원 | 큐룸",
+            "en": "International Talent Support | QuRoom",
+        },
+        "label": {
+            "ko": "글로벌 인재 지원",
+            "en": "For International Talent",
+        },
         "title": {
-            "ko": "외국인 개발자를 위한 한국 취업 전략 파트너",
-            "en": "Get a Korea Job Strategy Tailored to Your Stage",
+            "ko": "한국에서 일하려는 외국인 인재를 위한 실무 지원",
+            "en": "Work in Korea with practical support",
         },
         "description": {
-            "ko": "처음에는 간단히 시작하고, 준비가 되면 매칭 프로필을 완성해 연결 가능성을 높입니다.",
-            "en": "Start simple, move at your pace, and grow into a matching-ready profile.",
+            "ko": "커리어 방향 정리, 이력서·포트폴리오 점검, 한국 생활·업무 적응 가이드까지 지금 단계에 맞는 다음 행동을 함께 정리합니다.",
+            "en": "Career direction, resume or portfolio readiness, and Korea guidance to help you take the next realistic step.",
+        },
+        "focus_note": {
+            "ko": "현재는 외국인 소프트웨어 엔지니어 지원에 가장 강합니다.",
+            "en": "Currently strongest for foreign software engineers.",
+        },
+        "hero_support_buckets": [
+            {"ko": "커리어 전략", "en": "Career strategy"},
+            {"ko": "이력서 · 포트폴리오", "en": "Resume / portfolio"},
+            {"ko": "한국 적응 가이드", "en": "Korea guidance"},
+        ],
+        "boundary_note": {
+            "ko": "취업 보장이나 비자·법률 자문 대행은 하지 않으며, 필요한 경우 전문 파트너와 연결합니다.",
+            "en": "We provide practical guidance and introductions, but not guaranteed placement or direct visa/legal representation.",
         },
         "regional_support_note": {
-            "ko": "광주/전남은 로컬 맥락을 살린 대면 지원을 우선하고, 다른 지역은 온라인 매칭과 원격 가이드를 기본으로 지원합니다.",
-            "en": "Based in Gwangju. In-person support is prioritized for Gwangju/Jeonnam, while other regions are supported through online matching and remote guidance.",
+            "ko": "광주/전남은 오프라인 네트워킹과 대면 안내를 우선할 수 있고, 다른 지역은 온라인 중심으로 지원합니다.",
+            "en": "Based in Gwangju. Gwangju/Jeonnam support can include in-person networking, while other regions are primarily supported online.",
         },
         "primary_cta": {
-            "label": {"ko": "취업 전략 받기", "en": "Get My Job Search Strategy"},
-            "href": "#quick-intake",
+            "label": {"ko": "문의하기", "en": "Send Inquiry"},
+            "href": "#contact",
         },
         "secondary_cta": {
-            "label": {"ko": "제공 서비스 보기", "en": "View Services"},
+            "label": {"ko": "지원 내용 보기", "en": "See Support Areas"},
             "href": "#services",
+        },
+        "nav_cta": {
+            "ko": "문의하기",
+            "en": "Inquire",
+        },
+        "service_section_title": {
+            "ko": "어떤 지원을 받을 수 있나요",
+            "en": "What Support You Can Get",
+        },
+        "profile_section_title": {
+            "ko": "대표자 프로필과 경력",
+            "en": "Founder Profile and Track Record",
+        },
+        "profile_section_intro": {
+            "ko": "명함이나 QR로 처음 들어온 분도 바로 신뢰를 확인할 수 있도록 대표자의 주요 경력 흐름과 실무 배경을 먼저 보여줍니다.",
+            "en": "If you arrived from a business card or QR, you can quickly review the founder's practical background and career track record here.",
+        },
+        "profile_link_title": {
+            "ko": "대표자 LinkedIn",
+            "en": "Founder LinkedIn",
+        },
+        "profile_link_label": {
+            "ko": "LinkedIn 바로 보기",
+            "en": "Open LinkedIn",
+        },
+        "profile_link_note": {
+            "ko": "회사 공식 계정이 아닌 대표자 개인 계정입니다.",
+            "en": "This is the founder's personal LinkedIn profile, not a company account.",
+        },
+        "career_timeline_title": {
+            "ko": "주요 커리어",
+            "en": "Career Timeline",
+        },
+        "career_timeline_note": {
+            "ko": "대표자의 주요 경력 흐름을 간단히 확인할 수 있습니다.",
+            "en": "A quick view of the founder's major career history.",
+        },
+        "faq_title": {
+            "ko": "시작 전에 많이 묻는 질문",
+            "en": "Questions Before You Start",
+        },
+        "contact_title": {
+            "ko": "문의하기",
+            "en": "Start with an Inquiry",
+        },
+        "contact_intro": {
+            "ko": "현재 상황과 방향을 짧게 남겨주시면, 지금 단계에 맞는 다음 단계를 안내드립니다. 외국인 소프트웨어 엔지니어라면 Step 2까지 이어서 프로필 검토를 받을 수 있습니다.",
+            "en": "Share your current situation briefly and we will guide the next realistic step. If you are a foreign software engineer, you can continue to Step 2 for profile review.",
+        },
+        "quick_intake_title": {
+            "ko": "1단계. 간단 문의",
+            "en": "Step 1. Simple Inquiry",
+        },
+        "quick_intake_hint": {
+            "ko": "이름, 이메일, 현재 역할이나 방향 정도만 적어주시면 됩니다.",
+            "en": "Name, email, and your current focus are enough to start.",
+        },
+        "next_actions_summary": {
+            "ko": "선택 사항: 프로필 더 자세히 남기기",
+            "en": "Optional: Continue with Your Profile",
+        },
+        "matching_profile_title": {
+            "ko": "2단계. 프로필 상세 작성",
+            "en": "Step 2. Matching Profile",
+        },
+        "matching_profile_hint": {
+            "ko": "이력서/CV, 링크, 비자 상태, 근무 조건",
+            "en": "CV/profile links, visa status, and work preferences",
+        },
+        "matching_profile_note": {
+            "ko": "외국인 소프트웨어 엔지니어이거나 해당 진로를 준비 중이라면 여기까지 작성해 주시면 검토에 도움이 됩니다.",
+            "en": "If you are a foreign software engineer or preparing for that path, Step 2 helps us review your profile more concretely.",
+        },
+        "community_note": {
+            "ko": "다른 분야이거나 아직 탐색 단계라면 1단계만 제출해도 충분합니다. 커뮤니티 대기열 신청은 1단계와 2단계 모두에서 가능합니다.",
+            "en": "If you are from another field or still exploring, Step 1 is enough to start. Community waitlist opt-in is available in both Step 1 and Step 2.",
+        },
+        "one_action_note": {
+            "ko": "아직 정리가 덜 됐다면 1단계만 남겨도 충분합니다.",
+            "en": "If you are not ready yet, Step 1 alone is enough to start.",
         },
         "service_target": "foreign_developers",
         "credibility_signals": [
@@ -652,8 +790,8 @@ PERSONA_CONTENT = {
                 "en": "Mentoring grounded in Samsung Electronics practical experience",
             },
             {
-                "ko": "전남대 출신 로컬 맥락 이해와 커뮤니티 연결 경험",
-                "en": "Local context understanding and community linkage experience in Gwangju/Jeonnam",
+                "ko": "전남대 기반 오프라인 네트워킹과 광주/전남 로컬 맥락 이해",
+                "en": "Offline networking rooted in Chonnam National University and local context in Gwangju/Jeonnam",
             },
             {
                 "ko": "다수 개발사 협업 네트워크 기반 실무 연계 지원",
@@ -665,48 +803,48 @@ PERSONA_CONTENT = {
             },
         ],
         "scope_boundary": {
-            "ko": "언어/비자/주거 관련 네트워크 연결은 지원하며, 비자·법률 자문을 직접 대행하지는 않습니다.",
-            "en": "We support language/visa/housing network connections, but do not directly provide visa or legal representation.",
+            "ko": "한국에서 일하기 위한 커리어 전략, 프로필 준비, 적응 가이드는 지원하지만 취업 보장이나 비자·법률 자문 대행은 하지 않습니다.",
+            "en": "We support career strategy, profile readiness, and Korea guidance for working in Korea, but do not guarantee placement or provide visa/legal representation.",
         },
         "faq": [
             {
                 "q": {
-                    "ko": "연계 프로세스는 어떻게 진행되나요?",
-                    "en": "How does the matching process work?",
+                    "ko": "어떻게 시작하면 되나요?",
+                    "en": "How do I get started?",
                 },
                 "a": {
-                    "ko": "역량/희망 직무 확인 후 매칭, 온보딩 가이드, 초기 실무 적응 지원 순서로 진행됩니다.",
-                    "en": "We proceed through profile review, matching, onboarding guidance, and early-stage practical adaptation support.",
+                    "ko": "1단계에서 현재 상황을 짧게 남겨주시면, 지금 단계에 맞는 다음 단계를 안내합니다. 외국인 소프트웨어 엔지니어라면 2단계 프로필 작성까지 이어서 검토할 수 있습니다.",
+                    "en": "Start with Step 1 and share your current situation briefly. We then guide the next step that fits you, and foreign software engineers can continue into Step 2 for profile review.",
                 },
             },
             {
                 "q": {
-                    "ko": "무엇을 준비해야 하나요?",
-                    "en": "What should I prepare?",
+                    "ko": "개발자가 아니어도 문의할 수 있나요?",
+                    "en": "Can I inquire even if I am not a developer?",
                 },
                 "a": {
-                    "ko": "이력/프로젝트 요약, 희망 직무/기술 스택, 협업 가능한 근무 조건을 준비하면 빠르게 진행됩니다.",
-                    "en": "Prepare your profile/project summary, preferred role and stack, and collaboration constraints to accelerate matching.",
+                    "ko": "네. 현재는 외국인 소프트웨어 엔지니어 지원에 가장 강하지만, 다른 분야의 외국인 인재도 1단계 문의로 시작할 수 있습니다.",
+                    "en": "Yes. Our strongest support today is for foreign software engineers, but international talent from other fields can also start through Step 1.",
                 },
             },
             {
                 "q": {
-                    "ko": "지원 범위는 어디까지인가요?",
-                    "en": "What is included in your support scope?",
+                    "ko": "처음에는 무엇을 준비하면 되나요?",
+                    "en": "What should I prepare first?",
                 },
                 "a": {
-                    "ko": "개발사 네트워크 연결, 언어 코치/행정사/주거 정보 연계까지 지원하며, 비자·법률 자문 자체는 전문기관과 연계합니다.",
-                    "en": "We support developer network matching plus language/administrative/housing connections, while visa and legal advisory are handled through specialized partners.",
+                    "ko": "처음에는 현재 역할이나 방향 정도만 알려주면 됩니다. 외국인 소프트웨어 엔지니어로 더 자세한 검토를 원할 경우 2단계에서 이력서, 링크, 기술 스택 정보를 보완하면 됩니다.",
+                    "en": "To start, just share your current focus or role. If you want deeper review as a foreign software engineer, you can add your resume, links, and tech stack in Step 2.",
                 },
             },
             {
                 "q": {
-                    "ko": "비용은 어떻게 정해지나요?",
-                    "en": "How is pricing determined?",
+                    "ko": "취업이나 비자 문제까지 직접 해결해 주나요?",
+                    "en": "Do you directly handle job placement or visa issues?",
                 },
                 "a": {
-                    "ko": "요청 범위와 연결 난이도에 따라 상담 후 개별 안내합니다.",
-                    "en": "Pricing is provided after consultation based on requested scope and matching complexity.",
+                    "ko": "아닙니다. 취업 보장이나 비자·법률 자문 대행은 하지 않으며, 커리어 전략과 프로필 준비, 실무 가이드, 필요한 경우 전문 파트너 연결을 지원합니다.",
+                    "en": "No. We do not guarantee placement or directly handle visa or legal issues. We focus on career strategy, profile readiness, practical guidance, and partner referrals when needed.",
                 },
             },
             {
@@ -715,8 +853,8 @@ PERSONA_CONTENT = {
                     "en": "Do you only support Gwangju?",
                 },
                 "a": {
-                    "ko": "광주/전남은 로컬 맥락을 살린 대면 지원을 우선할 수 있고, 다른 지역은 온라인 매칭과 원격 가이드를 기본으로 진행합니다.",
-                    "en": "Gwangju/Jeonnam candidates can be supported with local in-person context when needed, while other regions are supported online first.",
+                    "ko": "아닙니다. 광주/전남은 오프라인 네트워킹과 대면 안내를 우선할 수 있고, 다른 지역은 온라인 중심으로 지원합니다.",
+                    "en": "No. Gwangju/Jeonnam can include in-person networking support, while other regions are primarily supported online.",
                 },
             },
         ],

@@ -234,15 +234,27 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:foreign_developers"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="en">', html=False)
-        self.assertContains(response, "Services for Foreign Developers")
-        self.assertContains(response, "Get a Korea Job Strategy Tailored to Your Stage")
-        self.assertContains(response, "career/network updates")
-        self.assertContains(response, "Get My Job Search Strategy")
-        self.assertTrue(
-            FunnelEvent.objects.filter(
-                event_name="lp_view", page_key="foreign_developers"
-            ).exists()
+        self.assertContains(response, "For International Talent")
+        self.assertContains(response, "Work in Korea with practical support")
+        self.assertContains(
+            response, "Currently strongest for foreign software engineers."
         )
+        self.assertContains(response, "Career Strategy")
+        self.assertContains(response, "What Support You Can Get")
+        self.assertContains(response, "Send Inquiry")
+        self.assertContains(response, "Current Focus or Role")
+        self.assertContains(response, "Founder LinkedIn")
+        self.assertContains(response, "https://www.linkedin.com/in/samkimtech")
+        self.assertContains(response, "Samsung Electronics S/W Engineer")
+        body = response.content.decode("utf-8")
+        self.assertLess(
+            body.index("Samsung Electronics S/W Engineer"),
+            body.index("Founder LinkedIn"),
+        )
+        event = FunnelEvent.objects.get(
+            event_name="lp_view", page_key="foreign_developers"
+        )
+        self.assertEqual(event.metadata["route_variant"], "canonical")
 
     def test_foreign_developers_page_supports_korean_override(self) -> None:
         response = self.client.get(
@@ -250,19 +262,28 @@ class LandingPageTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "외국인 개발자 제공 서비스")
-        self.assertContains(response, "취업 전략 및 매칭 준비 지원")
+        self.assertContains(response, "한국에서 일하려는 외국인 인재를 위한 실무 지원")
+        self.assertContains(response, "어떤 지원을 받을 수 있나요")
+        self.assertContains(response, "커리어 전략")
+        self.assertContains(response, "문의하기")
+        self.assertContains(response, "현재 역할 또는 관심 분야")
+        self.assertContains(response, "대표자 LinkedIn")
+        self.assertContains(response, "삼성전자 S/W 엔지니어")
+        body = response.content.decode("utf-8")
+        self.assertLess(
+            body.index("삼성전자 S/W 엔지니어"),
+            body.index("대표자 LinkedIn"),
+        )
 
     def test_foreign_developers_short_alias_renders_same_page(self) -> None:
         response = self.client.get(reverse("landing:foreign_developers_short"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="en">', html=False)
-        self.assertContains(response, "Services for Foreign Developers")
-        self.assertTrue(
-            FunnelEvent.objects.filter(
-                event_name="lp_view", page_key="foreign_developers"
-            ).exists()
+        self.assertContains(response, "For International Talent")
+        event = FunnelEvent.objects.get(
+            event_name="lp_view", page_key="foreign_developers"
         )
+        self.assertEqual(event.metadata["route_variant"], "short_alias")
 
     def test_foreign_developers_short_alias_preserves_locale_and_query(self) -> None:
         response = self.client.get(
@@ -272,6 +293,11 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertEqual(response.wsgi_request.GET["utm_source"], "card")
+        event = FunnelEvent.objects.get(
+            event_name="lp_view", page_key="foreign_developers"
+        )
+        self.assertEqual(event.metadata["route_variant"], "short_alias")
+        self.assertEqual(event.metadata["utm_source"], "card")
 
     def test_locale_resolution_priority_query_over_session(self) -> None:
         session = self.client.session

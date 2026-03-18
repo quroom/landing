@@ -48,7 +48,7 @@ Alternatives considered:
 Alternatives considered:
 
 - 기존 경로를 완전히 교체: 이미 많은 스펙, 테스트, 레퍼런스가 `/for-foreign-developers/`를 전제로 하고 있어 제외
-- `/gn/` 사용: 현재는 `gt`가 `global talent` 약어로 더 직관적이고, 인쇄물과 구두 설명에서 더 쉽게 전달되어 보류
+- `/gn/` 사용: 이번 방향은 `global talent`보다 `international talent` 표현을 기준으로 잡았고, `/it/`가 명함과 설명 문맥에 더 자연스럽기 때문에 보류
 
 ### 3. staged funnel은 유지하되, 1차 intake에서 더 넓은 유입을 분기할 수 있게 한다
 

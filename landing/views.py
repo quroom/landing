@@ -475,11 +475,13 @@ def founders(request: HttpRequest) -> HttpResponse:
 
 def foreign_developers(request: HttpRequest) -> HttpResponse:
     locale, page_default_locale = _resolve_landing_locale(request, "foreign_developers")
+    route_variant = _foreign_developer_route_variant(request)
     track_event(
         request,
         "lp_view",
         page_key="foreign_developers",
         lead_source="foreign_developers",
+        metadata={"route_variant": route_variant},
     )
     context = _base_context(
         build_page_content(
@@ -500,6 +502,62 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
         }
     )
     return render(request, "landing/foreign_developers.html", context)
+
+
+def _foreign_developer_route_variant(request: HttpRequest) -> str:
+    if (
+        request.resolver_match
+        and request.resolver_match.url_name == "foreign_developers_short"
+    ):
+        return "short_alias"
+    return "canonical"
+
+
+SOFTWARE_ENGINEER_TRACK_KEYWORDS = (
+    "software",
+    "s/w",
+    "sw",
+    "engineer",
+    "developer",
+    "backend",
+    "front",
+    "frontend",
+    "fullstack",
+    "full-stack",
+    "mobile",
+    "ios",
+    "android",
+    "web",
+    "platform",
+    "devops",
+    "sre",
+    "qa",
+    "test",
+    "python",
+    "java",
+    "react",
+    "node",
+    "django",
+    "rails",
+    "flutter",
+    "unity",
+    "ai",
+    "ml",
+    "data",
+)
+
+
+def _foreign_talent_fit_track(target_role: str) -> str:
+    normalized = target_role.strip().lower()
+    if any(keyword in normalized for keyword in SOFTWARE_ENGINEER_TRACK_KEYWORDS):
+        return "foreign_software_engineer"
+    return "adjacent_international_talent"
+
+
+def _foreign_talent_next_step(fit_track: str) -> str:
+    if fit_track == "foreign_software_engineer":
+        return "matching_profile"
+    return "community_or_manual_follow_up"
 
 
 def free_diagnosis(request: HttpRequest) -> HttpResponse:
@@ -589,6 +647,10 @@ def _render_foreign_community_waitlist_form(
     )
     status_code = 200 if status != "error" else 400
     return HttpResponse(html, status=status_code)
+
+
+def _locale_message(locale: str, *, ko: str, en: str) -> str:
+    return en if locale == "en" else ko
 
 
 def _grade_from_score(score: int, max_score: int) -> str:
@@ -1413,22 +1475,31 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
 
 @require_POST
 def foreign_quick_intake_submit(request: HttpRequest) -> HttpResponse:
+    locale, _ = _resolve_landing_locale(request, "foreign_developers")
     form = ForeignQuickIntakeForm(request.POST)
     if not form.is_valid():
         return _render_foreign_quick_intake_form(
             request,
             form,
             status="error",
-            status_message=_("필수 항목을 확인해 주세요."),
+            status_message=_locale_message(
+                locale,
+                ko="필수 항목을 확인해 주세요.",
+                en="Please check the required fields.",
+            ),
         )
 
     data = form.cleaned_data
+    fit_track = _foreign_talent_fit_track(data["target_role"])
+    recommended_next_step = _foreign_talent_next_step(fit_track)
     marketing_opt_in = bool(data.get("agree_marketing"))
     community_waitlist_opt_in = bool(data.get("join_community_waitlist"))
     payload = {
         "funnel_stage": "quick_intake",
         "lifecycle_state": "new",
         "target_role": data["target_role"],
+        "fit_track": fit_track,
+        "recommended_next_step": recommended_next_step,
         "notes": data.get("notes", ""),
         "community_waitlist_opt_in": community_waitlist_opt_in,
     }
@@ -1455,6 +1526,8 @@ def foreign_quick_intake_submit(request: HttpRequest) -> HttpResponse:
             "funnel_stage": "quick_intake",
             "lifecycle_state": "new",
             "target_role": data["target_role"],
+            "fit_track": fit_track,
+            "recommended_next_step": recommended_next_step,
             "community_waitlist_opt_in": community_waitlist_opt_in,
         },
     )
@@ -1468,6 +1541,8 @@ def foreign_quick_intake_submit(request: HttpRequest) -> HttpResponse:
                 "funnel_stage": "quick_intake",
                 "source_form": "quick_intake",
                 "lifecycle_state": "new",
+                "fit_track": fit_track,
+                "recommended_next_step": recommended_next_step,
             },
         )
 
@@ -1475,21 +1550,28 @@ def foreign_quick_intake_submit(request: HttpRequest) -> HttpResponse:
         request,
         ForeignQuickIntakeForm(),
         status="success",
-        status_message=_(
-            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        status_message=_locale_message(
+            locale,
+            ko="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
+            en="Your inquiry has been received. We usually reply within 1-2 business days.",
         ),
     )
 
 
 @require_POST
 def foreign_matching_profile_submit(request: HttpRequest) -> HttpResponse:
+    locale, _ = _resolve_landing_locale(request, "foreign_developers")
     form = ForeignMatchingProfileForm(request.POST)
     if not form.is_valid():
         return _render_foreign_matching_profile_form(
             request,
             form,
             status="error",
-            status_message=_("필수 항목을 확인해 주세요."),
+            status_message=_locale_message(
+                locale,
+                ko="필수 항목을 확인해 주세요.",
+                en="Please check the required fields.",
+            ),
         )
 
     data = form.cleaned_data
@@ -1527,6 +1609,7 @@ def foreign_matching_profile_submit(request: HttpRequest) -> HttpResponse:
         metadata={
             "funnel_stage": "matching_profile",
             "lifecycle_state": "matching_pending",
+            "fit_track": "foreign_software_engineer",
             "community_waitlist_opt_in": community_waitlist_opt_in,
         },
     )
@@ -1547,21 +1630,28 @@ def foreign_matching_profile_submit(request: HttpRequest) -> HttpResponse:
         request,
         ForeignMatchingProfileForm(),
         status="success",
-        status_message=_(
-            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        status_message=_locale_message(
+            locale,
+            ko="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
+            en="Your inquiry has been received. We usually reply within 1-2 business days.",
         ),
     )
 
 
 @require_POST
 def foreign_community_waitlist_submit(request: HttpRequest) -> HttpResponse:
+    locale, _ = _resolve_landing_locale(request, "foreign_developers")
     form = ForeignCommunityWaitlistForm(request.POST)
     if not form.is_valid():
         return _render_foreign_community_waitlist_form(
             request,
             form,
             status="error",
-            status_message=_("필수 항목을 확인해 주세요."),
+            status_message=_locale_message(
+                locale,
+                ko="필수 항목을 확인해 주세요.",
+                en="Please check the required fields.",
+            ),
         )
 
     data = form.cleaned_data
@@ -1597,8 +1687,10 @@ def foreign_community_waitlist_submit(request: HttpRequest) -> HttpResponse:
         request,
         ForeignCommunityWaitlistForm(),
         status="success",
-        status_message=_(
-            "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
+        status_message=_locale_message(
+            locale,
+            ko="문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다.",
+            en="Your inquiry has been received. We usually reply within 1-2 business days.",
         ),
     )
 

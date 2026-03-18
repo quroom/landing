@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
 from .ax_tool_stack import (
@@ -138,6 +139,21 @@ class ContactForm(forms.Form):
                 self.fields["inquiry_type"].initial = recommended_inquiry_type
 
 
+def _is_korean_locale() -> bool:
+    return (get_language() or "ko").split("-")[0] == "ko"
+
+
+def _set_field_copy(
+    field: forms.Field,
+    *,
+    label: str,
+    placeholder: str | None = None,
+) -> None:
+    field.label = label
+    if placeholder is not None and hasattr(field.widget, "attrs"):
+        field.widget.attrs["placeholder"] = placeholder
+
+
 class ForeignQuickIntakeForm(forms.Form):
     nickname = forms.CharField(
         label="Nickname",
@@ -153,10 +169,12 @@ class ForeignQuickIntakeForm(forms.Form):
         ),
     )
     target_role = forms.CharField(
-        label="Target Role",
+        label="Current Focus or Role",
         max_length=80,
         widget=forms.TextInput(
-            attrs={"placeholder": "e.g., Backend Engineer, AI Engineer"}
+            attrs={
+                "placeholder": "e.g., Software Engineer, Designer, Student, Researcher"
+            }
         ),
     )
     notes = forms.CharField(
@@ -166,7 +184,7 @@ class ForeignQuickIntakeForm(forms.Form):
         widget=forms.Textarea(
             attrs={
                 "rows": 3,
-                "placeholder": "Share your current concerns, prep status, or preferred work style.",
+                "placeholder": "Share what you are preparing for in Korea, your current concerns, or your preferred work style.",
             }
         ),
     )
@@ -176,22 +194,91 @@ class ForeignQuickIntakeForm(forms.Form):
     )
     agree_marketing = forms.BooleanField(
         required=False,
-        label=_(
-            "(선택) 외국인 개발자 커리어/네트워크 관련 정보 메일 수신에 동의합니다."
-        ),
+        label=_("(선택) 한국 취업/커뮤니티 관련 정보 메일 수신에 동의합니다."),
     )
     join_community_waitlist = forms.BooleanField(
         required=False,
-        label="(Optional) Join Community Waitlist updates",
+        label="(Optional) Join International Talent Community Waitlist",
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if _is_korean_locale():
+            _set_field_copy(
+                self.fields["nickname"],
+                label="이름 또는 닉네임",
+                placeholder="이름 또는 닉네임",
+            )
+            _set_field_copy(
+                self.fields["email"],
+                label="이메일",
+                placeholder="회신 받을 이메일",
+            )
+            _set_field_copy(
+                self.fields["target_role"],
+                label="현재 역할 또는 관심 분야",
+                placeholder="예: 소프트웨어 엔지니어, 디자이너, 학생, 연구자",
+            )
+            _set_field_copy(
+                self.fields["notes"],
+                label="추가로 전하고 싶은 내용 (선택)",
+                placeholder="한국에서 준비 중인 일, 현재 고민, 원하는 일 방식 등을 적어주세요.",
+            )
+            self.fields["agree_privacy"].label = "개인정보 수집 및 이용에 동의합니다."
+            self.fields["agree_privacy"].error_messages["required"] = (
+                "문의 접수를 위해 동의가 필요합니다."
+            )
+            self.fields[
+                "agree_marketing"
+            ].label = "(선택) 한국 취업/커뮤니티 관련 정보 메일 수신에 동의합니다."
+            self.fields[
+                "join_community_waitlist"
+            ].label = "(선택) 글로벌 인재 커뮤니티 대기열에 참여합니다."
+            self.ui_copy = {
+                "submit_label": "문의 보내기",
+                "helper": "1~2분 정도면 됩니다. 현재 상황이나 방향을 간단히 남겨주세요.",
+                "loading_message": "처리 중입니다... 잠시만 기다려 주세요.",
+                "response_sla": "영업일 기준 1~2일 내 회신합니다.",
+            }
+            return
+
+        _set_field_copy(
+            self.fields["nickname"],
+            label="Name or Nickname",
+            placeholder="Your name or nickname",
+        )
+        _set_field_copy(
+            self.fields["email"],
+            label="Email",
+            placeholder="Email for reply",
+        )
+        _set_field_copy(
+            self.fields["target_role"],
+            label="Current Focus or Role",
+            placeholder="e.g., Software Engineer, Designer, Student, Researcher",
+        )
+        _set_field_copy(
+            self.fields["notes"],
+            label="Anything you'd like to add (Optional)",
+            placeholder="Share what you are preparing for in Korea, your current concerns, or your preferred work style.",
+        )
+        self.fields[
+            "agree_privacy"
+        ].label = "I agree to the collection and use of personal information."
+        self.fields["agree_privacy"].error_messages["required"] = (
+            "Consent is required to submit your inquiry."
+        )
+        self.fields[
+            "agree_marketing"
+        ].label = "(Optional) I agree to receive email updates about jobs or community support in Korea."
+        self.fields[
+            "join_community_waitlist"
+        ].label = "(Optional) Join the international talent community waitlist"
         self.ui_copy = {
-            "submit_label": "Get My Job Search Strategy",
-            "helper": "2-minute quick intake. No resume required.",
-            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
-            "response_sla": _("영업일 기준 1~2일 내 회신합니다."),
+            "submit_label": "Send Inquiry",
+            "helper": "Takes 1-2 minutes. Share your current direction in Korea.",
+            "loading_message": "Processing... please wait.",
+            "response_sla": "We usually reply within 1-2 business days.",
         }
 
 
@@ -255,15 +342,129 @@ class ForeignMatchingProfileForm(forms.Form):
     )
     join_community_waitlist = forms.BooleanField(
         required=False,
-        label="(Optional) Join Community Waitlist updates",
+        label="(Optional) Join International Talent Community Waitlist",
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if _is_korean_locale():
+            _set_field_copy(
+                self.fields["email"],
+                label="이메일",
+                placeholder="1단계 등록에 사용한 이메일",
+            )
+            _set_field_copy(
+                self.fields["cv_or_linkedin"],
+                label="CV 또는 LinkedIn",
+                placeholder="CV 링크 또는 LinkedIn URL",
+            )
+            _set_field_copy(
+                self.fields["github_or_portfolio"],
+                label="GitHub 또는 포트폴리오",
+                placeholder="GitHub 또는 포트폴리오 URL",
+            )
+            _set_field_copy(
+                self.fields["tech_stack"],
+                label="기술 스택",
+                placeholder="예: Python, Django, React, AWS",
+            )
+            _set_field_copy(
+                self.fields["experience_level"],
+                label="경력 수준",
+                placeholder="예: 3 years, Mid-level",
+            )
+            _set_field_copy(
+                self.fields["visa_status"],
+                label="비자 / 체류 상태",
+                placeholder="예: D-10, F-2, E-7 준비 중",
+            )
+            _set_field_copy(
+                self.fields["work_preference"],
+                label="희망 근무 형태",
+                placeholder="예: Full-time, Hybrid, Remote",
+            )
+            _set_field_copy(
+                self.fields["location_preference"],
+                label="희망 지역",
+                placeholder="예: Seoul, Gwangju",
+            )
+            _set_field_copy(
+                self.fields["available_from"],
+                label="가능 시작 시점",
+                placeholder="예: Immediately, 2026-06",
+            )
+            self.fields["agree_privacy"].label = "개인정보 수집 및 이용에 동의합니다."
+            self.fields["agree_privacy"].error_messages["required"] = (
+                "문의 접수를 위해 동의가 필요합니다."
+            )
+            self.fields[
+                "join_community_waitlist"
+            ].label = "(선택) 글로벌 인재 커뮤니티 대기열에 참여합니다."
+            self.ui_copy = {
+                "submit_label": "프로필 제출하기",
+                "helper": "외국인 소프트웨어 엔지니어이거나 관련 진로를 준비 중인 분께 가장 적합합니다.",
+                "loading_message": "처리 중입니다... 잠시만 기다려 주세요.",
+            }
+            return
+
+        _set_field_copy(
+            self.fields["email"],
+            label="Email",
+            placeholder="Email used in Step 1",
+        )
+        _set_field_copy(
+            self.fields["cv_or_linkedin"],
+            label="CV or LinkedIn",
+            placeholder="CV link or LinkedIn URL",
+        )
+        _set_field_copy(
+            self.fields["github_or_portfolio"],
+            label="GitHub or Portfolio",
+            placeholder="GitHub or portfolio URL",
+        )
+        _set_field_copy(
+            self.fields["tech_stack"],
+            label="Tech Stack",
+            placeholder="e.g., Python, Django, React, AWS",
+        )
+        _set_field_copy(
+            self.fields["experience_level"],
+            label="Experience Level",
+            placeholder="e.g., 3 years, Mid-level",
+        )
+        _set_field_copy(
+            self.fields["visa_status"],
+            label="Visa / Stay Status",
+            placeholder="e.g., D-10, F-2, Preparing for E-7",
+        )
+        _set_field_copy(
+            self.fields["work_preference"],
+            label="Work Preference",
+            placeholder="e.g., Full-time, Hybrid, Remote",
+        )
+        _set_field_copy(
+            self.fields["location_preference"],
+            label="Location Preference",
+            placeholder="e.g., Seoul, Gwangju",
+        )
+        _set_field_copy(
+            self.fields["available_from"],
+            label="Available From",
+            placeholder="e.g., Immediately, 2026-06",
+        )
+        self.fields[
+            "agree_privacy"
+        ].label = "I agree to the collection and use of personal information."
+        self.fields["agree_privacy"].error_messages["required"] = (
+            "Consent is required to submit your inquiry."
+        )
+        self.fields[
+            "join_community_waitlist"
+        ].label = "(Optional) Join the international talent community waitlist"
         self.ui_copy = {
-            "submit_label": "Complete My Matching Profile",
-            "helper": "Add profile details for matching review.",
-            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
+            "submit_label": "Submit My Profile",
+            "helper": "Best for foreign software engineers ready for practical review.",
+            "loading_message": "Processing... please wait.",
         }
 
 
@@ -289,10 +490,48 @@ class ForeignCommunityWaitlistForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if _is_korean_locale():
+            _set_field_copy(
+                self.fields["email"],
+                label="이메일",
+                placeholder="커뮤니티 소식을 받을 이메일",
+            )
+            _set_field_copy(
+                self.fields["note"],
+                label="나누고 싶은 주제 (선택)",
+                placeholder="예: 면접 준비, 한국어 학습, 비자 준비 경험",
+            )
+            self.fields["agree_privacy"].label = "개인정보 수집 및 이용에 동의합니다."
+            self.fields["agree_privacy"].error_messages["required"] = (
+                "문의 접수를 위해 동의가 필요합니다."
+            )
+            self.ui_copy = {
+                "submit_label": "커뮤니티 대기열 신청",
+                "helper": "더 넓은 외국인 인재도 참여할 수 있으며, 운영 기준이 갖춰지면 순차적으로 안내합니다.",
+                "loading_message": "처리 중입니다... 잠시만 기다려 주세요.",
+            }
+            return
+
+        _set_field_copy(
+            self.fields["email"],
+            label="Email",
+            placeholder="Email for community updates",
+        )
+        _set_field_copy(
+            self.fields["note"],
+            label="Topic you'd like to share (Optional)",
+            placeholder="e.g., interview prep, learning Korean, visa experience",
+        )
+        self.fields[
+            "agree_privacy"
+        ].label = "I agree to the collection and use of personal information."
+        self.fields["agree_privacy"].error_messages["required"] = (
+            "Consent is required to submit your inquiry."
+        )
         self.ui_copy = {
             "submit_label": "Join Community Waitlist",
-            "helper": "Community channel opens after operational threshold is reached.",
-            "loading_message": _("처리 중입니다... 잠시만 기다려 주세요."),
+            "helper": "Open to broader international talent. The live channel opens after the operating threshold is reached.",
+            "loading_message": "Processing... please wait.",
         }
 
 

@@ -1,8 +1,6 @@
 {% extends "landing/base.html" %}
 {% load i18n static %}
-{% block title %}
-  {% trans "외국인 개발자 전용 | 큐룸" %}
-{% endblock %}
+{% block title %}{{ content.persona.meta_title }}{% endblock %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(74,222,128,0.14),transparent_40%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>
@@ -22,7 +20,7 @@
         <a href="#faq" class="hover:text-sky">{% trans "FAQ" %}</a>
         <a href="#contact" class="hover:text-sky">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">Start Strategy</a>
+           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">{{ content.persona.nav_cta }}</a>
       </nav>
     </div>
     <nav id="mobile-menu"
@@ -34,7 +32,7 @@
         <a href="#faq" class="mobile-link">{% trans "FAQ" %}</a>
         <a href="#contact" class="mobile-link">{% trans "문의" %}</a>
         <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-center text-white">Start Strategy</a>
+           class="rounded-xl bg-navy px-4 py-2 text-center text-white">{{ content.persona.nav_cta }}</a>
       </div>
     </nav>
   </header>
@@ -43,9 +41,13 @@
       <p class="text-xs font-semibold tracking-[0.2em] text-mint">{{ content.persona.label }}</p>
       <h1 class="mt-3 font-space text-3xl font-bold md:text-4xl">{{ content.persona.title }}</h1>
       <p class="mt-4 max-w-3xl text-sm text-white/85 md:text-base">{{ content.persona.description }}</p>
-      <p class="mt-3 text-xs text-white/75">
-        We support strategy and introductions, not guaranteed placement. Visa/legal advisory is referred to licensed partners.
-      </p>
+      <p class="mt-3 text-sm font-semibold text-mint">{{ content.persona.focus_note }}</p>
+      <ul class="mt-4 flex flex-wrap gap-2 text-xs font-medium text-white/90">
+        {% for item in content.persona.hero_support_buckets %}
+          <li class="rounded-full border border-white/20 bg-white/10 px-3 py-1.5">{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <p class="mt-3 text-xs text-white/75">{{ content.persona.boundary_note }}</p>
       <p class="mt-2 text-xs text-white/70">{{ content.persona.regional_support_note }}</p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href="{{ content.persona.primary_cta.href }}"
@@ -55,8 +57,8 @@
       </div>
     </section>
     <section id="services" class="mt-10">
-      <h2 class="font-space text-2xl font-bold">{% trans "외국인 개발자 제공 서비스" %}</h2>
-      <div class="mt-5 grid gap-5 md:grid-cols-2">
+      <h2 class="font-space text-2xl font-bold">{{ content.persona.service_section_title }}</h2>
+      <div class="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {% for service in content.services %}
           <article class="rounded-2xl border border-navy/10 bg-white p-5">
             <h3 class="font-space text-lg font-semibold text-navy">{{ service.title }}</h3>
@@ -82,19 +84,55 @@
     </section>
     <section id="credibility" class="mt-10 rounded-3xl bg-white p-6">
       <h2 class="font-space text-2xl font-bold text-navy">{% trans "신뢰 근거" %}</h2>
-      <ul class="mt-4 space-y-2 text-sm text-navy/80">
-        {% for item in content.persona.credibility_signals %}
-          <li class="flex items-start gap-2">
-            <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span><span>{{ item }}</span>
-          </li>
-        {% endfor %}
-      </ul>
-      <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-        {% trans "지원 범위 안내" %}: {{ content.persona.scope_boundary }}
-      </p>
+      <p class="mt-2 text-sm text-navy/70">{{ content.persona.profile_section_intro }}</p>
+      <div class="mt-5 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="space-y-5">
+          <article class="rounded-2xl border border-navy/10 bg-fog/40 p-5">
+            <h3 class="font-space text-lg font-semibold text-navy">{{ content.persona.profile_section_title }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-navy/80">
+              {% for item in content.persona.credibility_signals %}
+                <li class="flex items-start gap-2">
+                  <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span><span>{{ item }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+            <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+              {% trans "지원 범위 안내" %}: {{ content.persona.scope_boundary }}
+            </p>
+          </article>
+        </div>
+        <div class="grid gap-5">
+          <article class="rounded-2xl border border-navy/10 bg-fog/40 p-5">
+            <h3 class="font-space text-lg font-semibold text-navy">{{ content.persona.career_timeline_title }}</h3>
+            <p class="mt-2 text-sm text-navy/70">{{ content.persona.career_timeline_note }}</p>
+            <ul class="mt-4 space-y-2 text-sm text-navy/80">
+              {% for range in career_ranges %}
+                <li class="flex items-start gap-2">
+                  <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span>
+                  <span>
+                    <span class="inline-flex items-baseline whitespace-nowrap tabular-nums">
+                      <span class="inline-flex min-w-[4ch] justify-end text-right">{{ range.start|slice:":4" }}</span>
+                      <span class="inline-flex justify-center px-1 text-center"
+                            aria-hidden="true">~</span>
+                      <span class="inline-flex min-w-[4ch] justify-start text-left">
+                        {% if range.end %}
+                          {{ range.end|slice:":4" }}
+                        {% else %}
+                          {% trans "현재" %}
+                        {% endif %}
+                      </span>
+                    </span>
+                    · {{ range.label }}
+                  </span>
+                </li>
+              {% endfor %}
+            </ul>
+          </article>
+        </div>
+      </div>
     </section>
     <section id="faq" class="mt-10 rounded-3xl bg-white p-6">
-      <h2 class="font-space text-2xl font-bold text-navy">{% trans "외국인 개발자 서비스 FAQ" %}</h2>
+      <h2 class="font-space text-2xl font-bold text-navy">{{ content.persona.faq_title }}</h2>
       <div class="mt-4 grid gap-4 md:grid-cols-3">
         {% for item in content.faq %}
           <article class="rounded-2xl border border-navy/10 bg-fog/70 p-4">
@@ -105,33 +143,41 @@
       </div>
     </section>
     <section id="contact" class="mt-10 rounded-3xl bg-white p-6">
-      <h2 class="font-space text-2xl font-bold text-navy">Start Your Job Strategy</h2>
-      <p class="mt-2 text-sm text-navy/75">
-        Start with a quick intake, then complete your matching profile when you're ready.
-      </p>
+      <h2 class="font-space text-2xl font-bold text-navy">{{ content.persona.contact_title }}</h2>
+      <p class="mt-2 text-sm text-navy/75">{{ content.persona.contact_intro }}</p>
       <article id="quick-intake"
                class="mt-5 rounded-2xl border border-navy/10 bg-fog/50 p-4">
-        <h3 class="font-space text-lg font-semibold text-navy">Step 1. Quick Intake</h3>
-        <p class="mt-1 text-xs text-navy/65">Nickname, email, target role + optional note</p>
+        <h3 class="font-space text-lg font-semibold text-navy">{{ content.persona.quick_intake_title }}</h3>
+        <p class="mt-1 text-xs text-navy/65">{{ content.persona.quick_intake_hint }}</p>
         <div class="mt-3" id="foreign-quick-intake-wrap">
           {% include "landing/partials/foreign_quick_intake_form.html" with form=foreign_quick_intake_form %}
         </div>
       </article>
       <details open class="mt-4 rounded-2xl border border-navy/10 bg-white p-4">
-        <summary class="cursor-pointer text-sm font-semibold text-navy">After Step 1 (Optional Next Actions)</summary>
+        <summary class="cursor-pointer text-sm font-semibold text-navy">{{ content.persona.next_actions_summary }}</summary>
         <div class="mt-4">
           <article id="matching-profile"
                    class="rounded-2xl border border-navy/10 bg-fog/50 p-4">
-            <h3 class="font-space text-lg font-semibold text-navy">Step 2. Matching Profile</h3>
-            <p class="mt-1 text-xs text-navy/65">CV/profile links, visa status, and work preferences</p>
+            <h3 class="font-space text-lg font-semibold text-navy">{{ content.persona.matching_profile_title }}</h3>
+            <p class="mt-1 text-xs text-navy/65">{{ content.persona.matching_profile_hint }}</p>
+            <p class="mt-3 text-xs text-navy/60">{{ content.persona.matching_profile_note }}</p>
             <div class="mt-3" id="foreign-matching-profile-wrap">
               {% include "landing/partials/foreign_matching_profile_form.html" with form=foreign_matching_profile_form %}
             </div>
           </article>
-          <p class="mt-3 text-xs text-navy/60">Community waitlist can be joined directly in Step 1 or Step 2 forms.</p>
+          <p class="mt-3 text-xs text-navy/60">{{ content.persona.community_note }}</p>
         </div>
       </details>
-      <p class="mt-3 text-xs text-navy/60">Start with one action only: submit Step 1 Quick Intake.</p>
+      <p class="mt-3 text-xs text-navy/60">{{ content.persona.one_action_note }}</p>
+    </section>
+    <section class="mt-10 rounded-3xl border border-navy/10 bg-fog/40 p-6">
+      <h2 class="font-space text-2xl font-bold text-navy">{{ content.persona.profile_link_title }}</h2>
+      <p class="mt-2 text-sm text-navy/70">{{ content.trust_note }}</p>
+      <a href="{{ content.links.linkedin }}"
+         target="_blank"
+         rel="noreferrer"
+         class="mt-4 inline-flex rounded-xl border border-sky/30 bg-sky/10 px-4 py-2 text-sm font-semibold text-sky transition hover:bg-sky hover:text-white">{{ content.persona.profile_link_label }}</a>
+      <p class="mt-3 text-xs text-navy/60">{{ content.persona.profile_link_note }}</p>
     </section>
   </main>
 {% endblock %}
