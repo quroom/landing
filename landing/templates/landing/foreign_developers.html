@@ -11,14 +11,14 @@
       <button id="menu-toggle"
               type="button"
               class="rounded-xl border border-navy/20 px-3 py-2 text-sm font-semibold md:hidden">
-        {% trans "메뉴" %}
+        {{ content.persona.menu_label }}
       </button>
       <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
-        <a href="{% url 'landing:index' %}" class="hover:text-sky">{% trans "홈" %}</a>
-        <a href="#services" class="hover:text-sky">{% trans "제공 서비스" %}</a>
-        <a href="#credibility" class="hover:text-sky">{% trans "신뢰 근거" %}</a>
-        <a href="#faq" class="hover:text-sky">{% trans "FAQ" %}</a>
-        <a href="#contact" class="hover:text-sky">{% trans "문의" %}</a>
+        <a href="{% url 'landing:index' %}" class="hover:text-sky">{{ content.persona.nav_home_label }}</a>
+        <a href="#services" class="hover:text-sky">{{ content.persona.nav_services_label }}</a>
+        <a href="#credibility" class="hover:text-sky">{{ content.persona.nav_credibility_label }}</a>
+        <a href="#faq" class="hover:text-sky">{{ content.persona.nav_faq_label }}</a>
+        <a href="#contact" class="hover:text-sky">{{ content.persona.nav_contact_label }}</a>
         <a href="#contact"
            class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">{{ content.persona.nav_cta }}</a>
       </nav>
@@ -26,11 +26,11 @@
     <nav id="mobile-menu"
          class="mx-auto hidden w-full max-w-6xl border-t border-navy/10 bg-white px-4 py-3 md:hidden">
       <div class="flex flex-col gap-3 text-sm font-medium">
-        <a href="{% url 'landing:index' %}" class="mobile-link">{% trans "홈" %}</a>
-        <a href="#services" class="mobile-link">{% trans "제공 서비스" %}</a>
-        <a href="#credibility" class="mobile-link">{% trans "신뢰 근거" %}</a>
-        <a href="#faq" class="mobile-link">{% trans "FAQ" %}</a>
-        <a href="#contact" class="mobile-link">{% trans "문의" %}</a>
+        <a href="{% url 'landing:index' %}" class="mobile-link">{{ content.persona.nav_home_label }}</a>
+        <a href="#services" class="mobile-link">{{ content.persona.nav_services_label }}</a>
+        <a href="#credibility" class="mobile-link">{{ content.persona.nav_credibility_label }}</a>
+        <a href="#faq" class="mobile-link">{{ content.persona.nav_faq_label }}</a>
+        <a href="#contact" class="mobile-link">{{ content.persona.nav_contact_label }}</a>
         <a href="#contact"
            class="rounded-xl bg-navy px-4 py-2 text-center text-white">{{ content.persona.nav_cta }}</a>
       </div>
@@ -63,7 +63,7 @@
           <article class="rounded-2xl border border-navy/10 bg-white p-5">
             <h3 class="font-space text-lg font-semibold text-navy">{{ service.title }}</h3>
             <p class="mt-2 text-sm text-navy/75">{{ service.summary }}</p>
-            <p class="mt-2 text-xs text-navy/60">{% trans "권장 고객" %}: {{ service.audience }}</p>
+            <p class="mt-2 text-xs text-navy/60">{{ content.persona.recommended_audience_label }}: {{ service.audience }}</p>
             <ul class="mt-3 space-y-2 text-sm text-navy/80">
               {% for service_item in service.items %}
                 <li class="flex items-start gap-2">
@@ -71,11 +71,11 @@
                 </li>
               {% endfor %}
             </ul>
-            <p class="mt-3 text-xs text-navy/60">{% trans "예상 기간" %}: {{ service.duration }}</p>
+            <p class="mt-3 text-xs text-navy/60">{{ content.persona.duration_label }}: {{ service.duration }}</p>
             {% if service.price %}
-              <p class="mt-2 text-xs text-navy/60">{% trans "비용" %}: {{ service.price }}</p>
+              <p class="mt-2 text-xs text-navy/60">{{ content.persona.price_label }}: {{ service.price }}</p>
             {% endif %}
-            <p class="mt-2 text-xs text-navy/60">{% trans "예상 결과물" %}: {{ service.deliverable }}</p>
+            <p class="mt-2 text-xs text-navy/60">{{ content.persona.deliverable_label }}: {{ service.deliverable }}</p>
             <a href="{{ service.cta_href }}"
                class="mt-4 inline-flex rounded-lg border border-sky/30 bg-sky/10 px-3 py-2 text-xs font-semibold text-sky">{{ service.cta_label }}</a>
           </article>
@@ -83,7 +83,7 @@
       </div>
     </section>
     <section id="credibility" class="mt-10 rounded-3xl bg-white p-6">
-      <h2 class="font-space text-2xl font-bold text-navy">{% trans "신뢰 근거" %}</h2>
+      <h2 class="font-space text-2xl font-bold text-navy">{{ content.persona.credibility_title }}</h2>
       <p class="mt-2 text-sm text-navy/70">{{ content.persona.profile_section_intro }}</p>
       <div class="mt-5 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div class="space-y-5">
@@ -97,7 +97,7 @@
               {% endfor %}
             </ul>
             <p class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-              {% trans "지원 범위 안내" %}: {{ content.persona.scope_boundary }}
+              {{ content.persona.scope_boundary_label }}: {{ content.persona.scope_boundary }}
             </p>
           </article>
         </div>
@@ -118,7 +118,7 @@
                         {% if range.end %}
                           {{ range.end|slice:":4" }}
                         {% else %}
-                          {% trans "현재" %}
+                          {{ content.persona.present_label }}
                         {% endif %}
                       </span>
                     </span>

@@ -707,9 +707,49 @@ PERSONA_CONTENT = {
             "ko": "문의하기",
             "en": "Inquire",
         },
+        "menu_label": {
+            "ko": "메뉴",
+            "en": "Menu",
+        },
+        "nav_home_label": {
+            "ko": "홈",
+            "en": "Home",
+        },
+        "nav_services_label": {
+            "ko": "제공 서비스",
+            "en": "Support Areas",
+        },
+        "nav_credibility_label": {
+            "ko": "신뢰 근거",
+            "en": "Track Record",
+        },
+        "nav_faq_label": {
+            "ko": "FAQ",
+            "en": "FAQ",
+        },
+        "nav_contact_label": {
+            "ko": "문의",
+            "en": "Contact",
+        },
         "service_section_title": {
             "ko": "어떤 지원을 받을 수 있나요",
             "en": "What Support You Can Get",
+        },
+        "recommended_audience_label": {
+            "ko": "권장 고객",
+            "en": "Recommended for",
+        },
+        "duration_label": {
+            "ko": "예상 기간",
+            "en": "Timeline",
+        },
+        "price_label": {
+            "ko": "비용",
+            "en": "Price",
+        },
+        "deliverable_label": {
+            "ko": "예상 결과물",
+            "en": "What you get",
         },
         "profile_section_title": {
             "ko": "대표자 프로필과 경력",
@@ -738,6 +778,18 @@ PERSONA_CONTENT = {
         "career_timeline_note": {
             "ko": "대표자의 주요 경력 흐름을 간단히 확인할 수 있습니다.",
             "en": "A quick view of the founder's major career history.",
+        },
+        "credibility_title": {
+            "ko": "신뢰 근거",
+            "en": "Why QuRoom",
+        },
+        "scope_boundary_label": {
+            "ko": "지원 범위 안내",
+            "en": "Support boundary",
+        },
+        "present_label": {
+            "ko": "현재",
+            "en": "Present",
         },
         "faq_title": {
             "ko": "시작 전에 많이 묻는 질문",

@@ -246,6 +246,11 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "Founder LinkedIn")
         self.assertContains(response, "https://www.linkedin.com/in/samkimtech")
         self.assertContains(response, "Samsung Electronics S/W Engineer")
+        self.assertContains(response, "Support Areas")
+        self.assertContains(response, "Why QuRoom")
+        self.assertContains(response, "Recommended for")
+        self.assertNotContains(response, "제공 서비스")
+        self.assertNotContains(response, "신뢰 근거")
         body = response.content.decode("utf-8")
         self.assertLess(
             body.index("Samsung Electronics S/W Engineer"),
