@@ -37,6 +37,7 @@ urlpatterns = [
         views.foreign_developers,
         name="foreign_developers",
     ),
+    path("it/", views.foreign_developers, name="foreign_developers_short"),
     path(
         "foreign/quick-intake/submit/",
         views.foreign_quick_intake_submit,

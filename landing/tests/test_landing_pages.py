@@ -253,6 +253,26 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "외국인 개발자 제공 서비스")
         self.assertContains(response, "취업 전략 및 매칭 준비 지원")
 
+    def test_foreign_developers_short_alias_renders_same_page(self) -> None:
+        response = self.client.get(reverse("landing:foreign_developers_short"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="en">', html=False)
+        self.assertContains(response, "Services for Foreign Developers")
+        self.assertTrue(
+            FunnelEvent.objects.filter(
+                event_name="lp_view", page_key="foreign_developers"
+            ).exists()
+        )
+
+    def test_foreign_developers_short_alias_preserves_locale_and_query(self) -> None:
+        response = self.client.get(
+            reverse("landing:foreign_developers_short"),
+            {"lang": "ko", "utm_source": "card"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="ko">', html=False)
+        self.assertEqual(response.wsgi_request.GET["utm_source"], "card")
+
     def test_locale_resolution_priority_query_over_session(self) -> None:
         session = self.client.session
         session[settings.LANGUAGE_COOKIE_NAME] = "ko"
