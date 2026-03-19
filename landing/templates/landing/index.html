@@ -10,10 +10,7 @@
         <img src="{% static 'logo.jpg' %}"
              alt="{% trans '큐룸 로고' %}"
              class="h-9 w-9 rounded-full border border-navy/15 object-cover" />
-        <div>
-          <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>
-          <p class="text-[11px] leading-none text-navy/60">Official</p>
-        </div>
+        <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>
       </a>
       <button id="menu-toggle"
               type="button"
@@ -54,9 +51,6 @@
       </div>
       <div class="mx-auto grid w-full max-w-6xl gap-10 px-4 pb-16 md:px-8 md:pb-24 lg:grid-cols-[1.25fr_0.75fr]">
         <div class="space-y-6 text-white">
-          <p class="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
-            QuRoom Official Landing
-          </p>
           <h1 class="max-w-[16ch] font-space text-3xl font-bold leading-[1.1] md:text-5xl lg:max-w-[20ch]">
             {{ content.headline|linebreaksbr }}
           </h1>

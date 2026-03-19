@@ -28,7 +28,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "믿고 맡길 수 있는 파트너")
         self.assertContains(
             response,
-            "업무 범위와 우선순위를 먼저 조율하고, 필요한 부분은 직접 맡아 진행합니다.",
+            "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.",
         )
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
@@ -42,12 +42,17 @@ class LandingPageTests(TestCase):
             response,
             "무엇을 먼저 할지, 무엇은 미뤄도 될지 90분 안에 정리합니다.",
         )
+        self.assertContains(response, "이런 상황이면 첫 상담이 수월합니다")
+        self.assertContains(
+            response,
+            "범위와 목표가 어느 정도 보이면, 첫 대화에서 무엇부터 할지 더 빠르게 정리할 수 있습니다.",
+        )
         self.assertContains(
             response,
             "이런 경험과 기준으로 일합니다",
         )
         self.assertContains(
-            response, "외주 집중 트랙은 한 타임 1고객만 진행해 집중도를 높입니다"
+            response, "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다"
         )
         self.assertNotContains(response, "OpenClaw")
         self.assertNotContains(response, "바이브코딩")
