@@ -1,0 +1,53 @@
+name: landing-snapshot
+
+x-snapshot-app-env: &snapshot-app-env
+  DATABASE_URL: postgres://${SNAPSHOT_PGUSER:-landing_local}:${SNAPSHOT_PGPASSWORD:?set SNAPSHOT_PGPASSWORD in .env.landing-snapshot}@db:5432/${SNAPSHOT_PGDATABASE:-landing_prod_snapshot}
+  DJANGO_DEBUG: "1"
+  DJANGO_EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+  DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG: "0"
+  DJANGO_SITE_BASE_URL: http://127.0.0.1:${SNAPSHOT_APP_PORT:-8011}
+  DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+  DJANGO_CSRF_TRUSTED_ORIGINS: http://127.0.0.1:${SNAPSHOT_APP_PORT:-8011}
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONUNBUFFERED: "1"
+
+services:
+  db:
+    image: postgres:18.2
+    environment:
+      POSTGRES_DB: ${SNAPSHOT_PGDATABASE:-landing_prod_snapshot}
+      POSTGRES_USER: ${SNAPSHOT_PGUSER:-landing_local}
+      POSTGRES_PASSWORD: ${SNAPSHOT_PGPASSWORD:?set SNAPSHOT_PGPASSWORD in .env.landing-snapshot}
+    ports:
+      - "${SNAPSHOT_PGPORT:-55432}:5432"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${SNAPSHOT_PGUSER:-landing_local} -d ${SNAPSHOT_PGDATABASE:-landing_prod_snapshot}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - landing_snapshot_pgdata:/var/lib/postgresql
+      - ./backups/prod-db/landing:/backups:ro
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.landing-snapshot
+    image: landing-snapshot-app:local
+    working_dir: /workspace
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python manage.py runserver 0.0.0.0:8011
+    environment: *snapshot-app-env
+    ports:
+      - "${SNAPSHOT_APP_PORT:-8011}:8011"
+    volumes:
+      - ./:/workspace
+
+volumes:
+  landing_snapshot_pgdata:

@@ -61,6 +61,7 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+backups/
 
 # Flask stuff:
 instance/
@@ -140,6 +141,7 @@ celerybeat.pid
 .env.local
 .env.debug
 .env.deploy
+.env.landing-snapshot
 .env*.backup*
 .envrc
 .venv

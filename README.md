@@ -21,6 +21,7 @@
 ## Quick links
 - Landing spec: `openspec/changes/consolidate-codex-docs-into-openspec/docs/quroom-landing-spec.md`
 - Dokku deploy runbook: `codex-document/dokku-deploy-runbook.md`
+- Production DB backup runbook: `codex-document/db-backup-runbook.md`
 - AX tool stack + diagnosis question source: `landing/ax_tool_stack.py`
 - Vibe coding guides & prompt library:
   - `openspec/changes/consolidate-codex-docs-into-openspec/docs/general-vibe-coding-guide-for-beginners.md`
@@ -33,15 +34,31 @@
 
 ## Run landing page locally (Django)
 1. Install dependencies
-   - `python3 -m venv .venv`
+   - `./scripts/setup-dev.sh`
    - `source .venv/bin/activate`
-   - `pip install -r requirements.txt`
 2. Run server
    - `python manage.py migrate`
    - `python manage.py runserver`
 3. Open
    - `http://127.0.0.1:8000/`
    - Free diagnosis page: `http://127.0.0.1:8000/free-diagnosis/`
+
+## Run a local snapshot of production landing DB
+Prerequisites:
+- Docker / Docker Compose
+- a downloaded landing dump, or SSH access to fetch it with `./scripts/fetch-prod-db-backup.sh`
+
+1. Fetch and restore the latest landing backup into Docker Compose Postgres
+   - `./scripts/up-landing-snapshot-compose.sh --fetch-latest`
+   - first run creates a gitignored `.env.landing-snapshot` with a local-only random DB password
+2. Start Django in Docker Compose against that restored snapshot
+   - `./scripts/run-landing-snapshot-local.sh`
+3. Open
+   - `http://127.0.0.1:8011/`
+4. Stop
+   - `./scripts/down-landing-snapshot-compose.sh`
+
+This flow does not require a local `.venv`. The snapshot app image is built from [`Dockerfile.landing-snapshot`](/home/quroom/workspace/homepage/Dockerfile.landing-snapshot) using [`requirements.txt`](/home/quroom/workspace/homepage/requirements.txt).
 
 ## Standard check command (always uses `.venv`)
 - Django system check:
