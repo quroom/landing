@@ -53,6 +53,14 @@ from .models import (
     TestimonialInvite,
 )
 
+SEARCH_SITEMAP_ROUTE_NAMES = (
+    "landing:index",
+    "landing:free_diagnosis",
+    "landing:foreign_developers",
+    "landing:privacy",
+    "landing:terms",
+)
+
 INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
     "find_repetitive_work": (
         ["Google Sheets", "Trello"],
@@ -429,6 +437,45 @@ def _base_context(
     }
 
 
+def _absolute_site_url(path: str) -> str:
+    base_url = settings.SITE_BASE_URL.rstrip("/")
+    if not path.startswith("/"):
+        path = f"/{path}"
+    return f"{base_url}{path}"
+
+
+def _canonical_path(request: HttpRequest, page_key: str) -> str:
+    path_map = {
+        "home": reverse("landing:index"),
+        "foreign_developers": reverse("landing:foreign_developers"),
+        "free_diagnosis": reverse("landing:free_diagnosis"),
+        "privacy": reverse("landing:privacy"),
+        "terms": reverse("landing:terms"),
+    }
+    return path_map.get(page_key, request.path)
+
+
+def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
+    canonical_path = _canonical_path(request, page_key)
+    canonical_url = _absolute_site_url(canonical_path)
+    return {
+        "canonical_url": canonical_url,
+        "og_url": canonical_url,
+        "site_base_url": settings.SITE_BASE_URL.rstrip("/"),
+    }
+
+
+def _render_page(
+    request: HttpRequest,
+    template_name: str,
+    context: dict,
+    *,
+    page_key: str,
+) -> HttpResponse:
+    context.update(_seo_context(request, page_key))
+    return render(request, template_name, context)
+
+
 def _public_testimonials() -> tuple[list[Testimonial], int, int]:
     threshold = max(int(settings.TESTIMONIAL_PUBLIC_THRESHOLD), 1)
     approved_qs = Testimonial.objects.filter(
@@ -466,7 +513,7 @@ def index(request: HttpRequest) -> HttpResponse:
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
-    return render(request, "landing/index.html", context)
+    return _render_page(request, "landing/index.html", context, page_key="home")
 
 
 def founders(request: HttpRequest) -> HttpResponse:
@@ -501,7 +548,12 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
             "foreign_matching_profile_form": ForeignMatchingProfileForm(),
         }
     )
-    return render(request, "landing/foreign_developers.html", context)
+    return _render_page(
+        request,
+        "landing/foreign_developers.html",
+        context,
+        page_key="foreign_developers",
+    )
 
 
 def _foreign_developer_route_variant(request: HttpRequest) -> str:
@@ -586,7 +638,38 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
     )
-    return render(request, "landing/free_diagnosis.html", context)
+    return _render_page(
+        request,
+        "landing/free_diagnosis.html",
+        context,
+        page_key="free_diagnosis",
+    )
+
+
+def robots_txt(request: HttpRequest) -> HttpResponse:
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        f"Sitemap: {_absolute_site_url('/sitemap.xml')}",
+    ]
+    lines.extend(settings.SEARCH_ROBOTS_EXTRA_LINES)
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+
+def sitemap_xml(request: HttpRequest) -> HttpResponse:
+    urls = []
+    for route_name in SEARCH_SITEMAP_ROUTE_NAMES:
+        path = reverse(route_name)
+        urls.append(_absolute_site_url(path))
+
+    xml = render_to_string(
+        "landing/sitemap.xml",
+        {
+            "urls": urls,
+        },
+        request=request,
+    )
+    return HttpResponse(xml, content_type="application/xml")
 
 
 def _render_contact_form(
@@ -1839,11 +1922,21 @@ def testimonial_invite(request: HttpRequest, token: str) -> HttpResponse:
 
 
 def privacy(request: HttpRequest) -> HttpResponse:
-    return render(request, "landing/privacy.html", {"content": SHARED_CONTENT})
+    return _render_page(
+        request,
+        "landing/privacy.html",
+        {"content": SHARED_CONTENT},
+        page_key="privacy",
+    )
 
 
 def terms(request: HttpRequest) -> HttpResponse:
-    return render(request, "landing/terms.html", {"content": SHARED_CONTENT})
+    return _render_page(
+        request,
+        "landing/terms.html",
+        {"content": SHARED_CONTENT},
+        page_key="terms",
+    )
 
 
 def _readiness_check_items() -> list[dict[str, object]]:

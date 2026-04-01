@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from urllib.parse import urlparse
 
 SMTP_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 LOCAL_ONLY_EMAIL_BACKENDS = {
@@ -37,6 +38,16 @@ def collect_runtime_validation_errors(
     csrf_trusted_origins = list(_get_setting(settings_obj, "CSRF_TRUSTED_ORIGINS", []))
     if not csrf_trusted_origins:
         errors.append("DJANGO_CSRF_TRUSTED_ORIGINS must be configured in production.")
+
+    site_base_url = str(_get_setting(settings_obj, "SITE_BASE_URL", "")).strip()
+    if not site_base_url:
+        errors.append("DJANGO_SITE_BASE_URL must be configured in production.")
+    else:
+        parsed = urlparse(site_base_url)
+        if parsed.scheme != "https" or parsed.netloc != "quroom.kr":
+            errors.append(
+                "DJANGO_SITE_BASE_URL must be exactly https://quroom.kr in production."
+            )
 
     email_backend = str(_get_setting(settings_obj, "EMAIL_BACKEND", "")).strip()
     if email_backend in LOCAL_ONLY_EMAIL_BACKENDS:

@@ -20,6 +20,66 @@ from landing.models import (
 
 
 class LandingPageTests(TestCase):
+    @override_settings(SITE_BASE_URL="https://quroom.kr")
+    def test_home_page_renders_canonical_and_og_url(self) -> None:
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<link rel="canonical" href="https://quroom.kr/" />',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            '<meta property="og:url" content="https://quroom.kr/" />',
+            html=False,
+        )
+
+    @override_settings(
+        SITE_BASE_URL="https://quroom.kr",
+        SEARCH_ROBOTS_EXTRA_LINES=["User-agent: Daumoa", "Allow: /"],
+    )
+    def test_robots_txt_includes_sitemap_and_operator_extra_lines(self) -> None:
+        response = self.client.get(reverse("landing:robots_txt"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/plain")
+        self.assertEqual(
+            response.content.decode("utf-8"),
+            "\n".join(
+                [
+                    "User-agent: *",
+                    "Allow: /",
+                    "Sitemap: https://quroom.kr/sitemap.xml",
+                    "User-agent: Daumoa",
+                    "Allow: /",
+                    "",
+                ]
+            ),
+        )
+
+    @override_settings(SITE_BASE_URL="https://quroom.kr")
+    def test_sitemap_xml_contains_primary_public_routes(self) -> None:
+        response = self.client.get(reverse("landing:sitemap_xml"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/xml")
+        self.assertContains(response, "<loc>https://quroom.kr/</loc>", html=False)
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/free-diagnosis/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/for-foreign-developers/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/privacy/</loc>",
+            html=False,
+        )
+        self.assertContains(response, "<loc>https://quroom.kr/terms/</loc>", html=False)
+
     def test_home_page_renders(self) -> None:
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)

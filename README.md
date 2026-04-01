@@ -22,6 +22,7 @@
 - Landing spec: `openspec/changes/consolidate-codex-docs-into-openspec/docs/quroom-landing-spec.md`
 - Dokku deploy runbook: `codex-document/dokku-deploy-runbook.md`
 - Production DB backup runbook: `codex-document/db-backup-runbook.md`
+- Search engine registration runbook: `codex-document/search-engine-registration-runbook.md`
 - AX tool stack + diagnosis question source: `landing/ax_tool_stack.py`
 - Vibe coding guides & prompt library:
   - `openspec/changes/consolidate-codex-docs-into-openspec/docs/general-vibe-coding-guide-for-beginners.md`
@@ -163,6 +164,17 @@ If both pass, push to GitHub.
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
 - `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
+- `SEARCH_ROBOTS_EXTRA_LINES` (`robots.txt` 하단 추가 라인. 여러 줄 입력 가능)
+
+## Search engine indexing readiness
+- Canonical base URL: `https://quroom.kr` (운영 기준)
+- Site endpoints:
+  - `https://quroom.kr/robots.txt`
+  - `https://quroom.kr/sitemap.xml`
+- Operator runbook:
+  - `codex-document/search-engine-registration-runbook.md`
+
+운영 시 `DJANGO_SITE_BASE_URL`은 canonical 기준 URL과 동일하게 유지하고, 검색엔진 요청에 따라 `SEARCH_ROBOTS_EXTRA_LINES`로 `robots.txt` 하단 문구를 추가합니다.
 
 ## Cloudtype deployment quickstart
 1. Build/install dependencies from `requirements.txt`.

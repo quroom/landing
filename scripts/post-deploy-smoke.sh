@@ -96,6 +96,8 @@ check_code "/admin-dashboard/" "302"
 check_code "/admin-operation-links/" "302"
 check_code "/contact/submit/" "405"
 check_code "/lead-magnet/submit/" "405"
+check_code "/robots.txt" "200"
+check_code "/sitemap.xml" "200"
 
 FINAL_STATUS="passed"
 if [[ "${FAILED_COUNT}" -gt 0 ]]; then

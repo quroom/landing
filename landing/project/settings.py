@@ -171,6 +171,11 @@ EMAIL_BACKEND = os.getenv(
     "django.core.mail.backends.console.EmailBackend",
 )
 SITE_BASE_URL = os.getenv("DJANGO_SITE_BASE_URL", "http://127.0.0.1:8000")
+SEARCH_ROBOTS_EXTRA_LINES = [
+    line.strip()
+    for line in os.getenv("SEARCH_ROBOTS_EXTRA_LINES", "").splitlines()
+    if line.strip()
+]
 ALLOW_REAL_EMAIL_IN_DEBUG = os.getenv("DJANGO_ALLOW_REAL_EMAIL_IN_DEBUG", "0") == "1"
 
 

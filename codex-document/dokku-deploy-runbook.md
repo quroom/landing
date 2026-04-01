@@ -7,7 +7,7 @@
 dokku apps:create landing
 
 # 로컬 저장소에서 실행
-git remote add dokku dokku@<dokku-host>:landing
+git remote add dokku dokku@ssh.quroom.kr:landing
 ```
 
 ### 서버 로컬 저장소(`~/projects/landing`) 배포 방식
@@ -34,15 +34,22 @@ git pull origin main && git push dokku main
 dokku config:set --no-restart landing \
   DJANGO_DEBUG=0 \
   DJANGO_SECRET_KEY='<strong-random-secret>' \
-  DJANGO_ALLOWED_HOSTS='<your-domain>' \
-  DJANGO_CSRF_TRUSTED_ORIGINS='https://<your-domain>' \
-  DJANGO_SITE_BASE_URL='https://<your-domain>'
+  DJANGO_ALLOWED_HOSTS='quroom.kr' \
+  DJANGO_CSRF_TRUSTED_ORIGINS='https://quroom.kr' \
+  DJANGO_SITE_BASE_URL='https://quroom.kr'
 ```
 
 추가(사용 시):
 - SMTP: `DJANGO_EMAIL_BACKEND`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS/SSL`, `DJANGO_DEFAULT_FROM_EMAIL`
 - DB(Postgres): `DATABASE_URL` 또는 `PG*`/`DB*` 변수
 - 운영 메일: `QUROOM_CONTACT_EMAIL`
+
+검색엔진 robots 하단 문구(Daum):
+
+```bash
+dokku config:set --no-restart landing \
+  SEARCH_ROBOTS_EXTRA_LINES='#DaumWebMasterTool:c94a628198b8e7b622267ca8e97fe29dd8b9801d880dc94f21557a328dafc470:qG0XPRiSeGdc1nU43NyCzQ=='
+```
 
 ## 3) 배포 전 점검
 
@@ -65,7 +72,7 @@ git push dokku main
 ## 5) 배포 후 확인
 
 ```bash
-BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
+BASE_URL='https://quroom.kr' ./scripts/post-deploy-smoke.sh
 ```
 
 기대 상태:
@@ -76,6 +83,8 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 - `/admin-operation-links/` -> `302`
 - `/contact/submit/` -> `405`
 - `/lead-magnet/submit/` -> `405`
+- `/robots.txt` -> `200`
+- `/sitemap.xml` -> `200`
 
 ## 6) 운영 체크
 
@@ -99,7 +108,7 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 
 ```bash
 # 1) 현재 배포 커밋(원복용) 기록
-ssh ubuntu@43.200.44.34 "sudo -n dokku git:report landing | grep 'Git sha:'"
+ssh ubuntu@ssh.quroom.kr "sudo -n dokku git:report landing | grep 'Git sha:'"
 
 # 2) 롤백 대상 커밋 선정 (직전 안정 커밋)
 git log --oneline -n 10
@@ -121,11 +130,11 @@ git log --oneline -n 10
 
 ```bash
 # <rollback_sha>를 직전 안정 커밋으로 교체
-ssh ubuntu@43.200.44.34 \
+ssh ubuntu@ssh.quroom.kr \
   "sudo -n dokku git:sync landing git@github.com:quroom/landing.git <rollback_sha>"
 
 # 롤백 검증
-BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
+BASE_URL='https://quroom.kr' ./scripts/post-deploy-smoke.sh
 ```
 
 ### 원복(최신으로 복귀)
@@ -141,11 +150,11 @@ BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
 
 ```bash
 # <current_sha>를 사전 준비에서 기록한 현재 배포 커밋으로 교체
-ssh ubuntu@43.200.44.34 \
+ssh ubuntu@ssh.quroom.kr \
   "sudo -n dokku git:sync landing git@github.com:quroom/landing.git <current_sha>"
 
 # 원복 검증
-BASE_URL='https://<your-domain>' ./scripts/post-deploy-smoke.sh
+BASE_URL='https://quroom.kr' ./scripts/post-deploy-smoke.sh
 ```
 
 ### 운영 주의사항

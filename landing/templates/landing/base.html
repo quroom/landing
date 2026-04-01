@@ -17,7 +17,9 @@
     <meta property="og:description"
           content="{% trans '아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸' %}" />
     <meta property="og:type" content="website" />
+    {% if og_url %}<meta property="og:url" content="{{ og_url }}" />{% endif %}
     <meta property="og:image" content="{% static 'logo.jpg' %}" />
+    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
     <meta name="theme-color" content="#0f172a" />
     {# djlint:off #}
     <meta name="naver-site-verification" content="6491c210c38e606f9d480e5abe1870afe077a74b" />
