@@ -536,8 +536,19 @@ SHARED_CONTENT = {
     ],
     "portfolio": [
         {
+            "name": "손해사정사 문서 자동화 서비스 (R&D)",
+            "period": "2026.03 ~ 현재",
+            "summary": "손해사정 실무 문서 작성을 줄이기 위해 고객 CRM, 문서 자동치환, 음성/서류 기반 초안 생성을 통합하는 자동화 서비스",
+            "problem": "보험 청구/손해사정 시장에서 반복 문서 작성, 고객 정보 재입력, 통화/진단서 기반 정리 업무가 수작업 중심이라 처리 시간이 길고 누락 리스크가 큰 문제",
+            "solution": "핵심 고객정보(이름/연락처/주소/보험사/청구금액/상병명) 구조화, Notion 연동, 통화녹음 STT+LLM 분석, 진단서 기반 데이터 추출로 문서 초안 자동 생성 파이프라인 실험",
+            "result": "PDF→DOCX 변환 병목 완화 경로를 검증하고, 문서 자동작성 MVP 범위를 구체화하며 현업 협업 인터뷰 기반 개선 루프를 운영 중",
+            "tech": "Django, LLM, STT, OCR, Notion API, DOCX/PDF Pipeline",
+            "image": "portfolio/thumb/2026-autodocx-thumb-v1.png",
+            "link": "",
+        },
+        {
             "name": "PromptSpike",
-            "period": "2025.04 ~ 현재",
+            "period": "2025.04 ~ 2025.09",
             "summary": "여러 LLM 탭에 한 번에 프롬프트를 전송하고 템플릿으로 재사용하는 브라우저 확장",
             "problem": "멀티 LLM 사용이 보편화되면서 반복 재사용되는 프롬프트 입력 시간이 급격히 증가하는 시장 문제",
             "solution": "한 번 입력으로 다중 탭 동시 전송, 멀티스텝 플로 자동 진행, 긴 프롬프트 분할 전송 지원",
@@ -566,7 +577,7 @@ SHARED_CONTENT = {
             "result": "온라인 커뮤니티 기반의 지속 읽기 경험 구축",
             "tech": "Docker, Celery 외 13+",
             "image": "portfolio/thumb/2023-obible-thumb-v1.jpg",
-            "link": "https://obible.kr",
+            "link": "https://github.com/quroom/obible/",
         },
         {
             "name": "Kids Travel Curating",
