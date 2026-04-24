@@ -10,13 +10,17 @@
       {% endblock %}
     </title>
     <meta name="description"
-          content="{% block description %}{% trans "큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발자의 실무 연계를 지원합니다." %}{% endblock %}" />
+          content="{% block description %}{% trans "사업 맥락을 먼저 이해하고, 범위·일정·운영 기준을 합의한 뒤 끝까지 실행합니다." %}{% endblock %}" />
     <meta name="keywords"
-          content="{% trans '큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발' %}" />
-    <meta property="og:title"
-          content="{% trans '사업을 이해하고 믿고 맡길 수 있는 파트너 | 큐룸(QuRoom)' %}" />
-    <meta property="og:description"
-          content="{% trans '아이디어를 서비스와 수익으로 연결하고, 외국인 개발자의 실무 연계를 지원하는 큐룸' %}" />
+          content="{% block keywords %}{% trans '큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 앱 개발, 수익화, 외국인 개발자, 개발자 연계, 스타트업 개발' %}{% endblock %}" />
+    {% block og_title %}
+      <meta property="og:title"
+            content="{% trans '사업을 이해하고 믿고 맡길 수 있는 파트너 | 큐룸(QuRoom)' %}" />
+    {% endblock %}
+    {% block og_description %}
+      <meta property="og:description"
+            content="{% trans '사업 맥락을 먼저 이해하고, 범위·일정·운영 기준을 합의한 뒤 끝까지 실행합니다.' %}" />
+    {% endblock %}
     <meta property="og:type" content="website" />
     {% if og_url %}<meta property="og:url" content="{{ og_url }}" />{% endif %}
     <meta property="og:image" content="{% static 'logo.jpg' %}" />
