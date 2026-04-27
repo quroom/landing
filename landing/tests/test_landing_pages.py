@@ -1,6 +1,7 @@
 import json
 import tempfile
 from datetime import timedelta
+from html.parser import HTMLParser
 from unittest.mock import patch
 
 from django.conf import settings
@@ -17,6 +18,20 @@ from landing.models import (
     Testimonial,
     TestimonialInvite,
 )
+
+
+class ImageAltParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.missing_alt_sources: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() != "img":
+            return
+        attribute_map = dict(attrs)
+        alt = attribute_map.get("alt")
+        if alt is None or not alt.strip():
+            self.missing_alt_sources.append(attribute_map.get("src") or "<unknown>")
 
 
 class LandingPageTests(TestCase):
@@ -110,6 +125,46 @@ class LandingPageTests(TestCase):
                 ]
             ),
         )
+
+    @override_settings(
+        SITE_BASE_URL="https://quroom.kr",
+        SEARCH_ROBOTS_EXTRA_LINES=[
+            "Content-Signal: search=yes,ai-train=no",
+            "#DaumWebMasterTool:test-token",
+            "User-agent: Daumoa",
+            "Allow: /",
+        ],
+    )
+    def test_robots_txt_filters_unknown_extra_directives(self) -> None:
+        response = self.client.get(reverse("landing:robots_txt"))
+
+        body = response.content.decode("utf-8")
+        self.assertNotIn("Content-Signal", body)
+        self.assertIn("#DaumWebMasterTool:test-token", body)
+        self.assertIn("User-agent: Daumoa", body)
+        self.assertIn("Allow: /", body)
+
+    def test_public_pages_render_image_alt_attributes(self) -> None:
+        route_names = [
+            "landing:index",
+            "landing:free_diagnosis",
+            "landing:foreign_developers",
+            "landing:gwangju",
+            "landing:gwangju_homepage",
+            "landing:gwangju_web_development",
+            "landing:gwangju_app_development",
+            "landing:outsourcing_checklist",
+            "landing:privacy",
+            "landing:terms",
+        ]
+
+        for route_name in route_names:
+            with self.subTest(route_name=route_name):
+                response = self.client.get(reverse(route_name))
+                self.assertEqual(response.status_code, 200)
+                parser = ImageAltParser()
+                parser.feed(response.content.decode("utf-8"))
+                self.assertEqual(parser.missing_alt_sources, [])
 
     @override_settings(SITE_BASE_URL="https://quroom.kr")
     def test_sitemap_xml_contains_primary_public_routes(self) -> None:

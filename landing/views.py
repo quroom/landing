@@ -67,6 +67,13 @@ SEARCH_SITEMAP_ROUTE_NAMES = (
     "landing:terms",
 )
 
+SUPPORTED_ROBOTS_EXTRA_DIRECTIVES = {
+    "allow",
+    "disallow",
+    "sitemap",
+    "user-agent",
+}
+
 INTENT_TOOLS_MAP: dict[str, tuple[list[str], str]] = {
     "find_repetitive_work": (
         ["Google Sheets", "Trello"],
@@ -747,8 +754,23 @@ def robots_txt(request: HttpRequest) -> HttpResponse:
         "Allow: /",
         f"Sitemap: {_absolute_site_url('/sitemap.xml')}",
     ]
-    lines.extend(settings.SEARCH_ROBOTS_EXTRA_LINES)
+    lines.extend(_supported_extra_robots_lines(settings.SEARCH_ROBOTS_EXTRA_LINES))
     return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+
+def _supported_extra_robots_lines(extra_lines: list[str]) -> list[str]:
+    supported_lines = []
+    for line in extra_lines:
+        stripped_line = line.strip()
+        if not stripped_line:
+            continue
+        if stripped_line.startswith("#"):
+            supported_lines.append(stripped_line)
+            continue
+        directive, separator, _value = stripped_line.partition(":")
+        if separator and directive.lower() in SUPPORTED_ROBOTS_EXTRA_DIRECTIVES:
+            supported_lines.append(stripped_line)
+    return supported_lines
 
 
 def sitemap_xml(request: HttpRequest) -> HttpResponse:

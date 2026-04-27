@@ -12,7 +12,7 @@
 
 `landing/project/settings.py` 기준:
 - `DJANGO_SITE_BASE_URL`: canonical URL과 동일하게 설정 (`https://quroom.kr`)
-- `SEARCH_ROBOTS_EXTRA_LINES`: 검색엔진 운영 중 추가 요청 문구가 있을 때만 사용
+- `SEARCH_ROBOTS_EXTRA_LINES`: 검색엔진 운영 중 추가 요청 문구가 있을 때만 사용. `User-agent`, `Allow`, `Disallow`, `Sitemap`, `#` 주석만 `robots.txt`에 노출된다.
 
 예시(여러 줄):
 
@@ -53,7 +53,7 @@ Google/Bing/Naver는 verification 기반 콘솔 흐름이고, Daum은 등록 신
 ### Daum 검색등록
 - URL: `https://quroom.kr/`
 - 절차: 검색등록 신청(verification code 삽입 자동화 대상 아님)
-- 요청 대응: 운영 중 `robots.txt` 하단 문구 추가 요구가 오면 `SEARCH_ROBOTS_EXTRA_LINES`에 반영 후 재배포
+- 요청 대응: 운영 중 `robots.txt` 하단 문구 추가 요구가 오면 `SEARCH_ROBOTS_EXTRA_LINES`에 반영 후 재배포. 단, `Content-Signal` 같은 비표준 지시어는 Lighthouse/크롤러에서 `Unknown directive`로 잡히므로 넣지 않는다.
 - 점검: 등록 결과/반려 사유를 운영 기록에 남기고 필요 시 robots 추가 문구 조정
 
 ## 5) 운영 체크리스트
@@ -63,3 +63,16 @@ Google/Bing/Naver는 verification 기반 콘솔 흐름이고, Daum은 등록 신
 3. 대표 페이지 HTML에서 canonical 링크(`https://quroom.kr/...`) 확인
 4. Google/Bing/Naver에 sitemap 제출 완료 확인
 5. Daum 등록 신청/보완 요청 상태 기록
+
+## 6) Lighthouse SEO 점검
+
+Cloudflare의 AI Crawl Control에서 Managed `robots.txt`가 켜져 있으면 Cloudflare가 `Content-Signal` 지시어를 `robots.txt`에 삽입할 수 있다. 이 지시어는 일부 SEO 감사 도구에서 `Unknown directive`로 감점된다.
+
+Lighthouse SEO 100점이 필요하면 Cloudflare Dashboard에서 해당 도메인을 선택한 뒤 `AI Crawl Control` > `Directives` 또는 `Robots.txt` 상태 카드에서 Cloudflare Managed `robots.txt`를 끄고, 애플리케이션이 제공하는 `/robots.txt`만 노출되게 한다.
+
+점검 명령:
+
+```bash
+curl -fsSL https://quroom.kr/robots.txt
+npx --yes lighthouse https://quroom.kr/ --only-categories=seo --chrome-flags="--headless --no-sandbox --disable-gpu"
+```

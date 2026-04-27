@@ -51,6 +51,9 @@ dokku config:set --no-restart landing \
   SEARCH_ROBOTS_EXTRA_LINES='#DaumWebMasterTool:c94a628198b8e7b622267ca8e97fe29dd8b9801d880dc94f21557a328dafc470:qG0XPRiSeGdc1nU43NyCzQ=='
 ```
 
+`Content-Signal` 같은 비표준 robots 지시어는 Lighthouse에서 `Unknown directive`로 감점되므로 운영 환경 변수에 넣지 않는다.
+배포 앱 응답이 정상이어도 Cloudflare AI Crawl Control의 Managed `robots.txt`가 켜져 있으면 Cloudflare가 `Content-Signal`을 앞에 삽입할 수 있다. Lighthouse SEO 100점 점검 시 Cloudflare Dashboard에서 Managed `robots.txt` 상태를 먼저 확인한다.
+
 ## 3) 배포 전 점검
 
 ```bash

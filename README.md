@@ -164,7 +164,7 @@ If both pass, push to GitHub.
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)
 - `DJANGO_SITE_BASE_URL` (메일 CTA 링크 기준 URL, 예: `https://quroom.kr`)
-- `SEARCH_ROBOTS_EXTRA_LINES` (`robots.txt` 하단 추가 라인. 여러 줄 입력 가능)
+- `SEARCH_ROBOTS_EXTRA_LINES` (`robots.txt` 하단 추가 라인. 여러 줄 입력 가능. `User-agent`, `Allow`, `Disallow`, `Sitemap`, `#` 주석만 노출)
 
 ## Search engine indexing readiness
 - Canonical base URL: `https://quroom.kr` (운영 기준)
@@ -174,7 +174,7 @@ If both pass, push to GitHub.
 - Operator runbook:
   - `codex-document/search-engine-registration-runbook.md`
 
-운영 시 `DJANGO_SITE_BASE_URL`은 canonical 기준 URL과 동일하게 유지하고, 검색엔진 요청에 따라 `SEARCH_ROBOTS_EXTRA_LINES`로 `robots.txt` 하단 문구를 추가합니다.
+운영 시 `DJANGO_SITE_BASE_URL`은 canonical 기준 URL과 동일하게 유지하고, 검색엔진 요청에 따라 `SEARCH_ROBOTS_EXTRA_LINES`로 `robots.txt` 하단 문구를 추가합니다. `Content-Signal`처럼 robots 표준 지시어가 아닌 라인은 Lighthouse와 일부 크롤러에서 `Unknown directive`로 잡히므로 응답에서 제외됩니다.
 
 ## Cloudtype deployment quickstart
 1. Build/install dependencies from `requirements.txt`.
