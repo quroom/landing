@@ -242,15 +242,15 @@ class LandingPageTests(TestCase):
         )
         self.assertContains(
             response,
-            "왜 제가 맡을 수 있는지",
+            "이런 경험과 기준으로 일합니다",
         )
         self.assertContains(
             response,
-            "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.",
+            "삼성전자 포함 총 개발 경력",
         )
         self.assertContains(
             response,
-            "외주 개발: 미술관 큐레이션 서비스",
+            "총 7개 프로젝트 경험과 운영 이관 기준 정리",
         )
         self.assertContains(
             response, "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다"
@@ -284,7 +284,7 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
         body = response.content.decode("utf-8")
         self.assertLess(
-            body.index("왜 제가 맡을 수 있는지"),
+            body.index("이런 경험과 기준으로 일합니다"),
             body.index("이런 팀과 잘 맞습니다"),
         )
         self.assertLess(

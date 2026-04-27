@@ -5,6 +5,12 @@
 {% block keywords %}{{ content.meta_keywords }}{% endblock %}
 {% block og_title %}<meta property="og:title" content="{{ content.meta_title }}" />{% endblock %}
 {% block og_description %}<meta property="og:description" content="{{ content.meta_description }}" />{% endblock %}
+{% block extra_head %}
+  <link rel="preload"
+        as="image"
+        href="{% static 'hero-quroom-optimized.jpg' %}"
+        type="image/jpeg" />
+{% endblock %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.13),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(74,222,128,0.1),transparent_45%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>
