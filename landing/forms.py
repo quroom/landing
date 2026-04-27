@@ -10,12 +10,36 @@ from .ax_tool_stack import (
 
 
 class ContactForm(forms.Form):
+    ALLOWED_PAGE_KEYS = {
+        "home",
+        "foreign_developers",
+        "gwangju",
+        "gwangju_homepage",
+        "gwangju_web_development",
+        "gwangju_app_development",
+        "outsourcing_checklist",
+    }
+    GWANGJU_PAGE_KEYS = {
+        "gwangju",
+        "gwangju_homepage",
+        "gwangju_web_development",
+        "gwangju_app_development",
+        "outsourcing_checklist",
+    }
     HOME_INQUIRY_CHOICES = [
         ("coffee_chat", _("30분 무료 커피챗")),
         ("ax_diagnosis", _("자동화 실행 진단")),
         ("ax_build", _("자동화 실행 구축")),
         ("infra_setup", _("창업 기본 인프라 구축")),
         ("outsourcing", _("외주용역 집중 트랙")),
+        ("other", _("기타")),
+    ]
+    GWANGJU_INQUIRY_CHOICES = [
+        ("gwangju_scope", _("프로젝트 범위/견적 정리")),
+        ("gwangju_homepage", _("광주 홈페이지 제작")),
+        ("gwangju_web", _("광주 웹개발")),
+        ("gwangju_app", _("광주 앱개발")),
+        ("outsourcing_check", _("외주 전 체크리스트 점검")),
         ("other", _("기타")),
     ]
     FOREIGN_INQUIRY_CHOICES = [
@@ -109,15 +133,22 @@ class ContactForm(forms.Form):
             "response_sla": _("영업일 기준 1~2일 내 회신합니다."),
         }
 
-        normalized_key = (
-            page_key if page_key in {"home", "foreign_developers"} else "home"
-        )
+        normalized_key = page_key if page_key in self.ALLOWED_PAGE_KEYS else "home"
         self.fields["page_key"].initial = normalized_key
-        self.fields["lead_source"].initial = (
-            "foreign_developer_contact"
-            if normalized_key == "foreign_developers"
-            else "founder_contact"
-        )
+        if normalized_key == "foreign_developers":
+            self.fields["lead_source"].initial = "foreign_developer_contact"
+        elif normalized_key in self.GWANGJU_PAGE_KEYS:
+            self.fields["lead_source"].initial = "gwangju_contact"
+            self.fields["inquiry_type"].choices = self.GWANGJU_INQUIRY_CHOICES
+            self.fields["inquiry_type"].initial = "gwangju_scope"
+            self.fields["message"].widget.attrs["placeholder"] = _(
+                "필요한 페이지/기능, 현재 준비된 자료, 예산 범위, 원하는 일정을 작성해 주세요."
+            )
+            self.fields["agree_marketing"].label = _(
+                "(선택) 광주 홈페이지/웹개발/외주 체크리스트 관련 정보 메일 수신에 동의합니다."
+            )
+        else:
+            self.fields["lead_source"].initial = "founder_contact"
         if normalized_key == "home":
             self.fields["inquiry_type"].initial = "coffee_chat"
 
@@ -137,6 +168,12 @@ class ContactForm(forms.Form):
             choice_values = {value for value, _ in self.fields["inquiry_type"].choices}
             if recommended_inquiry_type in choice_values:
                 self.fields["inquiry_type"].initial = recommended_inquiry_type
+
+    def clean_page_key(self) -> str:
+        page_key = (self.cleaned_data.get("page_key") or "").strip()
+        if page_key in self.ALLOWED_PAGE_KEYS:
+            return page_key
+        return "home"
 
 
 def _is_korean_locale() -> bool:

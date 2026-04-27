@@ -19,6 +19,45 @@ class ContactFormTests(TestCase):
             html=False,
         )
 
+    def test_gwangju_contact_form_uses_local_project_choices(self) -> None:
+        response = self.client.get(reverse("landing:gwangju_web_development"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<option value="gwangju_web" selected>광주 웹개발</option>',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            '<option value="outsourcing_check">외주 전 체크리스트 점검</option>',
+            html=False,
+        )
+        self.assertNotContains(response, "자동화 실행 진단")
+
+    def test_gwangju_contact_submit_accepts_local_project_choice(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "page_key": "gwangju_web_development",
+                "name": "광주 문의",
+                "company_name": "테스트 회사",
+                "contact": "",
+                "email": "gwangju-web@example.com",
+                "inquiry_type": "gwangju_web",
+                "message": "광주 웹개발 문의입니다.",
+                "agree_privacy": "on",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="gwangju-web@example.com")
+        self.assertEqual(inquiry.inquiry_type, "gwangju_web")
+        event = FunnelEvent.objects.get(event_name="contact_submit")
+        self.assertEqual(event.page_key, "gwangju_web_development")
+        self.assertEqual(event.lead_source, "gwangju_contact")
+        self.assertEqual(event.metadata["inquiry_type"], "gwangju_web")
+
     def test_contact_submit_invalid_returns_400(self) -> None:
         response = self.client.post(
             reverse("landing:contact_submit"),

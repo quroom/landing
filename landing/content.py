@@ -12,7 +12,7 @@ EN_TRANSLATIONS = {
     "김상은": "Sang-eun Kim",
     "광주광역시 북구 중흥동 338-60, 2층": "2F, 338-60 Jungheung-dong, Buk-gu, Gwangju, South Korea",
     "해당 없음": "N/A",
-    "2018.06 설립 · 총 개발 경력 {career_duration} · 총 7개 프로젝트(법인 5, 외주 2)": "Founded in 2018.06 · Total development experience {career_duration} · 7 projects total (5 corporate, 2 outsourced)",
+    "2018.06 설립 · 총 개발 경력 {career_duration} · 자체 제품 6개, 외주 개발 1개": "Founded in 2018.06 · Total development experience {career_duration} · 6 owned products, 1 client project",
     "90분": "90 min",
     "2주 ~ 4주": "2-4 weeks",
     "4주 ~ 8주": "4-8 weeks",
@@ -42,6 +42,7 @@ EN_TRANSLATIONS = {
     "Django 백엔드와 Vue 프론트엔드 기반으로 작품 정보, 큐레이션 스토리, 오디오 해설을 통합 제공하는 구조 설계": "Designed an architecture that integrates artwork information, curation stories, and audio guides with a Django backend and Vue frontend.",
     "부동산 거래 시장에서 법정 양식 준수 요구와 비대면 계약 수요가 동시에 커지며 디지털 전환 마찰이 발생하는 문제": "In the real estate market, compliance requirements for statutory forms and demand for non-face-to-face contracts grew simultaneously, creating digital transformation friction.",
     "사업을 이해하고\n믿고 맡길 수 있는 파트너": "Understands the business\nand is a partner you can trust with the work.",
+    "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.": "One person carries the work from problem definition and scope alignment to development and deployment.",
     "업무 범위와 우선순위를 먼저 조율하고, 필요한 부분은 직접 맡아 진행합니다.": "We align scope and priorities first, then directly handle the parts that need to move.",
     "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope and priorities first, then directly handle the execution that needs to move.",
     "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
@@ -71,7 +72,7 @@ EN_TRANSLATIONS = {
     "법인 + 회사 개발 경력 합산": "Combined corporate and company development experience",
     "프로젝트 수": "Number of Projects",
     "총 7건": "Total 7",
-    "법인 5, 외주 2": "5 corporate, 2 outsourced",
+    "자체 제품 6, 외주 개발 1": "6 owned products, 1 client project",
     "재의뢰율": "Re-engagement Rate",
     "기준 프로젝트 내 재의뢰": "Re-engagement within reference projects",
     "문의 응답": "Response Time",
@@ -109,8 +110,13 @@ EN_TRANSLATIONS = {
     "제품화·운영 실행 파트": "Productization and Operations Execution",
     "바로 맡겨야 할 일과 아직 정리할 일을 구분해, 실제 실행으로 이어지게 돕습니다.": "We help separate what should be delegated now from what still needs alignment, then move it into real execution.",
     "이런 경험과 기준으로 일합니다": "This is the experience and standard I work from.",
+    "왜 제가 맡을 수 있는지": "Why I can take this on",
     "삼성전자 포함 총 개발 경력 {career_duration}": "Total development experience {career_duration}, including Samsung Electronics",
-    "총 7개 프로젝트 경험과 운영 이관 기준 정리": "Experience across 7 projects with explicit handover criteria",
+    "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.": "I have product development experience at Samsung Electronics and direct experience operating owned products.",
+    "그래서 예쁜 화면이나 기능 목록만 보지 않고, 우선순위·배포·운영·수정 요청까지 같이 봅니다.": "That means I look beyond screens and feature lists, covering priorities, deployment, operations, and change requests.",
+    "자체 제품 기획·개발·운영 경험": "Experience planning, building, and operating owned products",
+    "외주 개발: 미술관 큐레이션 서비스": "Client project: Museum Curation Service",
+    "자체 제품과 외주 개발을 구분해 검증 가능한 사례만 제시": "Only verifiable examples, clearly separated between owned products and client work",
     "외주 집중 트랙은 한 타임 1고객만 진행해 집중도를 높입니다": "The dedicated outsourcing track runs one client at a time to keep focus high.",
     "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다": "The dedicated outsourcing track runs one client at a time to keep focus high.",
     "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능": "The founder's career and project history can be checked directly on LinkedIn.",
@@ -160,8 +166,8 @@ EN_TRANSLATIONS = {
     "착수금/중간금/잔금 3단계 또는 월 단위 청구를 프로젝트별로 협의합니다.": "We agree per project on either 3-stage payments or monthly billing.",
     "문의는 어떻게 진행되나요?": "How should I reach out?",
     "기본 채널은 help@quroom.kr 이메일입니다.": "The default contact channel is help@quroom.kr email.",
-    "창업자/소상공인을 위한 믿고 맡길 수 있는 실행 파트너": "A trusted execution partner for founders and small business owners.",
-    "요구사항과 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.": "We align requirements and priorities first, then directly handle the execution that should be delegated.",
+    "창업자/소상공인을 위한 제품화·운영 실행 지원": "Productization and operations execution support for founders and small business owners.",
+    "문제 정의, 우선순위 정리, 구현, 배포까지 한 흐름으로 봅니다.": "We look at the full flow from problem definition and prioritization to implementation and deployment.",
     "30분 무료 커피챗": "30-min Free Coffee Chat",
     "지금 뭐가 막혀 있는지 가볍게 이야기해보는 첫 대화입니다.": "A lightweight first conversation about what feels blocked right now.",
     "지금 가장 막힌 지점부터 정리": "Start by sorting out the most blocked point",
@@ -180,7 +186,7 @@ EN_TRANSLATIONS = {
     "증빙 링크 타입: LinkedIn, 포트폴리오, GitHub": "Evidence link types: LinkedIn, Portfolio, GitHub",
     "협력 네트워크는 별도 동의 없으면 범주형 문구(예: 다수 개발사 협업 네트워크)로 표기합니다.": "Collaboration networks are written as category-level descriptions unless explicit consent is given.",
     "2018.06 설립 · 총 개발 경력": "Founded 2018.06 · Total development experience",
-    "총 7개 프로젝트(법인 5, 외주 2)": "Total 7 projects (5 corporate, 2 outsourced)",
+    "자체 제품 6, 외주 1": "6 owned products, 1 client project",
     "현재": "Present",
     "30분": "30 min",
     "무료": "Free",
@@ -380,15 +386,15 @@ SERVICE_CARDS = [
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
     "headline": "사업을 이해하고\n믿고 맡길 수 있는 파트너",
-    "subcopy": "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.",
+    "subcopy": "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
     "founder_capacity_policy": "외주용역 집중 트랙은 한 번에 한 고객사만 진행합니다.",
     "hero_support_text": (
-        "2018.06 설립 · 총 개발 경력 {career_duration} · 총 7개 프로젝트(법인 5, 외주 2)"
+        "2018.06 설립 · 총 개발 경력 {career_duration} · 자체 제품 6개, 외주 개발 1개"
     ),
-    "about_title": "요구사항부터 같이 정리합니다.",
+    "about_title": "왜 제가 맡을 수 있는지",
     "about_body": [
-        "요구사항이 모호하면 일정과 비용이 쉽게 흔들립니다.",
-        "예산과 우선순위에 맞춰 범위를 조율하고, 필요한 실행은 직접 맡아 진행합니다.",
+        "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.",
+        "그래서 예쁜 화면이나 기능 목록만 보지 않고, 우선순위·배포·운영·수정 요청까지 같이 봅니다.",
     ],
     "execution_process_title": "문의부터 실행까지 진행 방식",
     "execution_process": [
@@ -432,7 +438,7 @@ SHARED_CONTENT = {
         {
             "label": "프로젝트 수",
             "value_template": "총 7건",
-            "description": "법인 5, 외주 2",
+            "description": "자체 제품 6, 외주 1",
         },
         {
             "label": "재의뢰율",
@@ -449,10 +455,12 @@ SHARED_CONTENT = {
     "services_section_subtitle": "바로 맡겨야 할 일과 아직 정리할 일을 구분해, 실제 실행으로 이어지게 돕습니다.",
     "fit_section_title": "이런 상황이라면 함께하기 좋습니다",
     "fit_section_intro": "범위와 목표가 어느 정도 잡혀 있으면, 첫 대화에서 다음 액션까지 정리하기 쉽습니다.",
-    "hero_trust_title": "이런 경험과 기준으로 일합니다",
+    "hero_trust_title": "왜 제가 맡을 수 있는지",
     "hero_trust_points": [
         "삼성전자 포함 총 개발 경력 {career_duration}",
-        "총 7개 프로젝트 경험과 운영 이관 기준 정리",
+        "자체 제품 기획·개발·운영 경험",
+        "외주 개발: 미술관 큐레이션 서비스",
+        "자체 제품과 외주 개발을 구분해 검증 가능한 사례만 제시",
         "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다",
         "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능",
     ],
@@ -537,6 +545,7 @@ SHARED_CONTENT = {
     "portfolio": [
         {
             "name": "손해사정사 문서 자동화 서비스 (R&D)",
+            "type_label": "자체 제품",
             "period": "2026.03 ~ 현재",
             "summary": "손해사정 실무 문서 작성을 줄이기 위해 고객 CRM, 문서 자동치환, 음성/서류 기반 초안 생성을 통합하는 자동화 서비스",
             "problem": "보험 청구/손해사정 시장에서 반복 문서 작성, 고객 정보 재입력, 통화/진단서 기반 정리 업무가 수작업 중심이라 처리 시간이 길고 누락 리스크가 큰 문제",
@@ -548,6 +557,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "PromptSpike",
+            "type_label": "자체 제품",
             "period": "2025.04 ~ 2025.09",
             "summary": "여러 LLM 탭에 한 번에 프롬프트를 전송하고 템플릿으로 재사용하는 브라우저 확장",
             "problem": "멀티 LLM 사용이 보편화되면서 반복 재사용되는 프롬프트 입력 시간이 급격히 증가하는 시장 문제",
@@ -559,6 +569,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "WishBox (소망창고) - Alpha",
+            "type_label": "자체 제품",
             "period": "2025.01 ~ 현재",
             "summary": "목표 달성 리워드 기반 서비스 알파 운영",
             "problem": "자기계발/목표관리 시장에서 '설정은 쉽지만 지속 실행은 어려운' 낮은 유지율 문제가 반복되는 구조",
@@ -570,6 +581,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "Obible (PWA 커뮤니티 성경 서비스)",
+            "type_label": "자체 제품",
             "period": "2023.01 ~ 2024.06",
             "summary": "성경 읽기, 그룹 기반 커뮤니티, 댓글/하이라이트를 제공한 PWA 서비스",
             "problem": "신앙 커뮤니티 시장에서 개인 묵상, 소그룹 교제, 일정 운영이 여러 도구로 분산되어 참여 지속성이 떨어지는 문제",
@@ -581,6 +593,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "Kids Travel Curating",
+            "type_label": "자체 제품",
             "period": "2022.09 ~ 2022.12",
             "summary": "PSF 검증을 위해 빠른 피벗 중심으로 운영한 여행 큐레이션 서비스",
             "problem": "가족 여행 시장에서 맞춤형 정보 탐색 비용이 높고, 초기 서비스는 검증 전에 개발비가 과투입되기 쉬운 문제",
@@ -592,6 +605,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "미술관 큐레이션 서비스 (ArtTrip)",
+            "type_label": "외주 개발",
             "period": "2022.05 ~ 2022.08",
             "summary": "온라인으로 미술작품을 관람하고 오디오 해설을 들을 수 있는 미술관 큐레이션 서비스",
             "problem": "미술관마다 작품 해설 지원 수준이 다르고 전시를 관통하는 스토리 제공이 부족해 관람 경험이 단절되는 시장 문제",
@@ -603,6 +617,7 @@ SHARED_CONTENT = {
         },
         {
             "name": "Onepaper (부동산 전자계약 서비스)",
+            "type_label": "자체 제품",
             "period": "2020.03 ~ 2022.08",
             "summary": "대면 없이 계약 가능한 온라인 부동산 전자계약 서비스",
             "problem": "부동산 거래 시장에서 법정 양식 준수 요구와 비대면 계약 수요가 동시에 커지며 디지털 전환 마찰이 발생하는 문제",
@@ -652,8 +667,8 @@ SHARED_CONTENT = {
 PERSONA_CONTENT = {
     "founders": {
         "label": "For Founders",
-        "title": "창업자/소상공인을 위한 믿고 맡길 수 있는 실행 파트너",
-        "description": "요구사항과 우선순위를 먼저 조율하고, 필요한 실행은 직접 맡아 진행합니다.",
+        "title": "창업자/소상공인을 위한 제품화·운영 실행 지원",
+        "description": "문제 정의, 우선순위 정리, 구현, 배포까지 한 흐름으로 봅니다.",
         "primary_cta": {"label": "창업자 상담 신청", "href": "#contact"},
         "secondary_cta": {"label": "제공 서비스 확인", "href": "#services"},
         "service_target": "founders",
@@ -1091,3 +1106,567 @@ CAREER_RANGES = [
         "count_for_career": True,
     },
 ]
+
+
+GWANGJU_COMMON_TRUST = {
+    "title": "왜 제가 맡을 수 있는지",
+    "body": "삼성전자에서 제품 개발을 경험했고, 이후 여러 자체 제품을 기획부터 개발, 배포, 운영까지 직접 해봤습니다. 그래서 화면 제작만 보지 않고 기능 우선순위, 배포, 운영, 수정 요청까지 같이 봅니다. 외주 프로젝트는 미술관 큐레이션 서비스처럼 실제 고객 요구사항을 받아 구현한 경험을 기준으로 설명합니다.",
+    "points": [
+        "삼성전자 포함 총 개발 경력 {career_duration}",
+        "2018.06 설립",
+        "자체 제품 기획·개발·운영 경험",
+        "외주 개발: 미술관 큐레이션 서비스",
+        "한 번에 한 고객사만 진행하는 집중 트랙 운영",
+    ],
+}
+
+GWANGJU_PAGE_CONTENT = {
+    "gwangju": {
+        "meta_title": "광주 홈페이지 제작 · 웹개발 · 앱개발 | QuRoom",
+        "meta_description": "광주 홈페이지 제작, 웹개발, 앱개발이 필요할 때 요구사항, 범위, 일정, 운영 기준을 먼저 정리하고 실제 제작까지 이어서 맡습니다.",
+        "meta_keywords": "광주 홈페이지 제작, 광주 웹개발, 광주 앱개발, 광주 개발 외주, 광주 개발 파트너",
+        "hero_label": "광주 개발 상담",
+        "hero_title": "광주 홈페이지 제작·웹개발·앱개발, 요구사항부터 같이 정리합니다",
+        "hero_summary": "페이지 구성, 기능 목록, 준비된 자료를 먼저 확인하고 기획 정리부터 개발, 배포까지 한 사람이 이어서 맡습니다.",
+        "hero_badges": [
+            "광주 기반 상담",
+            "범위·일정·운영 기준 합의",
+            "대표자가 직접 진행",
+        ],
+        "hero_checkpoints": [
+            "지금 필요한 것이 홈페이지인지, 기능 개발인지 먼저 구분",
+            "이번 분기 안에 진행할 범위와 미뤄도 되는 범위 정리",
+            "예상 기간/비용/운영 이관 기준까지 첫 상담에서 확인",
+        ],
+        "hero_stats": [
+            {"label": "상담 범위", "value": "홈페이지 · 웹 · 앱"},
+            {"label": "진행 방식", "value": "직접 설계/개발"},
+        ],
+        "primary_cta_label": "상담 문의하기",
+        "secondary_cta_label": "외주 전 체크리스트 보기",
+        "secondary_cta_href": "/outsourcing-checklist/",
+        "outcome_title": "무엇을 먼저 할지 정리합니다",
+        "outcome_intro": "단순 견적부터 던지지 않고, 지금 단계에서 바로 맡겨야 할 일과 아직 정리할 일을 구분합니다.",
+        "outcome_items": [
+            {
+                "title": "무엇을 만들지 구분",
+                "description": "홈페이지, 웹서비스, 앱/PWA 중 지금 필요한 형태를 현실적으로 나눕니다.",
+            },
+            {
+                "title": "범위와 예산 기준",
+                "description": "처음 만들 기능과 나중에 해도 되는 기능을 나눠 견적 기준을 먼저 정리합니다.",
+            },
+            {
+                "title": "운영 이후까지 고려",
+                "description": "배포 후 수정, 계정, 소스코드, 운영 문서 기준까지 함께 확인합니다.",
+            },
+        ],
+        "fit_title": "이런 경우에 적합합니다",
+        "fit_items": [
+            "회사 소개 홈페이지가 필요하지만 무엇부터 만들지 정리가 안 된 경우",
+            "MVP를 빠르게 만들고 실제 사용자 반응을 확인해야 하는 경우",
+            "앱이 필요한지 웹앱으로 먼저 검증할지 판단이 필요한 경우",
+            "기능 요청이 늘어나 견적 기준을 먼저 잡아야 하는 경우",
+        ],
+        "services_title": "광주 전용 상세 안내",
+        "service_links": [
+            {
+                "title": "광주 홈페이지 제작",
+                "summary": "신뢰가 보이고 문의로 이어지는 회사 소개형 홈페이지",
+                "url_name": "landing:gwangju_homepage",
+            },
+            {
+                "title": "광주 웹개발",
+                "summary": "MVP, 신청·예약·관리 기능까지 포함한 웹서비스 개발",
+                "url_name": "landing:gwangju_web_development",
+            },
+            {
+                "title": "광주 앱개발",
+                "summary": "앱·웹앱·PWA 중 현실적인 방식으로 시작하는 제품 개발",
+                "url_name": "landing:gwangju_app_development",
+            },
+        ],
+        "process_title": "진행 방식",
+        "process_steps": [
+            {
+                "title": "요구사항 정리",
+                "description": "목표, 제약, 일정, 예산을 먼저 맞추고 우선순위를 확정합니다.",
+            },
+            {
+                "title": "실행 범위 확정",
+                "description": "2주~8주 단위로 실행 가능한 범위와 결과물을 합의합니다.",
+            },
+            {
+                "title": "구현 및 점검",
+                "description": "주차별 결과 공유와 리스크 점검으로 일정/품질을 관리합니다.",
+            },
+            {
+                "title": "배포 및 이관",
+                "description": "운영에 필요한 가이드까지 전달해 이후 확장이 가능하게 마무리합니다.",
+            },
+        ],
+        "timeline_cost_title": "예상 기간/비용 범위",
+        "timeline_cost_items": [
+            "홈페이지 제작: 1주~3주 / 100만원~500만원",
+            "웹개발: 2주~8주 / 300만원~1,000만원+",
+            "앱/웹앱/PWA: 2주~8주 / 범위별 협의",
+        ],
+        "faq_title": "자주 묻는 질문",
+        "faq": [
+            {
+                "q": "광주에서만 진행하나요?",
+                "a": "광주 기반으로 진행하지만, 다른 지역도 온라인 중심으로 협업 가능합니다.",
+            },
+            {
+                "q": "홈페이지 제작과 웹개발은 어떻게 다른가요?",
+                "a": "홈페이지 제작은 신뢰 중심 소개 구조에 가깝고, 웹개발은 기능 구현과 운영 흐름까지 포함합니다.",
+            },
+            {
+                "q": "문의 전에 준비해야 할 것이 있나요?",
+                "a": "현재 상황, 원하는 일정, 대략 예산 범위만 정리해 주셔도 첫 상담이 가능합니다.",
+            },
+        ],
+        "portfolio_names": [
+            "손해사정사 문서 자동화 서비스 (R&D)",
+            "PromptSpike",
+            "WishBox (소망창고) - Alpha",
+            "Obible (PWA 커뮤니티 성경 서비스)",
+            "Kids Travel Curating",
+            "Onepaper (부동산 전자계약 서비스)",
+            "미술관 큐레이션 서비스 (ArtTrip)",
+        ],
+        "cta_title": "광주 프로젝트 문의하기",
+        "cta_description": "현재 상황과 목표를 짧게 남겨주시면, 먼저 정리해야 할 범위와 다음 액션을 제안합니다.",
+        "cta_button_label": "문의 보내기",
+        "contact_anchor": "contact",
+        "recommended_inquiry_type": "gwangju_scope",
+    },
+    "gwangju_homepage": {
+        "meta_title": "광주 홈페이지 제작 | 회사 소개 · 서비스 소개 · 문의 전환 | QuRoom",
+        "meta_description": "광주 홈페이지 제작이 필요하다면 회사 소개, 서비스 소개, 포트폴리오, 문의 전환 구조를 작고 명확하게 정리합니다.",
+        "meta_keywords": "광주 홈페이지 제작, 광주 기업 홈페이지, 광주 회사 홈페이지, 광주 소개 사이트 제작",
+        "hero_label": "광주 홈페이지 제작",
+        "hero_title": "광주 홈페이지 제작, 신뢰 중심 기업 소개 홈페이지를 작고 명확하게 구축합니다",
+        "hero_summary": "회사/서비스/포트폴리오/문의 구조를 먼저 정리하고, 방문자가 이해하기 쉬운 흐름으로 만듭니다.",
+        "hero_badges": ["회사 소개", "서비스/포트폴리오", "문의 전환 동선"],
+        "hero_checkpoints": [
+            "첫 화면에서 무엇을 하는 회사인지 바로 보이게 정리",
+            "서비스/포트폴리오/문의 동선을 한 흐름으로 연결",
+            "기본 검색 노출과 공유 메타데이터까지 함께 반영",
+        ],
+        "hero_stats": [
+            {"label": "예상 기간", "value": "1주 ~ 3주"},
+            {"label": "예상 비용", "value": "100만 ~ 500만원"},
+        ],
+        "primary_cta_label": "홈페이지 제작 상담하기",
+        "secondary_cta_label": "외주 전 체크리스트 보기",
+        "secondary_cta_href": "/outsourcing-checklist/",
+        "outcome_title": "홈페이지에서 먼저 정리할 것",
+        "outcome_intro": "방문자가 회사를 이해하고, 신뢰하고, 문의할 수 있는 최소 구조를 먼저 잡습니다.",
+        "outcome_items": [
+            {
+                "title": "대표 메시지",
+                "description": "누구에게 어떤 문제를 해결해주는지 첫 화면에서 선명하게 보여줍니다.",
+            },
+            {
+                "title": "신뢰 근거",
+                "description": "이력, 사례, 진행 방식, 사업자 정보를 검증 가능한 문구로 정리합니다.",
+            },
+            {
+                "title": "문의 흐름",
+                "description": "서비스 소개부터 문의 폼까지 끊기지 않도록 CTA와 섹션 순서를 설계합니다.",
+            },
+        ],
+        "fit_title": "이런 경우에 적합합니다",
+        "fit_items": [
+            "회사 소개가 약해 첫 신뢰 형성이 어려운 경우",
+            "기존 사이트가 오래되어 최신 정보 반영이 어려운 경우",
+            "포트폴리오/서비스 소개 구조가 정리되지 않은 경우",
+            "문의 동선이 약해 상담 전환이 낮은 경우",
+        ],
+        "scope_title": "제공 범위",
+        "scope_items": [
+            "회사 소개형 홈페이지 구조 설계",
+            "서비스 소개/포트폴리오 페이지 정리",
+            "문의 폼과 기본 전환 동선 구성",
+            "기본 메타데이터/검색 노출 구조 적용",
+            "배포 및 운영 기본 가이드 전달",
+        ],
+        "process_title": "진행 방식",
+        "process_steps": [
+            {
+                "title": "요구사항 정리",
+                "description": "핵심 메시지, 타깃 고객, 필요한 페이지를 먼저 정리합니다.",
+            },
+            {
+                "title": "구조 합의",
+                "description": "화면 흐름과 카피 방향을 합의한 뒤 제작 범위를 고정합니다.",
+            },
+            {
+                "title": "제작/수정",
+                "description": "우선순위 기준으로 구현하고 핵심 문구와 동선을 점검합니다.",
+            },
+            {
+                "title": "배포",
+                "description": "실서비스 반영과 기본 운영 기준을 전달합니다.",
+            },
+        ],
+        "timeline_cost_title": "예상 기간/비용 범위",
+        "timeline_cost_items": [
+            "예상 기간: 1주 ~ 3주",
+            "예상 비용: 100만원 ~ 500만원",
+            "정확한 일정/비용은 페이지 수와 콘텐츠 준비 상태에 따라 조정됩니다.",
+        ],
+        "faq_title": "자주 묻는 질문",
+        "faq": [
+            {
+                "q": "회사 소개 홈페이지는 어느 정도 기간이 걸리나요?",
+                "a": "일반적으로 1주~3주 내에서 진행하며, 페이지 수와 수정 횟수에 따라 달라집니다.",
+            },
+            {
+                "q": "문구나 이미지 정리가 안 되어 있어도 진행 가능한가요?",
+                "a": "가능합니다. 우선 현재 자료로 구조를 잡고 필요한 보완 목록을 함께 정리합니다.",
+            },
+            {
+                "q": "제작 후 수정은 어떻게 하나요?",
+                "a": "배포 후 운영 기준과 수정 포인트를 전달해 내부에서도 관리할 수 있게 구성합니다.",
+            },
+        ],
+        "portfolio_names": [
+            "손해사정사 문서 자동화 서비스 (R&D)",
+            "PromptSpike",
+            "WishBox (소망창고) - Alpha",
+            "Kids Travel Curating",
+            "Onepaper (부동산 전자계약 서비스)",
+            "미술관 큐레이션 서비스 (ArtTrip)",
+        ],
+        "cta_title": "홈페이지 제작 문의하기",
+        "cta_description": "현재 자료가 충분하지 않아도 괜찮습니다. 먼저 필요한 페이지와 우선순위부터 함께 정리합니다.",
+        "cta_button_label": "문의 보내기",
+        "contact_anchor": "contact",
+        "recommended_inquiry_type": "gwangju_homepage",
+    },
+    "gwangju_web_development": {
+        "meta_title": "광주 웹개발 | MVP · 웹서비스 · 운영도구 구축 | QuRoom",
+        "meta_description": "광주 웹개발이 필요하다면 MVP, 신청·예약 기능, 관리자 화면, 운영도구까지 실제 업무에 쓰이는 웹서비스를 개발합니다.",
+        "meta_keywords": "광주 웹개발, 광주 MVP 개발, 광주 웹서비스 개발, 광주 관리자 페이지 개발",
+        "hero_label": "광주 웹개발",
+        "hero_title": "광주 웹개발, MVP와 운영 도구를 실제 업무 흐름에 맞게 구축합니다",
+        "hero_summary": "단순 화면 구현보다 사용자가 실제로 쓰고, 운영자가 이어받을 수 있는 기능 범위를 먼저 정합니다.",
+        "hero_badges": ["MVP", "관리자 화면", "운영 도구"],
+        "hero_checkpoints": [
+            "사용자 화면과 관리자 화면을 함께 보고 범위 결정",
+            "데이터 입력/조회/알림 등 실제 운영 흐름까지 점검",
+            "2주~8주 안에 만들 핵심 기능부터 우선순위화",
+        ],
+        "hero_stats": [
+            {"label": "예상 기간", "value": "2주 ~ 8주"},
+            {"label": "예상 비용", "value": "300만원+"},
+        ],
+        "primary_cta_label": "웹개발 상담하기",
+        "secondary_cta_label": "광주 홈페이지 제작 보기",
+        "secondary_cta_href": "/gwangju-homepage/",
+        "outcome_title": "웹개발 전에 먼저 확정하는 기준",
+        "outcome_intro": "기능 목록만 늘리지 않고, 실제 사용과 운영에 필요한 최소 단위를 먼저 고정합니다.",
+        "outcome_items": [
+            {
+                "title": "핵심 사용자 행동",
+                "description": "가입, 신청, 예약, 결제, 관리 등 검증해야 할 행동을 먼저 좁힙니다.",
+            },
+            {
+                "title": "운영자 업무",
+                "description": "관리자가 매일 봐야 하는 데이터와 처리 흐름을 기능 범위에 반영합니다.",
+            },
+            {
+                "title": "배포와 이관",
+                "description": "서비스 반영 후 확인해야 할 계정, 환경변수, 운영 문서 기준을 남깁니다.",
+            },
+        ],
+        "fit_title": "이런 경우에 적합합니다",
+        "fit_items": [
+            "빠르게 MVP를 만들어 사용자 반응을 봐야 하는 경우",
+            "신청·예약·관리 기능이 필요한 경우",
+            "내부 운영용 웹도구가 필요한 경우",
+            "데이터 흐름까지 함께 설계해야 하는 경우",
+        ],
+        "scope_title": "제공 범위",
+        "scope_items": [
+            "요구사항/우선순위 정리",
+            "핵심 기능 개발 및 관리자 화면 구성",
+            "배포 파이프라인과 운영 기본 구조 점검",
+            "운영 이관용 핵심 가이드 제공",
+        ],
+        "process_title": "진행 방식",
+        "process_steps": [
+            {
+                "title": "문제 정의",
+                "description": "무엇을 자동화/제품화해야 하는지 기준을 먼저 정합니다.",
+            },
+            {
+                "title": "범위 확정",
+                "description": "2주~8주 안에 완료 가능한 기능 범위로 스코프를 고정합니다.",
+            },
+            {
+                "title": "개발/검증",
+                "description": "핵심 기능부터 순차 개발하고 주차별 검증을 진행합니다.",
+            },
+            {
+                "title": "배포/이관",
+                "description": "운영 관점에서 필요한 체크포인트를 정리해 인계합니다.",
+            },
+        ],
+        "timeline_cost_title": "예상 기간/비용 범위",
+        "timeline_cost_items": [
+            "예상 기간: 2주 ~ 8주",
+            "예상 비용: 300만원 ~ 1,000만원+",
+            "정확한 일정/비용은 기능 난이도와 연동 범위 기준으로 확정합니다.",
+        ],
+        "faq_title": "자주 묻는 질문",
+        "faq": [
+            {
+                "q": "MVP와 정식 서비스 개발은 어떻게 구분하나요?",
+                "a": "MVP는 검증에 필요한 핵심 기능 위주로, 정식 서비스는 운영 확장 기준까지 포함해 설계합니다.",
+            },
+            {
+                "q": "관리자 페이지도 같이 만들 수 있나요?",
+                "a": "가능합니다. 운영자가 실제로 사용하는 핵심 관리 기능을 우선 반영합니다.",
+            },
+            {
+                "q": "기능이 많지 않아도 웹개발이 필요한가요?",
+                "a": "반복 운영을 줄이거나 데이터 관리가 필요하면 소규모 기능도 충분히 개발 가치가 있습니다.",
+            },
+        ],
+        "portfolio_names": [
+            "손해사정사 문서 자동화 서비스 (R&D)",
+            "PromptSpike",
+            "WishBox (소망창고) - Alpha",
+            "Obible (PWA 커뮤니티 성경 서비스)",
+            "Kids Travel Curating",
+            "Onepaper (부동산 전자계약 서비스)",
+            "미술관 큐레이션 서비스 (ArtTrip)",
+        ],
+        "cta_title": "웹개발 상담받기",
+        "cta_description": "MVP, 관리자 화면, 운영 도구 중 무엇부터 만들지 함께 정리합니다.",
+        "cta_button_label": "문의 보내기",
+        "contact_anchor": "contact",
+        "recommended_inquiry_type": "gwangju_web",
+    },
+    "gwangju_app_development": {
+        "meta_title": "광주 앱개발 | 앱 · 웹앱 · PWA 기획과 구축 | QuRoom",
+        "meta_description": "광주 앱개발이 필요할 때 처음부터 무거운 방식으로 가지 않고 앱, 웹앱, PWA, MVP 중 현실적인 방식을 제안합니다.",
+        "meta_keywords": "광주 앱개발, 광주 모바일 앱, 광주 PWA 개발, 광주 웹앱 개발",
+        "hero_label": "광주 앱개발",
+        "hero_title": "광주 앱개발, 앱·웹앱·PWA 중 현실적인 시작점을 같이 정합니다",
+        "hero_summary": "처음부터 큰 비용으로 앱을 만드는 대신, 사용자 문제와 예산에 맞는 검증 범위부터 정합니다.",
+        "hero_badges": ["앱/웹앱 판단", "PWA MVP", "초기 검증"],
+        "hero_checkpoints": [
+            "앱스토어 앱이 꼭 필요한 상황인지 먼저 판단",
+            "웹앱/PWA로 빠르게 검증 가능한 범위와 한계 정리",
+            "초기 사용자 반응을 확인할 MVP 기준 합의",
+        ],
+        "hero_stats": [
+            {"label": "예상 기간", "value": "2주 ~ 8주"},
+            {"label": "추천 시작", "value": "MVP/PWA"},
+        ],
+        "primary_cta_label": "앱개발 방향 상담하기",
+        "secondary_cta_label": "광주 웹개발 보기",
+        "secondary_cta_href": "/gwangju-web-development/",
+        "outcome_title": "앱개발 전에 먼저 줄이는 리스크",
+        "outcome_intro": "앱이라는 형태보다 사용자 문제 검증과 운영 가능성을 먼저 봅니다.",
+        "outcome_items": [
+            {
+                "title": "앱 필요성 판단",
+                "description": "푸시, 카메라, 위치 등 앱 고유 기능이 필요한지 먼저 확인합니다.",
+            },
+            {
+                "title": "초기 출시 방식",
+                "description": "웹앱/PWA/MVP 중 예산과 속도에 맞는 시작점을 제안합니다.",
+            },
+            {
+                "title": "확장 기준",
+                "description": "초기 사용 데이터를 본 뒤 네이티브 앱 확장이 필요한지 판단합니다.",
+            },
+        ],
+        "fit_title": "이런 경우에 적합합니다",
+        "fit_items": [
+            "앱 아이디어를 먼저 검증하고 싶은 경우",
+            "모바일 중심 서비스가 필요한 경우",
+            "커뮤니티/구독/콘텐츠형 서비스 구조가 필요한 경우",
+            "앱과 웹앱 중 어떤 방식이 맞는지 판단이 필요한 경우",
+        ],
+        "scope_title": "제공 범위",
+        "scope_items": [
+            "기획/기능 우선순위 정리",
+            "MVP 설계 및 구현",
+            "웹앱/PWA 중심의 현실적인 초기 출시 구조 제안",
+            "백엔드/운영 구조 연결",
+        ],
+        "process_title": "진행 방식",
+        "process_steps": [
+            {
+                "title": "필요성 판단",
+                "description": "앱이 정말 필요한지, 웹앱/PWA로 먼저 검증 가능한지 판단합니다.",
+            },
+            {
+                "title": "MVP 범위 확정",
+                "description": "핵심 사용자 행동을 검증할 최소 기능으로 범위를 좁힙니다.",
+            },
+            {
+                "title": "구축/출시",
+                "description": "빠르게 출시 가능한 형태로 구현하고 초기 운영 루프를 만듭니다.",
+            },
+            {
+                "title": "확장 판단",
+                "description": "실사용 데이터를 기반으로 다음 확장 단계를 결정합니다.",
+            },
+        ],
+        "timeline_cost_title": "예상 기간/비용 범위",
+        "timeline_cost_items": [
+            "예상 기간: 2주 ~ 8주",
+            "예상 비용: 범위별 협의",
+            "앱/웹앱/PWA 선택과 기능 우선순위에 따라 비용이 달라집니다.",
+        ],
+        "faq_title": "자주 묻는 질문",
+        "faq": [
+            {
+                "q": "앱이 꼭 필요한지 아직 모르는데 문의해도 되나요?",
+                "a": "가능합니다. 앱 필요성과 웹앱/PWA 대안을 먼저 비교해 현실적인 시작점을 정합니다.",
+            },
+            {
+                "q": "앱 대신 웹앱이나 PWA로 시작할 수 있나요?",
+                "a": "네. 초기 검증 단계에서는 웹앱/PWA가 비용·속도 측면에서 유리한 경우가 많습니다.",
+            },
+            {
+                "q": "처음부터 전체 기능을 다 만들어야 하나요?",
+                "a": "아닙니다. 핵심 기능부터 우선 출시하고 사용자 반응을 보며 확장하는 방식을 권장합니다.",
+            },
+        ],
+        "portfolio_names": [
+            "Obible (PWA 커뮤니티 성경 서비스)",
+            "WishBox (소망창고) - Alpha",
+            "Kids Travel Curating",
+            "PromptSpike",
+            "미술관 큐레이션 서비스 (ArtTrip)",
+        ],
+        "cta_title": "앱개발 문의하기",
+        "cta_description": "앱, 웹앱, PWA 중 지금 단계에 맞는 시작점을 함께 판단합니다.",
+        "cta_button_label": "문의 보내기",
+        "contact_anchor": "contact",
+        "recommended_inquiry_type": "gwangju_app",
+    },
+    "outsourcing_checklist": {
+        "meta_title": "홈페이지 외주 맡기기 전 체크리스트 7가지 | QuRoom",
+        "meta_description": "홈페이지나 웹개발 외주를 맡기기 전에 범위, 일정, 비용, 유지관리, 소유권에서 꼭 확인해야 할 항목을 정리했습니다.",
+        "meta_keywords": "홈페이지 외주, 웹개발 외주, 외주 체크리스트, 외주 계약 체크포인트",
+        "hero_label": "외주 전 체크리스트",
+        "hero_title": "홈페이지 외주 맡기기 전에 범위와 운영 기준부터 확인하세요",
+        "hero_summary": "요구사항이 모호하면 일정과 비용이 쉽게 흔들립니다. 계약 전 확인해야 할 기준을 먼저 정리합니다.",
+        "hero_badges": ["범위 확인", "비용 리스크 점검", "소유권/이관 기준"],
+        "hero_checkpoints": [
+            "견적서에 빠지기 쉬운 범위 밖 요청 처리 방식 확인",
+            "도메인, 서버, 소스코드, 계정 소유권을 계약 전 점검",
+            "프로젝트 종료 후 운영 이관 문서 제공 범위 확인",
+        ],
+        "hero_stats": [
+            {"label": "체크 항목", "value": "7개"},
+            {"label": "상담 전 활용", "value": "무료 공개"},
+        ],
+        "primary_cta_label": "체크 후 범위 상담하기",
+        "secondary_cta_label": "광주 개발 페이지 보기",
+        "secondary_cta_href": "/gwangju/",
+        "outcome_title": "외주 실패를 줄이는 핵심 기준",
+        "outcome_intro": "가격만 비교하면 놓치기 쉬운 범위, 소유권, 운영 이관 리스크를 먼저 분리합니다.",
+        "outcome_items": [
+            {
+                "title": "범위 변경 기준",
+                "description": "추가 요청이 생길 때 일정과 비용이 어떻게 바뀌는지 확인합니다.",
+            },
+            {
+                "title": "소유권과 접근권한",
+                "description": "도메인, 서버, 저장소, 관리자 계정의 소유 주체를 분명히 합니다.",
+            },
+            {
+                "title": "운영 이관",
+                "description": "수정 방법, 배포 방법, 장애 대응 기준이 문서로 남는지 확인합니다.",
+            },
+        ],
+        "checklist_title": "사전 점검 체크리스트",
+        "checklist_items": [
+            {
+                "title": "요구사항이 문서로 정리되어 있는가",
+                "description": "기능/페이지/우선순위를 문서로 확정해야 일정과 비용 변동을 줄일 수 있습니다.",
+            },
+            {
+                "title": "범위 밖 요청 처리 방식이 계약에 포함되어 있는가",
+                "description": "추가 요청 시 일정·비용이 어떻게 변하는지 사전에 합의해야 분쟁을 줄일 수 있습니다.",
+            },
+            {
+                "title": "일정 점검 방식과 보고 주기가 정해져 있는가",
+                "description": "주간 단위 공유 구조가 없으면 지연을 늦게 발견하게 됩니다.",
+            },
+            {
+                "title": "비용 산정 기준이 기능 단위로 설명되어 있는가",
+                "description": "총액만 제시된 견적보다 기능별 근거가 있는 견적이 리스크가 낮습니다.",
+            },
+            {
+                "title": "도메인/배포/소스코드 소유권이 명확한가",
+                "description": "계정/저장소/서버 접근 권한과 소유 주체를 계약 전에 반드시 확인해야 합니다.",
+            },
+            {
+                "title": "수정 요청 프로세스가 있는가",
+                "description": "수정 접수-반영-확인 절차가 없으면 운영 단계에서 비용이 급증하기 쉽습니다.",
+            },
+            {
+                "title": "운영 이관 문서 제공 범위가 정의되어 있는가",
+                "description": "인수인계 문서가 없으면 프로젝트 종료 이후 유지 운영이 불가능해질 수 있습니다.",
+            },
+        ],
+        "faq_title": "자주 묻는 질문",
+        "faq": [
+            {
+                "q": "외주 경험이 없어도 체크리스트만으로 점검할 수 있나요?",
+                "a": "가능합니다. 최소한의 기준을 먼저 확인해도 실패 확률을 크게 줄일 수 있습니다.",
+            },
+            {
+                "q": "견적이 너무 낮으면 무조건 위험한가요?",
+                "a": "무조건은 아니지만, 범위/품질/인수인계 기준이 빠졌을 가능성이 높아 세부 항목 확인이 필요합니다.",
+            },
+            {
+                "q": "체크리스트 검토 후 바로 상담 가능한가요?",
+                "a": "가능합니다. 현재 준비 상태 기준으로 우선순위를 함께 정리할 수 있습니다.",
+            },
+        ],
+        "portfolio_names": [
+            "미술관 큐레이션 서비스 (ArtTrip)",
+            "손해사정사 문서 자동화 서비스 (R&D)",
+            "PromptSpike",
+            "Obible (PWA 커뮤니티 성경 서비스)",
+            "Onepaper (부동산 전자계약 서비스)",
+        ],
+        "cta_title": "외주 진행 전 범위 점검이 필요하다면",
+        "cta_description": "현재 상황을 남겨주시면 어떤 항목부터 정리해야 할지 우선순위를 제안합니다.",
+        "cta_button_label": "문의 보내기",
+        "contact_anchor": "contact",
+        "recommended_inquiry_type": "outsourcing_check",
+    },
+}
+
+
+def _filter_portfolio_items(names: list[str]) -> list[dict]:
+    if not names:
+        return []
+    name_set = set(names)
+    return [item for item in SHARED_CONTENT["portfolio"] if item["name"] in name_set]
+
+
+def build_gwangju_page_content(page_key: str) -> dict:
+    page_content = deepcopy(GWANGJU_PAGE_CONTENT[page_key])
+    page_content["trust"] = deepcopy(GWANGJU_COMMON_TRUST)
+    page_content["links"] = deepcopy(SHARED_CONTENT["links"])
+    page_content["company"] = deepcopy(SHARED_CONTENT["company"])
+    page_content["metrics"] = deepcopy(SHARED_CONTENT["metrics"])
+    page_content["founder_capacity_policy"] = SHARED_CONTENT["founder_capacity_policy"]
+    page_content["portfolio"] = _filter_portfolio_items(
+        page_content.get("portfolio_names", [])
+    )
+    return page_content

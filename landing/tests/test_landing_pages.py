@@ -35,6 +35,60 @@ class LandingPageTests(TestCase):
             html=False,
         )
 
+    @override_settings(SITE_BASE_URL="https://quroom.kr")
+    def test_gwangju_pages_render_canonical_and_og_url(self) -> None:
+        targets = [
+            (
+                "landing:gwangju",
+                "https://quroom.kr/gwangju/",
+                "광주 홈페이지 제작·웹개발·앱개발, 요구사항부터 같이 정리합니다",
+            ),
+            (
+                "landing:gwangju_homepage",
+                "https://quroom.kr/gwangju-homepage/",
+                "광주 홈페이지 제작, 신뢰 중심 기업 소개 홈페이지를 작고 명확하게 구축합니다",
+            ),
+            (
+                "landing:gwangju_web_development",
+                "https://quroom.kr/gwangju-web-development/",
+                "광주 웹개발, MVP와 운영 도구를 실제 업무 흐름에 맞게 구축합니다",
+            ),
+            (
+                "landing:gwangju_app_development",
+                "https://quroom.kr/gwangju-app-development/",
+                "광주 앱개발, 앱·웹앱·PWA 중 현실적인 시작점을 같이 정합니다",
+            ),
+            (
+                "landing:outsourcing_checklist",
+                "https://quroom.kr/outsourcing-checklist/",
+                "홈페이지 외주 맡기기 전에 범위와 운영 기준부터 확인하세요",
+            ),
+        ]
+        for route_name, expected_url, expected_heading in targets:
+            with self.subTest(route_name=route_name):
+                response = self.client.get(reverse(route_name))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, expected_heading)
+                self.assertContains(
+                    response,
+                    f'<link rel="canonical" href="{expected_url}" />',
+                    html=False,
+                )
+                self.assertContains(
+                    response,
+                    f'<meta property="og:url" content="{expected_url}" />',
+                    html=False,
+                )
+
+    def test_gwangju_pages_force_korean_even_with_english_cookie(self) -> None:
+        self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "en"
+
+        response = self.client.get(reverse("landing:gwangju"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="ko">', html=False)
+        self.assertContains(response, "광주 홈페이지 제작·웹개발·앱개발")
+
     @override_settings(
         SITE_BASE_URL="https://quroom.kr",
         SEARCH_ROBOTS_EXTRA_LINES=["User-agent: Daumoa", "Allow: /"],
@@ -74,6 +128,29 @@ class LandingPageTests(TestCase):
             html=False,
         )
         self.assertContains(
+            response, "<loc>https://quroom.kr/gwangju/</loc>", html=False
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/gwangju-homepage/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/gwangju-web-development/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/gwangju-app-development/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
+            "<loc>https://quroom.kr/outsourcing-checklist/</loc>",
+            html=False,
+        )
+        self.assertContains(
             response,
             "<loc>https://quroom.kr/privacy/</loc>",
             html=False,
@@ -86,9 +163,10 @@ class LandingPageTests(TestCase):
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, "사업을 이해하고")
         self.assertContains(response, "믿고 맡길 수 있는 파트너")
+        self.assertContains(response, "자체 제품 6, 외주 개발 1")
         self.assertContains(
             response,
-            "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.",
+            "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
         )
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
@@ -109,7 +187,15 @@ class LandingPageTests(TestCase):
         )
         self.assertContains(
             response,
-            "이런 경험과 기준으로 일합니다",
+            "왜 제가 맡을 수 있는지",
+        )
+        self.assertContains(
+            response,
+            "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.",
+        )
+        self.assertContains(
+            response,
+            "외주 개발: 미술관 큐레이션 서비스",
         )
         self.assertContains(
             response, "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다"
@@ -117,6 +203,7 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "OpenClaw")
         self.assertNotContains(response, "바이브코딩")
         self.assertNotContains(response, "안정화 지원")
+        self.assertNotContains(response, "필요한 실행은 직접 맡아 진행합니다")
         service_map = {
             item["id"]: item for item in response.context["content"]["services"]
         }
@@ -142,8 +229,8 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
         body = response.content.decode("utf-8")
         self.assertLess(
+            body.index("왜 제가 맡을 수 있는지"),
             body.index("이런 팀과 잘 맞습니다"),
-            body.index("요구사항부터 같이 정리합니다."),
         )
         self.assertLess(
             body.index("30분 무료 커피챗"),
@@ -179,9 +266,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "and is a partner you can trust with the work.")
         self.assertContains(response, "30-min Free Coffee Chat")
         self.assertContains(response, "Services")
-        self.assertContains(
-            response, "This is the experience and standard I work from."
-        )
+        self.assertContains(response, "Why I can take this on")
         self.assertContains(response, "How We Work From Inquiry to Delivery")
         self.assertContains(response, "Good Fit")
         self.assertContains(response, "Not a Fit Yet")
@@ -289,6 +374,80 @@ class LandingPageTests(TestCase):
             '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
             html=False,
         )
+
+    def test_gwangju_pages_use_distinct_contact_page_key(self) -> None:
+        response = self.client.get(reverse("landing:gwangju_homepage"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            'name="page_key" value="gwangju_homepage"',
+            html=False,
+        )
+        self.assertContains(response, "hero-quroom.jpg")
+        self.assertContains(response, "첫 상담에서 정리하는 것")
+        self.assertContains(response, "결정 기준")
+        self.assertContains(response, "홈페이지 제작 상담하기")
+        self.assertContains(
+            response,
+            '<option value="gwangju_homepage" selected>광주 홈페이지 제작</option>',
+            html=False,
+        )
+        self.assertContains(
+            response, '<option value="gwangju_web">광주 웹개발</option>', html=False
+        )
+        self.assertNotContains(response, "자동화 실행 구축")
+        self.assertContains(response, "portfolio/thumb/")
+        self.assertContains(response, "개발 포트폴리오")
+        self.assertContains(response, "자체 제품")
+        self.assertContains(response, "PromptSpike")
+        self.assertContains(response, "Kids Travel Curating")
+        self.assertContains(response, "미술관 큐레이션 서비스 (ArtTrip)")
+        self.assertContains(response, "외주 개발")
+        self.assertContains(response, "Problem")
+        self.assertContains(response, "Solution")
+        self.assertContains(response, "Result")
+        self.assertContains(response, "Tech")
+        self.assertContains(response, "삼성전자 포함 총 개발 경력")
+        self.assertContains(response, "개인정보처리방침")
+        self.assertContains(response, "사업자 정보")
+
+    def test_outsourcing_checklist_marks_only_arttrip_as_outsourced(self) -> None:
+        response = self.client.get(reverse("landing:outsourcing_checklist"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "개발 포트폴리오")
+        self.assertContains(response, "미술관 큐레이션 서비스 (ArtTrip)")
+        self.assertContains(response, "외주 개발", count=1)
+        self.assertContains(response, "자체 제품")
+        self.assertContains(response, "PromptSpike")
+        self.assertContains(response, "Onepaper")
+        self.assertContains(
+            response,
+            '<option value="outsourcing_check" selected>외주 전 체크리스트 점검</option>',
+            html=False,
+        )
+        self.assertNotContains(response, "관련 사례")
+
+    def test_contact_submit_normalizes_invalid_page_key(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "page_key": "bad_page_key",
+                "lead_source": "gwangju_contact",
+                "name": "홍길동",
+                "company_name": "테스트 회사",
+                "contact": "",
+                "email": "test@example.com",
+                "inquiry_type": "coffee_chat",
+                "message": "문의 내용입니다.",
+                "agree_privacy": "on",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        event = FunnelEvent.objects.get(event_name="contact_submit")
+        self.assertEqual(event.page_key, "home")
+        self.assertEqual(event.lead_source, "founder_contact")
 
     def test_founders_page_redirects_to_home(self) -> None:
         response = self.client.get(reverse("landing:founders"))
@@ -420,6 +579,20 @@ class LandingPageTests(TestCase):
         terms = self.client.get(reverse("landing:terms"))
         self.assertEqual(privacy.status_code, 200)
         self.assertEqual(terms.status_code, 200)
+        self.assertContains(privacy, "Google Analytics 4(GA4)")
+        self.assertContains(privacy, "방문 통계, 유입 경로, 페이지 조회")
+        self.assertContains(privacy, "개인정보의 국외 이전")
+        self.assertContains(privacy, "개인정보의 파기 절차 및 방법")
+        self.assertContains(privacy, "개인정보처리방침의 의미")
+        self.assertContains(privacy, "개인정보의 생애주기")
+        self.assertContains(privacy, "계약 또는 청약철회")
+        self.assertContains(privacy, "개인위치정보를 수집하지 않습니다")
+        self.assertContains(privacy, "개인정보침해신고센터")
+        self.assertNotContains(privacy, "기본 비활성화 상태")
+        self.assertContains(terms, "고의 또는 중대한 과실")
+        self.assertContains(terms, "주요 변경 내용")
+        self.assertContains(terms, "개별 프로젝트의 최종 조건")
+        self.assertContains(terms, "개별 합의가 우선 적용")
 
     def test_healthz_returns_ok(self) -> None:
         response = self.client.get(reverse("landing:healthz"))

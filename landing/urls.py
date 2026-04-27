@@ -29,6 +29,23 @@ urlpatterns = [
     ),
     path("for-founders/", views.founders, name="founders"),
     path("free-diagnosis/", views.free_diagnosis, name="free_diagnosis"),
+    path("gwangju/", views.gwangju, name="gwangju"),
+    path("gwangju-homepage/", views.gwangju_homepage, name="gwangju_homepage"),
+    path(
+        "gwangju-web-development/",
+        views.gwangju_web_development,
+        name="gwangju_web_development",
+    ),
+    path(
+        "gwangju-app-development/",
+        views.gwangju_app_development,
+        name="gwangju_app_development",
+    ),
+    path(
+        "outsourcing-checklist/",
+        views.outsourcing_checklist,
+        name="outsourcing_checklist",
+    ),
     path(
         "free-diagnosis/preview/",
         views.lead_magnet_report_preview,

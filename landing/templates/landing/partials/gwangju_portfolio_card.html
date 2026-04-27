@@ -1,0 +1,38 @@
+{% load static %}
+<article class="group overflow-hidden rounded-[1.75rem] border border-navy/10 bg-white shadow-[0_16px_46px_rgba(15,23,42,0.07)] transition hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(15,23,42,0.11)]">
+  <div class="flex aspect-[16/10] items-center justify-center border-b border-navy/10 bg-gradient-to-br from-white to-fog/70 p-4">
+    <img src="{% static project.image %}"
+         alt="{{ project.name }} 썸네일"
+         class="max-h-full w-full object-contain transition duration-300 group-hover:scale-[1.03]" />
+  </div>
+  <div class="space-y-3 p-5">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="rounded-full bg-navy px-2.5 py-1 text-[11px] font-semibold text-white">{{ project.type_label }}</span>
+      <span class="text-xs font-semibold uppercase tracking-[0.16em] text-sky">{{ project.period }}</span>
+    </div>
+    <h3 class="font-space text-lg font-bold text-navy">{{ project.name }}</h3>
+    <p class="text-sm leading-relaxed text-navy/75">{{ project.summary }}</p>
+    <div class="space-y-2 rounded-xl bg-fog/70 p-3 text-xs leading-relaxed text-navy/80">
+      <p>
+        <strong>Problem</strong> {{ project.problem }}
+      </p>
+      <p>
+        <strong>Solution</strong> {{ project.solution }}
+      </p>
+      <p>
+        <strong>Result</strong> {{ project.result }}
+      </p>
+      <p>
+        <strong>Tech</strong> {{ project.tech }}
+      </p>
+    </div>
+    {% if project.link %}
+      <a href="{{ project.link }}"
+         target="_blank"
+         rel="noreferrer"
+         class="inline-flex text-sm font-semibold text-sky hover:underline">링크 확인하기</a>
+    {% else %}
+      <p class="text-xs text-navy/60">보안 또는 운영 정책으로 상세 링크는 비공개입니다.</p>
+    {% endif %}
+  </div>
+</article>

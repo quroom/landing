@@ -1,0 +1,22 @@
+<footer class="border-t border-navy/10 bg-white/80 py-8">
+  <div class="mx-auto grid w-full max-w-6xl gap-5 px-4 text-sm text-navy/75 md:grid-cols-[2fr_1fr] md:px-8">
+    <div>
+      <p class="font-space text-base font-semibold text-navy">{{ content.company.name }}</p>
+      <p class="mt-2">{{ content.company.address }}</p>
+      <p class="mt-1">연락처: {{ content.company.email }}</p>
+      <p class="mt-1">
+        사업자 정보: 상호 {{ content.company.name }} | 대표 {{ content.company.owner }} | 사업자등록번호 {{ content.company.biz_number }}
+      </p>
+      <p class="mt-1">통신판매업 신고번호: {{ content.company.mail_order_number }}</p>
+      <p class="mt-3 text-xs text-navy/60">Copyright {% now "Y" %} QuRoom. All rights reserved.</p>
+    </div>
+    <div class="space-y-2">
+      <a href="{% url 'landing:privacy' %}" class="block hover:text-sky">개인정보처리방침</a>
+      <a href="{% url 'landing:terms' %}" class="block hover:text-sky">이용약관</a>
+      <a href="{{ content.links.linkedin }}"
+         target="_blank"
+         rel="noreferrer"
+         class="block hover:text-sky">LinkedIn (대표자 개인)</a>
+    </div>
+  </div>
+</footer>

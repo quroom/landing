@@ -28,6 +28,7 @@ from .content import (
     SHARED_CONTENT,
     SUPPORTED_LOCALE_SET,
     build_career_ranges,
+    build_gwangju_page_content,
     build_page_content,
 )
 from .deploy_validation import collect_readiness_errors
@@ -57,6 +58,11 @@ SEARCH_SITEMAP_ROUTE_NAMES = (
     "landing:index",
     "landing:free_diagnosis",
     "landing:foreign_developers",
+    "landing:gwangju",
+    "landing:gwangju_homepage",
+    "landing:gwangju_web_development",
+    "landing:gwangju_app_development",
+    "landing:outsourcing_checklist",
     "landing:privacy",
     "landing:terms",
 )
@@ -295,6 +301,11 @@ PAGE_DEFAULT_LOCALES = {
     "home": "ko",
     "foreign_developers": "en",
     "free_diagnosis": "ko",
+    "gwangju": "ko",
+    "gwangju_homepage": "ko",
+    "gwangju_web_development": "ko",
+    "gwangju_app_development": "ko",
+    "outsourcing_checklist": "ko",
 }
 LOCALE_SESSION_KEY = settings.LANGUAGE_COOKIE_NAME
 
@@ -449,6 +460,11 @@ def _canonical_path(request: HttpRequest, page_key: str) -> str:
         "home": reverse("landing:index"),
         "foreign_developers": reverse("landing:foreign_developers"),
         "free_diagnosis": reverse("landing:free_diagnosis"),
+        "gwangju": reverse("landing:gwangju"),
+        "gwangju_homepage": reverse("landing:gwangju_homepage"),
+        "gwangju_web_development": reverse("landing:gwangju_web_development"),
+        "gwangju_app_development": reverse("landing:gwangju_app_development"),
+        "outsourcing_checklist": reverse("landing:outsourcing_checklist"),
         "privacy": reverse("landing:privacy"),
         "terms": reverse("landing:terms"),
     }
@@ -643,6 +659,85 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
         "landing/free_diagnosis.html",
         context,
         page_key="free_diagnosis",
+    )
+
+
+def _render_gwangju_page(
+    request: HttpRequest,
+    *,
+    page_key: str,
+    template_name: str,
+    lead_source: str,
+) -> HttpResponse:
+    translation.activate(SAFE_LOCALE)
+    content = build_gwangju_page_content(page_key)
+    track_event(
+        request,
+        "lp_view",
+        page_key=page_key,
+        lead_source=lead_source,
+    )
+    recommended_inquiry_type = request.GET.get("inquiry_type", "") or content.get(
+        "recommended_inquiry_type", ""
+    )
+    context = _base_context(
+        content,
+        page_key=page_key,
+        locale=SAFE_LOCALE,
+        page_default_locale=SAFE_LOCALE,
+        recommended_inquiry_type=recommended_inquiry_type,
+        lead_context=request.GET.get("lead_context", ""),
+    )
+    return _render_page(
+        request,
+        template_name,
+        context,
+        page_key=page_key,
+    )
+
+
+def gwangju(request: HttpRequest) -> HttpResponse:
+    return _render_gwangju_page(
+        request,
+        page_key="gwangju",
+        template_name="landing/gwangju_hub.html",
+        lead_source="gwangju_hub",
+    )
+
+
+def gwangju_homepage(request: HttpRequest) -> HttpResponse:
+    return _render_gwangju_page(
+        request,
+        page_key="gwangju_homepage",
+        template_name="landing/gwangju_service.html",
+        lead_source="gwangju_homepage",
+    )
+
+
+def gwangju_web_development(request: HttpRequest) -> HttpResponse:
+    return _render_gwangju_page(
+        request,
+        page_key="gwangju_web_development",
+        template_name="landing/gwangju_service.html",
+        lead_source="gwangju_web_development",
+    )
+
+
+def gwangju_app_development(request: HttpRequest) -> HttpResponse:
+    return _render_gwangju_page(
+        request,
+        page_key="gwangju_app_development",
+        template_name="landing/gwangju_service.html",
+        lead_source="gwangju_app_development",
+    )
+
+
+def outsourcing_checklist(request: HttpRequest) -> HttpResponse:
+    return _render_gwangju_page(
+        request,
+        page_key="outsourcing_checklist",
+        template_name="landing/outsourcing_checklist.html",
+        lead_source="outsourcing_checklist",
     )
 
 
@@ -1512,7 +1607,16 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         )
 
     data = form.cleaned_data
-    lead_source = data.get("lead_source") or "contact_form"
+    page_key = data.get("page_key") or "home"
+    submitted_lead_source = data.get("lead_source") or ""
+    if page_key == "foreign_developers":
+        lead_source = "foreign_developer_contact"
+    elif page_key in ContactForm.GWANGJU_PAGE_KEYS:
+        lead_source = "gwangju_contact"
+    elif submitted_lead_source == "founder_contact_from_diagnosis":
+        lead_source = "founder_contact_from_diagnosis"
+    else:
+        lead_source = "founder_contact"
     lead_context = (
         "lead_magnet_diagnosis"
         if lead_source == "founder_contact_from_diagnosis"
@@ -2202,6 +2306,11 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "infra_setup",
         "development",
         "outsourcing",
+        "gwangju_scope",
+        "gwangju_homepage",
+        "gwangju_web",
+        "gwangju_app",
+        "outsourcing_check",
         "matching",
         "network",
         "career",
@@ -2260,6 +2369,11 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "ax_build": "자동화 실행 구축",
         "infra_setup": "창업 기본 인프라 구축",
         "outsourcing": "외주용역 집중 트랙",
+        "gwangju_scope": "프로젝트 범위/견적 정리",
+        "gwangju_homepage": "광주 홈페이지 제작",
+        "gwangju_web": "광주 웹개발",
+        "gwangju_app": "광주 앱개발",
+        "outsourcing_check": "외주 전 체크리스트 점검",
         "network": "개발사 네트워크 연결",
         "career": "취업/실무 커리어 상담",
         "settlement": "정착/생활 연계 상담",
