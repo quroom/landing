@@ -1,5 +1,11 @@
 {% extends "landing/base.html" %}
 {% load static %}
+{% block extra_head %}
+  <link rel="preload"
+        as="image"
+        href="{% static 'hero-quroom-optimized.jpg' %}"
+        type="image/jpeg" />
+{% endblock %}
 {% block title %}{{ content.meta_title }}{% endblock %}
 {% block description %}{{ content.meta_description }}{% endblock %}
 {% block keywords %}{{ content.meta_keywords }}{% endblock %}
@@ -13,6 +19,10 @@
       <a href="{% url 'landing:index' %}#hero" class="flex items-center gap-3">
         <img src="{% static 'logo.jpg' %}"
              alt="큐룸 로고"
+             width="36"
+             height="36"
+             loading="lazy"
+             decoding="async"
              class="h-9 w-9 rounded-full border border-navy/15 object-cover" />
         <div>
           <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>

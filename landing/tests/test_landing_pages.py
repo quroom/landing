@@ -438,7 +438,7 @@ class LandingPageTests(TestCase):
             'name="page_key" value="gwangju_homepage"',
             html=False,
         )
-        self.assertContains(response, "hero-quroom.jpg")
+        self.assertContains(response, "hero-quroom-optimized.jpg")
         self.assertContains(response, "첫 상담에서 정리하는 것")
         self.assertContains(response, "결정 기준")
         self.assertContains(response, "홈페이지 제작 상담하기")

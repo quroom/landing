@@ -137,7 +137,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    CODE_ROOT / "static",
     REPO_ROOT / "images",
 ]
 STATIC_ROOT = REPO_ROOT / "staticfiles"
@@ -153,7 +152,10 @@ else:
             "Install requirements and redeploy."
         )
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
-    staticfiles_storage_backend = "whitenoise.storage.CompressedStaticFilesStorage"
+    staticfiles_storage_backend = (
+        "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    )
+    WHITENOISE_MAX_AGE = 31536000
 
 STORAGES = {
     "default": {

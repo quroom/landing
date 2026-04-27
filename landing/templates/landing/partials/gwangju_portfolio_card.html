@@ -3,6 +3,10 @@
   <div class="flex aspect-[16/10] items-center justify-center border-b border-navy/10 bg-gradient-to-br from-white to-fog/70 p-4">
     <img src="{% static project.image %}"
          alt="{{ project.name }} 썸네일"
+         width="900"
+         height="500"
+         loading="lazy"
+         decoding="async"
          class="max-h-full w-full object-contain transition duration-300 group-hover:scale-[1.03]" />
   </div>
   <div class="space-y-3 p-5">

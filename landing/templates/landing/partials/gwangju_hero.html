@@ -2,8 +2,13 @@
 <section id="hero"
          class="relative isolate overflow-hidden pt-28 text-white md:pt-36">
   <div class="absolute inset-0 -z-10">
-    <img src="{% static 'hero-quroom.jpg' %}"
+    <img src="{% static 'hero-quroom-optimized.jpg' %}"
          alt="큐룸 광주 개발 상담 배경 이미지"
+         width="1600"
+         height="2414"
+         loading="eager"
+         fetchpriority="high"
+         decoding="async"
          class="h-full w-full object-cover" />
     <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/60"></div>
     <div class="absolute -left-16 top-20 h-44 w-44 rounded-full bg-sky/30 blur-3xl"></div>

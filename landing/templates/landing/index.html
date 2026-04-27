@@ -1,5 +1,11 @@
 {% extends "landing/base.html" %}
 {% load i18n static %}
+{% block extra_head %}
+  <link rel="preload"
+        as="image"
+        href="{% static 'hero-quroom-optimized.jpg' %}"
+        type="image/jpeg" />
+{% endblock %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.13),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(74,222,128,0.1),transparent_45%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>
@@ -9,6 +15,10 @@
       <a href="#hero" class="flex items-center gap-3">
         <img src="{% static 'logo.jpg' %}"
              alt="{% trans '큐룸 로고' %}"
+             width="36"
+             height="36"
+             loading="lazy"
+             decoding="async"
              class="h-9 w-9 rounded-full border border-navy/15 object-cover" />
         <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>
       </a>
@@ -42,8 +52,13 @@
   <main>
     <section id="hero" class="relative overflow-hidden pt-28 md:pt-36">
       <div class="absolute inset-0 -z-10">
-        <img src="{% static 'hero-quroom.jpg' %}"
+        <img src="{% static 'hero-quroom-optimized.jpg' %}"
              alt="{% trans '협업과 개발을 상징하는 히어로 배경 이미지' %}"
+             width="1600"
+             height="2414"
+             loading="eager"
+             fetchpriority="high"
+             decoding="async"
              class="h-full w-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/75 to-navy/50"></div>
         <div class="absolute bottom-8 right-8 h-24 w-24 rounded-full bg-sky/30 blur-2xl"></div>
@@ -270,6 +285,10 @@
             <div class="flex h-52 w-full items-center justify-center bg-fog/70 p-2">
               <img src="{% static project.image %}"
                    alt="{{ project.name }} {% trans '썸네일' %}"
+                   width="900"
+                   height="500"
+                   loading="lazy"
+                   decoding="async"
                    class="max-h-full w-full object-contain" />
             </div>
             <div class="space-y-3 p-5">
