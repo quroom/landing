@@ -1,6 +1,8 @@
 import json
 import os
+import re
 from datetime import date, datetime, timedelta
+from html import escape
 from ipaddress import ip_address
 
 from django.conf import settings
@@ -48,6 +50,7 @@ from .lead_magnet_sections import (
 from .mailers import deliver_inquiry_email, deliver_inquiry_email_async
 from .models import (
     AnalyticsExcludedIP,
+    BuildNote,
     ContactInquiry,
     FunnelEvent,
     Testimonial,
@@ -63,12 +66,14 @@ SEARCH_SITEMAP_ROUTE_NAMES = (
     "landing:gwangju_web_development",
     "landing:gwangju_app_development",
     "landing:outsourcing_checklist",
+    "landing:build_notes",
     "landing:privacy",
     "landing:terms",
 )
 
 SUPPORTED_ROBOTS_EXTRA_DIRECTIVES = {
     "allow",
+    "content-signal",
     "disallow",
     "sitemap",
     "user-agent",
@@ -748,6 +753,120 @@ def outsourcing_checklist(request: HttpRequest) -> HttpResponse:
     )
 
 
+def build_notes(request: HttpRequest) -> HttpResponse:
+    notes = BuildNote.objects.filter(
+        status=BuildNote.Status.PUBLISHED,
+        published_at__lte=timezone.now(),
+    )
+    return render(
+        request,
+        "landing/build_notes.html",
+        {
+            "notes": notes,
+            "canonical_url": _absolute_site_url(reverse("landing:build_notes")),
+            "og_url": _absolute_site_url(reverse("landing:build_notes")),
+        },
+    )
+
+
+def build_note_detail(request: HttpRequest, slug: str) -> HttpResponse:
+    note = get_object_or_404(
+        BuildNote,
+        slug=slug,
+        status=BuildNote.Status.PUBLISHED,
+        published_at__lte=timezone.now(),
+    )
+    note_url = reverse("landing:build_note_detail", kwargs={"slug": note.slug})
+    return render(
+        request,
+        "landing/build_note_detail.html",
+        {
+            "note": note,
+            "body_html": _render_limited_markdown(note.body_markdown),
+            "canonical_url": _absolute_site_url(note_url),
+            "og_url": _absolute_site_url(note_url),
+        },
+    )
+
+
+def _render_limited_markdown(markdown_text: str) -> str:
+    lines = markdown_text.strip().splitlines()
+    blocks = []
+    paragraph_lines = []
+    list_items = []
+    in_code_block = False
+    code_lines = []
+
+    def flush_paragraph() -> None:
+        if paragraph_lines:
+            blocks.append(
+                "<p>" + _render_inline_markdown(" ".join(paragraph_lines)) + "</p>"
+            )
+            paragraph_lines.clear()
+
+    def flush_list() -> None:
+        if list_items:
+            blocks.append(
+                "<ul>" + "".join(f"<li>{item}</li>" for item in list_items) + "</ul>"
+            )
+            list_items.clear()
+
+    def flush_code() -> None:
+        if code_lines:
+            blocks.append(
+                "<pre><code>" + escape("\n".join(code_lines)) + "</code></pre>"
+            )
+            code_lines.clear()
+
+    for raw_line in lines:
+        line = raw_line.rstrip()
+        if line.strip() == "```":
+            if in_code_block:
+                flush_code()
+                in_code_block = False
+            else:
+                flush_paragraph()
+                flush_list()
+                in_code_block = True
+            continue
+        if in_code_block:
+            code_lines.append(line)
+            continue
+        if not line.strip():
+            flush_paragraph()
+            flush_list()
+            continue
+        if line.startswith("### "):
+            flush_paragraph()
+            flush_list()
+            blocks.append(f"<h3>{escape(line[4:].strip())}</h3>")
+            continue
+        if line.startswith("## "):
+            flush_paragraph()
+            flush_list()
+            blocks.append(f"<h2>{escape(line[3:].strip())}</h2>")
+            continue
+        if line.startswith("- "):
+            flush_paragraph()
+            list_items.append(_render_inline_markdown(line[2:].strip()))
+            continue
+        paragraph_lines.append(line.strip())
+
+    flush_paragraph()
+    flush_list()
+    flush_code()
+    return "\n".join(blocks)
+
+
+def _render_inline_markdown(text: str) -> str:
+    escaped = escape(text)
+    return re.sub(
+        r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
+        r'<a href="\2" target="_blank" rel="noreferrer">\1</a>',
+        escaped,
+    )
+
+
 def robots_txt(request: HttpRequest) -> HttpResponse:
     lines = [
         "User-agent: *",
@@ -778,6 +897,15 @@ def sitemap_xml(request: HttpRequest) -> HttpResponse:
     for route_name in SEARCH_SITEMAP_ROUTE_NAMES:
         path = reverse(route_name)
         urls.append(_absolute_site_url(path))
+    for note in BuildNote.objects.filter(
+        status=BuildNote.Status.PUBLISHED,
+        published_at__lte=timezone.now(),
+    ):
+        urls.append(
+            _absolute_site_url(
+                reverse("landing:build_note_detail", kwargs={"slug": note.slug})
+            )
+        )
 
     xml = render_to_string(
         "landing/sitemap.xml",

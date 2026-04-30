@@ -46,6 +46,12 @@ urlpatterns = [
         views.outsourcing_checklist,
         name="outsourcing_checklist",
     ),
+    path("build-notes/", views.build_notes, name="build_notes"),
+    path(
+        "build-notes/<path:slug>/",
+        views.build_note_detail,
+        name="build_note_detail",
+    ),
     path(
         "free-diagnosis/preview/",
         views.lead_magnet_report_preview,

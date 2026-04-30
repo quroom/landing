@@ -1,0 +1,47 @@
+{% extends "landing/base.html" %}
+{% block title %}{{ note.seo_title|default:note.title }} | QuRoom{% endblock %}
+{% block description %}{{ note.seo_description|default:note.summary }}{% endblock %}
+{% block keywords %}{{ note.tags|default:"1인 개발자, 제품 개발, MVP, 외주 개발" }}{% endblock %}
+{% block og_title %}
+  <meta property="og:title"
+        content="{{ note.seo_title|default:note.title }} | QuRoom" />
+{% endblock %}
+{% block og_description %}
+  <meta property="og:description"
+        content="{{ note.seo_description|default:note.summary }}" />
+{% endblock %}
+{% block body %}
+  <div class="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_bottom,#f8fbff,#e8eef5)]"></div>
+  <header class="border-b border-navy/10 bg-white/85 backdrop-blur">
+    <div class="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-4 md:px-8">
+      <a href="{% url 'landing:build_notes' %}"
+         class="text-sm font-semibold text-navy/70 hover:text-sky">제품 개발 노트</a>
+      <a href="{% url 'landing:index' %}#contact"
+         class="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky">문의하기</a>
+    </div>
+  </header>
+  <main class="mx-auto w-full max-w-3xl px-4 py-12 md:px-8 md:py-16">
+    <article class="rounded-3xl border border-navy/10 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] md:p-9">
+      <div class="flex flex-wrap items-center gap-2 text-xs text-navy/60">
+        <span class="rounded-full bg-sky/10 px-2.5 py-1 font-semibold text-sky-700">{{ note.get_category_display }}</span>
+        {% if note.published_at %}
+          <time datetime="{{ note.published_at|date:'c' }}">{{ note.published_at|date:"Y.m.d" }}</time>
+        {% endif %}
+      </div>
+      <h1 class="mt-4 font-space text-3xl font-bold leading-tight text-navy md:text-4xl">{{ note.title }}</h1>
+      <p class="mt-4 text-base leading-7 text-navy/72">{{ note.summary }}</p>
+      {% if note.tag_list %}
+        <div class="mt-5 flex flex-wrap gap-2">
+          {% for tag in note.tag_list %}<span class="text-xs text-navy/50">#{{ tag }}</span>{% endfor %}
+        </div>
+      {% endif %}
+      <div class="build-note-body mt-8 border-t border-navy/10 pt-8 text-navy/82">{{ body_html|safe }}</div>
+    </article>
+    <section class="mt-8 rounded-2xl bg-navy p-6 text-white">
+      <h2 class="font-space text-xl font-bold">제품 범위나 외주 기준을 같이 정리하고 싶다면</h2>
+      <p class="mt-2 text-sm leading-6 text-white/78">현재 단계에서 만들 것, 미룰 것, 맡길 것을 첫 대화에서 함께 정리합니다.</p>
+      <a href="{% url 'landing:index' %}#contact"
+         class="mt-4 inline-flex rounded-lg bg-sky px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500">문의하기</a>
+    </section>
+  </main>
+{% endblock %}

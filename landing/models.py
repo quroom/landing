@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class ContactInquiry(models.Model):
@@ -71,6 +72,96 @@ class AnalyticsExcludedIP(models.Model):
     def __str__(self) -> str:
         state = "active" if self.is_active else "inactive"
         return f"{self.ip_address} ({state})"
+
+
+class BuildNote(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = "draft", "Draft"
+        PUBLISHED = "published", "Published"
+
+    class Category(models.TextChoices):
+        SOLO_DEV = "solo_dev", "1인 개발"
+        MVP = "mvp", "MVP"
+        OUTSOURCING = "outsourcing", "외주"
+        RETROSPECTIVE = "retrospective", "제품 회고"
+        OPERATIONS = "operations", "운영/마케팅"
+
+    title = models.CharField(max_length=120)
+    slug = models.SlugField(
+        max_length=140,
+        unique=True,
+        blank=True,
+        allow_unicode=True,
+        help_text=(
+            "비워두면 제목으로 자동 생성합니다. 국내 검색 의도가 강한 글은 "
+            "짧은 한글 slug를 써도 됩니다. 예: 1인-개발자-mvp-범위. "
+            "너무 긴 문장형 slug는 공유/분석 URL이 지저분해질 수 있어 피합니다."
+        ),
+    )
+    summary = models.TextField(max_length=300)
+    body_markdown = models.TextField()
+    category = models.CharField(
+        max_length=30,
+        choices=Category.choices,
+        default=Category.SOLO_DEV,
+        db_index=True,
+    )
+    tags = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="쉼표로 구분합니다. 예: 1인 개발,MVP,외주",
+    )
+    seo_title = models.CharField(max_length=120, blank=True)
+    seo_description = models.CharField(max_length=160, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.DRAFT,
+        db_index=True,
+    )
+    published_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-published_at", "-created_at"]
+        indexes = [
+            models.Index(fields=["status", "-published_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return self.title
+
+    @property
+    def is_published(self) -> bool:
+        return self.status == self.Status.PUBLISHED and self.published_at is not None
+
+    @property
+    def tag_list(self) -> list[str]:
+        return [tag.strip() for tag in self.tags.split(",") if tag.strip()]
+
+    @classmethod
+    def _unique_slug(cls, title: str, current_pk: int | None = None) -> str:
+        base_slug = slugify(title, allow_unicode=True)[:120] or "build-note"
+        slug = base_slug
+        suffix = 2
+        queryset = cls.objects.all()
+        if current_pk:
+            queryset = queryset.exclude(pk=current_pk)
+        while queryset.filter(slug=slug).exists():
+            suffix_text = f"-{suffix}"
+            slug = f"{base_slug[: 140 - len(suffix_text)]}{suffix_text}"
+            suffix += 1
+        return slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._unique_slug(self.title, self.pk)
+        if self.status == self.Status.PUBLISHED and self.published_at is None:
+            self.published_at = timezone.now()
+        if self.status != self.Status.PUBLISHED:
+            self.published_at = None
+        super().save(*args, **kwargs)
 
 
 class TestimonialInvite(models.Model):

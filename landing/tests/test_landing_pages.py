@@ -13,6 +13,7 @@ from django.utils import timezone
 from landing.content import CAREER_RANGES, build_career_ranges
 from landing.models import (
     AnalyticsExcludedIP,
+    BuildNote,
     ContactInquiry,
     FunnelEvent,
     Testimonial,
@@ -129,17 +130,19 @@ class LandingPageTests(TestCase):
     @override_settings(
         SITE_BASE_URL="https://quroom.kr",
         SEARCH_ROBOTS_EXTRA_LINES=[
-            "Content-Signal: search=yes,ai-train=no",
+            "Content-Signal: search=yes,ai-input=yes,ai-train=no",
             "#DaumWebMasterTool:test-token",
             "User-agent: Daumoa",
             "Allow: /",
         ],
     )
-    def test_robots_txt_filters_unknown_extra_directives(self) -> None:
+    def test_robots_txt_includes_supported_content_signal_and_filters_unknown_extra_directives(
+        self,
+    ) -> None:
         response = self.client.get(reverse("landing:robots_txt"))
 
         body = response.content.decode("utf-8")
-        self.assertNotIn("Content-Signal", body)
+        self.assertIn("Content-Signal: search=yes,ai-input=yes,ai-train=no", body)
         self.assertIn("#DaumWebMasterTool:test-token", body)
         self.assertIn("User-agent: Daumoa", body)
         self.assertIn("Allow: /", body)
@@ -207,10 +210,156 @@ class LandingPageTests(TestCase):
         )
         self.assertContains(
             response,
+            "<loc>https://quroom.kr/build-notes/</loc>",
+            html=False,
+        )
+        self.assertContains(
+            response,
             "<loc>https://quroom.kr/privacy/</loc>",
             html=False,
         )
         self.assertContains(response, "<loc>https://quroom.kr/terms/</loc>", html=False)
+
+    @override_settings(SITE_BASE_URL="https://quroom.kr")
+    def test_sitemap_xml_contains_published_build_notes_only(self) -> None:
+        published_note = BuildNote.objects.create(
+            title="1인 개발자가 MVP 범위를 줄이는 기준",
+            slug="solo-founder-mvp-scope",
+            summary="혼자 제품을 만들 때 기능을 줄이는 기준을 정리합니다.",
+            body_markdown="## 기준\n\n- 지금 검증할 것만 남깁니다.",
+            category=BuildNote.Category.MVP,
+            tags="1인 개발,MVP",
+            status=BuildNote.Status.PUBLISHED,
+            published_at=timezone.now(),
+        )
+        BuildNote.objects.create(
+            title="초안 글",
+            slug="draft-note",
+            summary="아직 공개하지 않는 글입니다.",
+            body_markdown="본문",
+            status=BuildNote.Status.DRAFT,
+        )
+
+        response = self.client.get(reverse("landing:sitemap_xml"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            f"<loc>https://quroom.kr/build-notes/{published_note.slug}/</loc>",
+            html=False,
+        )
+        self.assertNotContains(response, "draft-note")
+
+    def test_build_notes_list_shows_published_notes_only(self) -> None:
+        BuildNote.objects.create(
+            title="혼자 만든 제품이 유입에서 막히는 이유",
+            slug="solo-product-growth-blocker",
+            summary="만든 뒤 유입에서 막히는 이유를 정리합니다.",
+            body_markdown="본문",
+            category=BuildNote.Category.SOLO_DEV,
+            tags="1인 개발,유입",
+            status=BuildNote.Status.PUBLISHED,
+            published_at=timezone.now(),
+        )
+        BuildNote.objects.create(
+            title="비공개 초안",
+            slug="private-draft",
+            summary="비공개",
+            body_markdown="본문",
+            status=BuildNote.Status.DRAFT,
+        )
+
+        response = self.client.get(reverse("landing:build_notes"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "제품 개발 노트")
+        self.assertContains(response, "혼자 만든 제품이 유입에서 막히는 이유")
+        self.assertNotContains(response, "비공개 초안")
+
+    def test_build_note_detail_renders_limited_markdown_and_hides_drafts(self) -> None:
+        published_note = BuildNote.objects.create(
+            title="외주 전에 범위를 먼저 정해야 하는 이유",
+            slug="outsourcing-scope-first",
+            summary="외주 실패를 줄이는 범위 정리 기준입니다.",
+            body_markdown=(
+                "## 범위부터 정합니다\n\n"
+                "기능 목록보다 완료 기준이 먼저입니다.\n\n"
+                "- 만들 기능\n"
+                "- 미룰 기능\n\n"
+                "[QuRoom](https://quroom.kr)"
+            ),
+            category=BuildNote.Category.OUTSOURCING,
+            tags="외주,MVP",
+            status=BuildNote.Status.PUBLISHED,
+            published_at=timezone.now(),
+        )
+        draft_note = BuildNote.objects.create(
+            title="초안",
+            slug="hidden-draft",
+            summary="초안",
+            body_markdown="## 비공개",
+            status=BuildNote.Status.DRAFT,
+        )
+
+        response = self.client.get(
+            reverse("landing:build_note_detail", kwargs={"slug": published_note.slug})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<h2>범위부터 정합니다</h2>", html=False)
+        self.assertContains(response, "<li>만들 기능</li>", html=False)
+        self.assertContains(
+            response,
+            '<a href="https://quroom.kr" target="_blank" rel="noreferrer">QuRoom</a>',
+            html=False,
+        )
+        self.assertContains(response, "제품 범위나 외주 기준을 같이 정리하고 싶다면")
+        self.assertEqual(
+            self.client.get(
+                reverse("landing:build_note_detail", kwargs={"slug": draft_note.slug})
+            ).status_code,
+            404,
+        )
+
+    def test_build_note_generates_unique_slug_when_blank(self) -> None:
+        first_note = BuildNote.objects.create(
+            title="Solo Founder MVP Scope",
+            summary="첫 번째 글",
+            body_markdown="본문",
+            status=BuildNote.Status.DRAFT,
+        )
+        second_note = BuildNote.objects.create(
+            title="Solo Founder MVP Scope",
+            summary="두 번째 글",
+            body_markdown="본문",
+            status=BuildNote.Status.DRAFT,
+        )
+        korean_note = BuildNote.objects.create(
+            title="1인 개발자는 문제부터 시작해야 합니다",
+            summary="한글 제목 글",
+            body_markdown="본문",
+            status=BuildNote.Status.DRAFT,
+        )
+
+        self.assertEqual(first_note.slug, "solo-founder-mvp-scope")
+        self.assertEqual(second_note.slug, "solo-founder-mvp-scope-2")
+        self.assertEqual(korean_note.slug, "1인-개발자는-문제부터-시작해야-합니다")
+
+    def test_build_note_detail_supports_korean_slug(self) -> None:
+        note = BuildNote.objects.create(
+            title="기능부터 시작하면 망합니다",
+            summary="한글 slug 글",
+            body_markdown="본문",
+            status=BuildNote.Status.PUBLISHED,
+            published_at=timezone.now(),
+        )
+
+        response = self.client.get(
+            reverse("landing:build_note_detail", kwargs={"slug": note.slug})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "기능부터 시작하면 망합니다")
 
     def test_home_page_renders(self) -> None:
         response = self.client.get(reverse("landing:index"))

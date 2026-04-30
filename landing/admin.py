@@ -7,6 +7,7 @@ from django.utils import timezone
 from .mailers import deliver_inquiry_email
 from .models import (
     AnalyticsExcludedIP,
+    BuildNote,
     ContactInquiry,
     FunnelEvent,
     Testimonial,
@@ -75,6 +76,54 @@ class AnalyticsExcludedIPAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "updated_at", "created_at")
     search_fields = ("ip_address", "note")
     readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(BuildNote)
+class BuildNoteAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "category",
+        "status",
+        "published_at",
+        "updated_at",
+    )
+    list_filter = ("status", "category", "published_at", "created_at")
+    search_fields = ("title", "summary", "body_markdown", "tags")
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("created_at", "updated_at")
+    actions = ("publish_selected", "mark_draft")
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "title",
+                    "slug",
+                    "summary",
+                    "body_markdown",
+                    "category",
+                    "tags",
+                )
+            },
+        ),
+        ("SEO", {"fields": ("seo_title", "seo_description")}),
+        ("Publication", {"fields": ("status", "published_at")}),
+        ("System", {"fields": ("created_at", "updated_at")}),
+    )
+
+    @admin.action(description="선택 글 발행")
+    def publish_selected(self, request, queryset):
+        updated = 0
+        for note in queryset:
+            note.status = BuildNote.Status.PUBLISHED
+            note.save(update_fields=["status", "published_at", "updated_at"])
+            updated += 1
+        self.message_user(request, f"발행 처리: {updated}건")
+
+    @admin.action(description="선택 글 초안으로 변경")
+    def mark_draft(self, request, queryset):
+        updated = queryset.update(status=BuildNote.Status.DRAFT, published_at=None)
+        self.message_user(request, f"초안 처리: {updated}건")
 
 
 @admin.register(Testimonial)

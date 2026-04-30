@@ -116,3 +116,49 @@ form input[type="radio"] {
 .loading-bar {
   animation: loading-bar 1s linear infinite;
 }
+
+.build-note-body {
+  line-height: 1.8;
+}
+
+.build-note-body h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.build-note-body h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.build-note-body p {
+  margin: 1rem 0;
+}
+
+.build-note-body ul {
+  margin: 1rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.build-note-body li {
+  margin: 0.35rem 0;
+}
+
+.build-note-body a {
+  color: var(--sky);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.build-note-body pre {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.06);
+  padding: 1rem;
+}
