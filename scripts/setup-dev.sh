@@ -28,6 +28,7 @@ fi
 "${PYTHON_BIN}" -m venv "${ROOT_DIR}/.venv"
 "${ROOT_DIR}/.venv/bin/pip" install --upgrade pip
 "${ROOT_DIR}/.venv/bin/pip" install -r "${ROOT_DIR}/requirements.txt"
+"${ROOT_DIR}/scripts/install-git-hooks.sh"
 
 echo "Local dev environment is ready."
 echo "  activate: source ${ROOT_DIR}/.venv/bin/activate"
