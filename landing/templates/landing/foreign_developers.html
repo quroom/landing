@@ -1,6 +1,8 @@
 {% extends "landing/base.html" %}
 {% load i18n static %}
 {% block title %}{{ content.persona.meta_title }}{% endblock %}
+{% block description %}{{ content.persona.description }}{% endblock %}
+{% block og_description %}<meta property="og:description" content="{{ content.persona.description }}" />{% endblock %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(74,222,128,0.14),transparent_40%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>

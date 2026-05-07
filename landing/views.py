@@ -486,10 +486,39 @@ def _canonical_path(request: HttpRequest, page_key: str) -> str:
 def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
     canonical_path = _canonical_path(request, page_key)
     canonical_url = _absolute_site_url(canonical_path)
+    site_base_url = settings.SITE_BASE_URL.rstrip("/")
+    organization_id = f"{site_base_url}/#organization"
+    organization_schema = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": organization_id,
+        "name": "QuRoom",
+        "url": f"{site_base_url}/",
+        "logo": f"{site_base_url}/static/logo.jpg",
+    }
+    website_schema = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": f"{site_base_url}/#website",
+        "url": f"{site_base_url}/",
+        "name": "QuRoom",
+        "inLanguage": "ko-KR",
+        "publisher": {"@id": organization_id},
+    }
     return {
         "canonical_url": canonical_url,
         "og_url": canonical_url,
-        "site_base_url": settings.SITE_BASE_URL.rstrip("/"),
+        "site_base_url": site_base_url,
+        "organization_schema_json": json.dumps(
+            organization_schema,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ),
+        "website_schema_json": json.dumps(
+            website_schema,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ),
     }
 
 
@@ -700,6 +729,54 @@ def _render_gwangju_page(
         recommended_inquiry_type=recommended_inquiry_type,
         lead_context=request.GET.get("lead_context", ""),
     )
+    if page_key in {
+        "gwangju",
+        "gwangju_homepage",
+        "gwangju_web_development",
+        "gwangju_app_development",
+    }:
+        canonical_url = _absolute_site_url(_canonical_path(request, page_key))
+        organization_id = f"{settings.SITE_BASE_URL.rstrip('/')}/#organization"
+        service_schema = {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "@id": f"{canonical_url}#service",
+            "name": content.get("meta_title", "QuRoom Service"),
+            "description": content.get("meta_description", ""),
+            "url": canonical_url,
+            "provider": {"@id": organization_id},
+            "areaServed": {
+                "@type": "City",
+                "name": "Gwangju",
+            },
+        }
+        faq_schema = {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": f"{canonical_url}#faq",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": item.get("q", ""),
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": item.get("a", ""),
+                    },
+                }
+                for item in content.get("faq", [])
+                if item.get("q") and item.get("a")
+            ],
+        }
+        context["service_schema_json"] = json.dumps(
+            service_schema,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        context["faq_schema_json"] = json.dumps(
+            faq_schema,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
     return _render_page(
         request,
         template_name,

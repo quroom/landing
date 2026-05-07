@@ -50,6 +50,21 @@ class LandingPageTests(TestCase):
             '<meta property="og:url" content="https://quroom.kr/" />',
             html=False,
         )
+        self.assertContains(
+            response,
+            '"@id":"https://quroom.kr/#organization"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            '"@id":"https://quroom.kr/#website"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            '"publisher":{"@id":"https://quroom.kr/#organization"}',
+            html=False,
+        )
 
     @override_settings(SITE_BASE_URL="https://quroom.kr")
     def test_gwangju_pages_render_canonical_and_og_url(self) -> None:
@@ -93,6 +108,26 @@ class LandingPageTests(TestCase):
                 self.assertContains(
                     response,
                     f'<meta property="og:url" content="{expected_url}" />',
+                    html=False,
+                )
+
+    @override_settings(SITE_BASE_URL="https://quroom.kr")
+    def test_gwangju_pages_render_service_and_faq_schema(self) -> None:
+        route_names = [
+            "landing:gwangju",
+            "landing:gwangju_homepage",
+            "landing:gwangju_web_development",
+            "landing:gwangju_app_development",
+        ]
+        for route_name in route_names:
+            with self.subTest(route_name=route_name):
+                response = self.client.get(reverse(route_name))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, '"@type":"Service"', html=False)
+                self.assertContains(response, '"@type":"FAQPage"', html=False)
+                self.assertContains(
+                    response,
+                    '"provider":{"@id":"https://quroom.kr/#organization"}',
                     html=False,
                 )
 
@@ -662,6 +697,16 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:foreign_developers"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="en">', html=False)
+        self.assertContains(
+            response,
+            'content="Career direction, resume or portfolio readiness, and Korea guidance to help you take the next realistic step."',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            '<meta property="og:description" content="Career direction, resume or portfolio readiness, and Korea guidance to help you take the next realistic step." />',
+            html=False,
+        )
         self.assertContains(response, "For International Talent")
         self.assertContains(response, "Work in Korea with practical support")
         self.assertContains(

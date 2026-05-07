@@ -5,6 +5,8 @@
         as="image"
         href="{% static 'hero-quroom-optimized.jpg' %}"
         type="image/jpeg" />
+  {% if service_schema_json %}<script type="application/ld+json">{{ service_schema_json|safe }}</script>{% endif %}
+  {% if faq_schema_json %}<script type="application/ld+json">{{ faq_schema_json|safe }}</script>{% endif %}
 {% endblock %}
 {% block title %}{{ content.meta_title }}{% endblock %}
 {% block description %}{{ content.meta_description }}{% endblock %}
