@@ -22,6 +22,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         "email",
         "inquiry_type",
         "lead_source",
+        "ad_creative",
         "landing_variant",
         "marketing_opt_in",
         "email_delivery_status",
@@ -32,6 +33,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         "email_delivery_status",
         "inquiry_type",
         "lead_source",
+        "ad_creative",
         "landing_variant",
         "created_at",
     )
@@ -41,6 +43,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         "company_name",
         "message",
         "ad_keyword",
+        "ad_creative",
         "ad_group",
     )
     readonly_fields = (

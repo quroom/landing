@@ -1377,6 +1377,62 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "관리자 알림: 1")
         self.assertContains(response, "성공률 100.0%")
 
+    def test_admin_dashboard_shows_naver_ad_performance(self) -> None:
+        user_model = get_user_model()
+        staff = user_model.objects.create_user(
+            username="staff-naver",
+            password="pass1234",
+            is_staff=True,
+        )
+        self.client.force_login(staff)
+
+        FunnelEvent.objects.create(
+            event_name="lp_view",
+            page_key="home",
+            lead_source="naver_search_ad",
+            metadata={
+                "campaign": "app_dev",
+                "ad_group": "app_cost",
+                "creative": "scope_first",
+                "keyword": "앱개발비용",
+                "utm_content": "app_cost_scope_first",
+            },
+        )
+        FunnelEvent.objects.create(
+            event_name="contact_submit",
+            page_key="home",
+            lead_source="naver_search_ad",
+            metadata={
+                "ad_campaign": "app_dev",
+                "ad_group": "app_cost",
+                "ad_creative": "scope_first",
+                "ad_keyword": "앱개발비용",
+                "utm_content": "app_cost_scope_first",
+            },
+        )
+        ContactInquiry.objects.create(
+            name="광고 문의",
+            email="naver-dashboard@example.com",
+            inquiry_type="outsourcing",
+            message="광고 문의",
+            lead_source="naver_search_ad",
+            ad_campaign="app_dev",
+            ad_group="app_cost",
+            ad_creative="scope_first",
+            ad_keyword="앱개발비용",
+            landing_variant="app_cost",
+        )
+
+        response = self.client.get(reverse("landing:admin_dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "네이버 광고 성과")
+        self.assertContains(response, "app_cost")
+        self.assertContains(response, "scope_first")
+        self.assertContains(response, "앱개발비용")
+        self.assertContains(response, "app_cost_scope_first")
+        self.assertContains(response, "전환율 100.0%")
+
     def test_admin_dashboard_falls_back_to_legacy_mail_event(self) -> None:
         user_model = get_user_model()
         staff = user_model.objects.create_user(

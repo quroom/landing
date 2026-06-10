@@ -358,6 +358,7 @@ def _build_inquiry_mail(inquiry: ContactInquiry) -> tuple[str, str]:
             f"- campaign: {inquiry.ad_campaign or '-'}\n"
             f"- ad_group: {inquiry.ad_group or '-'}\n"
             f"- intent: {inquiry.ad_intent or '-'}\n"
+            f"- creative: {inquiry.ad_creative or '-'}\n"
             f"- keyword: {inquiry.ad_keyword or '-'}\n"
             f"- landing_variant: {inquiry.landing_variant or '-'}\n"
         )

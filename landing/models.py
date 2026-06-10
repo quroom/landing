@@ -24,6 +24,7 @@ class ContactInquiry(models.Model):
     ad_campaign = models.CharField(max_length=80, blank=True, null=True, default="")
     ad_group = models.CharField(max_length=80, blank=True, null=True, default="")
     ad_intent = models.CharField(max_length=80, blank=True, null=True, default="")
+    ad_creative = models.CharField(max_length=80, blank=True, null=True, default="")
     ad_keyword = models.CharField(max_length=120, blank=True, null=True, default="")
     landing_variant = models.CharField(max_length=80, blank=True, null=True, default="")
     privacy_agreed_at = models.DateTimeField(default=timezone.now)
