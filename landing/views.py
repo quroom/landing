@@ -1,7 +1,6 @@
 import json
 import os
 import re
-from collections import defaultdict
 from datetime import date, datetime, timedelta
 from html import escape
 from ipaddress import ip_address
@@ -2751,119 +2750,6 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         ),
     }
 
-    def _apply_range_filter(queryset, date_field: str = "created_at"):
-        if selected_range == "today":
-            return queryset.filter(**{f"{date_field}__date": today})
-        if selected_range == "7d":
-            return queryset.filter(
-                **{f"{date_field}__date__gte": today - timedelta(days=6)}
-            )
-        if selected_range == "30d":
-            return queryset.filter(
-                **{f"{date_field}__date__gte": today - timedelta(days=29)}
-            )
-        return queryset
-
-    def _metadata_value(metadata: dict, *keys: str) -> str:
-        for key in keys:
-            value = str(metadata.get(key, "") or "").strip()
-            if value:
-                return value
-        return ""
-
-    def _ad_row_key_from_metadata(metadata: dict) -> tuple[str, str, str, str, str]:
-        campaign = _metadata_value(metadata, "ad_campaign", "campaign", "utm_campaign")
-        ad_group = _metadata_value(metadata, "ad_group", "group")
-        creative = _metadata_value(metadata, "ad_creative", "creative")
-        keyword = _metadata_value(metadata, "ad_keyword", "keyword", "utm_term")
-        utm_content = _metadata_value(metadata, "utm_content")
-        if not utm_content:
-            utm_content = f"{ad_group}_{creative}" if creative else ad_group
-        return (campaign, ad_group, creative, keyword, utm_content)
-
-    def _ad_row_key_from_inquiry(
-        inquiry: ContactInquiry,
-    ) -> tuple[str, str, str, str, str]:
-        campaign = inquiry.ad_campaign or ""
-        ad_group = inquiry.ad_group or ""
-        creative = inquiry.ad_creative or ""
-        keyword = inquiry.ad_keyword or ""
-        utm_content = f"{ad_group}_{creative}" if creative else ad_group
-        return (campaign, ad_group, creative, keyword, utm_content)
-
-    naver_events = _apply_range_filter(
-        FunnelEvent.objects.filter(lead_source="naver_search_ad")
-    )
-    naver_inquiries = _apply_range_filter(
-        ContactInquiry.objects.filter(lead_source="naver_search_ad")
-    )
-    naver_ad_rows: dict[tuple[str, str, str, str, str], dict[str, object]] = (
-        defaultdict(
-            lambda: {
-                "campaign": "",
-                "ad_group": "",
-                "creative": "",
-                "keyword": "",
-                "utm_content": "",
-                "views": 0,
-                "contact_events": 0,
-                "inquiries": 0,
-            }
-        )
-    )
-
-    for event in naver_events:
-        key = _ad_row_key_from_metadata(event.metadata or {})
-        row = naver_ad_rows[key]
-        (
-            row["campaign"],
-            row["ad_group"],
-            row["creative"],
-            row["keyword"],
-            row["utm_content"],
-        ) = key
-        if event.event_name == "lp_view":
-            row["views"] = int(row["views"]) + 1
-        elif event.event_name == "contact_submit":
-            row["contact_events"] = int(row["contact_events"]) + 1
-
-    for inquiry in naver_inquiries:
-        key = _ad_row_key_from_inquiry(inquiry)
-        row = naver_ad_rows[key]
-        (
-            row["campaign"],
-            row["ad_group"],
-            row["creative"],
-            row["keyword"],
-            row["utm_content"],
-        ) = key
-        row["inquiries"] = int(row["inquiries"]) + 1
-
-    naver_ad_performance_rows = []
-    for row in naver_ad_rows.values():
-        views = int(row["views"])
-        inquiries_count = int(row["inquiries"])
-        row["conversion_rate"] = _rate(inquiries_count, views)
-        naver_ad_performance_rows.append(row)
-    naver_ad_performance_rows.sort(
-        key=lambda row: (
-            int(row["inquiries"]),
-            int(row["contact_events"]),
-            int(row["views"]),
-        ),
-        reverse=True,
-    )
-    naver_ad_performance = {
-        "views": naver_events.filter(event_name="lp_view").count(),
-        "contact_events": naver_events.filter(event_name="contact_submit").count(),
-        "inquiries": naver_inquiries.count(),
-        "conversion_rate": _rate(
-            naver_inquiries.count(),
-            naver_events.filter(event_name="lp_view").count(),
-        ),
-        "rows": naver_ad_performance_rows[:20],
-    }
-
     recent_inquiries = list(inquiries[:25])
     for inquiry in recent_inquiries:
         inquiry.inquiry_type_label = inquiry_type_labels.get(
@@ -2883,7 +2769,6 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         "inquiry_type_stats": inquiry_type_stats,
         "event_counts": event_counts,
         "lead_magnet_funnel": lead_magnet_funnel,
-        "naver_ad_performance": naver_ad_performance,
     }
     return render(request, "landing/admin_dashboard.html", context)
 

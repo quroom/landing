@@ -166,63 +166,6 @@
           </article>
         </div>
       </section>
-      <section class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 class="text-lg font-semibold text-navy">네이버 광고 성과</h2>
-            <p class="mt-1 text-xs text-navy/60">기준: 광고 유입 lp_view → 문의 저장. 현재 기간 필터가 동일하게 적용됩니다.</p>
-          </div>
-          <p class="rounded-lg bg-fog px-3 py-2 text-xs text-navy/70">전환율 {{ naver_ad_performance.conversion_rate }}%</p>
-        </div>
-        <div class="mt-4 grid gap-3 sm:grid-cols-3">
-          <article class="rounded-xl border border-navy/10 bg-fog p-3">
-            <p class="text-xs text-navy/60">광고 랜딩 유입</p>
-            <p class="mt-1 text-2xl font-bold text-navy">{{ naver_ad_performance.views }}</p>
-          </article>
-          <article class="rounded-xl border border-navy/10 bg-fog p-3">
-            <p class="text-xs text-navy/60">문의 이벤트</p>
-            <p class="mt-1 text-2xl font-bold text-sky">{{ naver_ad_performance.contact_events }}</p>
-          </article>
-          <article class="rounded-xl border border-navy/10 bg-fog p-3">
-            <p class="text-xs text-navy/60">저장된 문의</p>
-            <p class="mt-1 text-2xl font-bold text-mint">{{ naver_ad_performance.inquiries }}</p>
-          </article>
-        </div>
-        <div class="mt-4 overflow-x-auto">
-          <table class="min-w-full text-sm">
-            <thead>
-              <tr class="border-b border-navy/10 text-left text-navy/60">
-                <th class="px-2 py-2">캠페인</th>
-                <th class="px-2 py-2">그룹</th>
-                <th class="px-2 py-2">소재</th>
-                <th class="px-2 py-2">키워드</th>
-                <th class="px-2 py-2">UTM content</th>
-                <th class="px-2 py-2 text-right">유입</th>
-                <th class="px-2 py-2 text-right">문의</th>
-                <th class="px-2 py-2 text-right">전환율</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for row in naver_ad_performance.rows %}
-                <tr class="border-b border-navy/5">
-                  <td class="px-2 py-2 text-navy/75">{{ row.campaign|default:"-" }}</td>
-                  <td class="px-2 py-2 text-navy/75">{{ row.ad_group|default:"-" }}</td>
-                  <td class="px-2 py-2 text-navy/75">{{ row.creative|default:"-" }}</td>
-                  <td class="px-2 py-2 text-navy/75">{{ row.keyword|default:"-" }}</td>
-                  <td class="px-2 py-2 text-navy/60">{{ row.utm_content|default:"-" }}</td>
-                  <td class="px-2 py-2 text-right font-semibold text-navy">{{ row.views }}</td>
-                  <td class="px-2 py-2 text-right font-semibold text-sky">{{ row.inquiries }}</td>
-                  <td class="px-2 py-2 text-right text-navy/75">{{ row.conversion_rate }}%</td>
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="8" class="px-2 py-4 text-center text-navy/60">선택한 기간에 네이버 광고 성과 데이터가 없습니다.</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </section>
       <div class="mt-6 rounded-2xl bg-white p-4 shadow-sm">
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-sm font-medium text-navy/80">상태 필터</span>
