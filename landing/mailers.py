@@ -350,6 +350,17 @@ def _build_inquiry_mail(inquiry: ContactInquiry) -> tuple[str, str]:
     inquiry_type_label = INQUIRY_TYPE_LABELS.get(
         inquiry.inquiry_type, inquiry.inquiry_type
     )
+    ad_lines = ""
+    if inquiry.ad_source:
+        ad_lines = (
+            "\n광고 유입 정보:\n"
+            f"- source: {inquiry.ad_source}\n"
+            f"- campaign: {inquiry.ad_campaign or '-'}\n"
+            f"- ad_group: {inquiry.ad_group or '-'}\n"
+            f"- intent: {inquiry.ad_intent or '-'}\n"
+            f"- keyword: {inquiry.ad_keyword or '-'}\n"
+            f"- landing_variant: {inquiry.landing_variant or '-'}\n"
+        )
     subject = f"[QuRoom 문의] {inquiry.name} / {inquiry.inquiry_type}"
     body = (
         "큐룸 홈페이지 문의가 접수되었습니다.\n\n"
@@ -359,6 +370,7 @@ def _build_inquiry_mail(inquiry: ContactInquiry) -> tuple[str, str]:
         f"이메일: {inquiry.email}\n"
         f"문의 유형: {inquiry_type_label}\n\n"
         f"문의 내용:\n{inquiry.message}\n"
+        f"{ad_lines}"
     )
     return subject, body
 

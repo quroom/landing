@@ -188,24 +188,28 @@ msgstr ""
 "(Optional) I agree to receive foreign-developer career/network updates."
 
 #: landing/templates/landing/base.html:9
-msgid "큐룸 | 아이디어를 서비스와 수익으로 연결하는 소프트웨어 파트너"
-msgstr "QuRoom | Software Partner Connecting Ideas to Services and Revenue"
+#: landing/templates/landing/base.html:18
+msgid "앱·웹 개발을 믿고 맡길 수 있는 파트너 | 큐룸(QuRoom)"
+msgstr "Trusted App and Web Development Partner | QuRoom"
 
 #: landing/templates/landing/base.html:13
+#: landing/templates/landing/base.html:22
 msgid ""
-"큐룸은 아이디어를 실행 가능한 소프트웨어와 수익 구조로 연결하고, 외국인 개발"
-"자의 실무 연계를 지원합니다."
+"사업 맥락을 먼저 이해하고, 앱·웹 개발 범위·일정·운영 기준을 합의한 뒤 끝까지 "
+"실행합니다."
 msgstr ""
-"QuRoom connects ideas to executable software and revenue models, and "
-"supports practical collaboration links for foreign developers."
+"QuRoom understands the business context first, aligns app and web "
+"development scope, timeline, and operating standards, then carries the work "
+"through."
 
 #: landing/templates/landing/base.html:15
 msgid ""
-"큐룸, 소프트웨어 개발, 최소 기능 제품 개발, 서비스 개발, 수익화, 외국인 개발"
-"자, 개발자 연계, 스타트업 개발"
+"큐룸, 소프트웨어 개발, 웹 개발, 앱 개발, 최소 기능 제품 개발, 수익화, 외국인 "
+"개발자, 개발자 연계, 스타트업 개발"
 msgstr ""
-"QuRoom, software development, MVP development, service development, "
-"monetization, foreign developers, developer matching, startup development"
+"QuRoom, software development, web development, app development, MVP "
+"development, monetization, foreign developers, developer matching, startup "
+"development"
 
 #: landing/templates/landing/base.html:16
 msgid "큐룸(QuRoom) 공식 홈페이지"

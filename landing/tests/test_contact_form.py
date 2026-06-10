@@ -106,6 +106,53 @@ class ContactFormTests(TestCase):
             ).exists()
         )
 
+    def test_contact_submit_persists_naver_ad_attribution(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "name": "광고 사용자",
+                "company_name": "QuRoom",
+                "contact": "",
+                "email": "ad@example.com",
+                "inquiry_type": "outsourcing",
+                "message": "앱개발비용 문의",
+                "agree_privacy": "on",
+                "lead_source": "naver_search_ad",
+                "ad_source": "naver",
+                "ad_campaign": "app_dev",
+                "ad_group": "app_cost",
+                "ad_intent": "cost",
+                "ad_creative": "scope_first",
+                "ad_keyword": "앱개발비용",
+                "landing_variant": "app_cost",
+                "utm_source": "naver",
+                "utm_medium": "cpc",
+                "utm_campaign": "app_dev",
+                "utm_term": "앱개발비용",
+                "utm_content": "app_cost_scope_first",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="ad@example.com")
+        self.assertEqual(inquiry.lead_source, "naver_search_ad")
+        self.assertEqual(inquiry.ad_source, "naver")
+        self.assertEqual(inquiry.ad_campaign, "app_dev")
+        self.assertEqual(inquiry.ad_group, "app_cost")
+        self.assertEqual(inquiry.ad_intent, "cost")
+        self.assertEqual(inquiry.ad_keyword, "앱개발비용")
+        self.assertEqual(inquiry.landing_variant, "app_cost")
+        self.assertIn("keyword: 앱개발비용", mail.outbox[0].body)
+        event = FunnelEvent.objects.get(event_name="contact_submit")
+        self.assertEqual(event.lead_source, "naver_search_ad")
+        self.assertEqual(event.metadata["ad_creative"], "scope_first")
+        self.assertEqual(event.metadata["landing_variant"], "app_cost")
+        self.assertEqual(event.metadata["utm_source"], "naver")
+        self.assertEqual(event.metadata["utm_medium"], "cpc")
+        self.assertEqual(event.metadata["utm_campaign"], "app_dev")
+        self.assertEqual(event.metadata["utm_term"], "앱개발비용")
+        self.assertEqual(event.metadata["utm_content"], "app_cost_scope_first")
+
     def test_contact_submit_invalid_returns_english_message_when_locale_en(
         self,
     ) -> None:

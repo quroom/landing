@@ -41,8 +41,8 @@ EN_TRANSLATIONS = {
     "미술관마다 작품 해설 지원 수준이 다르고 전시를 관통하는 스토리 제공이 부족해 관람 경험이 단절되는 시장 문제": "A market issue where artwork commentary support varied by museum and cross-exhibition storytelling was limited, causing fragmented viewing experiences.",
     "Django 백엔드와 Vue 프론트엔드 기반으로 작품 정보, 큐레이션 스토리, 오디오 해설을 통합 제공하는 구조 설계": "Designed an architecture that integrates artwork information, curation stories, and audio guides with a Django backend and Vue frontend.",
     "부동산 거래 시장에서 법정 양식 준수 요구와 비대면 계약 수요가 동시에 커지며 디지털 전환 마찰이 발생하는 문제": "In the real estate market, compliance requirements for statutory forms and demand for non-face-to-face contracts grew simultaneously, creating digital transformation friction.",
-    "사업을 이해하고\n믿고 맡길 수 있는 파트너": "Understands the business\nand is a partner you can trust with the work.",
-    "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.": "One person carries the work from problem definition and scope alignment to development and deployment.",
+    "사업을 이해하고\n앱·웹 개발을 믿고 맡길 수 있는 파트너": "Business-aware app and web development partner\nyou can trust with the work.",
+    "앱·웹 서비스의 문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.": "One person carries app and web service work from problem definition and scope alignment to development and deployment.",
     "업무 범위와 우선순위를 먼저 조율하고, 필요한 부분은 직접 맡아 진행합니다.": "We align scope and priorities first, then directly handle the parts that need to move.",
     "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope and priorities first, then directly handle the execution that needs to move.",
     "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
@@ -386,8 +386,8 @@ SERVICE_CARDS = [
 
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
-    "headline": "사업을 이해하고\n믿고 맡길 수 있는 파트너",
-    "subcopy": "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
+    "headline": "사업을 이해하고\n앱·웹 개발을 믿고 맡길 수 있는 파트너",
+    "subcopy": "앱·웹 서비스의 문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
     "founder_capacity_policy": "외주용역 집중 트랙은 한 번에 한 고객사만 진행합니다.",
     "hero_support_text": (
         "2018.06 설립 · 총 개발 경력 {career_duration} · 자체 제품 6개, 외주 개발 1개"

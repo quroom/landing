@@ -12,6 +12,18 @@
     {% csrf_token %}
     {{ form.page_key }}
     {{ form.lead_source }}
+    {{ form.ad_source }}
+    {{ form.ad_campaign }}
+    {{ form.ad_group }}
+    {{ form.ad_intent }}
+    {{ form.ad_creative }}
+    {{ form.ad_keyword }}
+    {{ form.landing_variant }}
+    {{ form.utm_source }}
+    {{ form.utm_medium }}
+    {{ form.utm_campaign }}
+    {{ form.utm_term }}
+    {{ form.utm_content }}
     <div>
       <label class="mb-1 block text-xs font-medium"
              for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>

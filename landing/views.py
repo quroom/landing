@@ -17,6 +17,7 @@ from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from .ad_landing import build_ad_landing_context
 from .analytics import client_ip_from_request, track_event
 from .ax_tool_stack import (
     DIAGNOSIS_AXES,
@@ -320,6 +321,13 @@ PAGE_DEFAULT_LOCALES = {
     "outsourcing_checklist": "ko",
 }
 LOCALE_SESSION_KEY = settings.LANGUAGE_COOKIE_NAME
+UTM_PARAM_KEYS = (
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+)
 
 
 def _normalize_locale(value: str | None) -> str | None:
@@ -331,6 +339,13 @@ def _normalize_locale(value: str | None) -> str | None:
 def _page_default_locale(page_key: str) -> str:
     default_locale = PAGE_DEFAULT_LOCALES.get(page_key, SAFE_LOCALE)
     return default_locale if default_locale in SUPPORTED_LOCALE_SET else SAFE_LOCALE
+
+
+def _tracking_context_from_request(request: HttpRequest) -> dict[str, str]:
+    return {
+        key: " ".join(request.GET.get(key, "").strip().split())[:255]
+        for key in UTM_PARAM_KEYS
+    }
 
 
 def _resolve_landing_locale(request: HttpRequest, page_key: str) -> tuple[str, str]:
@@ -427,6 +442,8 @@ def _base_context(
     page_default_locale: str = SAFE_LOCALE,
     recommended_inquiry_type: str = "",
     lead_context: str = "",
+    ad_landing_context: dict | None = None,
+    tracking_context: dict | None = None,
 ) -> dict:
     career_duration = _career_duration(locale)
     lead_magnet_form = LeadMagnetForm()
@@ -438,8 +455,13 @@ def _base_context(
         form_kwargs["recommended_inquiry_type"] = recommended_inquiry_type
     if lead_context.strip():
         form_kwargs["lead_context"] = lead_context
+    if ad_landing_context:
+        form_kwargs["ad_landing_context"] = ad_landing_context
+    if tracking_context:
+        form_kwargs["tracking_context"] = tracking_context
     return {
         "content": _format_runtime_copy(content, career_duration),
+        "ad_landing": ad_landing_context or {},
         "career_ranges": build_career_ranges(
             locale=locale,
             page_default_locale=page_default_locale,
@@ -551,7 +573,14 @@ def _public_testimonials() -> tuple[list[Testimonial], int, int]:
 
 def index(request: HttpRequest) -> HttpResponse:
     locale, page_default_locale = _resolve_landing_locale(request, "home")
-    track_event(request, "lp_view", page_key="home", lead_source="landing")
+    ad_landing_context = build_ad_landing_context(request)
+    track_event(
+        request,
+        "lp_view",
+        page_key="home",
+        lead_source="naver_search_ad" if ad_landing_context else "landing",
+        metadata=ad_landing_context,
+    )
     if request.GET.get("lead_magnet") == "start":
         track_event(
             request,
@@ -567,8 +596,13 @@ def index(request: HttpRequest) -> HttpResponse:
         page_key="home",
         locale=locale,
         page_default_locale=page_default_locale,
-        recommended_inquiry_type=request.GET.get("inquiry_type", ""),
+        recommended_inquiry_type=(
+            ad_landing_context.get("inquiry_type")
+            or request.GET.get("inquiry_type", "")
+        ),
         lead_context=request.GET.get("lead_context", ""),
+        ad_landing_context=ad_landing_context,
+        tracking_context=_tracking_context_from_request(request),
     )
     return _render_page(request, "landing/index.html", context, page_key="home")
 
@@ -598,6 +632,7 @@ def foreign_developers(request: HttpRequest) -> HttpResponse:
         page_default_locale=page_default_locale,
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
+        tracking_context=_tracking_context_from_request(request),
     )
     context.update(
         {
@@ -694,6 +729,7 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
         page_default_locale=page_default_locale,
         recommended_inquiry_type=request.GET.get("inquiry_type", ""),
         lead_context=request.GET.get("lead_context", ""),
+        tracking_context=_tracking_context_from_request(request),
     )
     return _render_page(
         request,
@@ -728,6 +764,7 @@ def _render_gwangju_page(
         page_default_locale=SAFE_LOCALE,
         recommended_inquiry_type=recommended_inquiry_type,
         lead_context=request.GET.get("lead_context", ""),
+        tracking_context=_tracking_context_from_request(request),
     )
     if page_key in {
         "gwangju",
@@ -1840,6 +1877,8 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         lead_source = "foreign_developer_contact"
     elif page_key in ContactForm.GWANGJU_PAGE_KEYS:
         lead_source = "gwangju_contact"
+    elif data.get("ad_source") == "naver":
+        lead_source = "naver_search_ad"
     elif submitted_lead_source == "founder_contact_from_diagnosis":
         lead_source = "founder_contact_from_diagnosis"
     else:
@@ -1850,6 +1889,9 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         else ""
     )
     marketing_opt_in = bool(data.get("agree_marketing") or data.get("agree_all"))
+    tracking_metadata = {
+        key: data.get(key) or request.GET.get(key, "") for key in UTM_PARAM_KEYS
+    }
     inquiry = ContactInquiry.objects.create(
         name=data["name"],
         company_name=data.get("company_name") or "",
@@ -1857,6 +1899,14 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         email=data["email"],
         inquiry_type=data["inquiry_type"],
         message=data["message"],
+        page_key=page_key,
+        lead_source=lead_source,
+        ad_source=data.get("ad_source") or "",
+        ad_campaign=data.get("ad_campaign") or "",
+        ad_group=data.get("ad_group") or "",
+        ad_intent=data.get("ad_intent") or "",
+        ad_keyword=data.get("ad_keyword") or "",
+        landing_variant=data.get("landing_variant") or "",
         marketing_opt_in=marketing_opt_in,
         marketing_opted_in_at=timezone.now() if marketing_opt_in else None,
     )
@@ -1874,6 +1924,14 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
             "inquiry_type": data["inquiry_type"],
             "marketing_opt_in": marketing_opt_in,
             "lead_context": lead_context,
+            "ad_source": data.get("ad_source") or "",
+            "ad_campaign": data.get("ad_campaign") or "",
+            "ad_group": data.get("ad_group") or "",
+            "ad_intent": data.get("ad_intent") or "",
+            "ad_creative": data.get("ad_creative") or "",
+            "ad_keyword": data.get("ad_keyword") or "",
+            "landing_variant": data.get("landing_variant") or "",
+            **tracking_metadata,
         },
     )
 

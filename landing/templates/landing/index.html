@@ -67,17 +67,39 @@
       <div class="mx-auto grid w-full max-w-6xl gap-10 px-4 pb-16 md:px-8 md:pb-24 lg:grid-cols-[1.25fr_0.75fr]">
         <div class="space-y-6 text-white">
           <h1 class="max-w-[16ch] font-space text-3xl font-bold leading-[1.1] md:text-5xl lg:max-w-[20ch]">
-            {{ content.headline|linebreaksbr }}
+            {% if ad_landing %}
+              {{ ad_landing.headline|linebreaksbr }}
+            {% else %}
+              {{ content.headline|linebreaksbr }}
+            {% endif %}
           </h1>
-          <p class="max-w-xl text-sm text-white/85 md:text-base">{{ content.subcopy }}</p>
+          <p class="max-w-xl text-sm text-white/85 md:text-base">
+            {% if ad_landing %}
+              {{ ad_landing.subcopy }}
+            {% else %}
+              {{ content.subcopy }}
+            {% endif %}
+          </p>
           <p class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90">
             {% trans "2018.06 설립 · 총 개발 경력" %} <strong id="career-duration">{{ career_duration }}</strong> · {% trans "자체 제품 6, 외주 개발 1" %}
           </p>
           <div class="flex flex-wrap gap-3">
             <a href="#contact"
-               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,165,233,0.35)] transition hover:bg-cyan-500">{% trans "상담 문의하기" %}</a>
+               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,165,233,0.35)] transition hover:bg-cyan-500">
+              {% if ad_landing %}
+                {{ ad_landing.primary_cta }}
+              {% else %}
+                {% trans "상담 문의하기" %}
+              {% endif %}
+            </a>
             <a href="#contact"
-               class="rounded-xl border border-white/35 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 transition hover:bg-white/10">{% trans "30분 무료 커피챗" %}</a>
+               class="rounded-xl border border-white/35 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 transition hover:bg-white/10">
+              {% if ad_landing %}
+                {{ ad_landing.secondary_cta }}
+              {% else %}
+                {% trans "30분 무료 커피챗" %}
+              {% endif %}
+            </a>
           </div>
           <p class="text-xs text-white/80">
             <a href="{% url 'landing:free_diagnosis' %}?lead_magnet=start"

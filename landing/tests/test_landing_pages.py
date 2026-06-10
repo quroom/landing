@@ -401,11 +401,11 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, "사업을 이해하고")
-        self.assertContains(response, "믿고 맡길 수 있는 파트너")
+        self.assertContains(response, "앱·웹 개발을 믿고 맡길 수 있는 파트너")
         self.assertContains(response, "자체 제품 6, 외주 개발 1")
         self.assertContains(
             response,
-            "문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
+            "앱·웹 서비스의 문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
         )
         self.assertContains(response, "30분 무료 커피챗")
         self.assertContains(response, "제공 서비스")
@@ -500,9 +500,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, " m")
         self.assertContains(
             response,
-            "Understands the business",
+            "Business-aware app and web development partner",
         )
-        self.assertContains(response, "and is a partner you can trust with the work.")
+        self.assertContains(response, "you can trust with the work.")
         self.assertContains(response, "30-min Free Coffee Chat")
         self.assertContains(response, "Services")
         self.assertContains(response, "Why I can take this on")
@@ -611,6 +611,124 @@ class LandingPageTests(TestCase):
         self.assertContains(
             response,
             '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
+            html=False,
+        )
+
+    def test_index_applies_naver_ad_landing_variant(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "src": "naver",
+                "campaign": "app_dev",
+                "group": "app_cost",
+                "intent": "cost",
+                "creative": "scope_first",
+                "kw": "앱개발비용",
+                "utm_source": "naver",
+                "utm_medium": "cpc",
+                "utm_campaign": "app_dev",
+                "utm_term": "앱개발비용",
+                "utm_content": "app_cost_scope_first",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "기능 범위부터 줄여야")
+        self.assertContains(response, "앱 비용 범위 상담하기")
+        self.assertContains(
+            response,
+            'name="ad_creative" value="scope_first"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            'name="landing_variant" value="app_cost"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            'name="utm_source" value="naver"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            'name="utm_content" value="app_cost_scope_first"',
+            html=False,
+        )
+        event = FunnelEvent.objects.get(event_name="lp_view", page_key="home")
+        self.assertEqual(event.lead_source, "naver_search_ad")
+        self.assertEqual(event.metadata["utm_source"], "naver")
+        self.assertEqual(event.metadata["utm_content"], "app_cost_scope_first")
+        self.assertEqual(event.metadata["landing_variant"], "app_cost")
+        self.assertEqual(event.metadata["creative"], "scope_first")
+        self.assertEqual(event.metadata["keyword"], "앱개발비용")
+
+    def test_index_applies_naver_ad_creative_copy(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "src": "naver",
+                "campaign": "maintenance",
+                "group": "homepage_maintenance",
+                "intent": "maintenance",
+                "creative": "maintenance_scope",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, "홈페이지 유지보수는 수정 범위와 운영 관리를 먼저"
+        )
+        self.assertContains(response, "홈페이지 유지보수 상담하기")
+        self.assertContains(
+            response,
+            'name="ad_creative" value="maintenance_scope"',
+            html=False,
+        )
+
+    def test_index_applies_naver_local_homepage_ad_creative_copy(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "src": "naver",
+                "campaign": "homepage",
+                "group": "homepage_general",
+                "intent": "general",
+                "creative": "local_gwangju",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "광주권 홈페이지 제작은 지역 사업 이해")
+        self.assertContains(response, "광주 홈페이지 상담하기")
+        self.assertContains(
+            response,
+            'name="ad_creative" value="local_gwangju"',
+            html=False,
+        )
+
+    def test_index_maps_overflow_app_cost_ad_group_to_cost_variant(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "src": "naver",
+                "campaign": "app_dev",
+                "group": "app_cost_2",
+                "intent": "cost",
+                "kw": "앱제작비용",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "앱 개발 비용이 커지기 전에")
+        self.assertContains(
+            response,
+            'name="ad_group" value="app_cost_2"',
+            html=False,
+        )
+        self.assertContains(
+            response,
+            'name="landing_variant" value="app_cost"',
             html=False,
         )
 

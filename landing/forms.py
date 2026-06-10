@@ -59,6 +59,50 @@ class ContactForm(forms.Form):
         initial="contact_form",
         widget=forms.HiddenInput(),
     )
+    ad_source = forms.CharField(
+        required=False, max_length=40, widget=forms.HiddenInput()
+    )
+    ad_campaign = forms.CharField(
+        required=False,
+        max_length=80,
+        widget=forms.HiddenInput(),
+    )
+    ad_group = forms.CharField(
+        required=False, max_length=80, widget=forms.HiddenInput()
+    )
+    ad_intent = forms.CharField(
+        required=False, max_length=80, widget=forms.HiddenInput()
+    )
+    ad_keyword = forms.CharField(
+        required=False,
+        max_length=120,
+        widget=forms.HiddenInput(),
+    )
+    ad_creative = forms.CharField(
+        required=False,
+        max_length=80,
+        widget=forms.HiddenInput(),
+    )
+    landing_variant = forms.CharField(
+        required=False,
+        max_length=80,
+        widget=forms.HiddenInput(),
+    )
+    utm_source = forms.CharField(
+        required=False, max_length=255, widget=forms.HiddenInput()
+    )
+    utm_medium = forms.CharField(
+        required=False, max_length=255, widget=forms.HiddenInput()
+    )
+    utm_campaign = forms.CharField(
+        required=False, max_length=255, widget=forms.HiddenInput()
+    )
+    utm_term = forms.CharField(
+        required=False, max_length=255, widget=forms.HiddenInput()
+    )
+    utm_content = forms.CharField(
+        required=False, max_length=255, widget=forms.HiddenInput()
+    )
 
     name = forms.CharField(
         label=_("이름"),
@@ -121,6 +165,8 @@ class ContactForm(forms.Form):
         page_key: str = "home",
         recommended_inquiry_type: str = "",
         lead_context: str = "",
+        ad_landing_context: dict | None = None,
+        tracking_context: dict | None = None,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -168,6 +214,29 @@ class ContactForm(forms.Form):
             choice_values = {value for value, _ in self.fields["inquiry_type"].choices}
             if recommended_inquiry_type in choice_values:
                 self.fields["inquiry_type"].initial = recommended_inquiry_type
+
+        ad_context = ad_landing_context or {}
+        if ad_context:
+            self.fields["lead_source"].initial = "naver_search_ad"
+            self.fields["ad_source"].initial = ad_context.get("src", "")
+            self.fields["ad_campaign"].initial = ad_context.get("campaign", "")
+            self.fields["ad_group"].initial = ad_context.get("ad_group", "")
+            self.fields["ad_intent"].initial = ad_context.get("intent", "")
+            self.fields["ad_creative"].initial = ad_context.get("creative", "")
+            self.fields["ad_keyword"].initial = ad_context.get("keyword", "")
+            self.fields["landing_variant"].initial = ad_context.get(
+                "landing_variant", ""
+            )
+
+        tracking = tracking_context or {}
+        for key in (
+            "utm_source",
+            "utm_medium",
+            "utm_campaign",
+            "utm_term",
+            "utm_content",
+        ):
+            self.fields[key].initial = tracking.get(key, "")
 
     def clean_page_key(self) -> str:
         page_key = (self.cleaned_data.get("page_key") or "").strip()
