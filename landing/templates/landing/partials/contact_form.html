@@ -8,6 +8,7 @@
         hx-target="#contact-form-wrap"
         hx-swap="innerHTML"
         hx-indicator="#contact-loading"
+        data-analytics-event="contact_submit"
         class="space-y-3">
     {% csrf_token %}
     {{ form.page_key }}

@@ -94,6 +94,79 @@
     syncAll();
   }
 
+  var ANALYTICS_FIELD_ALLOWLIST = [
+    "page_key",
+    "lead_source",
+    "inquiry_type",
+    "ad_source",
+    "ad_campaign",
+    "ad_group",
+    "ad_intent",
+    "ad_creative",
+    "ad_keyword",
+    "landing_variant",
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+  ];
+
+  function fieldValue(form, name) {
+    var field = form.querySelector("[name='" + name + "']");
+    if (!field) return "";
+    if (field.type === "checkbox") {
+      return field.checked ? "true" : "false";
+    }
+    return (field.value || "").trim();
+  }
+
+  function analyticsPayload(form) {
+    var payload = {};
+    ANALYTICS_FIELD_ALLOWLIST.forEach(function (name) {
+      var value = fieldValue(form, name);
+      if (value) {
+        payload[name] = value;
+      }
+    });
+    return payload;
+  }
+
+  function sendAnalyticsEvent(eventName, payload) {
+    if (!eventName) return;
+
+    var eventPayload = payload || {};
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(
+      Object.assign(
+        {
+          event: eventName,
+        },
+        eventPayload,
+      ),
+    );
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", eventName, eventPayload);
+    }
+  }
+
+  function handleHtmxAfterRequest(event) {
+    var detail = event && event.detail ? event.detail : {};
+    var form = detail.elt;
+    if (!form || !form.matches || !form.matches("form[data-analytics-event]")) {
+      return;
+    }
+
+    var xhr = detail.xhr;
+    var status = xhr && typeof xhr.status === "number" ? xhr.status : 0;
+    if (status < 200 || status >= 300) {
+      return;
+    }
+
+    sendAnalyticsEvent(form.dataset.analyticsEvent, analyticsPayload(form));
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     bindMobileMenu();
     updateCareerDuration();
@@ -107,4 +180,6 @@
       bindConsentToggle(target);
     }
   });
+
+  document.body.addEventListener("htmx:afterRequest", handleHtmxAfterRequest);
 })();

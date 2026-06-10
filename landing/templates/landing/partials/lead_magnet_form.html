@@ -69,6 +69,7 @@
         hx-target="#lead-magnet-wrap"
         hx-swap="innerHTML"
         hx-indicator="#lead-loading"
+        data-analytics-event="lead_magnet_submit_user"
         class="grid gap-3 md:grid-cols-2">
     {% csrf_token %}
     {{ form.lead_source }}

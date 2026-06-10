@@ -518,6 +518,11 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:free_diagnosis"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "무료 자동화 실행 진단 (3분 / 8문항)")
+        self.assertContains(
+            response,
+            'data-analytics-event="lead_magnet_submit_user"',
+            html=False,
+        )
         self.assertContains(response, "8개 문항 모두 필수 응답입니다.")
         self.assertNotContains(response, "업무 흐름 명확성")
         self.assertNotContains(response, "데이터/운영 기반")
@@ -613,6 +618,23 @@ class LandingPageTests(TestCase):
             '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
             html=False,
         )
+        self.assertContains(
+            response,
+            'data-analytics-event="contact_submit"',
+            html=False,
+        )
+
+    def test_client_analytics_payload_excludes_personal_fields(self) -> None:
+        script_path = settings.REPO_ROOT / "landing/static/landing/js/site.js"
+        script = script_path.read_text(encoding="utf-8")
+
+        self.assertIn("ANALYTICS_FIELD_ALLOWLIST", script)
+        self.assertIn("dataLayer.push", script)
+        self.assertIn('"utm_content"', script)
+        self.assertNotIn('"name"', script)
+        self.assertNotIn('"email"', script)
+        self.assertNotIn('"message"', script)
+        self.assertNotIn('"contact"', script)
 
     def test_index_applies_naver_ad_landing_variant(self) -> None:
         response = self.client.get(
