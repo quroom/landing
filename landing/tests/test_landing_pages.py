@@ -428,6 +428,12 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "바이브코딩")
         self.assertEqual(len(response.context["content"]["client_projects"]), 1)
         self.assertEqual(len(response.context["content"]["owned_products"]), 6)
+        self.assertEqual(
+            response.context["content"]["owned_products"][0]["name"],
+            "WishBox (소망창고) - Alpha",
+        )
+        self.assertContains(response, "2026.03 ~ 2026.05")
+        self.assertNotContains(response, "2026.03 ~ 현재")
         self.assertContains(response, "공인중개사 자격 취득")
         self.assertContains(response, "중개업 활동, 자동화로 업무 효율화")
         self.assertContains(response, "쉐어하우스 창업 및 확장")
