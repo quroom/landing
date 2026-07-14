@@ -27,6 +27,9 @@ EN_TRANSLATIONS = {
     "상담 후 결정": "Determined after consultation",
     "2025.04 ~ 현재": "2025.04 - Present",
     "2025.01 ~ 현재": "2025.01 - Present",
+    "2026.03 ~ 현재": "2026.03 - Present",
+    "손해사정사 문서 자동화 서비스 (R&D)": "Claims Document Automation Service (R&D)",
+    "손해사정 실무 문서 작성을 줄이기 위해 고객 CRM, 문서 자동치환, 음성/서류 기반 초안 생성을 통합하는 자동화 서비스": "An automation service that combines customer CRM, document field replacement, and voice- and document-based drafting to reduce repetitive claims documentation.",
     "WishBox (소망창고) - Alpha": "WishBox - Alpha",
     "Obible (PWA 커뮤니티 성경 서비스)": "Obible (PWA Community Bible Service)",
     "미술관 큐레이션 서비스 (ArtTrip)": "Museum Curation Service (ArtTrip)",
@@ -386,8 +389,130 @@ SERVICE_CARDS = [
 
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
-    "headline": "사업을 이해하고\n앱·웹 개발을 믿고 맡길 수 있는 파트너",
-    "subcopy": "앱·웹 서비스의 문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
+    "seo_title": {
+        "ko": "웹·앱 외주 개발 | 큐룸 김상은",
+        "en": "Web and App Development Partner | QuRoom",
+    },
+    "seo_description": {
+        "ko": "삼성전자 소프트웨어 엔지니어 출신 대표가 웹·앱·업무 시스템의 기획부터 개발, 배포와 운영 이관까지 직접 책임집니다.",
+        "en": "A former Samsung software engineer personally leads your web, app, or internal system from planning through development, deployment, and operational handover.",
+    },
+    "hero_eyebrow": {
+        "ko": "대표가 직접 수행하는 웹·앱 외주 개발",
+        "en": "Web and app development led directly by the founder",
+    },
+    "headline": {
+        "ko": "기획부터 개발, 배포와\n운영 이관까지 책임집니다.",
+        "en": "Accountable from planning and development\nthrough deployment and operational handover.",
+    },
+    "subcopy": {
+        "ko": "삼성전자 소프트웨어 엔지니어 출신 대표가 요구사항을 함께 정리하고 실제 운영 가능한 제품으로 구현합니다. 영업 담당자나 하청 개발자를 거치지 않습니다.",
+        "en": "A former Samsung software engineer works with you to define requirements and build a product ready for real operations. There is no sales handoff or subcontracted development.",
+    },
+    "hero_primary_cta": {"ko": "프로젝트 상담 신청", "en": "Discuss a Project"},
+    "hero_secondary_cta": {"ko": "수행 사례 보기", "en": "View Client Work"},
+    "response_note": {
+        "ko": "문의는 대표 김상은이 확인하고 영업일 1~2일 안에 회신합니다.",
+        "en": "Sang-eun Kim reviews each inquiry and replies within 1-2 business days.",
+    },
+    "career_proof_prefix": {
+        "ko": "삼성전자 포함",
+        "en": "Including Samsung",
+    },
+    "proof_items": [
+        {
+            "label": {"ko": "개발 경력", "en": "Experience"},
+            "value": {"ko": "{career_duration}", "en": "{career_duration}"},
+        },
+        {
+            "label": {"ko": "수행 방식", "en": "Delivery"},
+            "value": {"ko": "대표 1인 직접 수행", "en": "Founder-led directly"},
+        },
+        {
+            "label": {"ko": "프로젝트", "en": "Project length"},
+            "value": {"ko": "4~8주", "en": "4-8 weeks"},
+        },
+        {
+            "label": {"ko": "예산", "en": "Budget"},
+            "value": {"ko": "1,000만원부터", "en": "From KRW 10M"},
+        },
+        {
+            "label": {"ko": "동시 진행", "en": "Capacity"},
+            "value": {"ko": "한 고객사", "en": "One client at a time"},
+        },
+    ],
+    "services_label": {"ko": "서비스", "en": "Services"},
+    "services_title": {
+        "ko": "제품 개발에 필요한 일을\n한 흐름으로 연결합니다.",
+        "en": "One continuous path for the work\nyour product needs.",
+    },
+    "services_intro": {
+        "ko": "기획서만 넘겨받아 화면을 만드는 방식이 아닙니다. 사업 목표와 사용자를 먼저 확인한 뒤 이번 프로젝트에서 반드시 필요한 범위를 정합니다.",
+        "en": "This is not a handoff where a specification simply becomes screens. We first understand the business goal and users, then agree on what the project must deliver.",
+    },
+    "outsourcing_services": [
+        {
+            "title": {"ko": "신규 웹·앱 MVP", "en": "New Web or App MVP"},
+            "description": {
+                "ko": "아이디어와 초기 요구사항을 사용자 흐름, 기능 목록, 개발 범위로 구체화합니다.",
+                "en": "Turn an idea and early requirements into user flows, a feature set, and a buildable scope.",
+            },
+        },
+        {
+            "title": {"ko": "기존 서비스 개선", "en": "Existing Product Improvement"},
+            "description": {
+                "ko": "운영 중 발견된 병목과 오류를 정리하고 필요한 기능을 우선순위대로 구현합니다.",
+                "en": "Prioritize operational bottlenecks and defects, then implement the changes that matter first.",
+            },
+        },
+        {
+            "title": {"ko": "업무 시스템·관리자", "en": "Internal Systems and Admin"},
+            "description": {
+                "ko": "실제 담당자의 업무 흐름을 기준으로 입력, 조회, 권한, 문서 처리 기능을 만듭니다.",
+                "en": "Build data entry, search, permissions, and document workflows around how the team actually works.",
+            },
+        },
+    ],
+    "deliverables_title": {"ko": "기본 산출물", "en": "Core Deliverables"},
+    "deliverables": [
+        {
+            "ko": "요구사항·제외 범위·완료 기준",
+            "en": "Requirements, exclusions, and completion criteria",
+        },
+        {"ko": "반응형 웹 또는 앱 화면", "en": "Responsive web or app interface"},
+        {"ko": "백엔드·API·관리자 기능", "en": "Backend, API, and admin capabilities"},
+        {"ko": "테스트와 운영 환경 배포", "en": "Testing and production deployment"},
+        {
+            "ko": "운영 이관 문서와 점검 항목",
+            "en": "Operational handover guide and checks",
+        },
+    ],
+    "deliverables_note": {
+        "ko": "디자인, 외부 연동, 인프라 범위는 첫 주에 프로젝트별로 확정합니다.",
+        "en": "Design, external integrations, and infrastructure scope are confirmed in the first week.",
+    },
+    "engagements": [
+        {
+            "title": {"ko": "30분 커피챗", "en": "30-minute Coffee Chat"},
+            "description": {
+                "ko": "외주가 필요한지부터 확인",
+                "en": "Check whether external development is the right next step",
+            },
+            "terms": {"ko": "30분 · 무료", "en": "30 min · Free"},
+            "cta": {"ko": "커피챗 신청", "en": "Book a Chat"},
+            "inquiry_type": "coffee_chat",
+        },
+        {
+            "title": {"ko": "외주 프로젝트", "en": "Development Project"},
+            "description": {
+                "ko": "범위 설계부터 배포·운영 이관",
+                "en": "From scope design through deployment and handover",
+            },
+            "terms": {"ko": "4~8주 · 1,000만원부터", "en": "4-8 weeks · From KRW 10M"},
+            "cta": {"ko": "프로젝트 상담", "en": "Discuss a Project"},
+            "inquiry_type": "outsourcing",
+        },
+    ],
     "founder_capacity_policy": "외주용역 집중 트랙은 한 번에 한 고객사만 진행합니다.",
     "hero_support_text": (
         "2018.06 설립 · 총 개발 경력 {career_duration} · 자체 제품 6개, 외주 개발 1개"
@@ -397,25 +522,77 @@ SHARED_CONTENT = {
         "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.",
         "그래서 예쁜 화면이나 기능 목록만 보지 않고, 우선순위·배포·운영·수정 요청까지 같이 봅니다.",
     ],
-    "execution_process_title": "문의부터 실행까지 진행 방식",
+    "client_work_label": {"ko": "외주 수행 사례", "en": "Client Work"},
+    "client_work_note": {
+        "ko": "고객 프로젝트로 역할·기간·결과만 공개합니다.",
+        "en": "Only the role, period, and outcome are disclosed for this client project.",
+    },
+    "client_work_intro": {
+        "ko": "미술관마다 달랐던 작품 정보와 해설 경험을 하나의 온라인 관람 흐름으로 구성했습니다.",
+        "en": "Artwork information and interpretation that varied by museum were brought into one coherent online viewing flow.",
+    },
+    "products_label": {"ko": "직접 만든 제품", "en": "Owned Products"},
+    "products_title": {
+        "ko": "출시와 운영을 경험한\n자체 제품 6개",
+        "en": "Six owned products built,\nlaunched, and operated.",
+    },
+    "products_intro": {
+        "ko": "제품을 직접 운영하며 고객 요청, 장애, 비용, 피벗을 겪었습니다. 외주에서도 개발 이후의 운영을 함께 보는 이유입니다.",
+        "en": "Running products firsthand means dealing with customer requests, incidents, costs, and pivots. That is why delivery decisions include what happens after launch.",
+    },
+    "execution_process_label": {"ko": "진행 방식", "en": "Process"},
+    "execution_process_title": {
+        "ko": "결정할 것과 만든 것을\n매주 확인합니다.",
+        "en": "Review decisions and working software\nevery week.",
+    },
     "execution_process": [
         {
-            "title": "사전 진단 상담",
-            "description": "현재 상황, 목표, 제약을 함께 정리해 우선순위를 확정합니다.",
+            "period": {"ko": "1주차", "en": "Week 1"},
+            "title": {"ko": "목표와 범위 확정", "en": "Confirm Goals and Scope"},
+            "description": {
+                "ko": "요구사항, 제외 범위, 일정, 산출물, 완료 기준을 문서로 맞춥니다.",
+                "en": "Document requirements, exclusions, schedule, deliverables, and completion criteria.",
+            },
         },
         {
-            "title": "실행 범위 설계",
-            "description": "2주~8주 단위 실행 범위, 일정, 산출물 기준을 명확히 합의합니다.",
+            "period": {"ko": "2~7주차", "en": "Weeks 2-7"},
+            "title": {"ko": "구현과 주간 검토", "en": "Build and Review Weekly"},
+            "description": {
+                "ko": "동작하는 결과를 기준으로 진행 상황과 필요한 의사결정을 공유합니다.",
+                "en": "Use working software to review progress and make the decisions needed next.",
+            },
         },
         {
-            "title": "구현 및 점검",
-            "description": "주차별 결과 공유와 리스크 점검을 통해 일정/품질을 안정적으로 관리합니다.",
-        },
-        {
-            "title": "운영 이관 및 다음 단계",
-            "description": "운영 가이드 전달 후 다음 자동화 과제까지 이어지는 실행 루프를 제안합니다.",
+            "period": {"ko": "마지막 주", "en": "Final Week"},
+            "title": {"ko": "배포와 운영 이관", "en": "Deploy and Hand Over"},
+            "description": {
+                "ko": "운영 환경 배포, 점검 방법, 수정 지점과 후속 지원 범위를 정리합니다.",
+                "en": "Deploy to production and document checks, change points, and follow-up support scope.",
+            },
         },
     ],
+    "profile_label": {"ko": "대표 소개", "en": "Founder"},
+    "profile_title": {
+        "ko": "개발자이면서\n사업 운영자입니다.",
+        "en": "A software engineer\nand business operator.",
+    },
+    "profile_lead": {
+        "ko": "제품을 만들고 사업을 운영해 온 개발자 김상은입니다. 삼성전자에서 소프트웨어 제품 개발을 배웠고, 이후 공인중개사와 쉐어하우스 창업을 거치며 고객, 비용, 현장 운영을 직접 경험했습니다.",
+        "en": "I am Sang-eun Kim, a software engineer who has also built and operated businesses. After learning product development at Samsung Electronics, I worked as a licensed real-estate agent and founded a share-house business, gaining direct experience with customers, costs, and field operations.",
+    },
+    "profile_body": {
+        "ko": "그래서 기능 목록만 보지 않습니다. 실제 사용자가 누구인지, 운영팀이 감당할 수 있는지, 배포 뒤 무엇이 남는지를 함께 판단합니다.",
+        "en": "That is why I look beyond a feature list. I consider who will use the product, what the operating team can sustain, and what remains after deployment.",
+    },
+    "profile_link_label": {
+        "ko": "LinkedIn에서 상세 경력 확인",
+        "en": "View Full Experience on LinkedIn",
+    },
+    "faq_label": {"ko": "자주 묻는 질문", "en": "FAQ"},
+    "faq_title": {
+        "ko": "계약 전에 확인하세요.",
+        "en": "What to Know Before Contracting",
+    },
     "engagement_fit": {
         "good_fit_title": "이런 팀과 잘 맞습니다",
         "good_fit": [
@@ -463,8 +640,15 @@ SHARED_CONTENT = {
         "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다",
         "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능",
     ],
-    "contact_title": "이런 상황이면 첫 상담이 수월합니다",
-    "contact_intro": "범위와 목표가 어느 정도 보이면, 첫 대화에서 무엇부터 할지 더 빠르게 정리할 수 있습니다.",
+    "contact_label": {"ko": "프로젝트 문의", "en": "Project Inquiry"},
+    "contact_title": {
+        "ko": "이번 분기에 만들어야 할 것이 있다면,\n현재 상황부터 알려주세요.",
+        "en": "If something must be built this quarter,\nstart with your current situation.",
+    },
+    "contact_intro": {
+        "ko": "목표, 필요한 기능, 예산 범위, 원하는 일정을 적어주시면 대표 김상은이 직접 검토합니다.",
+        "en": "Share your goal, required capabilities, budget range, and desired schedule. Sang-eun Kim will review it directly.",
+    },
     "contact_points": [
         "이번 분기 안에 진행해야 할 과제가 있는 경우",
         "담당자와 의사결정자가 어느 정도 정해져 있는 경우",
@@ -629,16 +813,44 @@ SHARED_CONTENT = {
     ],
     "faq": [
         {
-            "q": "프로젝트 범위는 어떻게 정하나요?",
-            "a": "초기 제안서 기준으로 범위를 확정하고, 추가 요구는 변경관리 절차로 일정/비용 영향을 먼저 공유합니다.",
+            "q": {
+                "ko": "프로젝트 범위는 어떻게 정하나요?",
+                "en": "How is the project scope defined?",
+            },
+            "a": {
+                "ko": "첫 주에 초기 제안서를 기준으로 포함·제외 범위와 완료 기준을 확정합니다. 추가 요구는 일정과 비용 영향을 먼저 공유한 뒤 변경관리합니다.",
+                "en": "In the first week, we confirm included and excluded scope and completion criteria from the initial proposal. New requests follow change control after schedule and cost impacts are shared.",
+            },
         },
         {
-            "q": "지불 조건은 어떻게 되나요?",
-            "a": "착수금/중간금/잔금 3단계 또는 월 단위 청구를 프로젝트별로 협의합니다.",
+            "q": {
+                "ko": "지불 조건은 어떻게 되나요?",
+                "en": "What are the payment terms?",
+            },
+            "a": {
+                "ko": "착수금·중간금·잔금 3단계 또는 월 단위 청구를 프로젝트 상황에 맞게 협의합니다.",
+                "en": "Payment is agreed per project, typically in three stages or through monthly billing.",
+            },
         },
         {
-            "q": "문의는 어떻게 진행되나요?",
-            "a": "기본 채널은 help@quroom.kr 이메일입니다.",
+            "q": {
+                "ko": "배포 후 유지보수도 가능한가요?",
+                "en": "Is maintenance available after launch?",
+            },
+            "a": {
+                "ko": "운영 이관 문서는 기본 제공하며, 초기 점검과 후속 지원 범위는 계약할 때 별도로 합의합니다.",
+                "en": "An operational handover guide is included. Initial checks and ongoing support are agreed separately in the contract.",
+            },
+        },
+        {
+            "q": {
+                "ko": "어떤 프로젝트와 잘 맞나요?",
+                "en": "Which projects are a good fit?",
+            },
+            "a": {
+                "ko": "이번 분기 안에 실행해야 할 과제와 담당 의사결정자가 있는 팀에 적합합니다. 장기 연구나 요구사항 합의가 어려운 프로젝트는 맞지 않을 수 있습니다.",
+                "en": "The best fit is a team with a project to execute this quarter and a clear decision owner. Long-term research or projects without scope alignment may not be suitable.",
+            },
         },
     ],
     "kpi_keys": {
@@ -1027,13 +1239,18 @@ def build_page_content(
     resolved_locale = _normalize_locale(locale)
     resolved_page_default = _normalize_locale(page_default_locale)
     content = deepcopy(SHARED_CONTENT)
+    content["client_projects"] = [
+        item for item in content["portfolio"] if item["type_label"] == "외주 개발"
+    ]
+    content["owned_products"] = [
+        item for item in content["portfolio"] if item["type_label"] == "자체 제품"
+    ]
     if persona is None:
         content["services"] = [
             service
             for service in SERVICE_CARDS
             if "founders" in service["persona_targets"]
         ]
-        content["faq"] = PERSONA_CONTENT["founders"]["faq"]
         content["kpi"] = PERSONA_CONTENT["founders"]["kpi"]
         return _localize_value(
             content, resolved_locale, resolved_page_default, key_path="content"

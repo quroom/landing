@@ -400,88 +400,49 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "사업을 이해하고")
-        self.assertContains(response, "앱·웹 개발을 믿고 맡길 수 있는 파트너")
-        self.assertContains(response, "자체 제품 6, 외주 개발 1")
+        self.assertContains(response, "기획부터 개발, 배포와")
+        self.assertContains(response, "운영 이관까지 책임집니다.")
         self.assertContains(
             response,
-            "앱·웹 서비스의 문제 정의, 범위 정리, 개발, 배포까지 한 사람이 이어서 맡습니다.",
+            "영업 담당자나 하청 개발자를 거치지 않습니다.",
         )
-        self.assertContains(response, "30분 무료 커피챗")
-        self.assertContains(response, "제공 서비스")
-        self.assertContains(response, "외주용역 집중 트랙")
-        self.assertContains(response, "추가로 도와드릴 수 있는 것")
-        self.assertContains(response, "문의부터 실행까지 진행 방식")
-        self.assertContains(response, "이런 상황이라면 함께하기 좋습니다")
-        self.assertContains(response, "이런 팀과 잘 맞습니다")
-        self.assertContains(response, "아직 맞지 않을 수 있습니다")
+        self.assertContains(response, "신규 웹·앱 MVP")
+        self.assertContains(response, "기존 서비스 개선")
+        self.assertContains(response, "업무 시스템·관리자")
+        self.assertContains(response, "4~8주 · 1,000만원부터")
+        self.assertContains(response, "외주 수행 사례")
+        self.assertContains(response, "미술관 큐레이션 서비스 (ArtTrip)")
+        self.assertContains(response, "자체 제품 6개")
+        self.assertContains(response, "결정할 것과 만든 것을")
+        self.assertContains(response, "개발자이면서")
+        self.assertContains(response, "계약 전에 확인하세요.")
+        self.assertContains(response, "이번 분기에 만들어야 할 것이 있다면")
         self.assertContains(
-            response,
-            "무엇을 먼저 할지, 무엇은 미뤄도 될지 90분 안에 정리합니다.",
+            response, 'data-analytics-event="contact_submit"', html=False
         )
-        self.assertContains(response, "이런 상황이면 첫 상담이 수월합니다")
-        self.assertContains(
-            response,
-            "범위와 목표가 어느 정도 보이면, 첫 대화에서 무엇부터 할지 더 빠르게 정리할 수 있습니다.",
-        )
-        self.assertContains(
-            response,
-            "이런 경험과 기준으로 일합니다",
-        )
-        self.assertContains(
-            response,
-            "삼성전자 포함 총 개발 경력",
-        )
-        self.assertContains(
-            response,
-            "총 7개 프로젝트 경험과 운영 이관 기준 정리",
-        )
-        self.assertContains(
-            response, "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다"
-        )
+        self.assertNotContains(response, "자동화 실행 진단")
+        self.assertNotContains(response, "자동화 실행 구축")
+        self.assertNotContains(response, "추가로 도와드릴 수 있는 것")
         self.assertNotContains(response, "OpenClaw")
         self.assertNotContains(response, "바이브코딩")
-        self.assertNotContains(response, "안정화 지원")
-        self.assertNotContains(response, "필요한 실행은 직접 맡아 진행합니다")
-        service_map = {
-            item["id"]: item for item in response.context["content"]["services"]
-        }
-        self.assertEqual(
-            service_map["founder-ax-coffee-chat"]["deliverable"],
-            "대화 후 다음 액션 1~2개 정리",
-        )
-        self.assertEqual(
-            service_map["founder-ax-diagnosis"]["deliverable"],
-            "진단 요약 문서 + 2주 실행 후보 리스트",
-        )
-        self.assertEqual(
-            service_map["founder-ax-build"]["deliverable"],
-            "운영 가능한 자동화 구성 + 자동화 운영 가이드 문서",
-        )
-        self.assertEqual(
-            service_map["founder-outsourcing-track"]["deliverable"],
-            "구축 결과물 + 운영 이관 문서 (후속 지원 범위 별도 합의)",
-        )
+        self.assertEqual(len(response.context["content"]["client_projects"]), 1)
+        self.assertEqual(len(response.context["content"]["owned_products"]), 6)
         self.assertContains(response, "공인중개사 자격 취득")
         self.assertContains(response, "중개업 활동, 자동화로 업무 효율화")
         self.assertContains(response, "쉐어하우스 창업 및 확장")
         self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
         body = response.content.decode("utf-8")
         self.assertLess(
-            body.index("이런 경험과 기준으로 일합니다"),
-            body.index("이런 팀과 잘 맞습니다"),
+            body.index("신규 웹·앱 MVP"),
+            body.index("미술관 큐레이션 서비스 (ArtTrip)"),
         )
         self.assertLess(
-            body.index("30분 무료 커피챗"),
-            body.index("문의부터 실행까지 진행 방식"),
+            body.index("미술관 큐레이션 서비스 (ArtTrip)"),
+            body.index("자체 제품 6개"),
         )
         self.assertLess(
-            body.index("공인중개사 자격 취득"),
-            body.index("중개업 활동, 자동화로 업무 효율화"),
-        )
-        self.assertLess(
-            body.index("중개업 활동, 자동화로 업무 효율화"),
-            body.index("쉐어하우스 창업 및 확장"),
+            body.index("자체 제품 6개"),
+            body.index("결정할 것과 만든 것을"),
         )
         self.assertTrue(
             FunnelEvent.objects.filter(event_name="lp_view", page_key="home").exists()
@@ -500,15 +461,16 @@ class LandingPageTests(TestCase):
         self.assertContains(response, " m")
         self.assertContains(
             response,
-            "Business-aware app and web development partner",
+            "Accountable from planning and development",
         )
-        self.assertContains(response, "you can trust with the work.")
-        self.assertContains(response, "30-min Free Coffee Chat")
-        self.assertContains(response, "Services")
-        self.assertContains(response, "Why I can take this on")
-        self.assertContains(response, "How We Work From Inquiry to Delivery")
-        self.assertContains(response, "Good Fit")
-        self.assertContains(response, "Not a Fit Yet")
+        self.assertContains(response, "through deployment and operational handover.")
+        self.assertContains(response, "30-minute Coffee Chat")
+        self.assertContains(response, "New Web or App MVP")
+        self.assertContains(response, "Six owned products built")
+        self.assertContains(response, "Review decisions and working software")
+        self.assertContains(response, "Project Inquiry")
+        self.assertNotContains(response, "자동화 실행 진단")
+        self.assertNotContains(response, "제품 개발/운영 관련 정보")
         self.assertEqual(
             response.context["career_ranges"],
             build_career_ranges(locale="en", page_default_locale="ko"),

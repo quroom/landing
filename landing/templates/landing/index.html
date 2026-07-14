@@ -1,440 +1,322 @@
 {% extends "landing/base.html" %}
 {% load i18n static %}
+{% block title %}{{ content.seo_title }}{% endblock %}
+{% block description %}{{ content.seo_description }}{% endblock %}
+{% block og_title %}<meta property="og:title" content="{{ content.seo_title }}" />{% endblock %}
+{% block og_description %}<meta property="og:description" content="{{ content.seo_description }}" />{% endblock %}
 {% block extra_head %}
   <link rel="preload"
-        as="image"
-        href="{% static 'hero-quroom-optimized.jpg' %}"
-        type="image/jpeg" />
+        href="{% static 'landing/fonts/Pretendard-Regular.woff2' %}"
+        as="font"
+        type="font/woff2"
+        crossorigin />
+  <link rel="preload"
+        href="{% static 'landing/fonts/Pretendard-SemiBold.woff2' %}"
+        as="font"
+        type="font/woff2"
+        crossorigin />
+  <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
 {% endblock %}
 {% block body %}
-  <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.13),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(74,222,128,0.1),transparent_45%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
-  </div>
-  <header id="top"
-          class="fixed inset-x-0 top-0 z-40 border-b border-white/40 bg-white/75 backdrop-blur">
-    <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:px-8">
-      <a href="#hero" class="flex items-center gap-3">
-        <img src="{% static 'logo.jpg' %}"
-             alt="{% trans '큐룸 로고' %}"
-             width="36"
-             height="36"
-             loading="lazy"
-             decoding="async"
-             class="h-9 w-9 rounded-full border border-navy/15 object-cover" />
-        <p class="font-space text-sm font-bold leading-none text-navy">QuRoom</p>
-      </a>
-      <button id="menu-toggle"
-              type="button"
-              class="rounded-xl border border-navy/20 px-3 py-2 text-sm font-semibold md:hidden">
-        {% trans "메뉴" %}
-      </button>
-      <nav id="menu"
-           class="hidden items-center gap-5 text-sm font-medium md:flex">
-        <a href="#about" class="hover:text-sky">{% trans "회사 소개" %}</a>
-        <a href="#services" class="hover:text-sky">{% trans "서비스" %}</a>
-        <a href="#portfolio" class="hover:text-sky">{% trans "포트폴리오" %}</a>
-        <a href="#contact" class="hover:text-sky">{% trans "문의" %}</a>
-        <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-white transition hover:bg-sky">{% trans "상담 문의하기" %}</a>
+  <div class="home-renewal">
+    <a class="renewal-skip-link" href="#main">{% trans "본문으로 건너뛰기" %}</a>
+    <header class="renewal-header">
+      <div class="renewal-header-inner">
+        <a class="renewal-brand" href="#top">
+          <img src="{% static 'logo.jpg' %}"
+               width="30"
+               height="30"
+               alt="{% trans '큐룸 로고' %}" />
+          <span>QuRoom</span>
+          <small>{% trans "대표 김상은" %}</small>
+        </a>
+        <button id="menu-toggle"
+                class="renewal-menu-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="mobile-menu">{% trans "메뉴" %}</button>
+        <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
+          <a href="#services">{{ content.services_label }}</a>
+          <a href="#work">{{ content.client_work_label }}</a>
+          <a href="#products">{{ content.products_label }}</a>
+          <a href="#process">{{ content.execution_process_label }}</a>
+          <a class="renewal-button renewal-button-small" href="#contact">{% trans "외주 상담" %}</a>
+        </nav>
+      </div>
+      <nav id="mobile-menu"
+           class="renewal-mobile-nav hidden"
+           aria-label="{% trans '모바일 메뉴' %}">
+        <a href="#services">{{ content.services_label }}</a>
+        <a href="#work">{{ content.client_work_label }}</a>
+        <a href="#products">{{ content.products_label }}</a>
+        <a href="#process">{{ content.execution_process_label }}</a>
+        <a href="#contact">{% trans "외주 상담" %}</a>
       </nav>
-    </div>
-    <nav id="mobile-menu"
-         class="mx-auto hidden w-full max-w-6xl border-t border-navy/10 bg-white px-4 py-3 md:hidden">
-      <div class="flex flex-col gap-3 text-sm font-medium">
-        <a href="#about" class="mobile-link">{% trans "회사 소개" %}</a>
-        <a href="#services" class="mobile-link">{% trans "서비스" %}</a>
-        <a href="#portfolio" class="mobile-link">{% trans "포트폴리오" %}</a>
-        <a href="#contact" class="mobile-link">{% trans "문의" %}</a>
-        <a href="#contact"
-           class="rounded-xl bg-navy px-4 py-2 text-center text-white">{% trans "상담 문의하기" %}</a>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section id="hero" class="relative overflow-hidden pt-28 md:pt-36">
-      <div class="absolute inset-0 -z-10">
-        <img src="{% static 'hero-quroom-optimized.jpg' %}"
-             alt="{% trans '협업과 개발을 상징하는 히어로 배경 이미지' %}"
-             width="1600"
-             height="2414"
-             loading="eager"
-             fetchpriority="high"
-             decoding="async"
-             class="h-full w-full object-cover" />
-        <div class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/75 to-navy/50"></div>
-        <div class="absolute bottom-8 right-8 h-24 w-24 rounded-full bg-sky/30 blur-2xl"></div>
-        <div class="absolute left-8 top-8 h-20 w-20 rounded-full bg-mint/20 blur-2xl"></div>
-      </div>
-      <div class="mx-auto grid w-full max-w-6xl gap-10 px-4 pb-16 md:px-8 md:pb-24 lg:grid-cols-[1.25fr_0.75fr]">
-        <div class="space-y-6 text-white">
-          <h1 class="max-w-[16ch] font-space text-3xl font-bold leading-[1.1] md:text-5xl lg:max-w-[20ch]">
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="renewal-hero" id="top">
+        <div class="renewal-hero-copy">
+          <p class="renewal-kicker">{{ content.hero_eyebrow }}</p>
+          <h1>
             {% if ad_landing %}
               {{ ad_landing.headline|linebreaksbr }}
             {% else %}
               {{ content.headline|linebreaksbr }}
             {% endif %}
           </h1>
-          <p class="max-w-xl text-sm text-white/85 md:text-base">
+          <p class="renewal-hero-summary">
             {% if ad_landing %}
               {{ ad_landing.subcopy }}
             {% else %}
               {{ content.subcopy }}
             {% endif %}
           </p>
-          <p class="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90">
-            {% trans "2018.06 설립 · 총 개발 경력" %} <strong id="career-duration">{{ career_duration }}</strong> · {% trans "자체 제품 6, 외주 개발 1" %}
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="#contact"
-               class="rounded-xl bg-sky px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,165,233,0.35)] transition hover:bg-cyan-500">
+          <div class="renewal-hero-actions">
+            <a class="renewal-button" href="#contact">
               {% if ad_landing %}
                 {{ ad_landing.primary_cta }}
               {% else %}
-                {% trans "상담 문의하기" %}
+                {{ content.hero_primary_cta }}
               {% endif %}
             </a>
-            <a href="#contact"
-               class="rounded-xl border border-white/35 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 transition hover:bg-white/10">
-              {% if ad_landing %}
-                {{ ad_landing.secondary_cta }}
-              {% else %}
-                {% trans "30분 무료 커피챗" %}
-              {% endif %}
-            </a>
+            <a class="renewal-text-link" href="#work">{{ content.hero_secondary_cta }}</a>
           </div>
-          <p class="text-xs text-white/80">
-            <a href="{% url 'landing:free_diagnosis' %}?lead_magnet=start"
-               class="underline underline-offset-2">{% trans "무료 자동화 실행 진단" %}</a>
-            {% trans "은 별도 페이지에서도 진행할 수 있습니다." %}
-          </p>
-          <p class="text-xs text-white/80">
-            {% trans "글로벌 인재 채용·연결이 필요한 경우" %}
-            <a href="{% url 'landing:foreign_developers' %}"
-               class="underline underline-offset-2">{% trans "글로벌 인재 지원 페이지" %}</a>
-            {% trans "에서 상세 내용을 확인하세요." %}
-          </p>
+          <p class="renewal-response-note">{{ content.response_note }}</p>
         </div>
-        <aside class="self-end rounded-2xl border border-white/25 bg-white/15 p-5 text-white backdrop-blur">
-          <p class="text-xs font-semibold tracking-wide text-white/80">{{ content.hero_trust_title }}</p>
-          <ul class="mt-3 space-y-2 text-sm text-white/90">
-            {% for item in content.hero_trust_points %}
-              <li class="flex items-start gap-2">
-                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span>
-                <span>{{ item|safe }}</span>
-              </li>
-            {% endfor %}
-          </ul>
-          <div class="mt-4 space-y-2 text-sm">
-            <a href="{{ content.links.linkedin }}"
-               target="_blank"
-               rel="noreferrer"
-               class="block rounded-lg border border-white/20 px-3 py-2 hover:bg-white/20">{% trans "LinkedIn (대표자 개인)" %}</a>
-          </div>
-          <p class="mt-3 text-[11px] text-white/70">{% trans "회사 공식 계정이 아닌 대표자 개인 계정입니다." %}</p>
-        </aside>
-      </div>
-    </section>
-    <section id="fit" class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8">
-      <div class="rounded-3xl border border-navy/10 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)] md:p-8">
-        <div class="mb-6 max-w-2xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Fit</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.fit_section_title }}</h2>
-          <p class="mt-3 text-sm text-navy/70 md:text-base">{{ content.fit_section_intro }}</p>
-        </div>
-        <div class="grid gap-4 md:grid-cols-2">
-          <article class="h-full rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">Good Fit</p>
-            <h3 class="mt-2 font-space text-xl font-bold text-emerald-900">{{ content.engagement_fit.good_fit_title }}</h3>
-            <ul class="mt-4 space-y-2 text-sm text-emerald-900/90">
-              {% for item in content.engagement_fit.good_fit %}
-                <li class="flex items-start gap-2">
-                  <span class="mt-1 inline-block h-2.5 w-2.5 flex-none rounded-full bg-emerald-600"></span><span>{{ item }}</span>
-                </li>
-              {% endfor %}
-            </ul>
-          </article>
-          <article class="h-full rounded-3xl border border-navy/10 bg-white p-6">
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-navy/50">Not Yet</p>
-            <h3 class="mt-2 font-space text-xl font-bold text-navy/80">{{ content.engagement_fit.not_fit_title }}</h3>
-            <ul class="mt-4 space-y-2 text-sm text-navy/70">
-              {% for item in content.engagement_fit.not_fit %}
-                <li class="flex items-start gap-2">
-                  <span class="mt-1 inline-block h-2.5 w-2.5 flex-none rounded-full bg-navy/25"></span><span>{{ item }}</span>
-                </li>
-              {% endfor %}
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-    <section id="about" class="mx-auto w-full max-w-6xl px-4 py-16 md:px-8">
-      <div class="grid gap-10 rounded-3xl border border-navy/10 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_1fr] md:p-10">
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">About</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.about_title }}</h2>
-          {% for paragraph in content.about_body %}
-            <p class="mt-4 text-sm leading-relaxed md:text-base {% if forloop.first %}font-medium text-navy/88{% else %}text-navy/68{% endif %}">
-              {{ paragraph }}
-            </p>
-          {% endfor %}
-          <div class="mt-7 rounded-2xl border border-navy/10 bg-fog/60 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-navy/70">Career Timeline</p>
-            <ul class="mt-3 space-y-2 text-sm text-navy/80">
-              {% for range in career_ranges %}
-                <li class="flex items-start gap-2">
-                  <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span>
-                  <span>
-                    <span class="timeline-range inline-flex items-baseline whitespace-nowrap tabular-nums">
-                      <span class="inline-flex min-w-[7ch] justify-end text-right">{{ range.start|slice:":7" }}</span>
-                      <span class="timeline-separator inline-flex justify-center text-center"
-                            aria-hidden="true">~</span>
-                      <span class="inline-flex min-w-[7ch] justify-start text-left">
-                        {% if range.end %}
-                          {{ range.end|slice:":7" }}
-                        {% else %}
-                          {% trans "현재" %}
-                        {% endif %}
-                      </span>
-                    </span>
-                    · {{ range.label }}
-                  </span>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2">
-          {% for metric in metrics %}
-            <article class="rounded-2xl border border-navy/10 bg-fog/60 p-4">
-              <p class="text-xs text-navy/60">{{ metric.label }}</p>
-              <p class="mt-2 font-space text-xl font-bold text-navy metric-value"
-                 {% if metric.dynamic %}data-dynamic-career="true"{% endif %}>{{ metric.value }}</p>
-              <p class="mt-1 text-xs text-navy/60">{{ metric.description }}</p>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <section id="services" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="mb-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Services</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "제공 서비스" %}</h2>
-        <p class="mt-1 text-sm text-navy/70">{{ content.services_section_subtitle }}</p>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {% for service in content.services %}
-          {% if "founders" in service.persona_targets %}
-            <article class="rounded-2xl border border-navy/10 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-              <h3 class="font-space text-lg font-semibold text-navy">{{ service.title }}</h3>
-              <p class="mt-2 text-sm text-navy/75">{{ service.summary }}</p>
-              <ul class="mt-4 space-y-2 text-sm text-navy/80">
-                {% for service_item in service.items %}
-                  <li class="flex items-start gap-2">
-                    <span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky"></span><span>{{ service_item }}</span>
-                  </li>
-                {% endfor %}
-              </ul>
-              <div class="mt-4 border-t border-navy/10 pt-4 text-xs text-navy/70">
-                <p>{% trans "예상 기간" %}: {{ service.duration }}</p>
-                <p class="mt-1">{% trans "예상 비용" %}: {{ service.price }}</p>
-                <p class="mt-1">{% trans "권장 고객" %}: {{ service.audience }}</p>
-                {% if service.capacity_note %}<p class="mt-1 text-amber-700">{{ service.capacity_note }}</p>{% endif %}
-              </div>
-              <a href="{{ service.cta_href }}"
-                 class="mt-4 inline-flex rounded-lg border border-sky/30 bg-sky/10 px-3 py-2 text-xs font-semibold text-sky hover:bg-sky hover:text-white">
-                {{ service.cta_label }}
-              </a>
-            </article>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <div class="mt-8 rounded-2xl border border-navy/10 bg-fog/40 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
-        <h3 class="font-space text-lg font-semibold text-navy">{{ content.addon_section_title }}</h3>
-        <p class="mt-1 text-xs text-navy/65">{{ content.addon_section_subtitle }}</p>
-        <div class="mt-4 grid gap-4 md:grid-cols-2">
-          {% for addon in content.service_addons %}
-            <article class="rounded-xl border border-navy/10 bg-fog/50 p-4">
-              <h4 class="font-semibold text-navy">{{ addon.title }}</h4>
-              <p class="mt-2 text-sm text-navy/75">{{ addon.summary }}</p>
-              <div class="mt-3 text-xs text-navy/70">
-                <p>{% trans "예상 기간" %}: {{ addon.duration }}</p>
-                <p class="mt-1">{% trans "예상 비용" %}: {{ addon.price }}</p>
-                <p class="mt-1">{% trans "권장 고객" %}: {{ addon.audience }}</p>
-                <p class="mt-1 text-navy/60">{{ addon.note }}</p>
-              </div>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <section id="process" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Process</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{{ content.execution_process_title }}</h2>
-        <div class="mt-6 grid gap-4 md:grid-cols-2">
-          {% for step in content.execution_process %}
-            <article class="rounded-2xl border border-navy/10 bg-fog/60 p-4">
-              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-sky">Step {{ forloop.counter }}</p>
-              <h3 class="mt-2 font-semibold text-navy">{{ step.title }}</h3>
-              <p class="mt-2 text-sm text-navy/75">{{ step.description }}</p>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <section id="portfolio" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Portfolio</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "포트폴리오" %}</h2>
-        </div>
-        <p class="max-w-xl text-xs text-navy/70">
-          {{ content.trust_note }}
-          <a href="{{ content.links.linkedin }}"
-             target="_blank"
-             rel="noreferrer"
-             class="underline decoration-sky decoration-2 underline-offset-4">{% trans "LinkedIn 보기" %}</a>
-        </p>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {% for project in content.portfolio %}
-          <article class="overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-            <div class="flex h-52 w-full items-center justify-center bg-fog/70 p-2">
-              <img src="{% static project.image %}"
-                   alt="{{ project.name }} {% trans '썸네일' %}"
-                   width="900"
-                   height="500"
-                   loading="lazy"
-                   decoding="async"
-                   class="max-h-full w-full object-contain" />
+        <dl class="renewal-proof-strip" aria-label="{% trans '핵심 수행 조건' %}">
+          {% for item in content.proof_items %}
+            <div>
+              <dt>{{ item.label }}</dt>
+              <dd>
+                {% if forloop.first %}
+                  {{ content.career_proof_prefix }} <span id="career-duration">{{ item.value }}</span>
+                {% else %}
+                  {{ item.value }}
+                {% endif %}
+              </dd>
             </div>
-            <div class="space-y-3 p-5">
-              <div class="flex items-center justify-between gap-3">
-                <h3 class="font-space text-lg font-bold">{{ project.name }}</h3>
-                <span class="rounded-full bg-fog px-3 py-1 text-[11px] text-navy/70">{{ project.period }}</span>
-              </div>
-              <p class="text-sm text-navy/75">{{ project.summary }}</p>
-              <div class="space-y-2 rounded-xl bg-fog/70 p-3 text-xs text-navy/80">
-                <p>
-                  <strong>{% trans "Problem" %}</strong> {{ project.problem }}
-                </p>
-                <p>
-                  <strong>{% trans "Solution" %}</strong> {{ project.solution }}
-                </p>
-                <p>
-                  <strong>{% trans "Result" %}</strong> {{ project.result }}
-                </p>
-                <p>
-                  <strong>{% trans "Tech" %}</strong> {{ project.tech }}
-                </p>
-              </div>
-              {% if project.link %}
-                <a href="{{ project.link }}"
-                   target="_blank"
-                   rel="noreferrer"
-                   class="inline-flex text-sm font-semibold text-sky hover:underline">{% trans "링크 확인하기" %}</a>
-              {% else %}
-                <p class="text-xs text-navy/60">{% trans "보안 또는 운영 정책으로 상세 링크는 비공개입니다." %}</p>
-              {% endif %}
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-    </section>
-    {% if testimonials %}
-      <section id="testimonials" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-        <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Testimonials</p>
-          <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "상담 후기" %}</h2>
-          <p class="mt-2 text-sm text-navy/70">{% trans "검토 후 공개 동의된 후기만 노출합니다." %}</p>
-          <div class="mt-6 grid gap-4 md:grid-cols-3">
-            {% for testimonial in testimonials %}
-              <article class="rounded-2xl border border-navy/10 bg-fog/70 p-4">
-                <p class="text-sm leading-relaxed text-navy/80">“{{ testimonial.content }}”</p>
-                <p class="mt-3 text-xs font-semibold text-navy">{{ testimonial.name }}</p>
-                <p class="text-xs text-navy/60">
-                  {% if testimonial.role_title %}{{ testimonial.role_title }}{% endif %}
-                  {% if testimonial.role_title and testimonial.company_name %}·{% endif %}
-                  {% if testimonial.company_name %}{{ testimonial.company_name }}{% endif %}
-                </p>
+          {% endfor %}
+        </dl>
+      </section>
+      <section class="renewal-section renewal-services" id="services">
+        <div class="renewal-section-intro">
+          <p>{{ content.services_label }}</p>
+          <h2>{{ content.services_title|linebreaksbr }}</h2>
+          <p>{{ content.services_intro }}</p>
+        </div>
+        <div class="renewal-scope-layout">
+          <div class="renewal-scope-list">
+            {% for service in content.outsourcing_services %}
+              <article>
+                <span>0{{ forloop.counter }}</span>
+                <div>
+                  <h3>{{ service.title }}</h3>
+                  <p>{{ service.description }}</p>
+                </div>
               </article>
             {% endfor %}
           </div>
+          <aside class="renewal-deliverables"
+                 aria-label="{{ content.deliverables_title }}">
+            <h3>{{ content.deliverables_title }}</h3>
+            <ul>
+              {% for item in content.deliverables %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+            <p>{{ content.deliverables_note }}</p>
+          </aside>
+        </div>
+        <div class="renewal-engagement-table"
+             aria-label="{% trans '상담과 외주 프로젝트 조건' %}">
+          {% for engagement in content.engagements %}
+            <div>
+              <div>
+                <strong>{{ engagement.title }}</strong>
+                <span>{{ engagement.description }}</span>
+              </div>
+              <b>{{ engagement.terms }}</b>
+              <a href="?inquiry_type={{ engagement.inquiry_type }}#contact"
+                 data-inquiry-type="{{ engagement.inquiry_type }}">{{ engagement.cta }}</a>
+            </div>
+          {% endfor %}
         </div>
       </section>
-    {% endif %}
-    <section id="faq" class="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
-      <div class="rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">FAQ</p>
-        <h2 class="mt-2 font-space text-2xl font-bold md:text-3xl">{% trans "창업자 실행 FAQ" %}</h2>
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
-          {% for item in content.faq %}
-            <article class="rounded-2xl border border-navy/10 bg-fog/70 p-4">
-              <h3 class="font-semibold text-navy">{{ item.q }}</h3>
-              <p class="mt-2 text-sm text-navy/75">{{ item.a }}</p>
+      <section class="renewal-section renewal-work" id="work">
+        {% for project in content.client_projects %}
+          <div class="renewal-section-intro renewal-section-intro-compact">
+            <p>{{ content.client_work_label }}</p>
+            <h2>{{ project.name }}</h2>
+          </div>
+          <div class="renewal-case-study">
+            <div class="renewal-case-summary">
+              <p>{{ content.client_work_intro }}</p>
+              <span>{{ content.client_work_note }}</span>
+            </div>
+            <dl>
+              <div>
+                <dt>{% trans "기간" %}</dt>
+                <dd>
+                  {{ project.period }}
+                </dd>
+              </div>
+              <div>
+                <dt>{% trans "구현" %}</dt>
+                <dd>
+                  {{ project.solution }}
+                </dd>
+              </div>
+              <div>
+                <dt>{% trans "결과" %}</dt>
+                <dd>
+                  {{ project.result }}
+                </dd>
+              </div>
+              <div>
+                <dt>{% trans "기술" %}</dt>
+                <dd>
+                  {{ project.tech }}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        {% endfor %}
+      </section>
+      <section class="renewal-section renewal-products" id="products">
+        <div class="renewal-section-intro renewal-section-intro-horizontal">
+          <div>
+            <p>{{ content.products_label }}</p>
+            <h2>{{ content.products_title|linebreaksbr }}</h2>
+          </div>
+          <p>{{ content.products_intro }}</p>
+        </div>
+        <div class="renewal-portfolio-grid">
+          {% for project in content.owned_products %}
+            <article class="renewal-portfolio-item">
+              <figure>
+                <img src="{% static project.image %}"
+                     width="900"
+                     height="600"
+                     loading="lazy"
+                     decoding="async"
+                     alt="{{ project.name }} {% trans '제품 화면' %}" />
+              </figure>
+              <p class="renewal-meta">{{ project.period }}</p>
+              <h3>{{ project.name }}</h3>
+              <p>{{ project.summary }}</p>
+              {% if project.link %}
+                <a href="{{ project.link }}" target="_blank" rel="noreferrer">
+                  {% trans "외부 링크" %}<span class="renewal-visually-hidden">{% trans "새 창" %}</span>
+                </a>
+              {% endif %}
             </article>
           {% endfor %}
         </div>
-      </div>
-    </section>
-    <section id="contact" class="mx-auto w-full max-w-6xl px-4 pb-20 md:px-8">
-      <div class="grid gap-6 rounded-3xl bg-navy p-6 text-white md:grid-cols-[1fr_1fr] md:p-8">
-        <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky">Contact</p>
-          <h2 class="font-space text-2xl font-bold">{{ content.contact_title }}</h2>
-          <p class="text-sm text-white/80">{{ content.contact_intro }}</p>
-          <div class="space-y-2 rounded-2xl border border-white/20 bg-white/5 p-4 text-sm">
-            <ul class="space-y-2">
-              {% for item in content.contact_points %}
-                {% if forloop.counter <= 3 %}
-                  <li class="flex items-start gap-2">
-                    <span class="my-auto inline-block h-2 w-2 rounded-full bg-white/80"></span>
-                    <span>{{ item }}</span>
-                  </li>
-                {% else %}
-                  <li class="pt-1 text-white/85">{{ item }}</li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-            <p class="pt-1">
-              <strong>{% trans "이메일:" %}</strong> {{ content.company.email }}
-            </p>
-          </div>
+      </section>
+      <section class="renewal-section renewal-process" id="process">
+        <div class="renewal-section-intro renewal-section-intro-compact">
+          <p>{{ content.execution_process_label }}</p>
+          <h2>{{ content.execution_process_title|linebreaksbr }}</h2>
         </div>
-        <div id="contact-form-wrap">{% include "landing/partials/contact_form.html" %}</div>
-      </div>
-      <p class="mt-4 text-xs text-navy/70">{{ content.founder_capacity_policy }}</p>
-    </section>
-  </main>
-  <footer class="border-t border-navy/10 bg-white/80 py-8">
-    <div class="mx-auto grid w-full max-w-6xl gap-5 px-4 text-sm text-navy/75 md:grid-cols-[2fr_1fr] md:px-8">
+        <ol class="renewal-process-list">
+          {% for step in content.execution_process %}
+            <li>
+              <span>{{ step.period }}</span>
+              <div>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      </section>
+      <section class="renewal-section renewal-profile" id="profile">
+        <div class="renewal-profile-title">
+          <p>{{ content.profile_label }}</p>
+          <h2>{{ content.profile_title|linebreaksbr }}</h2>
+        </div>
+        <div class="renewal-profile-body">
+          <p class="renewal-profile-lead">{{ content.profile_lead }}</p>
+          <p>{{ content.profile_body }}</p>
+          <dl>
+            {% for range in career_ranges %}
+              <div>
+                <dt>
+                  {{ range.start|slice:':4' }}—
+                  {% if range.end %}
+                    {{ range.end|slice:':4' }}
+                  {% else %}
+                    {% trans "현재" %}
+                  {% endif %}
+                </dt>
+                <dd>
+                  {{ range.label }}
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+          <a href="{{ content.links.linkedin }}" target="_blank" rel="noreferrer">
+            {{ content.profile_link_label }}<span class="renewal-visually-hidden">{% trans "새 창" %}</span>
+          </a>
+        </div>
+      </section>
+      {% if testimonials %}
+        <section class="renewal-section renewal-testimonials" id="testimonials">
+          <div class="renewal-section-intro renewal-section-intro-compact">
+            <p>{% trans "고객 후기" %}</p>
+            <h2>{% trans "공개에 동의한 후기만 전합니다." %}</h2>
+          </div>
+          <div class="renewal-testimonial-list">
+            {% for testimonial in testimonials %}
+              <blockquote>
+                <p>“{{ testimonial.content }}”</p>
+                <footer>
+                  {{ testimonial.name }}
+                  {% if testimonial.role_title %}· {{ testimonial.role_title }}{% endif %}
+                  {% if testimonial.company_name %}· {{ testimonial.company_name }}{% endif %}
+                </footer>
+              </blockquote>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+      <section class="renewal-section renewal-faq" id="faq">
+        <div class="renewal-section-intro renewal-section-intro-compact">
+          <p>{{ content.faq_label }}</p>
+          <h2>{{ content.faq_title }}</h2>
+        </div>
+        <div class="renewal-faq-list">
+          {% for item in content.faq %}
+            <details>
+              <summary>{{ item.q }}</summary>
+              <p>{{ item.a }}</p>
+            </details>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="renewal-contact" id="contact">
+        <div class="renewal-contact-copy">
+          <p>{{ content.contact_label }}</p>
+          <h2>{{ content.contact_title|linebreaksbr }}</h2>
+          <p>{{ content.contact_intro }}</p>
+          <span>{{ content.company.email }} · {{ content.response_note }}</span>
+        </div>
+        <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
+      </section>
+    </main>
+    <footer class="renewal-footer">
       <div>
-        <p class="font-space text-base font-semibold text-navy">{{ content.company.name }}</p>
-        <p class="mt-2">{{ content.company.address }}</p>
-        <p class="mt-1">{% trans "연락처:" %} {{ content.company.email }}</p>
-        <p class="mt-1">
-          {% trans "사업자 정보: 상호" %} {{ content.company.name }} | {% trans "대표" %} {{ content.company.owner }} | {% trans "사업자등록번호" %} {{ content.company.biz_number }}
-        </p>
-        <p class="mt-1">{% trans "통신판매업 신고번호:" %} {{ content.company.mail_order_number }}</p>
-        <p class="mt-3 text-xs text-navy/60">Copyright {% now "Y" %} QuRoom. All rights reserved.</p>
+        <strong>QuRoom</strong>
+        <span>{% trans "대표" %} {{ content.company.owner }} · {% trans "광주광역시" %} · {% trans "사업자등록번호" %} {{ content.company.biz_number }}</span>
       </div>
-      <div class="space-y-2">
-        <a href="{% url 'landing:privacy' %}" class="block hover:text-sky">{% trans "개인정보처리방침" %}</a>
-        <a href="{% url 'landing:terms' %}" class="block hover:text-sky">{% trans "이용약관" %}</a>
-        <a href="{{ content.links.linkedin }}"
-           target="_blank"
-           rel="noreferrer"
-           class="block hover:text-sky">{% trans "LinkedIn (대표자 개인)" %}</a>
-        <a href="{{ content.links.threads }}"
-           target="_blank"
-           rel="noreferrer"
-           class="block hover:text-sky">{% trans "Threads (대표자 개인)" %}</a>
-      </div>
-    </div>
-  </footer>
-  <script id="career-data" type="application/json">[
+      <nav aria-label="{% trans '하단 메뉴' %}">
+        <a href="{% url 'landing:privacy' %}">{% trans "개인정보처리방침" %}</a>
+        <a href="{% url 'landing:terms' %}">{% trans "이용약관" %}</a>
+      </nav>
+    </footer>
+    <script id="career-data" type="application/json">[
 {% for range in career_ranges %}
 {"start":"{{ range.start }}","end":{% if range.end %}"{{ range.end }}"{% else %}null{% endif %},"count_for_career":{% if range.count_for_career is False %}false{% else %}true{% endif %}}{% if not forloop.last %},{% endif %}
 {% endfor %}
 ]
-  </script>
+    </script>
+  </div>
 {% endblock %}

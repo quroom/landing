@@ -535,3 +535,83 @@ msgstr "Please check required fields."
 msgid "문의가 접수되었습니다. 영업일 기준 1~2일 내 답변드리겠습니다."
 msgstr ""
 "Your inquiry has been received. We will respond within 1-2 business days."
+
+#: landing/forms.py
+msgid "(선택) 제품 개발/운영 관련 정보 메일 수신에 동의합니다."
+msgstr "(Optional) I agree to receive product development and operations updates."
+
+#: landing/templates/landing/index.html
+msgid "본문으로 건너뛰기"
+msgstr "Skip to main content"
+
+#: landing/templates/landing/index.html
+msgid "대표 김상은"
+msgstr "Sang-eun Kim, Founder"
+
+#: landing/templates/landing/index.html
+msgid "주요 메뉴"
+msgstr "Primary navigation"
+
+#: landing/templates/landing/index.html
+msgid "외주 상담"
+msgstr "Project Inquiry"
+
+#: landing/templates/landing/index.html
+msgid "모바일 메뉴"
+msgstr "Mobile navigation"
+
+#: landing/templates/landing/index.html
+msgid "핵심 수행 조건"
+msgstr "Core engagement terms"
+
+#: landing/templates/landing/index.html
+msgid "상담과 외주 프로젝트 조건"
+msgstr "Consultation and project terms"
+
+#: landing/templates/landing/index.html
+msgid "기간"
+msgstr "Period"
+
+#: landing/templates/landing/index.html
+msgid "구현"
+msgstr "Implementation"
+
+#: landing/templates/landing/index.html
+msgid "결과"
+msgstr "Outcome"
+
+#: landing/templates/landing/index.html
+msgid "기술"
+msgstr "Technology"
+
+#: landing/templates/landing/index.html
+msgid "제품 화면"
+msgstr "product screen"
+
+#: landing/templates/landing/index.html
+msgid "외부 링크"
+msgstr "External link"
+
+#: landing/templates/landing/index.html
+msgid "새 창"
+msgstr "opens in a new window"
+
+#: landing/templates/landing/index.html
+msgid "고객 후기"
+msgstr "Client Feedback"
+
+#: landing/templates/landing/index.html
+msgid "공개에 동의한 후기만 전합니다."
+msgstr "Only feedback approved for public display is shown."
+
+#: landing/templates/landing/index.html
+msgid "광주광역시"
+msgstr "Gwangju"
+
+#: landing/templates/landing/index.html
+msgid "하단 메뉴"
+msgstr "Footer navigation"
+
+#: landing/forms.py
+msgid "30분 무료 커피챗"
+msgstr "30-minute Coffee Chat"

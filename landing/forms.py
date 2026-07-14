@@ -28,11 +28,13 @@ class ContactForm(forms.Form):
     }
     HOME_INQUIRY_CHOICES = [
         ("coffee_chat", _("30분 무료 커피챗")),
+        ("outsourcing", _("외주용역 집중 트랙")),
+        ("other", _("기타")),
+    ]
+    LEGACY_HOME_INQUIRY_CHOICES = [
         ("ax_diagnosis", _("자동화 실행 진단")),
         ("ax_build", _("자동화 실행 구축")),
         ("infra_setup", _("창업 기본 인프라 구축")),
-        ("outsourcing", _("외주용역 집중 트랙")),
-        ("other", _("기타")),
     ]
     GWANGJU_INQUIRY_CHOICES = [
         ("gwangju_scope", _("프로젝트 범위/견적 정리")),
@@ -152,7 +154,7 @@ class ContactForm(forms.Form):
     )
     agree_marketing = forms.BooleanField(
         required=False,
-        label=_("(선택) 자동화 진단/운영 팁 등 관련 정보 메일 수신에 동의합니다."),
+        label=_("(선택) 제품 개발/운영 관련 정보 메일 수신에 동의합니다."),
     )
     agree_all = forms.BooleanField(
         required=False,
@@ -196,6 +198,21 @@ class ContactForm(forms.Form):
         else:
             self.fields["lead_source"].initial = "founder_contact"
         if normalized_key == "home":
+            visible_choices = list(self.HOME_INQUIRY_CHOICES)
+            requested_type = recommended_inquiry_type
+            if self.is_bound:
+                requested_type = self.data.get("inquiry_type", requested_type)
+            legacy_choice = next(
+                (
+                    choice
+                    for choice in self.LEGACY_HOME_INQUIRY_CHOICES
+                    if choice[0] == requested_type
+                ),
+                None,
+            )
+            if legacy_choice:
+                visible_choices.append(legacy_choice)
+            self.fields["inquiry_type"].choices = visible_choices
             self.fields["inquiry_type"].initial = "coffee_chat"
 
         if normalized_key == "foreign_developers":

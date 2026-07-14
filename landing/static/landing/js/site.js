@@ -62,11 +62,42 @@
 
     toggle.addEventListener("click", function () {
       menu.classList.toggle("hidden");
+      toggle.setAttribute(
+        "aria-expanded",
+        menu.classList.contains("hidden") ? "false" : "true",
+      );
     });
 
     menu.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
         menu.classList.add("hidden");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || menu.classList.contains("hidden")) return;
+      menu.classList.add("hidden");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
+    });
+  }
+
+  function bindInquiryLinks() {
+    document.querySelectorAll("[data-inquiry-type]").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        var field = document.querySelector("#id_inquiry_type");
+        var inquiryType = link.dataset.inquiryType || "";
+        if (!field || !inquiryType) return;
+        var hasChoice = Array.prototype.some.call(field.options, function (option) {
+          return option.value === inquiryType;
+        });
+        if (!hasChoice) return;
+        var contact = document.querySelector("#contact");
+        if (!contact) return;
+        event.preventDefault();
+        field.value = inquiryType;
+        contact.scrollIntoView({ behavior: "smooth" });
       });
     });
   }
@@ -267,6 +298,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     bindMobileMenu();
+    bindInquiryLinks();
     updateCareerDuration();
     bindConsentToggle(document);
     applyAttributionToForms(document);
