@@ -390,7 +390,7 @@ SERVICE_CARDS = [
 SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
     "seo_title": {
-        "ko": "웹·앱 외주 개발 | 큐룸 김상은",
+        "ko": "웹·앱 외주 개발 | QUROOM",
         "en": "Web and App Development Partner | QUROOM",
     },
     "seo_description": {
@@ -412,8 +412,8 @@ SHARED_CONTENT = {
     "hero_primary_cta": {"ko": "프로젝트 상담 신청", "en": "Discuss a Project"},
     "hero_secondary_cta": {"ko": "수행 사례 보기", "en": "View Client Work"},
     "response_note": {
-        "ko": "문의는 대표 김상은이 확인하고 영업일 1~2일 안에 회신합니다.",
-        "en": "Sang-eun Kim reviews each inquiry and replies within 1-2 business days.",
+        "ko": "문의는 대표가 직접 확인하고 영업일 1~2일 안에 회신합니다.",
+        "en": "The founder reviews each inquiry and replies within 1-2 business days.",
     },
     "career_proof_prefix": {
         "ko": "삼성전자 포함",
@@ -577,8 +577,8 @@ SHARED_CONTENT = {
         "en": "A software engineer\nand business operator.",
     },
     "profile_lead": {
-        "ko": "제품을 만들고 사업을 운영해 온 개발자 김상은입니다. 삼성전자에서 소프트웨어 제품 개발을 배웠고, 이후 공인중개사와 쉐어하우스 창업을 거치며 고객, 비용, 현장 운영을 직접 경험했습니다.",
-        "en": "I am Sang-eun Kim, a software engineer who has also built and operated businesses. After learning product development at Samsung Electronics, I worked as a licensed real-estate agent and founded a share-house business, gaining direct experience with customers, costs, and field operations.",
+        "ko": "제품을 만들고 사업을 운영해 온 개발자입니다. 삼성전자에서 소프트웨어 제품 개발을 배웠고, 이후 공인중개사와 쉐어하우스 창업을 거치며 고객, 비용, 현장 운영을 직접 경험했습니다.",
+        "en": "I am a software engineer who has also built and operated businesses. After learning product development at Samsung Electronics, I worked as a licensed real-estate agent and founded a share-house business, gaining direct experience with customers, costs, and field operations.",
     },
     "profile_body": {
         "ko": "그래서 기능 목록만 보지 않습니다. 실제 사용자가 누구인지, 운영팀이 감당할 수 있는지, 배포 뒤 무엇이 남는지를 함께 판단합니다.",
@@ -646,8 +646,8 @@ SHARED_CONTENT = {
         "en": "If something must be built this quarter,\nstart with your current situation.",
     },
     "contact_intro": {
-        "ko": "목표, 필요한 기능, 예산 범위, 원하는 일정을 적어주시면 대표 김상은이 직접 검토합니다.",
-        "en": "Share your goal, required capabilities, budget range, and desired schedule. Sang-eun Kim will review it directly.",
+        "ko": "목표, 필요한 기능, 예산 범위, 원하는 일정을 적어주시면 대표가 직접 확인합니다.",
+        "en": "Share your goal, required capabilities, budget range, and desired schedule. The founder will review it directly.",
     },
     "contact_points": [
         "이번 분기 안에 진행해야 할 과제가 있는 경우",
