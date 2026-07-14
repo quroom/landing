@@ -10,7 +10,7 @@
 .renewal-process{background:var(--soft)}.renewal-process-list{margin:0 0 0 145px;padding:0;list-style:none;border-top:1px solid var(--ink)}.renewal-process-list li{display:grid;grid-template-columns:140px 1fr;padding:25px 0;border-bottom:1px solid var(--line)}.renewal-process-list li>span{color:var(--blue);font-size:.82rem;font-weight:600}.renewal-process-list h3{margin:0 0 7px;font-size:1.05rem}.renewal-process-list p{margin:0;color:var(--body)}
 .renewal-profile{display:grid;grid-template-columns:.8fr 1.2fr;gap:100px}.renewal-profile-title h2{margin:16px 0 0;font-size:2.7rem;line-height:1.2}.renewal-profile-body{max-width:650px}.renewal-profile-body .renewal-profile-lead{margin:0 0 22px;font-size:1.16rem;color:var(--ink)}.renewal-profile-body>p:not(.renewal-profile-lead){color:var(--body)}.renewal-profile-body dl{margin:40px 0 20px;border-top:1px solid var(--ink)}.renewal-profile-body dl div{display:grid;grid-template-columns:125px 1fr;padding:11px 0;border-bottom:1px solid var(--line)}.renewal-profile-body dt{color:var(--muted);font-size:.76rem}.renewal-profile-body dd{margin:0;font-size:.84rem}.renewal-profile-body>a{color:var(--blue);font-size:.82rem;font-weight:600}
 .renewal-faq{background:#f8fafc}.renewal-faq-list{margin-left:145px;border-top:1px solid var(--ink)}.renewal-faq-list details{border-bottom:1px solid var(--line)}.renewal-faq-list summary{padding:20px 40px 20px 0;cursor:pointer;font-weight:600}.renewal-faq-list details p{max-width:750px;margin:0 0 22px;color:var(--body)}
-.renewal-contact{padding:95px max(20px,calc((100vw - var(--max))/2));display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;background:#12372a;color:#fff}.renewal-contact>div>p{color:#ecfdf3}.renewal-contact h2{margin:16px 0 0;font-size:2.75rem;line-height:1.25}.renewal-contact-action{align-self:end}.renewal-contact-action>p{margin:0 0 24px;color:#ecfdf3}.renewal-contact-action span{display:block;margin-top:15px;color:#d1fae5;font-size:.8rem}.renewal-footer{min-height:100px;padding:28px max(20px,calc((100vw - var(--max))/2));display:flex;align-items:center;justify-content:space-between;gap:30px}.renewal-footer>div{display:flex;gap:18px}.renewal-footer span,.renewal-footer a{color:var(--muted);font-size:.75rem}.renewal-footer nav{display:flex;gap:16px}
+.renewal-contact{padding:95px max(20px,calc((100vw - var(--max))/2));display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;background:#20252d;color:#fff}.renewal-contact>div>p{color:#e5e7eb}.renewal-contact h2{margin:16px 0 0;font-size:2.75rem;line-height:1.25}.renewal-contact-action{align-self:end}.renewal-contact-action>p{margin:0 0 24px;color:#e5e7eb}.renewal-contact-action span{display:block;margin-top:15px;color:#c7cdd4;font-size:.8rem}.renewal-footer{min-height:100px;padding:28px max(20px,calc((100vw - var(--max))/2));display:flex;align-items:center;justify-content:space-between;gap:30px}.renewal-footer>div{display:flex;gap:18px}.renewal-footer span,.renewal-footer a{color:var(--muted);font-size:.75rem}.renewal-footer nav{display:flex;gap:16px}
 @media(max-width:900px){.renewal-hero h1{font-size:3.15rem}.renewal-proof-strip{grid-template-columns:repeat(3,1fr)}.renewal-proof-strip div:nth-child(3){border-right:0}.renewal-proof-strip div:nth-child(n+4){border-top:1px solid var(--line)}.renewal-section-intro{grid-template-columns:110px 1fr}.renewal-section-intro>p:last-child{grid-column:2}.renewal-scope-layout{grid-template-columns:1fr}.renewal-portfolio-grid{grid-template-columns:repeat(2,1fr)}.renewal-profile{gap:55px}.renewal-contact{gap:50px}}
 @media(max-width:700px){.renewal-header-inner{width:calc(100% - 32px);min-height:58px}.renewal-brand small{display:none}.renewal-nav{display:flex;flex-wrap:wrap;gap:12px}.renewal-nav>a:not(.renewal-button){font-size:.76rem}.js .renewal-menu-button{display:block}.js .renewal-nav{display:none;position:absolute;top:58px;left:0;right:0;padding:18px 16px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}.js .renewal-nav.open{display:flex}.renewal-hero{padding-top:38px}.renewal-kicker{margin-bottom:10px}.renewal-hero h1{font-size:2.15rem}.renewal-hero-summary{margin-top:18px;font-size:.94rem}.renewal-hero-actions{margin-top:24px;flex-direction:row;flex-wrap:wrap;gap:12px}.renewal-hero-actions .renewal-button{min-height:44px;padding-inline:15px}.renewal-response-note{margin-top:10px}.renewal-proof-strip{margin-top:28px;grid-template-columns:1fr 1fr}.renewal-proof-strip div,.renewal-proof-strip div:nth-child(3){padding:11px 14px;border-right:1px solid var(--line);border-top:1px solid var(--line)}.renewal-proof-strip div:nth-child(odd){border-right:1px solid var(--line)}.renewal-proof-strip div:nth-child(even){border-right:0}.renewal-proof-strip div:last-child{grid-column:1/-1;border-right:0}.renewal-proof-strip dt{font-size:.68rem}.renewal-proof-strip dd{font-size:.84rem}.renewal-section{padding-block:58px}.renewal-section-intro,.renewal-section-intro.renewal-section-intro-compact,.renewal-section-intro.renewal-section-intro-horizontal{grid-template-columns:1fr;gap:8px;margin-bottom:34px}.renewal-section-intro>p:last-child{grid-column:auto}.renewal-section-intro h2{font-size:2rem}.renewal-scope-layout{gap:35px}.renewal-deliverables{padding:22px}.renewal-engagement-table>div{grid-template-columns:1fr;gap:8px;padding:18px 0}.renewal-engagement-table>div>div{align-items:flex-start;flex-direction:column;gap:2px}.renewal-engagement-table a{justify-self:start}.renewal-case-study{grid-template-columns:1fr;gap:40px}.renewal-portfolio-grid{grid-template-columns:1fr;gap:42px}.renewal-portfolio-item figure{height:250px}.renewal-portfolio-item>p:not(.renewal-meta){min-height:0}.renewal-process-list{margin-left:0}.renewal-process-list li{grid-template-columns:85px 1fr;gap:15px}.renewal-profile{grid-template-columns:1fr;gap:35px}.renewal-profile-title h2{font-size:2.2rem}.renewal-faq-list{margin-left:0}.renewal-contact{padding-block:75px;grid-template-columns:1fr;gap:45px}.renewal-contact h2{font-size:2.15rem}.renewal-footer{align-items:flex-start;flex-direction:column}.renewal-footer>div{flex-direction:column;gap:5px}.renewal-footer nav{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -21,7 +21,7 @@
 
 .renewal-contact-copy > p:first-child {
   margin: 5px 0 0;
-  color: #a7f3d0;
+  color: #93c5fd;
   font-size: 0.78rem;
   font-weight: 600;
 }
@@ -29,13 +29,13 @@
 .renewal-contact-copy > p:nth-of-type(2) {
   max-width: 560px;
   margin: 24px 0 0;
-  color: #ecfdf3;
+  color: #e5e7eb;
 }
 
 .renewal-contact-copy > span {
   display: block;
   margin-top: 24px;
-  color: #d1fae5;
+  color: #c7cdd4;
   font-size: 0.8rem;
 }
 

@@ -198,7 +198,7 @@ EN_TRANSLATIONS = {
     "공인중개사 자격 취득": "Licensed Real-Estate Agent",
     "중개업 활동, 자동화로 업무 효율화": "Brokerage operations with automation-driven efficiency",
     "쉐어하우스 창업 및 확장": "Share-house startup and expansion",
-    "소셜벤처 창업 및 큐룸 개발/운영": "Social venture founding and QuRoom development/operations",
+    "소셜벤처 창업 및 큐룸 개발/운영": "Social venture founding and QUROOM development/operations",
 }
 
 SERVICE_CARDS = [
@@ -391,7 +391,7 @@ SHARED_CONTENT = {
     "site_name": "큐룸(QuRoom)",
     "seo_title": {
         "ko": "웹·앱 외주 개발 | 큐룸 김상은",
-        "en": "Web and App Development Partner | QuRoom",
+        "en": "Web and App Development Partner | QUROOM",
     },
     "seo_description": {
         "ko": "삼성전자 소프트웨어 엔지니어 출신 대표가 웹·앱·업무 시스템의 기획부터 개발, 배포와 운영 이관까지 직접 책임집니다.",

@@ -514,7 +514,7 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
         "@context": "https://schema.org",
         "@type": "Organization",
         "@id": organization_id,
-        "name": "QuRoom",
+        "name": "QUROOM",
         "url": f"{site_base_url}/",
         "logo": f"{site_base_url}/static/logo.jpg",
     }
@@ -523,7 +523,7 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
         "@type": "WebSite",
         "@id": f"{site_base_url}/#website",
         "url": f"{site_base_url}/",
-        "name": "QuRoom",
+        "name": "QUROOM",
         "inLanguage": "ko-KR",
         "publisher": {"@id": organization_id},
     }

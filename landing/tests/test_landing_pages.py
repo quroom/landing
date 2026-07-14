@@ -400,6 +400,7 @@ class LandingPageTests(TestCase):
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
+        self.assertContains(response, ">QUROOM<", count=2, html=False)
         self.assertContains(response, "기획부터 개발, 배포와")
         self.assertContains(response, "운영 이관까지 책임집니다.")
         self.assertContains(
@@ -454,7 +455,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, '<html lang="en">', html=False)
         self.assertContains(response, "Samsung Electronics S/W Engineer")
         self.assertContains(
-            response, "Social venture founding and QuRoom development/operations"
+            response, "Social venture founding and QUROOM development/operations"
         )
         self.assertContains(response, "Present")
         self.assertContains(response, "y ")
