@@ -2,6 +2,6 @@ Django>=5.1,<6.0
 gunicorn>=23.0,<24.0
 psycopg[binary]>=3.2,<4.0
 whitenoise>=6.8,<7.0
-ruff>=0.6,<1.0
+ruff==0.15.5
 djlint==1.42.3
 django-migration-linter>=6.0,<7.0
