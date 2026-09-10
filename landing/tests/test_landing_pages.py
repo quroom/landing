@@ -403,8 +403,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, ">QUROOM<", count=2, html=False)
         self.assertContains(response, "아직 무엇을 맡길지 정하지 않았어도 괜찮습니다.")
         self.assertNotContains(response, "김상은")
-        self.assertContains(response, "기획부터 개발, 배포와")
-        self.assertContains(response, "운영 이관까지 책임집니다.")
+        self.assertContains(response, "웹·앱 개발부터 기술 상담까지")
+        self.assertContains(response, "개발 전체를 맡기셔도,")
+        self.assertContains(response, "막힌 부분만 맡기셔도 됩니다.")
         self.assertContains(
             response,
             "전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다.",
@@ -484,9 +485,9 @@ class LandingPageTests(TestCase):
         self.assertContains(response, " m")
         self.assertContains(
             response,
-            "Accountable from planning and development",
+            "Bring me the whole build",
         )
-        self.assertContains(response, "through deployment and operational handover.")
+        self.assertContains(response, "or just the part where you are stuck.")
         self.assertContains(response, "30-minute Coffee Chat")
         self.assertContains(response, "New Web or App MVP")
         self.assertContains(response, "Six products I built")

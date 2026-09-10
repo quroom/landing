@@ -399,12 +399,12 @@ SHARED_CONTENT = {
         "en": "A former Samsung software engineer personally leads your web, app, or internal system from planning through development, deployment, and operational handover.",
     },
     "hero_eyebrow": {
-        "ko": "대표가 직접 수행하는 웹·앱 외주 개발",
-        "en": "Web and app development led directly by the founder",
+        "ko": "웹·앱 개발부터 기술 상담까지",
+        "en": "From web and app development to technical consultation",
     },
     "headline": {
-        "ko": "기획부터 개발, 배포와\n운영 이관까지 책임집니다.",
-        "en": "Accountable from planning and development\nthrough deployment and operational handover.",
+        "ko": "개발 전체를 맡기셔도,\n막힌 부분만 맡기셔도 됩니다.",
+        "en": "Bring me the whole build,\nor just the part where you are stuck.",
     },
     "subcopy": {
         "ko": "기획부터 개발, 배포, 운영까지 직접 해왔습니다. 전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다. 30분 커피챗은 무료입니다.",
