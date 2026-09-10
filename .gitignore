@@ -217,5 +217,6 @@ _portfolio_code/
 # Local agent/tooling artifacts
 .omx/
 .tmp_ssh/
-package.json
-package-lock.json
+
+# Node.js dependencies
+node_modules/

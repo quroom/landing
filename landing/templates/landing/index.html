@@ -72,7 +72,9 @@
             {% endif %}
           </p>
           <div class="renewal-hero-actions">
-            <a class="renewal-button" href="#contact">
+            <a class="renewal-button"
+               href="{% if ad_landing %}#contact{% else %}?inquiry_type=coffee_chat#contact{% endif %}"
+               {% if not ad_landing %}data-inquiry-type="coffee_chat"{% endif %}>
               {% if ad_landing %}
                 {{ ad_landing.primary_cta }}
               {% else %}
@@ -240,7 +242,7 @@
             {% for range in career_ranges %}
               <div>
                 <dt>
-                  {{ range.start|slice:':4' }}—
+                  {{ range.start|slice:':4' }}–
                   {% if range.end %}
                     {{ range.end|slice:':4' }}
                   {% else %}
@@ -297,7 +299,7 @@
           <p>{{ content.contact_label }}</p>
           <h2>{{ content.contact_title|linebreaksbr }}</h2>
           <p>{{ content.contact_intro }}</p>
-          <span>{{ content.company.email }} · {{ content.response_note }}</span>
+          <span>{{ content.company.email }} · {{ content.contact_response }}</span>
         </div>
         <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
       </section>

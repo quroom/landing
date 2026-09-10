@@ -23,6 +23,7 @@ EN_TRANSLATIONS = {
     "15만원 ~ 30만원": "KRW 150,000 - 300,000",
     "300만원 ~ 900만원": "KRW 3,000,000 - 9,000,000",
     "1,000만원+": "KRW 10,000,000+",
+    "협의": "To be discussed",
     "60만원 ~ 150만원": "KRW 600,000 - 1,500,000",
     "상담 후 결정": "Determined after consultation",
     "2025.04 ~ 현재": "2025.04 - Present",
@@ -60,7 +61,7 @@ EN_TRANSLATIONS = {
     "실행 범위 설계": "Execution Scope Design",
     "2주~8주 단위 실행 범위, 일정, 산출물 기준을 명확히 합의합니다.": "We align execution scope, timeline, and deliverable criteria for a 2-8 week cycle.",
     "구현 및 점검": "Implementation and Review",
-    "주차별 결과 공유와 리스크 점검을 통해 일정/품질을 안정적으로 관리합니다.": "We manage schedule and quality through weekly updates and risk reviews.",
+    "주차별 결과를 공유하고 위험 요소를 점검해 일정과 품질을 관리합니다.": "We manage schedule and quality with weekly updates and risk reviews.",
     "운영 이관 및 다음 단계": "Handover and Next Step",
     "운영 가이드 전달 후 다음 자동화 과제까지 이어지는 실행 루프를 제안합니다.": "After handover guidance, we propose the next automation loop to sustain momentum.",
     "이런 팀과 잘 맞습니다": "Good Fit",
@@ -98,7 +99,7 @@ EN_TRANSLATIONS = {
     "운영 가능한 자동화 구성 + 자동화 운영 가이드 문서": "Operable automation setup + automation operation guide document",
     "실행 체계 고도화가 필요한 창업팀/사업자": "Founders/business owners needing advanced execution systems",
     "자동화 실행 구축 상담": "Request Automation Build Consultation",
-    "외주용역 집중 트랙 (1,000만원+)": "Dedicated Outsourcing Track (KRW 10M+)",
+    "외주용역 집중 트랙": "Dedicated Outsourcing Track",
     "범위가 크고 난도가 높은 과제를 일정 잡고 진행하는 트랙입니다.": "A track for larger, higher-complexity work run on a defined schedule.",
     "첫 주에 범위·일정·완료 기준 고정": "Lock scope, timeline, and completion criteria in week 1",
     "주차별 마일스톤으로 진행 상황 공유": "Share progress through weekly milestones",
@@ -133,7 +134,7 @@ EN_TRANSLATIONS = {
     "이번 분기 안에 진행해야 할 과제가 있는 경우": "When there is work that needs to move within this quarter",
     "담당자와 의사결정자가 어느 정도 정해져 있는 경우": "When the owner and decision-maker are roughly in place",
     "문의 전에 범위나 우선순위를 한번 같이 정리해보고 싶은 경우": "When you want to sort out scope or priorities before making a full inquiry",
-    "기본 연락은 이메일 또는 문의 폼을 통해 부탁드립니다.": "Please use email or the contact form as the primary channel.",
+    "기본 연락은 이메일이나 문의 폼으로 부탁드립니다.": "Please use email or the contact form as the primary channel.",
     "담당자와 의사결정자가 정해져 있어 범위 합의가 가능한 팀": "Teams with a clear owner and decision-maker who can align scope",
     "추가로 도와드릴 수 있는 것": "Additional Founder Infrastructure Support",
     "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.": "Beyond the main execution work, we can quickly set up common operating infrastructure founders need early on.",
@@ -255,15 +256,15 @@ SERVICE_CARDS = [
     },
     {
         "id": "founder-outsourcing-track",
-        "title": "외주용역 집중 트랙 (1,000만원+)",
+        "title": "외주용역 집중 트랙",
         "summary": "범위가 크고 난도가 높은 과제를 일정 잡고 진행하는 트랙입니다.",
         "items": [
             "첫 주에 범위·일정·완료 기준 고정",
             "주차별 마일스톤으로 진행 상황 공유",
             "운영 이관과 초기 이슈 점검 범위를 별도 합의",
         ],
-        "duration": "4주 ~ 8주",
-        "price": "1,000만원+",
+        "duration": "협의",
+        "price": "협의",
         "deliverable": "구축 결과물 + 운영 이관 문서 (후속 지원 범위 별도 합의)",
         "audience": "고난도 실행이 필요한 창업팀/사업자",
         "cta_label": "집중 트랙 문의하기",
@@ -406,14 +407,14 @@ SHARED_CONTENT = {
         "en": "Accountable from planning and development\nthrough deployment and operational handover.",
     },
     "subcopy": {
-        "ko": "삼성전자 소프트웨어 엔지니어 출신 대표가 요구사항을 함께 정리하고 실제 운영 가능한 제품으로 구현합니다. 영업 담당자나 하청 개발자를 거치지 않습니다.",
-        "en": "A former Samsung software engineer works with you to define requirements and build a product ready for real operations. There is no sales handoff or subcontracted development.",
+        "ko": "기획부터 개발, 배포, 운영까지 직접 해왔습니다. 전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다. 30분 커피챗은 무료입니다.",
+        "en": "I have handled planning, development, deployment, and operations firsthand. You can bring me the whole project or just the part where you are stuck. The 30-minute coffee chat is free.",
     },
-    "hero_primary_cta": {"ko": "프로젝트 상담 신청", "en": "Discuss a Project"},
+    "hero_primary_cta": {"ko": "무료 커피챗 신청", "en": "Book a Free Chat"},
     "hero_secondary_cta": {"ko": "수행 사례 보기", "en": "View Client Work"},
     "response_note": {
-        "ko": "문의는 대표가 직접 확인하고 영업일 1~2일 안에 회신합니다.",
-        "en": "The founder reviews each inquiry and replies within 1-2 business days.",
+        "ko": "아직 무엇을 맡길지 정하지 않았어도 괜찮습니다. 대표가 직접 보고 영업일 1~2일 안에 답합니다.",
+        "en": "It is fine if you have not decided what to delegate yet. The founder replies within 1-2 business days.",
     },
     "career_proof_prefix": {
         "ko": "삼성전자 포함",
@@ -429,12 +430,12 @@ SHARED_CONTENT = {
             "value": {"ko": "대표 1인 직접 수행", "en": "Founder-led directly"},
         },
         {
-            "label": {"ko": "프로젝트", "en": "Project length"},
-            "value": {"ko": "4~8주", "en": "4-8 weeks"},
+            "label": {"ko": "프로젝트 기간", "en": "Project length"},
+            "value": {"ko": "협의", "en": "To be discussed"},
         },
         {
             "label": {"ko": "예산", "en": "Budget"},
-            "value": {"ko": "1,000만원부터", "en": "From KRW 10M"},
+            "value": {"ko": "협의", "en": "To be discussed"},
         },
         {
             "label": {"ko": "동시 진행", "en": "Capacity"},
@@ -443,37 +444,37 @@ SHARED_CONTENT = {
     ],
     "services_label": {"ko": "서비스", "en": "Services"},
     "services_title": {
-        "ko": "제품 개발에 필요한 일을\n한 흐름으로 연결합니다.",
-        "en": "One continuous path for the work\nyour product needs.",
+        "ko": "필요한 기능부터 정하고\n직접 개발합니다.",
+        "en": "Define what needs to be built,\nthen build it directly.",
     },
     "services_intro": {
-        "ko": "기획서만 넘겨받아 화면을 만드는 방식이 아닙니다. 사업 목표와 사용자를 먼저 확인한 뒤 이번 프로젝트에서 반드시 필요한 범위를 정합니다.",
-        "en": "This is not a handoff where a specification simply becomes screens. We first understand the business goal and users, then agree on what the project must deliver.",
+        "ko": "무엇을 만들지 완전히 정리되지 않아도 괜찮습니다. 첫 상담에서 꼭 필요한 기능과 나중에 해도 될 기능부터 나눕니다.",
+        "en": "You do not need a finished specification. In the first consultation, we separate what needs to be built now from what can wait.",
     },
     "outsourcing_services": [
         {
             "title": {"ko": "신규 웹·앱 MVP", "en": "New Web or App MVP"},
             "description": {
-                "ko": "아이디어와 초기 요구사항을 사용자 흐름, 기능 목록, 개발 범위로 구체화합니다.",
-                "en": "Turn an idea and early requirements into user flows, a feature set, and a buildable scope.",
+                "ko": "아이디어를 화면 흐름과 기능 목록으로 정리하고, 먼저 만들 범위를 정합니다.",
+                "en": "Turn your idea into screen flows and a feature list, then decide what to build first.",
             },
         },
         {
             "title": {"ko": "기존 서비스 개선", "en": "Existing Product Improvement"},
             "description": {
-                "ko": "운영 중 발견된 병목과 오류를 정리하고 필요한 기능을 우선순위대로 구현합니다.",
-                "en": "Prioritize operational bottlenecks and defects, then implement the changes that matter first.",
+                "ko": "오류, 느린 업무, 반복 문의를 확인하고 영향이 큰 문제부터 고칩니다.",
+                "en": "Review defects, slow workflows, and repeated support requests, then fix the highest-impact problems first.",
             },
         },
         {
             "title": {"ko": "업무 시스템·관리자", "en": "Internal Systems and Admin"},
             "description": {
-                "ko": "실제 담당자의 업무 흐름을 기준으로 입력, 조회, 권한, 문서 처리 기능을 만듭니다.",
-                "en": "Build data entry, search, permissions, and document workflows around how the team actually works.",
+                "ko": "담당자가 실제로 일하는 순서에 맞춰 입력, 조회, 권한, 문서 기능을 만듭니다.",
+                "en": "Build data entry, search, permissions, and document tools in the order your team actually works.",
             },
         },
     ],
-    "deliverables_title": {"ko": "기본 산출물", "en": "Core Deliverables"},
+    "deliverables_title": {"ko": "프로젝트에 포함되는 것", "en": "What Is Included"},
     "deliverables": [
         {
             "ko": "요구사항·제외 범위·완료 기준",
@@ -488,27 +489,30 @@ SHARED_CONTENT = {
         },
     ],
     "deliverables_note": {
-        "ko": "디자인, 외부 연동, 인프라 범위는 첫 주에 프로젝트별로 확정합니다.",
-        "en": "Design, external integrations, and infrastructure scope are confirmed in the first week.",
+        "ko": "디자인이나 외부 서비스 연동이 필요하면 첫 상담에서 함께 확인합니다.",
+        "en": "If you need design work or external service integrations, we will cover them in the first consultation.",
     },
     "engagements": [
         {
             "title": {"ko": "30분 커피챗", "en": "30-minute Coffee Chat"},
             "description": {
-                "ko": "외주가 필요한지부터 확인",
-                "en": "Check whether external development is the right next step",
+                "ko": "막힌 부분만 이야기해도 괜찮습니다",
+                "en": "Start with the part where you are stuck",
             },
             "terms": {"ko": "30분 · 무료", "en": "30 min · Free"},
-            "cta": {"ko": "커피챗 신청", "en": "Book a Chat"},
+            "cta": {"ko": "무료 커피챗 신청", "en": "Book a Free Chat"},
             "inquiry_type": "coffee_chat",
         },
         {
             "title": {"ko": "외주 프로젝트", "en": "Development Project"},
             "description": {
-                "ko": "범위 설계부터 배포·운영 이관",
-                "en": "From scope design through deployment and handover",
+                "ko": "기획, 개발, 배포 중 필요한 부분만 맡길 수 있습니다",
+                "en": "Choose the parts you need: planning, development, or deployment",
             },
-            "terms": {"ko": "4~8주 · 1,000만원부터", "en": "4-8 weeks · From KRW 10M"},
+            "terms": {
+                "ko": "기간·예산 협의",
+                "en": "Timeline and budget to be discussed",
+            },
             "cta": {"ko": "프로젝트 상담", "en": "Discuss a Project"},
             "inquiry_type": "outsourcing",
         },
@@ -524,50 +528,50 @@ SHARED_CONTENT = {
     ],
     "client_work_label": {"ko": "외주 수행 사례", "en": "Client Work"},
     "client_work_note": {
-        "ko": "고객 프로젝트로 역할·기간·결과만 공개합니다.",
-        "en": "Only the role, period, and outcome are disclosed for this client project.",
+        "ko": "고객사 요청에 따라 역할, 기간, 결과만 공개합니다.",
+        "en": "At the client's request, only the role, timeline, and outcome are public.",
     },
     "client_work_intro": {
-        "ko": "미술관마다 달랐던 작품 정보와 해설 경험을 하나의 온라인 관람 흐름으로 구성했습니다.",
-        "en": "Artwork information and interpretation that varied by museum were brought into one coherent online viewing flow.",
+        "ko": "작품 정보와 오디오 해설을 한곳에서 볼 수 있게 만든 프로젝트입니다.",
+        "en": "This project brings artwork information and audio guides together in one place.",
     },
     "products_label": {"ko": "직접 만든 제품", "en": "Owned Products"},
     "products_title": {
-        "ko": "출시와 운영을 경험한\n자체 제품 6개",
-        "en": "Six owned products built,\nlaunched, and operated.",
+        "ko": "직접 만들고 운영한\n자체 제품 6개",
+        "en": "Six products I built\nand operated myself.",
     },
     "products_intro": {
-        "ko": "제품을 직접 운영하며 고객 요청, 장애, 비용, 피벗을 겪었습니다. 외주에서도 개발 이후의 운영을 함께 보는 이유입니다.",
-        "en": "Running products firsthand means dealing with customer requests, incidents, costs, and pivots. That is why delivery decisions include what happens after launch.",
+        "ko": "직접 출시하고 운영하면서 고객 요청, 장애, 서버 비용을 다뤘습니다. 그래서 납품으로 끝내지 않고 배포 뒤 운영까지 생각합니다.",
+        "en": "I have handled customer requests, incidents, and server costs after launching my own products. That is why I plan for operations after delivery.",
     },
     "execution_process_label": {"ko": "진행 방식", "en": "Process"},
     "execution_process_title": {
-        "ko": "결정할 것과 만든 것을\n매주 확인합니다.",
-        "en": "Review decisions and working software\nevery week.",
+        "ko": "매주 결과물을 보여드리고\n다음 할 일을 정합니다.",
+        "en": "Review working software each week\nand decide what comes next.",
     },
     "execution_process": [
         {
             "period": {"ko": "1주차", "en": "Week 1"},
             "title": {"ko": "목표와 범위 확정", "en": "Confirm Goals and Scope"},
             "description": {
-                "ko": "요구사항, 제외 범위, 일정, 산출물, 완료 기준을 문서로 맞춥니다.",
-                "en": "Document requirements, exclusions, schedule, deliverables, and completion criteria.",
+                "ko": "만들 기능과 만들지 않을 기능, 일정, 완료 조건을 함께 적습니다.",
+                "en": "Write down what will and will not be built, the schedule, and what counts as done.",
             },
         },
         {
             "period": {"ko": "2~7주차", "en": "Weeks 2-7"},
             "title": {"ko": "구현과 주간 검토", "en": "Build and Review Weekly"},
             "description": {
-                "ko": "동작하는 결과를 기준으로 진행 상황과 필요한 의사결정을 공유합니다.",
-                "en": "Use working software to review progress and make the decisions needed next.",
+                "ko": "실행 가능한 화면과 기능을 보여드리고 다음 주 우선순위를 정합니다.",
+                "en": "Review usable screens and features, then set priorities for the following week.",
             },
         },
         {
             "period": {"ko": "마지막 주", "en": "Final Week"},
             "title": {"ko": "배포와 운영 이관", "en": "Deploy and Hand Over"},
             "description": {
-                "ko": "운영 환경 배포, 점검 방법, 수정 지점과 후속 지원 범위를 정리합니다.",
-                "en": "Deploy to production and document checks, change points, and follow-up support scope.",
+                "ko": "서비스를 배포하고 직접 운영할 수 있도록 점검 방법과 수정할 곳을 알려드립니다.",
+                "en": "Deploy the service and show your team how to check it and where to make changes.",
             },
         },
     ],
@@ -577,12 +581,12 @@ SHARED_CONTENT = {
         "en": "A software engineer\nand business operator.",
     },
     "profile_lead": {
-        "ko": "제품을 만들고 사업을 운영해 온 개발자입니다. 삼성전자에서 소프트웨어 제품 개발을 배웠고, 이후 공인중개사와 쉐어하우스 창업을 거치며 고객, 비용, 현장 운영을 직접 경험했습니다.",
-        "en": "I am a software engineer who has also built and operated businesses. After learning product development at Samsung Electronics, I worked as a licensed real-estate agent and founded a share-house business, gaining direct experience with customers, costs, and field operations.",
+        "ko": "삼성전자에서 소프트웨어를 개발했고, 이후 공인중개사로 일하고 쉐어하우스를 창업했습니다. 개발뿐 아니라 고객 응대, 비용, 현장 운영도 직접 해봤습니다.",
+        "en": "I developed software at Samsung Electronics, then worked as a licensed real-estate agent and started a share-house business. I have handled customers, costs, and day-to-day operations as well as development.",
     },
     "profile_body": {
-        "ko": "그래서 기능 목록만 보지 않습니다. 실제 사용자가 누구인지, 운영팀이 감당할 수 있는지, 배포 뒤 무엇이 남는지를 함께 판단합니다.",
-        "en": "That is why I look beyond a feature list. I consider who will use the product, what the operating team can sustain, and what remains after deployment.",
+        "ko": "개발 전에는 누가 쓰고 누가 운영할지부터 묻습니다. 배포 후 직접 관리할 수 있는 방법도 함께 남겨드립니다.",
+        "en": "Before development, I ask who will use and operate the product. I also leave your team with a practical way to manage it after launch.",
     },
     "profile_link_label": {
         "ko": "LinkedIn에서 상세 경력 확인",
@@ -590,8 +594,8 @@ SHARED_CONTENT = {
     },
     "faq_label": {"ko": "자주 묻는 질문", "en": "FAQ"},
     "faq_title": {
-        "ko": "계약 전에 확인하세요.",
-        "en": "What to Know Before Contracting",
+        "ko": "상담 전에 자주 묻는 내용입니다.",
+        "en": "Common Questions Before a Consultation",
     },
     "engagement_fit": {
         "good_fit_title": "이런 팀과 잘 맞습니다",
@@ -640,20 +644,24 @@ SHARED_CONTENT = {
         "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다",
         "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능",
     ],
-    "contact_label": {"ko": "프로젝트 문의", "en": "Project Inquiry"},
+    "contact_label": {"ko": "편하게 문의하세요", "en": "Start a Conversation"},
     "contact_title": {
-        "ko": "이번 분기에 만들어야 할 것이 있다면,\n현재 상황부터 알려주세요.",
-        "en": "If something must be built this quarter,\nstart with your current situation.",
+        "ko": "지금 고민 중인 내용을\n보내주세요.",
+        "en": "Tell me what you are\nworking through.",
     },
     "contact_intro": {
-        "ko": "목표, 필요한 기능, 예산 범위, 원하는 일정을 적어주시면 대표가 직접 확인합니다.",
-        "en": "Share your goal, required capabilities, budget range, and desired schedule. The founder will review it directly.",
+        "ko": "전체 개발, 일부 기능 구현, 기술 검토 중 어떤 문의든 가능합니다.",
+        "en": "You can ask about a full build, one feature, or a technical review.",
+    },
+    "contact_response": {
+        "ko": "대표가 직접 확인하고 영업일 1~2일 내 답변드립니다.",
+        "en": "The founder replies within 1-2 business days.",
     },
     "contact_points": [
         "이번 분기 안에 진행해야 할 과제가 있는 경우",
         "담당자와 의사결정자가 어느 정도 정해져 있는 경우",
         "문의 전에 범위나 우선순위를 한번 같이 정리해보고 싶은 경우",
-        "기본 연락은 이메일 또는 문의 폼을 통해 부탁드립니다.",
+        "기본 연락은 이메일이나 문의 폼으로 부탁드립니다.",
     ],
     "addon_section_title": "추가로 도와드릴 수 있는 것",
     "addon_section_subtitle": "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.",
@@ -818,8 +826,8 @@ SHARED_CONTENT = {
                 "en": "How is the project scope defined?",
             },
             "a": {
-                "ko": "첫 주에 초기 제안서를 기준으로 포함·제외 범위와 완료 기준을 확정합니다. 추가 요구는 일정과 비용 영향을 먼저 공유한 뒤 변경관리합니다.",
-                "en": "In the first week, we confirm included and excluded scope and completion criteria from the initial proposal. New requests follow change control after schedule and cost impacts are shared.",
+                "ko": "첫 주에 만들 기능과 만들지 않을 기능을 적고 완료 조건을 정합니다. 새 요청이 생기면 일정과 비용이 얼마나 달라지는지 먼저 알려드립니다.",
+                "en": "In the first week, we list what will and will not be built and agree on what counts as done. For new requests, I explain the schedule and cost changes first.",
             },
         },
         {
@@ -828,8 +836,8 @@ SHARED_CONTENT = {
                 "en": "What are the payment terms?",
             },
             "a": {
-                "ko": "착수금·중간금·잔금 3단계 또는 월 단위 청구를 프로젝트 상황에 맞게 협의합니다.",
-                "en": "Payment is agreed per project, typically in three stages or through monthly billing.",
+                "ko": "보통 착수금, 중간금, 잔금으로 나누거나 매월 청구합니다. 프로젝트 규모에 맞춰 상담할 때 정합니다.",
+                "en": "Payment is usually split into a deposit, an interim payment, and a final payment, or billed monthly. We decide during the consultation based on the project size.",
             },
         },
         {
@@ -838,8 +846,8 @@ SHARED_CONTENT = {
                 "en": "Is maintenance available after launch?",
             },
             "a": {
-                "ko": "운영 이관 문서는 기본 제공하며, 초기 점검과 후속 지원 범위는 계약할 때 별도로 합의합니다.",
-                "en": "An operational handover guide is included. Initial checks and ongoing support are agreed separately in the contract.",
+                "ko": "네. 직접 운영할 수 있도록 점검 방법과 수정할 곳을 문서로 드립니다. 이후 유지보수가 필요하면 기간과 범위를 따로 정합니다.",
+                "en": "Yes. I provide a guide showing how to check the service and where to make changes. If you need ongoing maintenance, we agree on the timeline and scope separately.",
             },
         },
         {
@@ -848,8 +856,8 @@ SHARED_CONTENT = {
                 "en": "Which projects are a good fit?",
             },
             "a": {
-                "ko": "이번 분기 안에 실행해야 할 과제와 담당 의사결정자가 있는 팀에 적합합니다. 장기 연구나 요구사항 합의가 어려운 프로젝트는 맞지 않을 수 있습니다.",
-                "en": "The best fit is a team with a project to execute this quarter and a clear decision owner. Long-term research or projects without scope alignment may not be suitable.",
+                "ko": "만들거나 고칠 대상이 있고, 진행 중 결정을 내려줄 담당자가 있으면 좋습니다. 아이디어만 있어도 커피챗에서 어디부터 확인할지 함께 이야기할 수 있습니다.",
+                "en": "It helps to have something specific to build or improve and someone who can make decisions during the project. If you only have an idea, we can still use the coffee chat to decide what to check first.",
             },
         },
     ],

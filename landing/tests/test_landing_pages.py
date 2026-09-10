@@ -401,25 +401,38 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, ">QUROOM<", count=2, html=False)
-        self.assertContains(response, "문의는 대표가 직접 확인하고")
+        self.assertContains(response, "아직 무엇을 맡길지 정하지 않았어도 괜찮습니다.")
         self.assertNotContains(response, "김상은")
         self.assertContains(response, "기획부터 개발, 배포와")
         self.assertContains(response, "운영 이관까지 책임집니다.")
         self.assertContains(
             response,
-            "영업 담당자나 하청 개발자를 거치지 않습니다.",
+            "전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다.",
         )
+        self.assertContains(response, "30분 커피챗은 무료입니다.")
         self.assertContains(response, "신규 웹·앱 MVP")
         self.assertContains(response, "기존 서비스 개선")
         self.assertContains(response, "업무 시스템·관리자")
-        self.assertContains(response, "4~8주 · 1,000만원부터")
+        self.assertContains(
+            response, "무엇을 만들지 완전히 정리되지 않아도 괜찮습니다."
+        )
+        self.assertContains(response, "기간·예산 협의")
+        proof_items = response.context["content"]["proof_items"]
+        self.assertEqual(proof_items[2]["label"], "프로젝트 기간")
+        self.assertEqual(proof_items[2]["value"], "협의")
+        self.assertEqual(proof_items[3]["value"], "협의")
+        self.assertNotContains(response, "1,000만원부터")
         self.assertContains(response, "외주 수행 사례")
         self.assertContains(response, "미술관 큐레이션 서비스 (ArtTrip)")
         self.assertContains(response, "자체 제품 6개")
-        self.assertContains(response, "결정할 것과 만든 것을")
+        self.assertContains(response, "매주 결과물을 보여드리고")
         self.assertContains(response, "개발자이면서")
-        self.assertContains(response, "계약 전에 확인하세요.")
-        self.assertContains(response, "이번 분기에 만들어야 할 것이 있다면")
+        self.assertContains(response, "상담 전에 자주 묻는 내용입니다.")
+        self.assertContains(response, "지금 고민 중인 내용을")
+        self.assertContains(
+            response,
+            "전체 개발, 일부 기능 구현, 기술 검토 중 어떤 문의든 가능합니다.",
+        )
         self.assertContains(
             response, 'data-analytics-event="contact_submit"', html=False
         )
@@ -451,7 +464,7 @@ class LandingPageTests(TestCase):
         )
         self.assertLess(
             body.index("자체 제품 6개"),
-            body.index("결정할 것과 만든 것을"),
+            body.index("매주 결과물을 보여드리고"),
         )
         self.assertTrue(
             FunnelEvent.objects.filter(event_name="lp_view", page_key="home").exists()
@@ -476,8 +489,8 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "through deployment and operational handover.")
         self.assertContains(response, "30-minute Coffee Chat")
         self.assertContains(response, "New Web or App MVP")
-        self.assertContains(response, "Six owned products built")
-        self.assertContains(response, "Review decisions and working software")
+        self.assertContains(response, "Six products I built")
+        self.assertContains(response, "Review working software each week")
         self.assertContains(response, "Project Inquiry")
         self.assertNotContains(response, "자동화 실행 진단")
         self.assertNotContains(response, "제품 개발/운영 관련 정보")

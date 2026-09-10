@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "lint:copy": "slop-gate"
+  },
+  "devDependencies": {
+    "slop-gate": "^0.5.0"
+  }
+}

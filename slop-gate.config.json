@@ -1,0 +1,22 @@
+{
+  "include": [
+    "landing/content.py",
+    "landing/forms.py",
+    "landing/templates/landing/**/*.html",
+    "locale/**/*.po"
+  ],
+  "exclude": [
+    "landing/templates/landing/admin_*.html",
+    "node_modules/**"
+  ],
+  "rules": ["punctuation", "vocabulary", "korean"],
+  "allow": [
+    {
+      "paths": [
+        "landing/templates/landing/privacy.html",
+        "landing/templates/landing/terms.html"
+      ],
+      "rules": ["korean"]
+    }
+  ]
+}
