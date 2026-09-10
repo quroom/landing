@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "devDependencies": {
+    "slop-gate": "0.5.0"
+  }
+}
