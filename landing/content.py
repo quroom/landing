@@ -460,17 +460,17 @@ SHARED_CONTENT = {
             },
         },
         {
-            "title": {"ko": "기존 서비스 개선", "en": "Existing Product Improvement"},
+            "title": {"ko": "사내 업무 도구", "en": "Internal Work Tools"},
             "description": {
-                "ko": "오류, 느린 업무, 반복 문의를 확인하고 영향이 큰 문제부터 고칩니다.",
-                "en": "Review defects, slow workflows, and repeated support requests, then fix the highest-impact problems first.",
+                "ko": "엑셀이나 여러 서비스에 흩어진 업무를 한곳에서 처리할 수 있게 만듭니다.",
+                "en": "Bring work scattered across spreadsheets and other services into one place.",
             },
         },
         {
-            "title": {"ko": "업무 시스템·관리자", "en": "Internal Systems and Admin"},
+            "title": {"ko": "기존 서비스 개선", "en": "Existing Product Improvement"},
             "description": {
-                "ko": "담당자가 실제로 일하는 순서에 맞춰 입력, 조회, 권한, 문서 기능을 만듭니다.",
-                "en": "Build data entry, search, permissions, and document tools in the order your team actually works.",
+                "ko": "오류, 느린 화면, 반복 문의를 확인하고 불편이 큰 문제부터 고칩니다.",
+                "en": "Review errors, slow screens, and repeated support requests, then fix the biggest problems first.",
             },
         },
     ],

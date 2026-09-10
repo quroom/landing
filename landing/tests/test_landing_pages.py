@@ -412,8 +412,8 @@ class LandingPageTests(TestCase):
         )
         self.assertContains(response, "30분 커피챗은 무료입니다.")
         self.assertContains(response, "신규 웹·앱 MVP")
+        self.assertContains(response, "사내 업무 도구")
         self.assertContains(response, "기존 서비스 개선")
-        self.assertContains(response, "업무 시스템·관리자")
         self.assertContains(
             response, "무엇을 만들지 완전히 정리되지 않아도 괜찮습니다."
         )
@@ -455,6 +455,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "쉐어하우스 창업 및 확장")
         self.assertEqual(response.context["career_ranges"], CAREER_RANGES)
         body = response.content.decode("utf-8")
+        self.assertLess(body.index("사내 업무 도구"), body.index("기존 서비스 개선"))
         self.assertLess(
             body.index("신규 웹·앱 MVP"),
             body.index("미술관 큐레이션 서비스 (ArtTrip)"),
