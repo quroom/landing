@@ -18,6 +18,7 @@ class AdLandingVariant:
     primary_cta: str
     secondary_cta: str
     inquiry_type: str
+    eyebrow: str = ""
 
 
 VARIANTS: dict[str, AdLandingVariant] = {
@@ -130,6 +131,30 @@ VARIANTS: dict[str, AdLandingVariant] = {
         primary_cta="유지보수 상담하기",
         secondary_cta="개선 범위 점검",
         inquiry_type="outsourcing",
+    ),
+    "vibe_coding": AdLandingVariant(
+        landing_variant="vibe_coding",
+        campaign="maintenance",
+        ad_group="app_maintenance",
+        intent="vibe_sos",
+        headline="Cursor·Claude로 만든 서비스,\n실서버 배포와 결제 연동에서 막히셨나요?",
+        subcopy="로컬에서만 돌아가는 코드를 1~2주 내 상용 안정화합니다. DB 마이그레이션, 웹훅 검증, Dokku 배포를 8년 차 개발자가 직접 해결합니다.",
+        primary_cta="15분 코드·배포 무료 진단 신청",
+        secondary_cta="해결 사례 및 포트폴리오",
+        inquiry_type="vibe_diagnosis",
+        eyebrow="바이브코딩 배포 긴급 진단",
+    ),
+    "gov_token": AdLandingVariant(
+        landing_variant="gov_token",
+        campaign="app_dev",
+        ad_group="app_outsource",
+        intent="gov_grant",
+        headline="예창패·초창패 AI API 결제,\ne나라도움 정산 반려를 사전에 예방하세요.",
+        subcopy="국내 전자세금계산서 정식 발행부터 비교견적서 2부, 과업 검수조서까지 5종 서류 패키지를 완비해 드립니다.",
+        primary_cta="e나라도움 정산 5종 샘플 및 상담",
+        secondary_cta="정산 지침 가이드 확인",
+        inquiry_type="gov_grant",
+        eyebrow="정부지원사업 AI 정산 지원",
     ),
 }
 
@@ -263,8 +288,15 @@ def build_ad_landing_context(request: HttpRequest) -> dict:
     if params["src"] != "naver":
         return {}
 
-    variant_key = GROUP_TO_VARIANT.get(params["group"]) or GROUP_TO_VARIANT.get(
-        params["campaign"]
+    intent_to_variant = {
+        "vibe_sos": "vibe_coding",
+        "gov_grant": "gov_token",
+        "token": "gov_token",
+    }
+    variant_key = (
+        intent_to_variant.get(params["intent"])
+        or GROUP_TO_VARIANT.get(params["group"])
+        or GROUP_TO_VARIANT.get(params["campaign"])
     )
     if not variant_key:
         variant_key = "app_general" if params["campaign"] == "app_dev" else ""
@@ -273,6 +305,12 @@ def build_ad_landing_context(request: HttpRequest) -> dict:
         return {}
     variant = _apply_creative_override(
         variant, params["group"] or variant.ad_group, params["creative"]
+    )
+
+    eyebrow = (
+        f"[{params['kw']}] 8년 차 개발사 1:1 진단"
+        if params["kw"]
+        else (variant.eyebrow or "8년 차 풀스택 개발사 직접 개발")
     )
 
     return {
@@ -288,4 +326,5 @@ def build_ad_landing_context(request: HttpRequest) -> dict:
         "primary_cta": variant.primary_cta,
         "secondary_cta": variant.secondary_cta,
         "inquiry_type": variant.inquiry_type,
+        "eyebrow": eyebrow,
     }

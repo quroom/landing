@@ -106,6 +106,30 @@ class ContactFormTests(TestCase):
             ).exists()
         )
 
+    def test_contact_submit_vibe_diagnosis(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "page_key": "free_diagnosis",
+                "lead_source": "free_diagnosis_vibe",
+                "name": "바이브코더",
+                "company_name": "스타트업",
+                "contact": "010-1234-5678",
+                "email": "vibe@example.com",
+                "inquiry_type": "vibe_diagnosis",
+                "message": "Next.js 14 + Supabase 배포 중 빌드 에러 및 Nginx 502 오류 발생",
+                "agree_privacy": "on",
+                "ad_intent": "vibe",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="vibe@example.com")
+        self.assertEqual(inquiry.inquiry_type, "vibe_diagnosis")
+        self.assertEqual(inquiry.lead_source, "free_diagnosis_vibe")
+        self.assertEqual(inquiry.ad_intent, "vibe")
+        event = FunnelEvent.objects.get(event_name="contact_submit", page_key="free_diagnosis")
+        self.assertEqual(event.metadata["inquiry_type"], "vibe_diagnosis")
+
     def test_contact_submit_persists_naver_ad_attribution(self) -> None:
         response = self.client.post(
             reverse("landing:contact_submit"),

@@ -18,6 +18,7 @@ class ContactForm(forms.Form):
         "gwangju_web_development",
         "gwangju_app_development",
         "outsourcing_checklist",
+        "free_diagnosis",
     }
     GWANGJU_PAGE_KEYS = {
         "gwangju",
@@ -28,6 +29,9 @@ class ContactForm(forms.Form):
     }
     HOME_INQUIRY_CHOICES = [
         ("coffee_chat", _("30분 무료 커피챗")),
+        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
+        ("wbs_review", _("외주 견적·WBS 사전 검수")),
+        ("gov_grant", _("정부지원사업 e나라도움 서류")),
         ("outsourcing", _("외주용역 집중 트랙")),
         ("other", _("기타")),
     ]
@@ -38,6 +42,9 @@ class ContactForm(forms.Form):
     ]
     GWANGJU_INQUIRY_CHOICES = [
         ("gwangju_scope", _("프로젝트 범위/견적 정리")),
+        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
+        ("wbs_review", _("외주 견적·WBS 사전 검수")),
+        ("gov_grant", _("정부지원사업 e나라도움 서류")),
         ("gwangju_homepage", _("광주 홈페이지 제작")),
         ("gwangju_web", _("광주 웹개발")),
         ("gwangju_app", _("광주 앱개발")),

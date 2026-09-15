@@ -719,6 +719,15 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
             page_key="free_diagnosis",
             lead_source="founder_lead_magnet",
         )
+    recommended_inquiry_type = request.GET.get("inquiry_type", "")
+    if not recommended_inquiry_type and (
+        request.GET.get("intent") == "vibe"
+        or request.GET.get("type") == "vibe"
+        or "vibe" in (request.GET.get("utm_term") or "").lower()
+        or "cursor" in (request.GET.get("utm_term") or "").lower()
+    ):
+        recommended_inquiry_type = "vibe_diagnosis"
+
     context = _base_context(
         build_page_content(
             locale=locale,
@@ -727,9 +736,15 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
         page_key="home",
         locale=locale,
         page_default_locale=page_default_locale,
-        recommended_inquiry_type=request.GET.get("inquiry_type", ""),
+        recommended_inquiry_type=recommended_inquiry_type,
         lead_context=request.GET.get("lead_context", ""),
         tracking_context=_tracking_context_from_request(request),
+    )
+    from .content import VIBE_CODING_CHECKLIST
+
+    context["vibe_checklist"] = VIBE_CODING_CHECKLIST
+    context["initial_tab"] = (
+        "automation" if request.GET.get("type") == "automation" else "vibe"
     )
     return _render_page(
         request,
@@ -1879,8 +1894,8 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         lead_source = "gwangju_contact"
     elif data.get("ad_source") == "naver":
         lead_source = "naver_search_ad"
-    elif submitted_lead_source == "founder_contact_from_diagnosis":
-        lead_source = "founder_contact_from_diagnosis"
+    elif submitted_lead_source in {"founder_contact_from_diagnosis", "free_diagnosis_vibe"}:
+        lead_source = submitted_lead_source
     else:
         lead_source = "founder_contact"
     lead_context = (
@@ -2650,6 +2665,9 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         .order_by("-count")
     )
     inquiry_type_labels = {
+        "vibe_diagnosis": "15분 무료 코드·배포 진단",
+        "wbs_review": "외주 견적·WBS 사전 검수",
+        "gov_grant": "정부지원사업 e나라도움 서류",
         "lead_magnet_diagnosis": "무료 자동화 실행 진단",
         "ax_diagnosis": "자동화 실행 진단",
         "ax_build": "자동화 실행 구축",

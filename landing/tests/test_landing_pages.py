@@ -514,6 +514,17 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "업무 흐름 명확성")
         self.assertNotContains(response, "데이터/운영 기반")
 
+    def test_free_diagnosis_renders_vibe_diagnosis_and_checklist(self) -> None:
+        response = self.client.get(reverse("landing:free_diagnosis"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "무료 개발·자동화 진단 센터")
+        self.assertContains(response, "바이브코딩 실서버 배포·결제 연동 15분 무료 진단")
+        self.assertContains(response, "15분 무료 기술 진단 신청")
+        self.assertContains(response, "배포 전 12대 필수 테크니컬 체크리스트")
+        self.assertContains(response, 'value="vibe_diagnosis"')
+        self.assertContains(response, "보안 및 환경변수")
+        self.assertContains(response, "결제 및 웹훅 멱등성")
+
     def test_free_diagnosis_report_preview_requires_staff(self) -> None:
         response = self.client.get(reverse("landing:lead_magnet_report_preview"))
         self.assertEqual(response.status_code, 302)
@@ -683,6 +694,22 @@ class LandingPageTests(TestCase):
         self.assertEqual(event.metadata["creative"], "scope_first")
         self.assertEqual(event.metadata["keyword"], "앱개발비용")
 
+    def test_index_applies_vibe_coding_intent_and_keyword_eyebrow(self) -> None:
+        response = self.client.get(
+            reverse("landing:index"),
+            {
+                "src": "naver",
+                "campaign": "maintenance",
+                "group": "app_maintenance",
+                "intent": "vibe_sos",
+                "kw": "바이브코딩 배포",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "[바이브코딩 배포] 8년 차 개발사 1:1 진단")
+        self.assertContains(response, "Cursor·Claude로 만든 서비스")
+        self.assertContains(response, "15분 코드·배포 무료 진단 신청")
+
     def test_index_applies_naver_ad_creative_copy(self) -> None:
         response = self.client.get(
             reverse("landing:index"),
@@ -804,6 +831,24 @@ class LandingPageTests(TestCase):
             html=False,
         )
         self.assertNotContains(response, "관련 사례")
+
+    def test_outsourcing_checklist_renders_wbs_and_enaradaum_package(self) -> None:
+        response = self.client.get(reverse("landing:outsourcing_checklist"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "WBS 5대 제외범위")
+        self.assertContains(response, "5 Out-of-Scope Rules")
+        self.assertContains(response, "제1조 (기능 범위)")
+        self.assertContains(response, "제2조 (외부 의존성)")
+        self.assertContains(response, "제3조 (스토어 심사)")
+        self.assertContains(response, "제4조 (품질 보증)")
+        self.assertContains(response, "제5조 (인프라 및 운영)")
+        self.assertContains(response, "린 MVP 과업지시서(WBS) 및 표준 견적서")
+        self.assertContains(response, "표준 견적서 서식 복사")
+        self.assertContains(response, "e나라도움 5종 서류 패키지")
+        self.assertContains(response, "전자세금계산서")
+        self.assertContains(response, "과업 완료 검수조서 (표준 서식)")
+        self.assertContains(response, "검수조서 서식 복사")
 
     def test_contact_submit_normalizes_invalid_page_key(self) -> None:
         response = self.client.post(

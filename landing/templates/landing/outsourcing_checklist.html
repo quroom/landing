@@ -67,6 +67,129 @@
           {% endfor %}
         </div>
       </section>
+      {% if content.wbs_rules %}
+      <section class="mt-8 rounded-[2rem] border border-navy/10 bg-white p-6 shadow-[0_14px_46px_rgba(15,23,42,0.05)] md:p-8">
+        <div class="flex items-center gap-2">
+          <span class="rounded-lg bg-sky/15 px-2.5 py-1 text-xs font-bold text-sky">계약 분쟁 방지</span>
+          <span class="text-xs text-navy/50 font-mono">5 Out-of-Scope Rules</span>
+        </div>
+        <h2 class="mt-2 font-space text-2xl font-bold text-navy md:text-3xl">{{ content.wbs_rules_title }}</h2>
+        <p class="mt-2 text-sm leading-relaxed text-navy/70">{{ content.wbs_rules_summary }}</p>
+        <div class="mt-6 space-y-4">
+          {% for rule in content.wbs_rules %}
+            <article class="rounded-2xl border border-navy/10 bg-fog/40 p-5 transition hover:border-navy/20">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-navy/10 pb-3">
+                <span class="rounded-md bg-navy px-2.5 py-0.5 text-xs font-semibold text-white">{{ rule.article }}</span>
+                <h3 class="font-space text-base font-bold text-navy flex-1">{{ rule.title }}</h3>
+              </div>
+              <p class="mt-3 text-sm font-semibold text-navy/90"><span class="text-sky font-bold">기본 원칙:</span> {{ rule.rule }}</p>
+              <div class="mt-3 rounded-xl bg-white/80 p-3.5 border border-navy/5">
+                <p class="text-xs font-bold text-red-600 uppercase tracking-wide">🚫 제외되는 구체적 항목</p>
+                <ul class="mt-2 list-disc pl-5 space-y-1 text-xs text-navy/75">
+                  {% for excl in rule.exclusions %}
+                    <li>{{ excl }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <p class="mt-3 text-xs text-navy/65"><strong class="text-navy/85">처리 절차:</strong> {{ rule.procedure }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+      {% if content.quote_template_markdown %}
+      <section class="mt-8 rounded-[2rem] border border-navy/10 bg-white p-6 shadow-[0_14px_46px_rgba(15,23,42,0.05)] md:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-800">실전 양식 복사</span>
+              <span class="text-xs text-navy/50 font-mono">Markdown Template</span>
+            </div>
+            <h2 class="mt-2 font-space text-2xl font-bold text-navy md:text-3xl">{{ content.quote_template_title }}</h2>
+            <p class="mt-2 text-sm text-navy/70">{{ content.quote_template_intro }}</p>
+          </div>
+          <button type="button"
+                  onclick="copySnippet('quote-template-code', this)"
+                  class="inline-flex items-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-xs font-bold text-white transition hover:bg-sky shadow-sm">
+            <span class="copy-icon">📋</span> <span class="btn-text">표준 견적서 서식 복사</span>
+          </button>
+        </div>
+        <div class="mt-5 relative">
+          <pre class="overflow-x-auto rounded-2xl bg-slate-900 p-5 text-xs leading-relaxed text-slate-100 font-mono max-h-96 overflow-y-auto"><code id="quote-template-code">{{ content.quote_template_markdown }}</code></pre>
+        </div>
+      </section>
+      {% endif %}
+      {% if content.enaradaum_docs %}
+      <section class="mt-8 rounded-[2rem] border border-navy/10 bg-white p-6 shadow-[0_14px_46px_rgba(15,23,42,0.05)] md:p-8">
+        <div class="flex items-center gap-2">
+          <span class="rounded-lg bg-indigo-100 px-2.5 py-1 text-xs font-bold text-indigo-800">정부지원사업 정산 가이드</span>
+          <span class="text-xs text-navy/50 font-mono">e-Naradoum 5 Package</span>
+        </div>
+        <h2 class="mt-2 font-space text-2xl font-bold text-navy md:text-3xl">{{ content.enaradaum_package_title }}</h2>
+        <p class="mt-2 text-sm text-navy/70">{{ content.enaradaum_package_intro }}</p>
+
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-navy/15 bg-fog/60">
+                <th class="py-3 px-3 font-bold text-navy">순번</th>
+                <th class="py-3 px-3 font-bold text-navy">필수 서류명</th>
+                <th class="py-3 px-3 font-bold text-navy">제출 주체</th>
+                <th class="py-3 px-3 font-bold text-navy">회계감사관 핵심 검수 포인트</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-navy/10">
+              {% for doc in content.enaradaum_docs %}
+                <tr class="hover:bg-fog/30">
+                  <td class="py-3 px-3 font-bold text-sky">{{ doc.num }}</td>
+                  <td class="py-3 px-3 font-semibold text-navy">{{ doc.name }}</td>
+                  <td class="py-3 px-3 text-navy/75 whitespace-nowrap">{{ doc.who }}</td>
+                  <td class="py-3 px-3 text-navy/70 leading-relaxed">{{ doc.point }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if content.ai_token_section %}
+        <div class="mt-6 rounded-2xl border border-sky/30 bg-sky/5 p-5">
+          <h3 class="font-space text-base font-bold text-navy flex items-center gap-2">
+            <span>🤖</span> {{ content.ai_token_section.title }}
+          </h3>
+          <p class="mt-2 text-xs leading-relaxed text-red-700 bg-red-50 p-3 rounded-xl border border-red-200">
+            <strong>⚠️ 회계감사 지적 빈발 원인:</strong> {{ content.ai_token_section.problem }}
+          </p>
+          <div class="mt-3">
+            <p class="text-xs font-bold text-navy">{{ content.ai_token_section.solution_title }}</p>
+            <ul class="mt-2 list-disc pl-5 space-y-1 text-xs text-navy/80">
+              {% for sol in content.ai_token_section.solutions %}
+                <li>{{ sol }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if content.inspection_template_markdown %}
+        <div class="mt-6 border-t border-navy/10 pt-6">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="font-space text-lg font-bold text-navy">{{ content.inspection_template_title }}</h3>
+              <p class="text-xs text-navy/65">과업 종료 시 발주사와 개발사가 함께 날인하는 e나라도움 정산 제출용 표준 검수조서입니다.</p>
+            </div>
+            <button type="button"
+                    onclick="copySnippet('inspection-template-code', this)"
+                    class="inline-flex items-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-xs font-bold text-white transition hover:bg-sky shadow-sm">
+              <span class="copy-icon">📋</span> <span class="btn-text">검수조서 서식 복사</span>
+            </button>
+          </div>
+          <div class="mt-4 relative">
+            <pre class="overflow-x-auto rounded-2xl bg-slate-900 p-5 text-xs leading-relaxed text-slate-100 font-mono max-h-80 overflow-y-auto"><code id="inspection-template-code">{{ content.inspection_template_markdown }}</code></pre>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+      {% endif %}
       <section class="mt-8 rounded-3xl border border-navy/10 bg-white p-6 md:p-8">
         <h2 class="font-space text-2xl font-bold text-navy">{{ content.faq_title }}</h2>
         <div class="mt-4 space-y-3">
@@ -100,5 +223,24 @@
       </section>
     </div>
   </main>
+  <script>
+    function copySnippet(elementId, btn) {
+      var el = document.getElementById(elementId);
+      if (!el) return;
+      var text = el.innerText || el.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          var btnText = btn.querySelector('.btn-text');
+          var oldText = btnText ? btnText.innerText : btn.innerText;
+          if (btnText) btnText.innerText = "✓ 클립보드 복사 완료!";
+          btn.classList.add("!bg-emerald-600");
+          setTimeout(function() {
+            if (btnText) btnText.innerText = oldText;
+            btn.classList.remove("!bg-emerald-600");
+          }, 2200);
+        });
+      }
+    }
+  </script>
   {% include "landing/partials/gwangju_footer.html" %}
 {% endblock %}

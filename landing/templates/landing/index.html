@@ -56,7 +56,13 @@
     <main id="main" tabindex="-1">
       <section class="renewal-hero" id="top">
         <div class="renewal-hero-copy">
-          <p class="renewal-kicker">{{ content.hero_eyebrow }}</p>
+          <p class="renewal-kicker">
+            {% if ad_landing.eyebrow %}
+              {{ ad_landing.eyebrow }}
+            {% else %}
+              {{ content.hero_eyebrow }}
+            {% endif %}
+          </p>
           <h1>
             {% if ad_landing %}
               {{ ad_landing.headline|linebreaksbr }}
