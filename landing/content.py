@@ -504,6 +504,26 @@ SHARED_CONTENT = {
             "inquiry_type": "coffee_chat",
         },
         {
+            "title": {"ko": "15분 코드·배포 진단", "en": "15-minute Code & Deploy Diagnosis"},
+            "description": {
+                "ko": "Cursor·Claude 생성 코드 배포 및 결제 연동 에러 긴급 점검",
+                "en": "Emergency review for AI-generated code, deployment, and payment webhook errors",
+            },
+            "terms": {"ko": "15분 · 무료", "en": "15 min · Free"},
+            "cta": {"ko": "15분 진단 신청", "en": "Request Diagnosis"},
+            "inquiry_type": "vibe_diagnosis",
+        },
+        {
+            "title": {"ko": "외주 WBS 사전 검수", "en": "Outsourcing WBS Scope Review"},
+            "description": {
+                "ko": "계약 전 WBS 5대 제외범위 명시 및 추가금 분쟁 예방 검수",
+                "en": "Pre-contract WBS out-of-scope review to prevent fee disputes",
+            },
+            "terms": {"ko": "무료 검수", "en": "Free Review"},
+            "cta": {"ko": "WBS 검수 신청", "en": "Request WBS Review"},
+            "inquiry_type": "wbs_review",
+        },
+        {
             "title": {"ko": "외주 프로젝트", "en": "Development Project"},
             "description": {
                 "ko": "기획, 개발, 배포 중 필요한 부분만 맡길 수 있습니다",

@@ -850,6 +850,40 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "과업 완료 검수조서 (표준 서식)")
         self.assertContains(response, "검수조서 서식 복사")
 
+    def test_gwangju_pages_render_practical_resources_and_navigation(self) -> None:
+        routes = [
+            "landing:gwangju",
+            "landing:gwangju_homepage",
+            "landing:gwangju_web_development",
+            "landing:gwangju_app_development",
+        ]
+        for route in routes:
+            with self.subTest(route=route):
+                response = self.client.get(reverse(route))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, 'id="resources"')
+                self.assertContains(response, "계약 전 무료로 확인하는 실전 서식과 기술 진단")
+                self.assertContains(response, "WBS 5대 제외범위 및 표준 견적서")
+                self.assertContains(response, "15분 무료 코드·배포 진단")
+                self.assertContains(response, "e나라도움 5종 서류 패키지")
+                self.assertContains(response, reverse("landing:outsourcing_checklist"))
+                self.assertContains(response, reverse("landing:free_diagnosis"))
+
+    def test_secondary_pages_render_consistent_footer(self) -> None:
+        routes = [
+            "landing:free_diagnosis",
+            "landing:outsourcing_checklist",
+            "landing:build_notes",
+            "landing:foreign_developers",
+        ]
+        for route in routes:
+            with self.subTest(route=route):
+                response = self.client.get(reverse(route))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, reverse("landing:index"))
+                self.assertContains(response, reverse("landing:privacy"))
+                self.assertContains(response, reverse("landing:terms"))
+
     def test_contact_submit_normalizes_invalid_page_key(self) -> None:
         response = self.client.post(
             reverse("landing:contact_submit"),

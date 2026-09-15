@@ -1,7 +1,7 @@
 {% extends "landing/base.html" %}
 {% load static %}
-{% block title %}무료 자동화 실행 진단 | QuRoom{% endblock %}
-{% block description %}3분/8문항으로 자동화 실행 우선순위를 점검하는 무료 진단 페이지{% endblock %}
+{% block title %}무료 개발·자동화 진단 센터 | 15분 코드·배포 진단 & 실행 우선순위 점검 | QuRoom{% endblock %}
+{% block description %}바이브코딩 코드·배포·결제 연동 15분 긴급 진단 및 3분 자동화 실행 우선순위를 점검하는 무료 엔지니어링 진단 센터{% endblock %}
 {% block body %}
   <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.13),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(74,222,128,0.1),transparent_45%),linear-gradient(to_bottom,#f8fbff,#e8eef5)]">
   </div>
@@ -20,8 +20,12 @@
           <p class="text-[11px] leading-none text-navy/60">Free Diagnosis</p>
         </div>
       </a>
-      <a href="{% url 'landing:index' %}#contact"
-         class="rounded-xl bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky">상담 문의하기</a>
+      <nav class="flex items-center gap-3 text-xs md:gap-4 md:text-sm">
+        <a href="{% url 'landing:index' %}" class="text-navy/70 hover:text-sky">메인 홈</a>
+        <a href="{% url 'landing:outsourcing_checklist' %}" class="text-navy/70 hover:text-sky">외주 체크리스트</a>
+        <a href="{% url 'landing:index' %}#contact"
+           class="rounded-xl bg-navy px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-sky md:text-sm">상담 문의하기</a>
+      </nav>
     </div>
   </header>
   <main class="mx-auto w-full max-w-6xl px-4 pt-28 pb-20 md:px-8 md:pt-36">
@@ -197,4 +201,5 @@
       }
     })();
   </script>
+  {% include "landing/partials/gwangju_footer.html" %}
 {% endblock %}
