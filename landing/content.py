@@ -395,14 +395,14 @@ SERVICE_CARDS = [
 ]
 
 SHARED_CONTENT = {
-    "site_name": "큐룸(QuRoom)",
+    "site_name": "큐룸 (QUROOM)",
     "seo_title": {
-        "ko": "웹·앱 외주 개발 | QUROOM",
-        "en": "Web and App Development Partner | QUROOM",
+        "ko": "큐룸 (QUROOM) | 웹·앱 외주 개발 & 린 MVP 개발사",
+        "en": "QUROOM | Web & App Development Partner & Lean MVP Builder",
     },
     "seo_description": {
-        "ko": "삼성전자 소프트웨어 엔지니어 출신 대표가 웹·앱·업무 시스템의 기획부터 개발, 배포와 운영 이관까지 직접 책임집니다.",
-        "en": "A former Samsung software engineer personally leads your web, app, or internal system from planning through development, deployment, and operational handover.",
+        "ko": "큐룸(QUROOM)은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다.",
+        "en": "QUROOM is an 8-year full-stack software development studio led by a former Samsung engineer, taking direct responsibility from MVP build to deployment.",
     },
     "hero_eyebrow": {
         "ko": "웹·앱 개발부터 기술 상담까지",
@@ -607,8 +607,8 @@ SHARED_CONTENT = {
         "en": "A software engineer\nand business operator.",
     },
     "profile_lead": {
-        "ko": "삼성전자에서 소프트웨어를 개발했고, 이후 공인중개사로 일하고 쉐어하우스를 창업했습니다. 개발뿐 아니라 고객 응대, 비용, 현장 운영도 직접 해봤습니다.",
-        "en": "I developed software at Samsung Electronics, then worked as a licensed real-estate agent and started a share-house business. I have handled customers, costs, and day-to-day operations as well as development.",
+        "ko": "삼성전자에서 소프트웨어를 개발했고, 이후 8년 차 개발사 큐룸(QUROOM)을 설립하여 직접 운영해왔습니다. 개발뿐 아니라 고객 응대, 비용, 현장 운영도 직접 해봤습니다.",
+        "en": "I developed software at Samsung Electronics, then founded and operated the 8-year software studio QUROOM. I have handled customers, costs, and day-to-day operations as well as development.",
     },
     "profile_body": {
         "ko": "개발 전에는 누가 쓰고 누가 운영할지부터 묻습니다. 배포 후 직접 관리할 수 있는 방법도 함께 남겨드립니다.",
@@ -936,7 +936,7 @@ SHARED_CONTENT = {
         "threads": "https://www.threads.com/@godok.eagle/",
     },
     "company": {
-        "name": "큐룸(QuRoom)",
+        "name": "큐룸 (QUROOM)",
         "owner": "김상은",
         "address": "광주광역시 북구 중흥동 338-60, 2층",
         "email": "help@quroom.kr",
@@ -1408,8 +1408,8 @@ GWANGJU_COMMON_TRUST = {
 
 GWANGJU_PAGE_CONTENT = {
     "gwangju": {
-        "meta_title": "광주 홈페이지 제작 · 웹개발 · 앱개발 | QuRoom",
-        "meta_description": "광주 홈페이지 제작, 웹개발, 앱개발이 필요할 때 요구사항, 범위, 일정, 운영 기준을 먼저 정리하고 실제 제작까지 이어서 맡습니다.",
+        "meta_title": "광주 홈페이지 제작 · 웹개발 · 앱개발 | 큐룸 (QUROOM)",
+        "meta_description": "광주광역시 8년 차 1인 풀스택 개발사 큐룸(QUROOM). 반응형 홈페이지, 웹개발, 앱개발 요구사항 정리부터 배포까지 대표가 직접 책임집니다.",
         "meta_keywords": "광주 홈페이지 제작, 광주 웹개발, 광주 앱개발, 광주 개발 외주, 광주 개발 파트너",
         "hero_label": "광주 개발 상담",
         "hero_title": "광주 홈페이지 제작·웹개발·앱개발, 요구사항부터 같이 정리합니다",
@@ -1531,8 +1531,8 @@ GWANGJU_PAGE_CONTENT = {
         "recommended_inquiry_type": "gwangju_scope",
     },
     "gwangju_homepage": {
-        "meta_title": "광주 홈페이지 제작 | 회사 소개 · 서비스 소개 · 문의 전환 | QuRoom",
-        "meta_description": "광주 홈페이지 제작이 필요하다면 회사 소개, 서비스 소개, 포트폴리오, 문의 전환 구조를 작고 명확하게 정리합니다.",
+        "meta_title": "광주 홈페이지 제작 | 회사·서비스 소개와 문의 전환 | 큐룸 (QUROOM)",
+        "meta_description": "광주 기업·회사 소개 홈페이지 제작. 방문자 문의 전환 구조를 큐룸(QUROOM) 8년 차 개발사가 직접 기획·구축합니다.",
         "meta_keywords": "광주 홈페이지 제작, 광주 기업 홈페이지, 광주 회사 홈페이지, 광주 소개 사이트 제작",
         "hero_label": "광주 홈페이지 제작",
         "hero_title": "광주 홈페이지 제작, 신뢰 중심 기업 소개 홈페이지를 작고 명확하게 구축합니다",
@@ -1639,8 +1639,8 @@ GWANGJU_PAGE_CONTENT = {
         "recommended_inquiry_type": "gwangju_homepage",
     },
     "gwangju_web_development": {
-        "meta_title": "광주 웹개발 | MVP · 웹서비스 · 운영도구 구축 | QuRoom",
-        "meta_description": "광주 웹개발이 필요하다면 MVP, 신청·예약 기능, 관리자 화면, 운영도구까지 실제 업무에 쓰이는 웹서비스를 개발합니다.",
+        "meta_title": "광주 웹개발 외주 | MVP·웹서비스·운영도구 구축 | 큐룸 (QUROOM)",
+        "meta_description": "광주 웹개발 외주 파트너 큐룸(QUROOM). 린 MVP, 사내 관리자 도구, 업무 시스템을 8년 차 풀스택 엔지니어가 직접 만듭니다.",
         "meta_keywords": "광주 웹개발, 광주 MVP 개발, 광주 웹서비스 개발, 광주 관리자 페이지 개발",
         "hero_label": "광주 웹개발",
         "hero_title": "광주 웹개발, MVP와 운영 도구를 실제 업무 흐름에 맞게 구축합니다",
@@ -1747,8 +1747,8 @@ GWANGJU_PAGE_CONTENT = {
         "recommended_inquiry_type": "gwangju_web",
     },
     "gwangju_app_development": {
-        "meta_title": "광주 앱개발 | 앱 · 웹앱 · PWA 기획과 구축 | QuRoom",
-        "meta_description": "광주 앱개발이 필요할 때 처음부터 무거운 방식으로 가지 않고 앱, 웹앱, PWA, MVP 중 현실적인 방식을 제안합니다.",
+        "meta_title": "광주 앱개발 외주 | 웹앱·PWA·크로스플랫폼 기획과 구축 | 큐룸 (QUROOM)",
+        "meta_description": "광주 모바일 앱·웹앱·PWA 개발 외주 파트너 큐룸(QUROOM). 사업 단계와 예산에 맞춘 최적의 개발 방식을 8년 차 개발사가 직접 제안하고 구축합니다.",
         "meta_keywords": "광주 앱개발, 광주 모바일 앱, 광주 PWA 개발, 광주 웹앱 개발",
         "hero_label": "광주 앱개발",
         "hero_title": "광주 앱개발, 앱·웹앱·PWA 중 현실적인 시작점을 같이 정합니다",
@@ -1853,8 +1853,8 @@ GWANGJU_PAGE_CONTENT = {
         "recommended_inquiry_type": "gwangju_app",
     },
     "outsourcing_checklist": {
-        "meta_title": "홈페이지 외주 맡기기 전 체크리스트 7가지 | QuRoom",
-        "meta_description": "홈페이지나 웹개발 외주를 맡기기 전에 범위, 일정, 비용, 유지관리, 소유권에서 꼭 확인해야 할 항목을 정리했습니다.",
+        "meta_title": "홈페이지·웹개발 외주 맡기기 전 체크리스트 7가지 | 큐룸 (QUROOM)",
+        "meta_description": "홈페이지나 웹개발 외주를 맡기기 전에 범위, 일정, 비용, 유지관리, 소유권에서 꼭 확인해야 할 7가지 항목을 8년 차 개발사 큐룸(QUROOM)이 정리했습니다.",
         "meta_keywords": "홈페이지 외주 체크리스트, 웹개발 외주 체크리스트, 외주 계약 전 확인사항, 개발 외주 분쟁 방지",
         "hero_label": "외주 전 필수 확인",
         "hero_title": "홈페이지·웹개발 외주 맡기기 전 확인하는 체크리스트 7가지",

@@ -22,7 +22,7 @@
     <a class="renewal-skip-link" href="#main">{% trans "본문으로 건너뛰기" %}</a>
     <header class="renewal-header">
       <div class="renewal-header-inner">
-        <a class="renewal-brand" href="#top">
+        <a class="renewal-brand" href="#top" aria-label="{% trans '큐룸 (QUROOM) 홈' %}">
           <img src="{% static 'logo.jpg' %}"
                width="30"
                height="30"
@@ -348,7 +348,7 @@
     </main>
     <footer class="renewal-footer">
       <div>
-        <strong>QUROOM</strong>
+        <strong>QUROOM</strong> <span style="font-size: 0.85rem; font-weight: 500; color: var(--muted); margin-left: 2px;">(큐룸)</span>
         <span>{% trans "광주광역시" %} · {% trans "사업자등록번호" %} {{ content.company.biz_number }}</span>
       </div>
       <nav aria-label="{% trans '하단 메뉴' %}">

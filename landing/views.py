@@ -514,16 +514,20 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
         "@context": "https://schema.org",
         "@type": "Organization",
         "@id": organization_id,
-        "name": "QUROOM",
+        "name": "큐룸 (QUROOM)",
+        "legalName": "큐룸",
+        "alternateName": ["큐룸", "QUROOM", "QuRoom", "큐룸개발"],
         "url": f"{site_base_url}/",
         "logo": f"{site_base_url}/static/logo.jpg",
+        "description": "8년 차 삼성전자 출신 1인 풀스택 웹·앱 제작 및 린 MVP 전문 개발사 큐룸(QUROOM)",
     }
     website_schema = {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "@id": f"{site_base_url}/#website",
         "url": f"{site_base_url}/",
-        "name": "QUROOM",
+        "name": "큐룸 (QUROOM)",
+        "alternateName": ["큐룸", "QUROOM", "QuRoom"],
         "inLanguage": "ko-KR",
         "publisher": {"@id": organization_id},
     }
