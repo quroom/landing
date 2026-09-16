@@ -146,8 +146,12 @@
                 <span>{{ engagement.description }}</span>
               </div>
               <b>{{ engagement.terms }}</b>
-              <a href="?inquiry_type={{ engagement.inquiry_type }}#contact"
-                 data-inquiry-type="{{ engagement.inquiry_type }}">{{ engagement.cta }}</a>
+              {% if engagement.url %}
+                <a href="{{ engagement.url }}">{{ engagement.cta }} →</a>
+              {% else %}
+                <a href="?inquiry_type={{ engagement.inquiry_type }}#contact"
+                   data-inquiry-type="{{ engagement.inquiry_type }}">{{ engagement.cta }}</a>
+              {% endif %}
             </div>
           {% endfor %}
         </div>

@@ -520,14 +520,17 @@ SHARED_CONTENT = {
             "inquiry_type": "vibe_diagnosis",
         },
         {
-            "title": {"ko": "외주 WBS 사전 검수", "en": "Outsourcing WBS Scope Review"},
-            "description": {
-                "ko": "계약 전 WBS 5대 제외범위 명시 및 추가금 분쟁 예방 검수",
-                "en": "Pre-contract WBS out-of-scope review to prevent fee disputes",
+            "title": {
+                "ko": "WBS 5대 제외범위 & 표준 견적서",
+                "en": "WBS 5 Out-of-Scope & Quote Template",
             },
-            "terms": {"ko": "무료 검수", "en": "Free Review"},
-            "cta": {"ko": "WBS 검수 신청", "en": "Request WBS Review"},
-            "inquiry_type": "wbs_review",
+            "description": {
+                "ko": "계약 전 추가금 분쟁을 막는 제외 조항 및 린 MVP 표준 견적 양식",
+                "en": "Top 5 out-of-scope rules and Lean MVP standard quote template to prevent disputes",
+            },
+            "terms": {"ko": "자체 참고 · 무료 공개", "en": "Open Reference"},
+            "cta": {"ko": "서식 및 체크리스트 확인", "en": "View Checklist & Templates"},
+            "url": "/outsourcing-checklist/",
         },
         {
             "title": {"ko": "외주 프로젝트", "en": "Development Project"},
@@ -1862,7 +1865,7 @@ GWANGJU_PAGE_CONTENT = {
         "hero_label": "외주 전 필수 확인",
         "hero_title": "홈페이지·웹개발 외주 맡기기 전 확인하는 체크리스트 7가지",
         "hero_summary": "외주를 맡길 때 추가금 분쟁과 개발 지연을 막으려면 범위, 일정, 산출물, 소유권 기준이 사전에 명시되어야 합니다. 계약서에 서명하기 전 반드시 검토할 7개 항목입니다.",
-        "hero_badges": ["추가금 분쟁 방지", "검수 기준 합의", "소유권 100% 이관"],
+        "hero_badges": ["추가금 분쟁 방지", "완료 기준 명시", "소유권 100% 이관"],
         "hero_checkpoints": [
             "원하는 화면보다 '실제 작동해야 하는 기능 목록'이 적혀 있는가",
             "개발사가 '안 해주는 범위(5대 제외범위)'가 사전에 명시되어 있는가",

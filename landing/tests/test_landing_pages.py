@@ -869,6 +869,16 @@ class LandingPageTests(TestCase):
                 self.assertContains(response, reverse("landing:outsourcing_checklist"))
                 self.assertContains(response, reverse("landing:free_diagnosis"))
 
+    def test_home_engagement_table_links_to_self_serve_wbs_and_no_free_review(self) -> None:
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "무료 검수")
+        self.assertNotContains(response, "WBS 검수 신청")
+        self.assertContains(response, "WBS 5대 제외범위 &amp; 표준 견적서")
+        self.assertContains(response, "자체 참고 · 무료 공개")
+        self.assertContains(response, "/outsourcing-checklist/")
+        self.assertNotContains(response, '<option value="wbs_review">')
+
     def test_secondary_pages_render_consistent_footer(self) -> None:
         routes = [
             "landing:free_diagnosis",
