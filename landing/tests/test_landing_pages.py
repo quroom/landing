@@ -425,7 +425,7 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "1,000만원부터")
         self.assertContains(response, "외주 수행 사례")
         self.assertContains(response, "미술관 큐레이션 서비스 (ArtTrip)")
-        self.assertContains(response, "자체 제품 6개")
+        self.assertContains(response, "자체 제품 9개")
         self.assertContains(response, "매주 결과물을 보여드리고")
         self.assertContains(response, "개발자이면서")
         self.assertContains(response, "상담 전에 자주 묻는 내용입니다.")
@@ -443,10 +443,10 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "OpenClaw")
         self.assertNotContains(response, "바이브코딩")
         self.assertEqual(len(response.context["content"]["client_projects"]), 1)
-        self.assertEqual(len(response.context["content"]["owned_products"]), 6)
+        self.assertEqual(len(response.context["content"]["owned_products"]), 9)
         self.assertEqual(
             response.context["content"]["owned_products"][0]["name"],
-            "WishBox (소망창고) - Alpha",
+            "AI콜봇 NoMiss (getnomiss.com)",
         )
         self.assertContains(response, "2026.03 ~ 2026.05")
         self.assertNotContains(response, "2026.03 ~ 현재")
@@ -462,10 +462,10 @@ class LandingPageTests(TestCase):
         )
         self.assertLess(
             body.index("미술관 큐레이션 서비스 (ArtTrip)"),
-            body.index("자체 제품 6개"),
+            body.index("자체 제품 9개"),
         )
         self.assertLess(
-            body.index("자체 제품 6개"),
+            body.index("자체 제품 9개"),
             body.index("매주 결과물을 보여드리고"),
         )
         self.assertTrue(
@@ -491,7 +491,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "or just the part where you are stuck.")
         self.assertContains(response, "30-minute Coffee Chat")
         self.assertContains(response, "New Web or App MVP")
-        self.assertContains(response, "Six products I built")
+        self.assertContains(response, "Nine products I built")
         self.assertContains(response, "Review working software each week")
         self.assertContains(response, "Project Inquiry")
         self.assertNotContains(response, "자동화 실행 진단")
