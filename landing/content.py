@@ -32,7 +32,7 @@ EN_TRANSLATIONS = {
     "2025.04 ~ 현재": "2025.04 - Present",
     "2025.01 ~ 현재": "2025.01 - Present",
     "2026.03 ~ 2026.05": "2026.03 - 2026.05",
-    "AI콜봇 NoMiss (getNomiss)": "AI Callbot NoMiss (getNomiss)",
+    "AI 콜봇": "AI Callbot",
     "광주 도서관 통합검색 (library.quroom.kr)": "Gwangju Library Integrated Search (library.quroom.kr)",
     "단어장앱 (voca.quroom.kr)": "Vocab App (voca.quroom.kr)",
     "손해사정사 문서 자동화 서비스 (R&D)": "Claims Document Automation Service (R&D)",
@@ -764,7 +764,7 @@ SHARED_CONTENT = {
     ],
     "portfolio": [
         {
-            "name": "AI콜봇 NoMiss (getNomiss)",
+            "name": "AI 콜봇",
             "type_label": "자체 제품",
             "period": "2026.09 ~ 현재 (개발 중)",
             "summary": "1인 미용실·출장설비를 위한 30초 AI 음성 응대 및 모바일 접수 카드 솔루션 (지난주 착수, 현재 개발 중)",
@@ -1519,7 +1519,7 @@ GWANGJU_PAGE_CONTENT = {
             },
         ],
         "portfolio_names": [
-            "AI콜봇 NoMiss (getNomiss)",
+            "AI 콜봇",
             "단어장앱 (voca.quroom.kr)",
             "광주 도서관 통합검색 (library.quroom.kr)",
             "손해사정사 문서 자동화 서비스 (R&D)",
@@ -1628,7 +1628,7 @@ GWANGJU_PAGE_CONTENT = {
             },
         ],
         "portfolio_names": [
-            "AI콜봇 NoMiss (getNomiss)",
+            "AI 콜봇",
             "단어장앱 (voca.quroom.kr)",
             "광주 도서관 통합검색 (library.quroom.kr)",
             "손해사정사 문서 자동화 서비스 (R&D)",
@@ -1735,7 +1735,7 @@ GWANGJU_PAGE_CONTENT = {
             },
         ],
         "portfolio_names": [
-            "AI콜봇 NoMiss (getNomiss)",
+            "AI 콜봇",
             "단어장앱 (voca.quroom.kr)",
             "광주 도서관 통합검색 (library.quroom.kr)",
             "손해사정사 문서 자동화 서비스 (R&D)",
@@ -1844,7 +1844,7 @@ GWANGJU_PAGE_CONTENT = {
         ],
         "portfolio_names": [
             "단어장앱 (voca.quroom.kr)",
-            "AI콜봇 NoMiss (getNomiss)",
+            "AI 콜봇",
             "광주 도서관 통합검색 (library.quroom.kr)",
             "Obible (PWA 커뮤니티 성경 서비스)",
             "WishBox (소망창고) - Alpha",
@@ -1901,7 +1901,7 @@ GWANGJU_PAGE_CONTENT = {
         ],
         "portfolio_names": [
             "미술관 큐레이션 서비스 (ArtTrip)",
-            "AI콜봇 NoMiss (getNomiss)",
+            "AI 콜봇",
             "단어장앱 (voca.quroom.kr)",
             "광주 도서관 통합검색 (library.quroom.kr)",
             "손해사정사 문서 자동화 서비스 (R&D)",
