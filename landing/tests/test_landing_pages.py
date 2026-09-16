@@ -446,7 +446,7 @@ class LandingPageTests(TestCase):
         self.assertEqual(len(response.context["content"]["owned_products"]), 9)
         self.assertEqual(
             response.context["content"]["owned_products"][0]["name"],
-            "AI콜봇 NoMiss (getnomiss.com)",
+            "AI콜봇 NoMiss (getNomiss)",
         )
         self.assertContains(response, "2026.03 ~ 2026.05")
         self.assertNotContains(response, "2026.03 ~ 현재")

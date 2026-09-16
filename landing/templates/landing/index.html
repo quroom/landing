@@ -218,6 +218,8 @@
                 <a href="{{ project.link }}" target="_blank" rel="noreferrer">
                   {% trans "외부 링크" %}<span class="renewal-visually-hidden">{% trans "새 창" %}</span>
                 </a>
+              {% elif project.is_in_development %}
+                <span style="font-size: 0.78rem; font-weight: 500; color: #2563eb; margin-top: auto;">개발 진행 중</span>
               {% endif %}
             </article>
           {% endfor %}

@@ -27,6 +27,8 @@
          rel="noreferrer"
          class="renewal-text-link"
          style="font-size: 0.82rem; margin-top: auto;">외부 서비스 링크 확인 →</a>
+    {% elif project.is_in_development %}
+      <span style="font-size: 0.78rem; font-weight: 500; color: var(--blue); margin-top: auto;">현재 개발 진행 중인 프로덕트입니다.</span>
     {% else %}
       <span style="font-size: 0.76rem; color: var(--muted); margin-top: auto;">보안 또는 운영 정책으로 상세 링크는 비공개입니다.</span>
     {% endif %}
