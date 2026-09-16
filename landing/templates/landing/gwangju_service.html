@@ -171,7 +171,7 @@
           <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted);">
             직접 만든 제품과 클라이언트 프로젝트를 구분해 표기했습니다. 외주로 받은 프로젝트는 미술관 큐레이션 서비스만 해당합니다.
           </p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <div class="subpage-portfolio-grid">
             {% for project in content.portfolio %}
               {% include "landing/partials/gwangju_portfolio_card.html" %}
             {% endfor %}
@@ -232,20 +232,20 @@
             </article>
           </div>
         </section>
-
-        <!-- 상담 신청 -->
-        <section class="renewal-contact" id="contact" style="margin-top: 80px; border-radius: 16px;">
-          <div class="renewal-contact-copy">
-            <p class="renewal-kicker" style="color: #93c5fd;">{{ content.cta_title }}</p>
-            <h2 style="font-size: 2.2rem;">{{ content.cta_title }}</h2>
-            <p>{{ content.cta_description }}</p>
-            <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
-          </div>
-          <div id="contact-form-wrap" class="renewal-contact-form">
-            {% include "landing/partials/contact_form.html" %}
-          </div>
-        </section>
       </div>
+
+      <!-- 상담 신청 (통일된 Renewal Contact - 풀블리드) -->
+      <section class="renewal-contact" id="contact">
+        <div class="renewal-contact-copy">
+          <p class="renewal-kicker" style="color: #93c5fd;">{{ content.cta_title }}</p>
+          <h2 style="font-size: 2.2rem;">{{ content.cta_title }}</h2>
+          <p>{{ content.cta_description }}</p>
+          <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
+        </div>
+        <div id="contact-form-wrap" class="renewal-contact-form">
+          {% include "landing/partials/contact_form.html" %}
+        </div>
+      </section>
     </main>
 
     {% include "landing/partials/gwangju_footer.html" %}

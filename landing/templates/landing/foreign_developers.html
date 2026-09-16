@@ -80,7 +80,7 @@
             <p class="renewal-kicker" style="margin: 0;">지원 트랙</p>
             <h2 style="font-size: 2.2rem;">{{ content.persona.service_section_title }}</h2>
           </div>
-          <div class="subpage-card-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+          <div class="subpage-card-grid">
             {% for service in content.services %}
               <article class="subpage-card">
                 <div>
@@ -116,7 +116,7 @@
             <p style="color: var(--body);">{{ content.persona.profile_section_intro }}</p>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <div class="subpage-portfolio-grid">
             <div class="subpage-card">
               <h3 style="margin: 0 0 16px;">{{ content.persona.profile_section_title }}</h3>
               <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; color: var(--body);">

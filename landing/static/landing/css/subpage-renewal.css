@@ -153,8 +153,23 @@
 .subpage-card-grid {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   margin-top: 24px;
+}
+
+.subpage-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
+}
+
+.subpage-feature-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
 }
 
 .subpage-card {
@@ -532,3 +547,106 @@
     font-size: 1.8rem;
   }
 }
+
+/* ==========================================================================
+   Contact Section Overrides & Grid Utilities
+   ========================================================================== */
+
+.renewal-contact {
+  box-sizing: border-box;
+}
+
+/* If .renewal-contact is placed inside .subpage-container */
+.subpage-container .renewal-contact {
+  padding: 56px 48px;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 48px;
+  border-radius: 16px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .subpage-container .renewal-contact {
+    padding: 36px 20px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Form input safety */
+.renewal-contact-form form > div,
+.renewal-contact-form form input,
+.renewal-contact-form form select,
+.renewal-contact-form form textarea {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive Grid Utilities */
+.subpage-card-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.subpage-card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .subpage-card-grid-3,
+  .subpage-card-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive Tabs */
+@media (max-width: 640px) {
+  .subpage-tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .subpage-tab-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px 14px;
+  }
+}
+
+/* Table Responsive Wrap */
+.subpage-table-wrap {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* Footer Responsive Grid */
+.subpage-footer-grid {
+  width: min(calc(100% - 40px), var(--max));
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr;
+  gap: 40px;
+  font-size: 0.82rem;
+  color: var(--body);
+}
+
+@media (max-width: 800px) {
+  .subpage-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+

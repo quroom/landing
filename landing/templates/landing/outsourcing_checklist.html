@@ -213,7 +213,7 @@
             <p style="color: var(--body);">{{ content.enaradaum_package_intro }}</p>
           </div>
 
-          <div style="border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;">
+          <div class="subpage-table-wrap">
             <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
               <thead>
                 <tr style="background: var(--soft); border-bottom: 1px solid var(--line);">
@@ -302,26 +302,26 @@
           <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted);">
             클라이언트 프로젝트인 미술관 큐레이션과 직접 만든 제품을 구분해 표기했습니다.
           </p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <div class="subpage-portfolio-grid">
             {% for project in content.portfolio %}
               {% include "landing/partials/gwangju_portfolio_card.html" %}
             {% endfor %}
           </div>
         </section>
-
-        <!-- 상담 신청 (통일된 Renewal Contact) -->
-        <section class="renewal-contact" id="contact" style="margin-top: 64px; border-radius: 16px;">
-          <div class="renewal-contact-copy">
-            <p class="renewal-kicker" style="color: #93c5fd;">{{ content.cta_title }}</p>
-            <h2 style="font-size: 2.2rem;">{{ content.cta_title }}</h2>
-            <p>{{ content.cta_description }}</p>
-            <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
-          </div>
-          <div id="contact-form-wrap" class="renewal-contact-form">
-            {% include "landing/partials/contact_form.html" %}
-          </div>
-        </section>
       </div>
+
+      <!-- 상담 신청 (통일된 Renewal Contact - 풀블리드) -->
+      <section class="renewal-contact" id="contact">
+        <div class="renewal-contact-copy">
+          <p class="renewal-kicker" style="color: #93c5fd;">{{ content.cta_title }}</p>
+          <h2 style="font-size: 2.2rem;">{{ content.cta_title }}</h2>
+          <p>{{ content.cta_description }}</p>
+          <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
+        </div>
+        <div id="contact-form-wrap" class="renewal-contact-form">
+          {% include "landing/partials/contact_form.html" %}
+        </div>
+      </section>
     </main>
 
     <script>
