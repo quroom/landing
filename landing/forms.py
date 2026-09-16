@@ -35,7 +35,7 @@ class ContactForm(forms.Form):
         ("other", _("기타")),
     ]
     LEGACY_HOME_INQUIRY_CHOICES = [
-        ("wbs_review", _("외주 견적·WBS 사전 검수")),
+        ("wbs_review", _("외주 견적·개발 범위 사전 상담")),
         ("ax_diagnosis", _("자동화 실행 진단")),
         ("ax_build", _("자동화 실행 구축")),
         ("infra_setup", _("창업 기본 인프라 구축")),

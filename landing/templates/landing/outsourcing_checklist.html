@@ -36,7 +36,7 @@
                 aria-controls="mobile-menu">메뉴</button>
         <nav class="renewal-nav" aria-label="주요 메뉴">
           <a href="{% url 'landing:index' %}">메인 홈</a>
-          <a href="#wbs-rules">WBS 5대 제외범위</a>
+          <a href="#wbs-rules">5대 제외 기준</a>
           <a href="#quote-template">표준 견적서 서식</a>
           <a href="#enaradaum">e나라도움 5종 서류</a>
           <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
@@ -45,7 +45,7 @@
       </div>
       <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
         <a href="{% url 'landing:index' %}">메인 홈</a>
-        <a href="#wbs-rules">WBS 5대 제외범위</a>
+        <a href="#wbs-rules">5대 제외 기준</a>
         <a href="#quote-template">표준 견적서 서식</a>
         <a href="#enaradaum">e나라도움 5종 서류</a>
         <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
@@ -64,13 +64,13 @@
               계약 전 제외 범위를 서면으로 고정하고, 린 MVP 표준 견적서와 e나라도움 5종 서류 양식을 복사해 활용하세요.
             </p>
             <div class="subpage-hero-badges">
-              <span class="subpage-badge">WBS 5대 제외범위 완비</span>
+              <span class="subpage-badge">추가금 방지 5대 기준 완비</span>
               <span class="subpage-badge">표준 견적서 마크다운 서식</span>
               <span class="subpage-badge">e나라도움 5종 증빙 패키지</span>
               <span class="subpage-badge">대표 1인 직접 책임 배포</span>
             </div>
             <div class="subpage-hero-actions">
-              <a href="#wbs-rules" class="renewal-button">WBS 5대 제외범위 확인</a>
+              <a href="#wbs-rules" class="renewal-button">5대 제외 기준 확인</a>
               <a href="#quote-template" class="renewal-text-link">표준 견적서 복사하기 →</a>
             </div>
           </div>
@@ -84,7 +84,7 @@
               </li>
               <li>
                 <span class="subpage-num">2</span>
-                <span><strong>WBS 공수와 산정 근거:</strong> 화면 단위가 아닌 모듈·기능 단위 M/D(인일) 기준으로 투명 견적서 산출</span>
+                <span><strong>기능별 공수와 산정 근거:</strong> 화면 단위가 아닌 모듈·기능 단위 M/D(인일) 기준으로 투명 견적서 산출</span>
               </li>
               <li>
                 <span class="subpage-num">3</span>
@@ -94,7 +94,7 @@
             <dl class="subpage-hero-stats">
               <div>
                 <dt>분쟁 방지 원칙</dt>
-                <dd>WBS 5 Out-of-Scope</dd>
+                <dd>5대 제외 기준</dd>
               </div>
               <div>
                 <dt>정부지원사업</dt>
@@ -141,7 +141,7 @@
           </div>
         </section>
 
-        <!-- WBS 5대 제외범위 -->
+        <!-- 5대 제외 기준 (추가금 분쟁 방지) -->
         {% if content.wbs_rules %}
         <section id="wbs-rules" style="margin-top: 80px;">
           <div class="renewal-section-intro renewal-section-intro-horizontal">
@@ -184,7 +184,7 @@
           <div class="renewal-section-intro renewal-section-intro-horizontal">
             <div>
               <p class="renewal-kicker" style="margin: 0;">실전 양식 복사 · Markdown Template</p>
-              <h2 style="font-size: 2.2rem;">린 MVP 과업지시서(WBS) 및 표준 견적서</h2>
+              <h2 style="font-size: 2.2rem;">린 MVP 기능 명세서 및 표준 견적서</h2>
             </div>
             <p style="color: var(--body);">{{ content.quote_template_intro }}</p>
           </div>
