@@ -1,33 +1,37 @@
-<footer class="border-t border-navy/10 bg-white/80 py-10">
-  <div class="mx-auto grid w-full max-w-6xl gap-8 px-4 text-sm text-navy/75 md:grid-cols-[2fr_1fr_1fr] md:px-8">
+{% load static %}
+<footer class="renewal-footer" style="border-top: 1px solid var(--line); background: #fff; padding-block: 48px; min-height: auto;">
+  <div style="width: min(calc(100% - 40px), var(--max)); margin: auto; display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 40px; font-size: 0.82rem; color: var(--body);">
     <div>
-      <p class="font-space text-base font-semibold text-navy">{{ content.company.name }}</p>
-      <p class="mt-2 text-xs leading-relaxed text-navy/70">{{ content.company.address }}</p>
-      <p class="mt-1 text-xs text-navy/70">연락처: {{ content.company.email }}</p>
-      <p class="mt-1 text-xs text-navy/70">
-        사업자 정보: 상호 {{ content.company.name }} | 대표 {{ content.company.owner }} | 사업자등록번호 {{ content.company.biz_number }}
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+        <strong style="color: var(--ink); font-size: 1.05rem; letter-spacing: 0.02em;">QUROOM</strong>
+        <span style="font-size: 0.76rem; color: var(--muted); padding-left: 8px; border-left: 1px solid var(--line);">8년 차 풀스택 개발사 (2018~현재)</span>
+      </div>
+      <p style="margin: 0; line-height: 1.6; color: var(--body);">{{ content.company.address }}</p>
+      <p style="margin: 4px 0 0; color: var(--body);">연락처: <a href="mailto:{{ content.company.email }}" style="color: var(--blue);">{{ content.company.email }}</a></p>
+      <p style="margin: 4px 0 0; font-size: 0.76rem; color: var(--muted);">
+        사업자 정보: 상호 {{ content.company.name }} | 대표 {{ content.company.owner }} | 사업자등록번호 {{ content.company.biz_number }} | 통신판매업: {{ content.company.mail_order_number }}
       </p>
-      <p class="mt-1 text-xs text-navy/70">통신판매업 신고번호: {{ content.company.mail_order_number }}</p>
-      <p class="mt-3 text-xs text-navy/50">Copyright {% now "Y" %} QuRoom. All rights reserved.</p>
+      <p style="margin: 12px 0 0; font-size: 0.74rem; color: var(--muted);">Copyright {% now "Y" %} QuRoom. All rights reserved.</p>
     </div>
-    <div class="space-y-2 text-xs">
-      <p class="font-semibold uppercase tracking-wider text-navy/50">실무 자산 및 진단</p>
-      <a href="{% url 'landing:index' %}" class="block hover:text-sky">메인 홈</a>
-      <a href="{% url 'landing:outsourcing_checklist' %}" class="block hover:text-sky">외주 체크리스트 &amp; 표준 견적서</a>
-      <a href="{% url 'landing:free_diagnosis' %}" class="block hover:text-sky">15분 코드·배포 진단</a>
-      <a href="{% url 'landing:gwangju' %}" class="block hover:text-sky">광주 거점 개발</a>
-      <a href="{% url 'landing:build_notes' %}" class="block hover:text-sky">제품 개발 노트</a>
+    <div>
+      <p style="margin: 0 0 12px; font-size: 0.76rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em;">실무 자산 및 진단</p>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
+        <li><a href="{% url 'landing:index' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">메인 홈</a></li>
+        <li><a href="{% url 'landing:outsourcing_checklist' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">외주 체크리스트 &amp; 표준 견적서</a></li>
+        <li><a href="{% url 'landing:free_diagnosis' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">15분 코드·배포 진단</a></li>
+        <li><a href="{% url 'landing:gwangju' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">광주 거점 개발</a></li>
+        <li><a href="{% url 'landing:build_notes' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">제품 개발 노트</a></li>
+      </ul>
     </div>
-    <div class="space-y-2 text-xs">
-      <p class="font-semibold uppercase tracking-wider text-navy/50">정책 및 채널</p>
-      <a href="{% url 'landing:privacy' %}" class="block hover:text-sky">개인정보처리방침</a>
-      <a href="{% url 'landing:terms' %}" class="block hover:text-sky">이용약관</a>
-      {% if content.links.linkedin %}
-        <a href="{{ content.links.linkedin }}"
-           target="_blank"
-           rel="noreferrer"
-           class="block hover:text-sky">LinkedIn (대표자 개인)</a>
-      {% endif %}
+    <div>
+      <p style="margin: 0 0 12px; font-size: 0.76rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em;">정책 및 채널</p>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
+        <li><a href="{% url 'landing:privacy' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">개인정보처리방침</a></li>
+        <li><a href="{% url 'landing:terms' %}" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">이용약관</a></li>
+        {% if content.links.linkedin %}
+          <li><a href="{{ content.links.linkedin }}" target="_blank" rel="noreferrer" style="color: var(--body); text-decoration: none;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--body)'">LinkedIn (대표자 개인)</a></li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 </footer>

@@ -1,0 +1,534 @@
+/* ==========================================================================
+   QUROOM Subpage Renewal Stylesheet (subpage-renewal.css)
+   Inherits design language, Pretendard typography, and color tokens from home-renewal.css.
+   ========================================================================== */
+
+.subpage-renewal {
+  font-family: Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  color: var(--ink);
+  background: #fff;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Subpage Hero */
+.subpage-hero {
+  padding: 80px max(20px, calc((100vw - var(--max)) / 2)) 56px;
+  background: var(--warm);
+  border-bottom: 1px solid var(--line);
+}
+
+.subpage-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.subpage-hero-copy {
+  max-width: 760px;
+}
+
+.subpage-hero h1 {
+  margin: 12px 0 0;
+  font-size: 2.75rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.subpage-hero-summary {
+  margin: 20px 0 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--body);
+}
+
+.subpage-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.subpage-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--body);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.subpage-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+/* Subpage Hero Sidebar Card */
+.subpage-hero-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.subpage-hero-card h2 {
+  margin: 8px 0 0;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.subpage-checklist {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.subpage-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.88rem;
+  color: var(--body);
+  line-height: 1.55;
+}
+
+.subpage-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.subpage-hero-stats {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.subpage-hero-stats dt {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.subpage-hero-stats dd {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Sections & Containers */
+.subpage-container {
+  width: min(calc(100% - 40px), var(--max));
+  margin: auto;
+  padding-block: 64px 80px;
+}
+
+.subpage-card-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 24px;
+}
+
+.subpage-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subpage-card-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.subpage-card h3 {
+  margin: 10px 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.subpage-card p {
+  margin: 8px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--body);
+}
+
+/* WBS Rule Card */
+.wbs-rule-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 16px;
+  transition: border-color 0.15s ease;
+}
+
+.wbs-rule-card:hover {
+  border-color: #b2ccff;
+}
+
+.wbs-rule-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.wbs-rule-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.wbs-rule-header h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.wbs-exclusion-box {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  background: #fef7f7;
+  border: 1px solid #fedede;
+}
+
+.wbs-exclusion-box strong {
+  display: block;
+  font-size: 0.78rem;
+  color: #b91c1c;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.wbs-exclusion-box ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.84rem;
+  color: #7f1d1d;
+  line-height: 1.6;
+}
+
+/* Snippet Copy Box */
+.snippet-box {
+  margin-top: 20px;
+  border-radius: 10px;
+  background: #172033;
+  color: #f1f5f9;
+  border: 1px solid #2d3748;
+  overflow: hidden;
+}
+
+.snippet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  font-size: 0.8rem;
+}
+
+.snippet-title {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.snippet-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.snippet-copy-btn:hover {
+  background: var(--blue-dark);
+}
+
+.snippet-content {
+  margin: 0;
+  padding: 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+/* Tab Switcher */
+.subpage-tabs {
+  display: inline-flex;
+  align-items: center;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.subpage-tab-btn {
+  border: 0;
+  background: transparent;
+  padding: 9px 18px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.subpage-tab-btn.active {
+  background: var(--ink);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.subpage-tab-btn:hover:not(.active) {
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Portfolio Card Renewal */
+.renewal-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.renewal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.renewal-card-figure {
+  height: 200px;
+  background: var(--soft);
+  border-bottom: 1px solid #eaecf0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin: 0;
+}
+
+.renewal-card-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.renewal-card-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.renewal-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.renewal-card-meta .badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.renewal-card-body h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.renewal-card-body p {
+  margin: 0 0 14px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--body);
+}
+
+/* Article Body Typography (for Build Notes) */
+.subpage-article-body {
+  max-width: 760px;
+  margin: 32px auto 0;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--body);
+}
+
+.subpage-article-body h2 {
+  margin: 48px 0 16px;
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+
+.subpage-article-body h3 {
+  margin: 36px 0 12px;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.subpage-article-body p {
+  margin: 0 0 20px;
+}
+
+.subpage-article-body ul, .subpage-article-body ol {
+  margin: 0 0 24px;
+  padding-left: 24px;
+}
+
+.subpage-article-body li {
+  margin-bottom: 8px;
+}
+
+.subpage-article-body pre {
+  background: #172033;
+  color: #f8fafc;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  margin: 24px 0;
+}
+
+.subpage-article-body blockquote {
+  margin: 24px 0;
+  padding: 16px 22px;
+  background: var(--blue-soft);
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  color: var(--body);
+  font-size: 0.95rem;
+}
+
+/* Subpage Contact Wrap */
+.subpage-contact-wrap {
+  background: #263246;
+  border-radius: 16px;
+  padding: 48px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 48px;
+  margin-top: 48px;
+}
+
+.subpage-contact-copy h2 {
+  margin: 10px 0 0;
+  font-size: 2.2rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #fff;
+}
+
+.subpage-contact-copy p {
+  margin: 14px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .subpage-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .subpage-contact-wrap {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 700px) {
+  .subpage-hero {
+    padding-top: 42px;
+    padding-bottom: 40px;
+  }
+  .subpage-hero h1 {
+    font-size: 2.1rem;
+  }
+  .subpage-hero-summary {
+    font-size: 0.96rem;
+  }
+  .subpage-container {
+    padding-block: 42px 60px;
+  }
+  .subpage-contact-copy h2 {
+    font-size: 1.8rem;
+  }
+}

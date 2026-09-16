@@ -1,4 +1,5 @@
 {% extends "landing/base.html" %}
+{% load static i18n %}
 {% block title %}{{ note.seo_title|default:note.title }} | QuRoom{% endblock %}
 {% block description %}{{ note.seo_description|default:note.summary }}{% endblock %}
 {% block keywords %}{{ note.tags|default:"1인 개발자, 제품 개발, MVP, 외주 개발" }}{% endblock %}
@@ -10,63 +11,106 @@
   <meta property="og:description"
         content="{{ note.seo_description|default:note.summary }}" />
 {% endblock %}
+{% block extra_head %}
+  <link rel="preload"
+        href="{% static 'landing/fonts/Pretendard-Regular.woff2' %}"
+        as="font"
+        type="font/woff2"
+        crossorigin />
+  <link rel="preload"
+        href="{% static 'landing/fonts/Pretendard-SemiBold.woff2' %}"
+        as="font"
+        type="font/woff2"
+        crossorigin />
+  <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
+  <link rel="stylesheet" href="{% static 'landing/css/subpage-renewal.css' %}" />
+{% endblock %}
 {% block body %}
-  <div class="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_bottom,#f8fbff,#e8eef5)]"></div>
-  <header class="border-b border-navy/10 bg-white/85 backdrop-blur">
-    <div class="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-4 md:px-8">
-      <a href="{% url 'landing:build_notes' %}"
-         class="text-sm font-semibold text-navy/70 hover:text-sky">← 제품 개발 노트</a>
-      <nav class="flex items-center gap-3 text-xs md:gap-4 md:text-sm">
-        <a href="{% url 'landing:index' %}" class="text-navy/70 hover:text-sky">메인 홈</a>
-        <a href="{% url 'landing:outsourcing_checklist' %}" class="text-navy/70 hover:text-sky">외주 체크리스트</a>
-        <a href="{% url 'landing:free_diagnosis' %}" class="text-navy/70 hover:text-sky">무료 진단</a>
-        <a href="{% url 'landing:index' %}#contact"
-           class="rounded-lg bg-navy px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-sky md:text-sm">문의하기</a>
-      </nav>
-    </div>
-  </header>
-  <main class="mx-auto w-full max-w-3xl px-4 py-12 md:px-8 md:py-16">
-    <article class="rounded-3xl border border-navy/10 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] md:p-9">
-      <div class="flex flex-wrap items-center gap-2 text-xs text-navy/60">
-        <span class="rounded-full bg-sky/10 px-2.5 py-1 font-semibold text-sky-700">{{ note.get_category_display }}</span>
-        {% if note.published_at %}
-          <time datetime="{{ note.published_at|date:'c' }}">{{ note.published_at|date:"Y.m.d" }}</time>
-        {% endif %}
+  <div class="home-renewal subpage-renewal">
+    <a class="renewal-skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="renewal-header">
+      <div class="renewal-header-inner">
+        <a class="renewal-brand" href="{% url 'landing:index' %}">
+          <img src="{% static 'logo.jpg' %}" width="30" height="30" alt="큐룸 로고" />
+          <span>QUROOM</span>
+          <small>대표 직접 수행</small>
+        </a>
+        <button id="menu-toggle"
+                class="renewal-menu-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="mobile-menu">메뉴</button>
+        <nav class="renewal-nav" aria-label="주요 메뉴">
+          <a href="{% url 'landing:build_notes' %}" style="color: var(--blue); font-weight: 600;">← 노트 목록</a>
+          <a href="{% url 'landing:index' %}">메인 홈</a>
+          <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
+          <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
+          <a class="renewal-button renewal-button-small" href="{% url 'landing:index' %}#contact">외주 상담</a>
+        </nav>
       </div>
-      <h1 class="mt-4 font-space text-3xl font-bold leading-tight text-navy md:text-4xl">{{ note.title }}</h1>
-      <p class="mt-4 text-base leading-7 text-navy/72">{{ note.summary }}</p>
-      {% if note.tag_list %}
-        <div class="mt-5 flex flex-wrap gap-2">
-          {% for tag in note.tag_list %}<span class="text-xs text-navy/50">#{{ tag }}</span>{% endfor %}
+      <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
+        <a href="{% url 'landing:build_notes' %}">← 노트 목록</a>
+        <a href="{% url 'landing:index' %}">메인 홈</a>
+        <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
+        <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
+        <a href="{% url 'landing:index' %}#contact">외주 상담</a>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1" style="background: var(--soft); padding-block: 48px 80px;">
+      <div style="width: min(calc(100% - 40px), 820px); margin: auto;">
+        <article style="background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 48px; box-shadow: 0 4px 20px rgba(15,23,42,0.03);">
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--muted); margin-bottom: 12px;">
+            <span style="padding: 3px 10px; border-radius: 4px; background: var(--blue-soft); color: var(--blue); font-weight: 600;">{{ note.get_category_display }}</span>
+            {% if note.published_at %}
+              <time datetime="{{ note.published_at|date:'c' }}">{{ note.published_at|date:"Y.m.d" }}</time>
+            {% endif %}
+          </div>
+          <h1 style="margin: 8px 0 16px; font-size: 2.35rem; font-weight: 600; line-height: 1.25; color: var(--ink);">{{ note.title }}</h1>
+          <p style="margin: 0; font-size: 1.08rem; line-height: 1.7; color: var(--body); border-left: 3px solid var(--blue); padding-left: 16px;">{{ note.summary }}</p>
+          {% if note.tag_list %}
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding-bottom: 24px; border-bottom: 1px solid var(--line);">
+              {% for tag in note.tag_list %}
+                <span style="font-size: 0.78rem; color: var(--muted);">#{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="subpage-article-body">
+            {{ body_html|safe }}
+          </div>
+        </article>
+
+        <!-- 하단 CTA 배너 -->
+        <section style="margin-top: 36px; background: #263246; border-radius: 14px; padding: 36px; color: #fff;">
+          <p class="renewal-kicker" style="color: #93c5fd; margin: 0;">기술 상담</p>
+          <h2 style="margin: 8px 0 0; font-size: 1.65rem; font-weight: 600; color: #fff;">제품 범위나 외주 기준을 같이 정리하고 싶다면</h2>
+          <p style="margin: 10px 0 24px; font-size: 0.92rem; line-height: 1.65; color: #e5e7eb;">
+            현재 단계에서 만들 것, 미룰 것, 맡길 것을 첫 대화에서 함께 정리합니다.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <a href="{% url 'landing:index' %}#contact" class="renewal-button" style="min-height: 44px; padding-inline: 20px; font-size: 0.85rem;">상담 문의하기</a>
+            <a href="{% url 'landing:free_diagnosis' %}" class="renewal-button" style="min-height: 44px; padding-inline: 20px; font-size: 0.85rem; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25);">15분 코드·배포 진단</a>
+            <a href="{% url 'landing:outsourcing_checklist' %}" class="renewal-button" style="min-height: 44px; padding-inline: 20px; font-size: 0.85rem; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25);">외주 체크리스트 &amp; 견적서</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="renewal-footer" style="border-top: 1px solid var(--line); background: #fff; padding-block: 40px; min-height: auto;">
+      <div style="width: min(calc(100% - 40px), var(--max)); margin: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; font-size: 0.82rem; color: var(--body);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <strong style="color: var(--ink);">QUROOM</strong>
+          <span style="color: var(--muted); font-size: 0.76rem;">8년 차 1인 풀스택 개발사 · 광주광역시</span>
         </div>
-      {% endif %}
-      <div class="build-note-body mt-8 border-t border-navy/10 pt-8 text-navy/82">{{ body_html|safe }}</div>
-    </article>
-    <section class="mt-8 rounded-2xl bg-navy p-6 text-white">
-      <h2 class="font-space text-xl font-bold">제품 범위나 외주 기준을 같이 정리하고 싶다면</h2>
-      <p class="mt-2 text-sm leading-6 text-white/78">현재 단계에서 만들 것, 미룰 것, 맡길 것을 첫 대화에서 함께 정리합니다.</p>
-      <div class="mt-4 flex flex-wrap gap-3">
-        <a href="{% url 'landing:index' %}#contact"
-           class="inline-flex rounded-lg bg-sky px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500">상담 문의하기</a>
-        <a href="{% url 'landing:free_diagnosis' %}"
-           class="inline-flex rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20">15분 코드·배포 진단</a>
-        <a href="{% url 'landing:outsourcing_checklist' %}"
-           class="inline-flex rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20">외주 체크리스트 &amp; 견적서</a>
+        <nav style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.8rem;" aria-label="하단 메뉴">
+          <a href="{% url 'landing:index' %}" style="color: var(--body); text-decoration: none;">메인 홈</a>
+          <a href="{% url 'landing:outsourcing_checklist' %}" style="color: var(--body); text-decoration: none;">외주 체크리스트</a>
+          <a href="{% url 'landing:free_diagnosis' %}" style="color: var(--body); text-decoration: none;">15분 진단</a>
+          <a href="{% url 'landing:privacy' %}" style="color: var(--body); text-decoration: none;">개인정보처리방침</a>
+          <a href="{% url 'landing:terms' %}" style="color: var(--body); text-decoration: none;">이용약관</a>
+        </nav>
       </div>
-    </section>
-  </main>
-  <footer class="border-t border-navy/10 bg-white/80 py-8">
-    <div class="mx-auto flex w-full max-w-3xl flex-col items-center justify-between gap-4 px-4 text-xs text-navy/60 md:flex-row md:px-8">
-      <div>
-        <strong>QuRoom</strong> · 8년 차 1인 풀스택 개발사 · 광주광역시
-      </div>
-      <nav class="flex flex-wrap items-center gap-4 text-xs text-navy/70" aria-label="하단 메뉴">
-        <a href="{% url 'landing:index' %}" class="hover:text-sky">메인 홈</a>
-        <a href="{% url 'landing:outsourcing_checklist' %}" class="hover:text-sky">외주 체크리스트</a>
-        <a href="{% url 'landing:free_diagnosis' %}" class="hover:text-sky">15분 진단</a>
-        <a href="{% url 'landing:privacy' %}" class="hover:text-sky">개인정보처리방침</a>
-        <a href="{% url 'landing:terms' %}" class="hover:text-sky">이용약관</a>
-      </nav>
-    </div>
-  </footer>
+    </footer>
+  </div>
 {% endblock %}
