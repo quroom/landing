@@ -1056,17 +1056,32 @@ def _render_limited_markdown(markdown_text: str) -> str:
             blocks.append(f"<h1>{_render_inline_markdown(line[2:].strip())}</h1>")
             continue
 
-        # Unordered list
-        if line.startswith("- ") or line.startswith("* "):
+        # Unordered list (including indented bullets and task checkboxes)
+        if stripped.startswith("- ") or stripped.startswith("* "):
             flush_paragraph()
             flush_ordered_list()
-            list_items.append(_render_inline_markdown(line[2:].strip()))
+            bullet_text = stripped[2:].strip()
+            is_checkbox = False
+            is_checked = False
+            if bullet_text.startswith("[ ] "):
+                is_checkbox = True
+                bullet_text = bullet_text[4:]
+            elif bullet_text.startswith("[x] ") or bullet_text.startswith("[X] "):
+                is_checkbox = True
+                is_checked = True
+                bullet_text = bullet_text[4:]
+
+            rendered_item = _render_inline_markdown(bullet_text)
+            if is_checkbox:
+                checked_attr = " checked" if is_checked else ""
+                rendered_item = f'<label class="subpage-checklist-item"><input type="checkbox"{checked_attr} disabled> {rendered_item}</label>'
+            list_items.append(rendered_item)
             continue
         elif list_items:
             flush_list()
 
         # Ordered list
-        m_ol = re.match(r"^(\d+)\.\s+(.*)$", line)
+        m_ol = re.match(r"^(\d+)\.\s+(.*)$", stripped)
         if m_ol:
             flush_paragraph()
             flush_list()

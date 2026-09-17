@@ -485,6 +485,26 @@
   margin-bottom: 8px;
 }
 
+.subpage-article-body li:has(.subpage-checklist-item) {
+  list-style-type: none;
+  margin-left: -20px;
+}
+
+.subpage-checklist-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: default;
+}
+
+.subpage-checklist-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue);
+  cursor: default;
+  margin: 0;
+}
+
 .subpage-article-body pre {
   background: #0f172a;
   color: #f8fafc;
