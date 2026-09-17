@@ -278,6 +278,9 @@
     if (typeof window.gtag === "function") {
       window.gtag("event", eventName, eventPayload);
     }
+    if (window.posthog && typeof window.posthog.capture === "function") {
+      window.posthog.capture(eventName, eventPayload);
+    }
   }
 
   function handleHtmxAfterRequest(event) {
@@ -304,6 +307,15 @@
     applyAttributionToForms(document);
   });
 
+  // HTMX does not swap 400 responses by default; show contact validation errors.
+  document.body.addEventListener("htmx:beforeSwap", function (event) {
+    var detail = event.detail || {};
+    if (detail.target && detail.target.id === "contact-form-wrap" && detail.xhr && detail.xhr.status === 400) {
+      detail.shouldSwap = true;
+      detail.isError = false;
+    }
+  });
+
   document.body.addEventListener("htmx:afterSwap", function (event) {
     var target = event && event.detail ? event.detail.target : null;
     if (!target) return;
@@ -311,6 +323,8 @@
       bindConsentToggle(target);
     }
     applyAttributionToForms(target);
+    var status = target.querySelector("[data-contact-status]");
+    if (status) status.focus();
   });
 
   document.body.addEventListener("htmx:afterRequest", handleHtmxAfterRequest);

@@ -1,6 +1,13 @@
 {% load static i18n %}
-<section id="hero" class="subpage-hero" style="position: relative; overflow: hidden;">
-  <div style="position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.05;">
+<section id="hero"
+         class="subpage-hero"
+         style="position: relative;
+                overflow: hidden">
+  <div style="position: absolute;
+              inset: 0;
+              z-index: 0;
+              pointer-events: none;
+              opacity: 0.05">
     <img src="{% static 'hero-quroom-optimized.jpg' %}"
          alt="큐룸 광주 개발 상담 배경 이미지"
          width="1600"
@@ -8,7 +15,9 @@
          loading="eager"
          fetchpriority="high"
          decoding="async"
-         style="width: 100%; height: 100%; object-fit: cover;" />
+         style="width: 100%;
+                height: 100%;
+                object-fit: cover" />
   </div>
   <div class="subpage-hero-grid" style="position: relative; z-index: 1;">
     <div class="subpage-hero-copy">
@@ -23,13 +32,9 @@
         </div>
       {% endif %}
       <div class="subpage-hero-actions">
-        <a href="#contact" class="renewal-button">
-          {{ content.primary_cta_label|default:content.cta_button_label }}
-        </a>
+        <a href="#contact" class="renewal-button">{{ content.primary_cta_label|default:content.cta_button_label }}</a>
         {% if content.secondary_cta_href %}
-          <a href="{{ content.secondary_cta_href }}" class="renewal-text-link">
-            {{ content.secondary_cta_label }}
-          </a>
+          <a href="{{ content.secondary_cta_href }}" class="renewal-text-link">{{ content.secondary_cta_label }}</a>
         {% endif %}
       </div>
     </div>
@@ -49,7 +54,9 @@
           {% for stat in content.hero_stats %}
             <div>
               <dt>{{ stat.label }}</dt>
-              <dd>{{ stat.value }}</dd>
+              <dd>
+                {{ stat.value }}
+              </dd>
             </div>
           {% endfor %}
         </dl>

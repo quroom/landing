@@ -12,7 +12,8 @@
         type="font/woff2"
         crossorigin />
   <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
-  <link rel="stylesheet" href="{% static 'landing/css/subpage-renewal.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'landing/css/subpage-renewal.css' %}" />
   {% if service_schema_json %}<script type="application/ld+json">{{ service_schema_json|safe }}</script>{% endif %}
   {% if faq_schema_json %}<script type="application/ld+json">{{ faq_schema_json|safe }}</script>{% endif %}
 {% endblock %}
@@ -27,37 +28,40 @@
     <header class="renewal-header">
       <div class="renewal-header-inner">
         <a class="renewal-brand" href="{% url 'landing:index' %}">
-          <img src="{% static 'logo.jpg' %}" width="30" height="30" alt="큐룸 로고" />
+          <img src="{% static 'logo.jpg' %}"
+               width="30"
+               height="30"
+               alt="{% trans '큐룸 로고' %}" />
           <span>QUROOM</span>
-          <small>대표 직접 수행</small>
+          <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"
                 class="renewal-menu-button"
                 type="button"
                 aria-expanded="false"
-                aria-controls="mobile-menu">메뉴</button>
-        <nav class="renewal-nav" aria-label="주요 메뉴">
-          <a href="{% url 'landing:index' %}">메인 홈</a>
-          <a href="{% url 'landing:gwangju' %}">광주 홈</a>
-          <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
-          <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
-          <a href="#process">진행 방식</a>
-          <a class="renewal-button renewal-button-small" href="#contact">외주 상담</a>
+                aria-controls="mobile-menu">{% trans "메뉴" %}</button>
+        <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
+          <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+          <a href="{% url 'landing:gwangju' %}">{% trans "광주 홈" %}</a>
+          <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
+          <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
+          <a href="#process">{% trans "진행 방식" %}</a>
+          <a class="renewal-button renewal-button-small" href="#contact">{% trans "외주 상담" %}</a>
         </nav>
       </div>
-      <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
-        <a href="{% url 'landing:index' %}">메인 홈</a>
-        <a href="{% url 'landing:gwangju' %}">광주 홈</a>
-        <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
-        <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
-        <a href="#process">진행 방식</a>
-        <a href="#contact">외주 상담</a>
+      <nav id="mobile-menu"
+           class="renewal-mobile-nav hidden"
+           aria-label="{% trans '모바일 메뉴' %}">
+        <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+        <a href="{% url 'landing:gwangju' %}">{% trans "광주 홈" %}</a>
+        <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
+        <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
+        <a href="#process">{% trans "진행 방식" %}</a>
+        <a href="#contact">{% trans "외주 상담" %}</a>
       </nav>
     </header>
-
     <main id="main" tabindex="-1">
       {% include "landing/partials/gwangju_hero.html" %}
-
       <div class="subpage-container">
         <!-- 사전 정리 사항 -->
         <section class="renewal-section-intro renewal-section-intro-horizontal">
@@ -76,33 +80,57 @@
             </article>
           {% endfor %}
         </div>
-
-        <!-- 이런 경우에 적합합니다 -->
+        <!-- 타깃 프로젝트 / 의뢰 추천 대상 -->
         <section style="margin-top: 64px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">권장 대상</p>
             <h2 style="font-size: 2.2rem;">{{ content.fit_title }}</h2>
           </div>
-          <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <ul style="margin: 0;
+                     padding: 0;
+                     list-style: none;
+                     display: grid;
+                     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                     gap: 16px">
             {% for item in content.fit_items %}
-              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 20px; border-radius: 10px; background: var(--soft); border: 1px solid var(--line); font-size: 0.9rem; color: var(--body); line-height: 1.55;">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--blue); margin-top: 7px; flex-shrink: 0;"></span>
+              <li style="display: flex;
+                         align-items: flex-start;
+                         gap: 12px;
+                         padding: 20px;
+                         border-radius: 10px;
+                         background: var(--soft);
+                         border: 1px solid var(--line);
+                         font-size: 0.9rem;
+                         color: var(--body);
+                         line-height: 1.55">
+                <span style="width: 8px;
+                             height: 8px;
+                             border-radius: 50%;
+                             background: var(--blue);
+                             margin-top: 7px;
+                             flex-shrink: 0"></span>
                 <span>{{ item }}</span>
               </li>
             {% endfor %}
           </ul>
         </section>
-
         <!-- 제공 범위 -->
         <section style="margin-top: 64px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">과업 범위</p>
             <h2 style="font-size: 2.2rem;">{{ content.scope_title }}</h2>
           </div>
-          <div class="subpage-card-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="subpage-card-grid"
+               style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))">
             {% for item in content.scope_items %}
               <div class="subpage-card" style="justify-content: center; padding: 20px;">
-                <p style="margin: 0; font-size: 0.92rem; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 10px;">
+                <p style="margin: 0;
+                          font-size: 0.92rem;
+                          font-weight: 600;
+                          color: var(--ink);
+                          display: flex;
+                          align-items: center;
+                          gap: 10px">
                   <span style="color: var(--blue); font-weight: 700;">✓</span>
                   <span>{{ item }}</span>
                 </p>
@@ -110,7 +138,6 @@
             {% endfor %}
           </div>
         </section>
-
         <!-- 진행 방식 -->
         <section id="process" style="margin-top: 80px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
@@ -129,57 +156,96 @@
             {% endfor %}
           </ol>
         </section>
-
         <!-- 예상 기간/비용 범위 -->
-        <section style="margin-top: 64px; background: var(--soft); border: 1px solid var(--line); border-radius: 14px; padding: 36px;">
-          <h2 style="margin: 0 0 16px; font-size: 1.5rem; font-weight: 600; color: var(--ink);">{{ content.timeline_cost_title }}</h2>
-          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: var(--body);">
+        <section style="margin-top: 64px;
+                        background: var(--soft);
+                        border: 1px solid var(--line);
+                        border-radius: 14px;
+                        padding: 36px">
+          <h2 style="margin: 0 0 16px;
+                     font-size: 1.5rem;
+                     font-weight: 600;
+                     color: var(--ink)">{{ content.timeline_cost_title }}</h2>
+          <ul style="margin: 0;
+                     padding: 0;
+                     list-style: none;
+                     display: flex;
+                     flex-direction: column;
+                     gap: 10px;
+                     font-size: 0.92rem;
+                     color: var(--body)">
             {% for item in content.timeline_cost_items %}
               <li style="display: flex; align-items: center; gap: 10px;">
-                <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--blue);"></span>
+                <span style="width: 6px;
+                             height: 6px;
+                             border-radius: 50%;
+                             background: var(--blue)"></span>
                 <span>{{ item }}</span>
               </li>
             {% endfor %}
           </ul>
         </section>
-
         <!-- 수행 자격 / 신뢰 근거 -->
-        <section style="margin-top: 64px; background: #263246; border-radius: 14px; padding: 40px; color: #fff;">
+        <section style="margin-top: 64px;
+                        background: #263246;
+                        border-radius: 14px;
+                        padding: 40px;
+                        color: #fff">
           <p class="renewal-kicker" style="color: #93c5fd; margin: 0;">수행 자격</p>
-          <h2 style="margin: 8px 0 0; font-size: 2.1rem; font-weight: 600; color: #fff;">{{ content.trust.title }}</h2>
-          <p style="margin: 14px 0 0; font-size: 0.95rem; line-height: 1.7; color: #e5e7eb; max-width: 780px;">{{ content.trust.body }}</p>
-          <ul style="margin: 24px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; font-size: 0.88rem;">
+          <h2 style="margin: 8px 0 0;
+                     font-size: 2.1rem;
+                     font-weight: 600;
+                     color: #fff">{{ content.trust.title }}</h2>
+          <p style="margin: 14px 0 0;
+                    font-size: 0.95rem;
+                    line-height: 1.7;
+                    color: #e5e7eb;
+                    max-width: 780px">{{ content.trust.body }}</p>
+          <ul style="margin: 24px 0 0;
+                     padding: 0;
+                     list-style: none;
+                     display: grid;
+                     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                     gap: 12px;
+                     font-size: 0.88rem">
             {% for item in content.trust.points %}
-              <li style="padding: 12px 16px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #f1f5f9;">
-                {{ item }}
-              </li>
+              <li style="padding: 12px 16px;
+                         border-radius: 8px;
+                         background: rgba(255,255,255,0.08);
+                         border: 1px solid rgba(255,255,255,0.12);
+                         color: #f1f5f9">{{ item }}</li>
             {% endfor %}
           </ul>
           {% if content.links.linkedin %}
             <p style="margin: 20px 0 0;">
-              <a href="{{ content.links.linkedin }}" target="_blank" rel="noreferrer" style="color: #93c5fd; font-size: 0.85rem; text-decoration: underline;">LinkedIn 프로필 보기 →</a>
+              <a href="{{ content.links.linkedin }}"
+                 target="_blank"
+                 rel="noreferrer"
+                 style="color: #93c5fd;
+                        font-size: 0.85rem;
+                        text-decoration: underline">LinkedIn 프로필 보기 →</a>
             </p>
           {% endif %}
         </section>
-
         <!-- 개발 포트폴리오 -->
         <section style="margin-top: 80px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">실적 및 자체 제품</p>
             <h2 style="font-size: 2.2rem;">개발 포트폴리오</h2>
           </div>
-          <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted);">
-            직접 만든 제품과 클라이언트 프로젝트를 구분해 표기했습니다. 외주로 받은 프로젝트는 미술관 큐레이션 서비스만 해당합니다.
-          </p>
+          <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted)">직접 만든 제품과 클라이언트 프로젝트를 구분해 표기했습니다. 외주로 받은 프로젝트는 미술관 큐레이션 서비스만 해당합니다.</p>
           <div class="subpage-portfolio-grid">
             {% for project in content.portfolio %}
               {% include "landing/partials/gwangju_portfolio_card.html" %}
             {% endfor %}
           </div>
         </section>
-
         <!-- FAQ -->
-        <section class="renewal-section renewal-faq" id="faq" style="padding-inline: 0; padding-top: 60px; background: transparent;">
+        <section class="renewal-section renewal-faq"
+                 id="faq"
+                 style="padding-inline: 0;
+                        padding-top: 60px;
+                        background: transparent">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">자주 묻는 질문</p>
             <h2 style="font-size: 2.2rem;">{{ content.faq_title }}</h2>
@@ -193,7 +259,6 @@
             {% endfor %}
           </div>
         </section>
-
         <!-- 실무 자산 및 진단 3대 카드 섹션 -->
         <section id="resources" style="margin-top: 64px;">
           <div class="renewal-section-intro renewal-section-intro-horizontal">
@@ -201,9 +266,7 @@
               <p class="renewal-kicker" style="margin: 0;">실무 자산 및 진단</p>
               <h2 style="font-size: 2.2rem;">계약 전 무료로 확인하는 실전 서식과 기술 진단</h2>
             </div>
-            <p style="color: var(--body);">
-              외주 계약 전 분쟁을 예방하는 5대 제외 기준 서식, AI 코드 배포 점검, 정부지원사업 e나라도움 서류 기준을 사전 제공합니다.
-            </p>
+            <p style="color: var(--body);">외주 계약 전 분쟁을 예방하는 5대 제외 기준 서식, AI 코드 배포 점검, 정부지원사업 e나라도움 서류 기준을 사전 제공합니다.</p>
           </div>
           <div class="subpage-card-grid">
             <article class="subpage-card">
@@ -212,7 +275,10 @@
                 <h3>5대 개발 제외 기준 및 표준 견적서</h3>
                 <p>외주 계약 시 발생하는 추가금 분쟁을 막는 5대 제외 조항과 린 MVP 6대 모듈 표준 견적서 마크다운을 복사해 활용할 수 있습니다.</p>
               </div>
-              <a href="{% url 'landing:outsourcing_checklist' %}" class="renewal-text-link" style="margin-top: 20px; font-size: 0.85rem;">서식 및 체크리스트 보기 →</a>
+              <a href="{% url 'landing:outsourcing_checklist' %}"
+                 class="renewal-text-link"
+                 style="margin-top: 20px;
+                        font-size: 0.85rem">서식 및 체크리스트 보기 →</a>
             </article>
             <article class="subpage-card">
               <div>
@@ -220,7 +286,10 @@
                 <h3>15분 무료 코드·배포 진단</h3>
                 <p>Cursor, Claude 등으로 만든 코드의 실서버 배포, 결제 연동, DB 오류를 15분간 엔지니어가 직접 진단하고 1순위 조치를 짚어드립니다.</p>
               </div>
-              <a href="{% url 'landing:free_diagnosis' %}" class="renewal-text-link" style="margin-top: 20px; font-size: 0.85rem;">15분 기술 진단 신청하기 →</a>
+              <a href="{% url 'landing:free_diagnosis' %}"
+                 class="renewal-text-link"
+                 style="margin-top: 20px;
+                        font-size: 0.85rem">15분 기술 진단 신청하기 →</a>
             </article>
             <article class="subpage-card">
               <div>
@@ -228,12 +297,14 @@
                 <h3>e나라도움 5종 서류 패키지</h3>
                 <p>예창패·초창패·AI바우처 IT 외주 전자세금계산서, 비교견적서 2부, 과업완료 검수조서 표준 서식과 AI 토큰 원화 정산 안내를 제공합니다.</p>
               </div>
-              <a href="{% url 'landing:outsourcing_checklist' %}#enaradaum" class="renewal-text-link" style="margin-top: 20px; font-size: 0.85rem;">정산 서류 가이드 보기 →</a>
+              <a href="{% url 'landing:outsourcing_checklist' %}#enaradaum"
+                 class="renewal-text-link"
+                 style="margin-top: 20px;
+                        font-size: 0.85rem">정산 서류 가이드 보기 →</a>
             </article>
           </div>
         </section>
       </div>
-
       <!-- 상담 신청 (통일된 Renewal Contact - 풀블리드) -->
       <section class="renewal-contact" id="contact">
         <div class="renewal-contact-copy">
@@ -242,12 +313,9 @@
           <p>{{ content.cta_description }}</p>
           <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
         </div>
-        <div id="contact-form-wrap" class="renewal-contact-form">
-          {% include "landing/partials/contact_form.html" %}
-        </div>
+        <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
       </section>
     </main>
-
     {% include "landing/partials/gwangju_footer.html" %}
   </div>
 {% endblock %}

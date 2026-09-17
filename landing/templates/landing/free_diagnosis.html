@@ -14,7 +14,8 @@
         type="font/woff2"
         crossorigin />
   <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
-  <link rel="stylesheet" href="{% static 'landing/css/subpage-renewal.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'landing/css/subpage-renewal.css' %}" />
 {% endblock %}
 {% block body %}
   <div class="home-renewal subpage-renewal">
@@ -22,32 +23,40 @@
     <header class="renewal-header">
       <div class="renewal-header-inner">
         <a class="renewal-brand" href="{% url 'landing:index' %}">
-          <img src="{% static 'logo.jpg' %}" width="30" height="30" alt="큐룸 로고" />
+          <img src="{% static 'logo.jpg' %}"
+               width="30"
+               height="30"
+               alt="{% trans '큐룸 로고' %}" />
           <span>QUROOM</span>
-          <small>대표 직접 수행</small>
+          <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"
                 class="renewal-menu-button"
                 type="button"
                 aria-expanded="false"
-                aria-controls="mobile-menu">메뉴</button>
-        <nav class="renewal-nav" aria-label="주요 메뉴">
-          <a href="{% url 'landing:index' %}">메인 홈</a>
-          <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
-          <a href="javascript:void(0)" onclick="switchTab('vibe')" style="color: var(--blue); font-weight: 600;">15분 진단 (SOS)</a>
-          <a href="javascript:void(0)" onclick="switchTab('automation')">자동화 진단 (3분)</a>
-          <a class="renewal-button renewal-button-small" href="{% url 'landing:index' %}#contact">상담 문의</a>
+                aria-controls="mobile-menu">{% trans "메뉴" %}</button>
+        <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
+          <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+          <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
+          <a href="javascript:void(0)"
+             onclick="switchTab('vibe')"
+             style="color: var(--blue);
+                    font-weight: 600">{% trans "15분 진단 (SOS)" %}</a>
+          <a href="javascript:void(0)" onclick="switchTab('automation')">{% trans "자동화 진단 (3분)" %}</a>
+          <a class="renewal-button renewal-button-small"
+             href="{% url 'landing:index' %}#contact">{% trans "상담 문의" %}</a>
         </nav>
       </div>
-      <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
-        <a href="{% url 'landing:index' %}">메인 홈</a>
-        <a href="{% url 'landing:outsourcing_checklist' %}">외주 체크리스트</a>
-        <a href="javascript:void(0)" onclick="switchTab('vibe')">15분 진단 (SOS)</a>
-        <a href="javascript:void(0)" onclick="switchTab('automation')">자동화 진단 (3분)</a>
-        <a href="{% url 'landing:index' %}#contact">상담 문의</a>
+      <nav id="mobile-menu"
+           class="renewal-mobile-nav hidden"
+           aria-label="{% trans '모바일 메뉴' %}">
+        <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+        <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
+        <a href="javascript:void(0)" onclick="switchTab('vibe')">{% trans "15분 진단 (SOS)" %}</a>
+        <a href="javascript:void(0)" onclick="switchTab('automation')">{% trans "자동화 진단 (3분)" %}</a>
+        <a href="{% url 'landing:index' %}#contact">{% trans "상담 문의" %}</a>
       </nav>
     </header>
-
     <main id="main" tabindex="-1">
       <section class="subpage-hero" id="top">
         <div class="subpage-hero-copy" style="max-width: 860px;">
@@ -62,20 +71,15 @@
               <button id="tab-btn-vibe"
                       type="button"
                       onclick="switchTab('vibe')"
-                      class="subpage-tab-btn active">
-                🛠️ 15분 코드·배포 진단 (바이브코딩 SOS)
-              </button>
+                      class="subpage-tab-btn active">🛠️ 15분 코드·배포 진단 (바이브코딩 SOS)</button>
               <button id="tab-btn-automation"
                       type="button"
                       onclick="switchTab('automation')"
-                      class="subpage-tab-btn">
-                ⚡ 비즈니스 자동화 진단 (3분 / 8문항)
-              </button>
+                      class="subpage-tab-btn">⚡ 비즈니스 자동화 진단 (3분 / 8문항)</button>
             </div>
           </div>
         </div>
       </section>
-
       <div class="subpage-container">
         <!-- TAB 1: 15분 무료 코드·배포 진단 (바이브코딩 SOS) -->
         <div id="tab-content-vibe">
@@ -90,7 +94,6 @@
                 8년 차 풀스택 엔지니어가 15분간 에러 로그와 시스템 구조를 진단하고 오늘 바로 해결할 1순위 조치를 짚어드립니다.
               </p>
             </div>
-
             <div class="subpage-card-grid subpage-card-grid-3">
               <article class="subpage-card">
                 <div>
@@ -114,105 +117,89 @@
                 </div>
               </article>
             </div>
-
             {% if vibe_checklist %}
-            <div style="margin-top: 64px;">
-              <div class="renewal-section-intro renewal-section-intro-compact">
-                <p class="renewal-kicker" style="margin: 0;">자가진단</p>
-                <h2 style="font-size: 2.2rem;">배포 전 12대 필수 테크니컬 체크리스트</h2>
+              <div style="margin-top: 64px;">
+                <div class="renewal-section-intro renewal-section-intro-compact">
+                  <p class="renewal-kicker" style="margin: 0;">자가진단</p>
+                  <h2 style="font-size: 2.2rem;">배포 전 12대 필수 테크니컬 체크리스트</h2>
+                </div>
+                <p style="margin: -20px 0 24px; font-size: 0.88rem; color: var(--muted)">AI 생성 코드가 실서버에서 자주 겪는 결함을 배포 전에 미리 확인해 보세요.</p>
+                <div class="subpage-card-grid subpage-card-grid-2">
+                  {% for group in vibe_checklist %}
+                    <div class="subpage-card" style="justify-content: flex-start;">
+                      <h4 style="margin: 0 0 12px;
+                                 font-size: 1.05rem;
+                                 font-weight: 600;
+                                 color: var(--ink);
+                                 display: flex;
+                                 align-items: center;
+                                 gap: 8px">
+                        <span>{{ group.icon }}</span> {{ group.category }}
+                      </h4>
+                      <ul style="margin: 0;
+                                 padding: 0;
+                                 list-style: none;
+                                 display: flex;
+                                 flex-direction: column;
+                                 gap: 8px;
+                                 font-size: 0.84rem;
+                                 color: var(--body)">
+                        {% for item in group.items %}
+                          <li style="display: flex;
+                                     align-items: flex-start;
+                                     gap: 8px;
+                                     line-height: 1.55">
+                            <span style="color: var(--blue); font-weight: 700;">✓</span>
+                            <span>{{ item }}</span>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endfor %}
+                </div>
               </div>
-              <p style="margin: -20px 0 24px; font-size: 0.88rem; color: var(--muted);">
-                AI 생성 코드가 실서버에서 자주 겪는 결함을 배포 전에 미리 확인해 보세요.
-              </p>
-              <div class="subpage-card-grid subpage-card-grid-2">
-                {% for group in vibe_checklist %}
-                  <div class="subpage-card" style="justify-content: flex-start;">
-                    <h4 style="margin: 0 0 12px; font-size: 1.05rem; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px;">
-                      <span>{{ group.icon }}</span> {{ group.category }}
-                    </h4>
-                    <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.84rem; color: var(--body);">
-                      {% for item in group.items %}
-                        <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.55;">
-                          <span style="color: var(--blue); font-weight: 700;">✓</span>
-                          <span>{{ item }}</span>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
             {% endif %}
-
             <!-- 15분 기술 진단 신청 폼 -->
-            <div style="margin-top: 64px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 36px; box-shadow: 0 6px 24px rgba(15,23,42,0.04);" id="vibe-intake-form">
+            <div style="margin-top: 64px;
+                        background: #fff;
+                        border: 1px solid var(--line);
+                        border-radius: 14px;
+                        padding: 36px;
+                        box-shadow: 0 6px 24px rgba(15,23,42,0.04)"
+                 id="vibe-intake-form">
               <div style="max-width: 600px;">
                 <p class="renewal-kicker" style="margin: 0;">1:1 무료 접수</p>
-                <h3 style="margin: 6px 0 0; font-size: 1.65rem; font-weight: 600; color: var(--ink);">15분 무료 기술 진단 신청</h3>
+                <h3 style="margin: 6px 0 0;
+                           font-size: 1.65rem;
+                           font-weight: 600;
+                           color: var(--ink)">15분 무료 기술 진단 신청</h3>
                 <p style="margin: 8px 0 0; font-size: 0.88rem; color: var(--body);">
                   현재 겪고 계신 에러 증상과 기술 스택을 남겨주시면 엔지니어가 직접 확인 후 15분 Google Meet 또는 이메일 진단 가이드를 전달합니다.
                 </p>
               </div>
-              <form method="post" action="{% url 'landing:contact_submit' %}" style="margin-top: 28px; display: flex; flex-direction: column; gap: 18px;">
-                {% csrf_token %}
-                <input type="hidden" name="page_key" value="free_diagnosis" />
-                <input type="hidden" name="lead_source" value="free_diagnosis_vibe" />
-                <input type="hidden" name="inquiry_type" value="vibe_diagnosis" />
-                <input type="hidden" name="ad_source" value="{{ ad_landing.src|default:'' }}" />
-                <input type="hidden" name="ad_campaign" value="{{ ad_landing.campaign|default:'' }}" />
-                <input type="hidden" name="ad_group" value="{{ ad_landing.ad_group|default:'' }}" />
-                <input type="hidden" name="ad_intent" value="{{ ad_landing.intent|default:'vibe' }}" />
-                <input type="hidden" name="ad_creative" value="{{ ad_landing.creative|default:'' }}" />
-                <input type="hidden" name="ad_keyword" value="{{ ad_landing.keyword|default:'' }}" />
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-                  <div>
-                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--ink); margin-bottom: 6px;">이름 <span style="color: #ef4444;">*</span></label>
-                    <input type="text" name="name" required placeholder="홍길동" style="width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.85rem;" />
-                  </div>
-                  <div>
-                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--ink); margin-bottom: 6px;">이메일 <span style="color: #ef4444;">*</span></label>
-                    <input type="email" name="email" required placeholder="reply@example.com" style="width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.85rem;" />
-                  </div>
-                </div>
-
-                <div>
-                  <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--ink); margin-bottom: 6px;">
-                    기술 스택 및 에러 로그 / 장애 증상 <span style="color: #ef4444;">*</span>
-                  </label>
-                  <textarea name="message" required rows="4" placeholder="1. 사용 기술 스택 (예: Next.js 14, Supabase, Cloudtype, Docker)&#10;2. 발생 중인 에러 증상 (예: 빌드 시 환경변수 누락, 502 Bad Gateway, 결제 웹훅 서명 검증 실패)&#10;3. GitHub 저장소 링크 (선택사항)" style="width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 12px; font-size: 0.84rem; font-family: ui-monospace, monospace; line-height: 1.6;"></textarea>
-                </div>
-
-                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 8px;">
-                  <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--body); cursor: pointer;">
-                    <input type="checkbox" name="agree_privacy" required style="accent-color: var(--blue);" />
-                    <span>개인정보 수집 및 이용 동의 (필수)</span>
-                  </label>
-                  <button type="submit" class="renewal-button" style="min-height: 44px; padding-inline: 24px; font-size: 0.88rem;">
-                    15분 무료 기술 진단 신청하기
-                  </button>
-                </div>
-              </form>
+              <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
             </div>
           </section>
         </div>
-
         <!-- TAB 2: 무료 자동화 실행 진단 (3분 / 8문항) -->
         <div id="tab-content-automation" class="hidden">
-          <section style="background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 36px;">
+          <section style="background: #fff;
+                          border: 1px solid var(--line);
+                          border-radius: 14px;
+                          padding: 36px">
             <p class="renewal-kicker" style="margin: 0;">Free Lead Magnet</p>
-            <h2 style="margin: 8px 0 0; font-size: 2.2rem; font-weight: 600; color: var(--ink);">무료 자동화 실행 진단 (3분 / 8문항)</h2>
+            <h2 style="margin: 8px 0 0;
+                       font-size: 2.2rem;
+                       font-weight: 600;
+                       color: var(--ink)">무료 자동화 실행 진단 (3분 / 8문항)</h2>
             <p style="margin: 10px 0 28px; font-size: 0.95rem; color: var(--body);">
               질문 8개(모두 필수)에 답하면, 2주 안에 실행할 우선 과제 1개를 명확하게 제안합니다.
             </p>
-            <div id="lead-magnet-wrap">
-              {% include "landing/partials/lead_magnet_form.html" with form=lead_magnet_form %}
-            </div>
+            <div id="lead-magnet-wrap">{% include "landing/partials/lead_magnet_form.html" with form=lead_magnet_form %}</div>
           </section>
         </div>
       </div>
     </main>
-
     <script>
       function switchTab(target) {
         var vibeContent = document.getElementById('tab-content-vibe');

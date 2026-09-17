@@ -17,7 +17,8 @@
         type="font/woff2"
         crossorigin />
   <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
-  <link rel="stylesheet" href="{% static 'landing/css/subpage-renewal.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'landing/css/subpage-renewal.css' %}" />
 {% endblock %}
 {% block body %}
   <div class="home-renewal subpage-renewal">
@@ -25,34 +26,38 @@
     <header class="renewal-header">
       <div class="renewal-header-inner">
         <a class="renewal-brand" href="{% url 'landing:index' %}">
-          <img src="{% static 'logo.jpg' %}" width="30" height="30" alt="큐룸 로고" />
+          <img src="{% static 'logo.jpg' %}"
+               width="30"
+               height="30"
+               alt="{% trans '큐룸 로고' %}" />
           <span>QUROOM</span>
-          <small>대표 직접 수행</small>
+          <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"
                 class="renewal-menu-button"
                 type="button"
                 aria-expanded="false"
-                aria-controls="mobile-menu">메뉴</button>
-        <nav class="renewal-nav" aria-label="주요 메뉴">
-          <a href="{% url 'landing:index' %}">메인 홈</a>
-          <a href="#wbs-rules">5대 제외 기준</a>
-          <a href="#quote-template">표준 견적서 서식</a>
-          <a href="#enaradaum">e나라도움 5종 서류</a>
-          <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
-          <a class="renewal-button renewal-button-small" href="#contact">외주 상담</a>
+                aria-controls="mobile-menu">{% trans "메뉴" %}</button>
+        <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
+          <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+          <a href="#wbs-rules">{% trans "5대 제외 기준" %}</a>
+          <a href="#quote-template">{% trans "표준 견적서 서식" %}</a>
+          <a href="#enaradaum">{% trans "e나라도움 5종 서류" %}</a>
+          <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
+          <a class="renewal-button renewal-button-small" href="#contact">{% trans "외주 상담" %}</a>
         </nav>
       </div>
-      <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
-        <a href="{% url 'landing:index' %}">메인 홈</a>
-        <a href="#wbs-rules">5대 제외 기준</a>
-        <a href="#quote-template">표준 견적서 서식</a>
-        <a href="#enaradaum">e나라도움 5종 서류</a>
-        <a href="{% url 'landing:free_diagnosis' %}">무료 진단</a>
-        <a href="#contact">외주 상담</a>
+      <nav id="mobile-menu"
+           class="renewal-mobile-nav hidden"
+           aria-label="{% trans '모바일 메뉴' %}">
+        <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+        <a href="#wbs-rules">{% trans "5대 제외 기준" %}</a>
+        <a href="#quote-template">{% trans "표준 견적서 서식" %}</a>
+        <a href="#enaradaum">{% trans "e나라도움 5종 서류" %}</a>
+        <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
+        <a href="#contact">{% trans "외주 상담" %}</a>
       </nav>
     </header>
-
     <main id="main" tabindex="-1">
       <section class="subpage-hero" id="top">
         <div class="subpage-hero-grid">
@@ -60,7 +65,7 @@
             <p class="renewal-kicker">외주 사전 점검 가이드</p>
             <h1>홈페이지 외주 맡기기 전에 범위와 운영 기준부터 확인하세요</h1>
             <p class="subpage-hero-summary">
-              외주 분쟁의 90%는 개발 착수 후 범위가 늘어나거나 배포·운영 기준이 어긋날 때 발생합니다.
+              개발 착수 후 범위가 늘어나거나 배포·운영 기준이 달라지면 분쟁이 발생할 수 있습니다.
               계약 전 제외 범위를 서면으로 고정하고, 린 MVP 표준 견적서와 e나라도움 5종 서류 양식을 복사해 활용하세요.
             </p>
             <div class="subpage-hero-badges">
@@ -94,17 +99,20 @@
             <dl class="subpage-hero-stats">
               <div>
                 <dt>분쟁 방지 원칙</dt>
-                <dd>5대 제외 기준</dd>
+                <dd>
+                  5대 제외 기준
+                </dd>
               </div>
               <div>
                 <dt>정부지원사업</dt>
-                <dd>e나라도움 서류 완비</dd>
+                <dd>
+                  e나라도움 서류 완비
+                </dd>
               </div>
             </dl>
           </aside>
         </div>
       </section>
-
       <div class="subpage-container">
         <!-- 리스크 사전 점검 -->
         <section class="renewal-section-intro renewal-section-intro-horizontal">
@@ -123,7 +131,6 @@
             </article>
           {% endfor %}
         </div>
-
         <!-- 4대 체크포인트 -->
         <section style="margin-top: 64px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
@@ -140,141 +147,180 @@
             {% endfor %}
           </div>
         </section>
-
         <!-- 5대 제외 기준 (추가금 분쟁 방지) -->
         {% if content.wbs_rules %}
-        <section id="wbs-rules" style="margin-top: 80px;">
-          <div class="renewal-section-intro renewal-section-intro-horizontal">
-            <div>
-              <p class="renewal-kicker" style="margin: 0;">계약 분쟁 방지 · 5 Out-of-Scope Rules</p>
-              <h2 style="font-size: 2.2rem;">{{ content.wbs_rules_title }}</h2>
+          <section id="wbs-rules" style="margin-top: 80px;">
+            <div class="renewal-section-intro renewal-section-intro-horizontal">
+              <div>
+                <p class="renewal-kicker" style="margin: 0;">계약 분쟁 방지 · 5 Out-of-Scope Rules</p>
+                <h2 style="font-size: 2.2rem;">{{ content.wbs_rules_title }}</h2>
+              </div>
+              <p style="color: var(--body);">{{ content.wbs_rules_summary }}</p>
             </div>
-            <p style="color: var(--body);">{{ content.wbs_rules_summary }}</p>
-          </div>
-          <div>
-            {% for rule in content.wbs_rules %}
-              <article class="wbs-rule-card">
-                <div class="wbs-rule-header">
-                  <span class="wbs-rule-badge">{{ rule.article }}</span>
-                  <h3>{{ rule.title }}</h3>
+            <div>
+              {% for rule in content.wbs_rules %}
+                <article class="wbs-rule-card">
+                  <div class="wbs-rule-header">
+                    <span class="wbs-rule-badge">{{ rule.article }}</span>
+                    <h3>{{ rule.title }}</h3>
+                  </div>
+                  <p style="margin: 14px 0 0;
+                            font-size: 0.92rem;
+                            font-weight: 600;
+                            color: var(--ink)">
+                    <span style="color: var(--blue);">기본 원칙:</span> {{ rule.rule }}
+                  </p>
+                  <div class="wbs-exclusion-box">
+                    <strong>🚫 제외되는 구체적 항목</strong>
+                    <ul>
+                      {% for excl in rule.exclusions %}
+                        <li>{{ excl }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <p style="margin: 12px 0 0;
+                            font-size: 0.82rem;
+                            color: var(--muted);
+                            line-height: 1.55">
+                    <strong style="color: var(--body);">처리 절차:</strong> {{ rule.procedure }}
+                  </p>
+                </article>
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+        <!-- 표준 견적서 마크다운 서식 -->
+        {% if content.quote_template_markdown %}
+          <section id="quote-template" style="margin-top: 80px;">
+            <div class="renewal-section-intro renewal-section-intro-horizontal">
+              <div>
+                <p class="renewal-kicker" style="margin: 0;">실전 양식 복사 · Markdown Template</p>
+                <h2 style="font-size: 2.2rem;">린 MVP 기능 명세서 및 표준 견적서</h2>
+              </div>
+              <p style="color: var(--body);">{{ content.quote_template_intro }}</p>
+            </div>
+            <div class="snippet-box">
+              <div class="snippet-header">
+                <span class="snippet-title">린 MVP 6대 핵심 모듈 (13 M/D) 산정표 &amp; 표준 견적서</span>
+                <button type="button"
+                        onclick="copySnippet('quote-template-code', this)"
+                        class="snippet-copy-btn">
+                  <span>📋</span> <span class="btn-text">표준 견적서 서식 복사</span>
+                </button>
+              </div>
+              <pre class="snippet-content"><code id="quote-template-code">{{ content.quote_template_markdown }}</code></pre>
+            </div>
+          </section>
+        {% endif %}
+        <!-- e나라도움 5종 서류 패키지 -->
+        {% if content.enaradaum_docs %}
+          <section id="enaradaum" style="margin-top: 80px;">
+            <div class="renewal-section-intro renewal-section-intro-horizontal">
+              <div>
+                <p class="renewal-kicker" style="margin: 0;">정부지원사업 정산 · e-Naradoum 5 Package</p>
+                <h2 style="font-size: 2.2rem;">{{ content.enaradaum_package_title }}</h2>
+              </div>
+              <p style="color: var(--body);">{{ content.enaradaum_package_intro }}</p>
+            </div>
+            <div class="subpage-table-wrap">
+              <table style="width: 100%;
+                            border-collapse: collapse;
+                            font-size: 0.85rem;
+                            text-align: left">
+                <thead>
+                  <tr style="background: var(--soft); border-bottom: 1px solid var(--line)">
+                    <th style="padding: 14px 16px;
+                               font-weight: 600;
+                               color: var(--ink);
+                               width: 60px">순번</th>
+                    <th style="padding: 14px 16px;
+                               font-weight: 600;
+                               color: var(--ink);
+                               width: 220px">필수 서류명</th>
+                    <th style="padding: 14px 16px;
+                               font-weight: 600;
+                               color: var(--ink);
+                               width: 140px">제출 주체</th>
+                    <th style="padding: 14px 16px; font-weight: 600; color: var(--ink);">회계감사관 핵심 검수 포인트</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for doc in content.enaradaum_docs %}
+                    <tr style="border-bottom: 1px solid var(--line);">
+                      <td style="padding: 14px 16px; font-weight: 700; color: var(--blue);">{{ doc.num }}</td>
+                      <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">{{ doc.name }}</td>
+                      <td style="padding: 14px 16px; color: var(--muted); white-space: nowrap;">{{ doc.who }}</td>
+                      <td style="padding: 14px 16px; color: var(--body); line-height: 1.55;">{{ doc.point }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% if content.ai_token_section %}
+              <div style="margin-top: 24px;
+                          padding: 24px;
+                          border-radius: 12px;
+                          background: var(--blue-soft);
+                          border: 1px solid #c8d8f5">
+                <h3 style="margin: 0;
+                           font-size: 1.1rem;
+                           font-weight: 600;
+                           color: var(--ink);
+                           display: flex;
+                           align-items: center;
+                           gap: 8px">
+                  <span>🤖</span> {{ content.ai_token_section.title }}
+                </h3>
+                <div style="margin-top: 12px;
+                            padding: 14px;
+                            border-radius: 8px;
+                            background: #fff;
+                            border: 1px solid #fedede;
+                            font-size: 0.84rem;
+                            color: #991b1b;
+                            line-height: 1.55">
+                  <strong>⚠️ API 사용료 증빙 확인:</strong> {{ content.ai_token_section.problem }}
                 </div>
-                <p style="margin: 14px 0 0; font-size: 0.92rem; font-weight: 600; color: var(--ink);">
-                  <span style="color: var(--blue);">기본 원칙:</span> {{ rule.rule }}
-                </p>
-                <div class="wbs-exclusion-box">
-                  <strong>🚫 제외되는 구체적 항목</strong>
-                  <ul>
-                    {% for excl in rule.exclusions %}
-                      <li>{{ excl }}</li>
+                <div style="margin-top: 14px;">
+                  <p style="margin: 0;
+                            font-size: 0.86rem;
+                            font-weight: 600;
+                            color: var(--ink)">{{ content.ai_token_section.solution_title }}</p>
+                  <ul style="margin: 8px 0 0;
+                             padding-left: 20px;
+                             font-size: 0.84rem;
+                             color: var(--body);
+                             line-height: 1.6">
+                    {% for sol in content.ai_token_section.solutions %}
+                      <li>{{ sol }}</li>
                     {% endfor %}
                   </ul>
                 </div>
-                <p style="margin: 12px 0 0; font-size: 0.82rem; color: var(--muted); line-height: 1.55;">
-                  <strong style="color: var(--body);">처리 절차:</strong> {{ rule.procedure }}
-                </p>
-              </article>
-            {% endfor %}
-          </div>
-        </section>
-        {% endif %}
-
-        <!-- 표준 견적서 마크다운 서식 -->
-        {% if content.quote_template_markdown %}
-        <section id="quote-template" style="margin-top: 80px;">
-          <div class="renewal-section-intro renewal-section-intro-horizontal">
-            <div>
-              <p class="renewal-kicker" style="margin: 0;">실전 양식 복사 · Markdown Template</p>
-              <h2 style="font-size: 2.2rem;">린 MVP 기능 명세서 및 표준 견적서</h2>
-            </div>
-            <p style="color: var(--body);">{{ content.quote_template_intro }}</p>
-          </div>
-          <div class="snippet-box">
-            <div class="snippet-header">
-              <span class="snippet-title">린 MVP 6대 핵심 모듈 (13 M/D) 산정표 &amp; 표준 견적서</span>
-              <button type="button"
-                      onclick="copySnippet('quote-template-code', this)"
-                      class="snippet-copy-btn">
-                <span>📋</span> <span class="btn-text">표준 견적서 서식 복사</span>
-              </button>
-            </div>
-            <pre class="snippet-content"><code id="quote-template-code">{{ content.quote_template_markdown }}</code></pre>
-          </div>
-        </section>
-        {% endif %}
-
-        <!-- e나라도움 5종 서류 패키지 -->
-        {% if content.enaradaum_docs %}
-        <section id="enaradaum" style="margin-top: 80px;">
-          <div class="renewal-section-intro renewal-section-intro-horizontal">
-            <div>
-              <p class="renewal-kicker" style="margin: 0;">정부지원사업 정산 · e-Naradoum 5 Package</p>
-              <h2 style="font-size: 2.2rem;">{{ content.enaradaum_package_title }}</h2>
-            </div>
-            <p style="color: var(--body);">{{ content.enaradaum_package_intro }}</p>
-          </div>
-
-          <div class="subpage-table-wrap">
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
-              <thead>
-                <tr style="background: var(--soft); border-bottom: 1px solid var(--line);">
-                  <th style="padding: 14px 16px; font-weight: 600; color: var(--ink); width: 60px;">순번</th>
-                  <th style="padding: 14px 16px; font-weight: 600; color: var(--ink); width: 220px;">필수 서류명</th>
-                  <th style="padding: 14px 16px; font-weight: 600; color: var(--ink); width: 140px;">제출 주체</th>
-                  <th style="padding: 14px 16px; font-weight: 600; color: var(--ink);">회계감사관 핵심 검수 포인트</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for doc in content.enaradaum_docs %}
-                  <tr style="border-bottom: 1px solid var(--line);">
-                    <td style="padding: 14px 16px; font-weight: 700; color: var(--blue);">{{ doc.num }}</td>
-                    <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">{{ doc.name }}</td>
-                    <td style="padding: 14px 16px; color: var(--muted); white-space: nowrap;">{{ doc.who }}</td>
-                    <td style="padding: 14px 16px; color: var(--body); line-height: 1.55;">{{ doc.point }}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-          {% if content.ai_token_section %}
-          <div style="margin-top: 24px; padding: 24px; border-radius: 12px; background: var(--blue-soft); border: 1px solid #c8d8f5;">
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px;">
-              <span>🤖</span> {{ content.ai_token_section.title }}
-            </h3>
-            <div style="margin-top: 12px; padding: 14px; border-radius: 8px; background: #fff; border: 1px solid #fedede; font-size: 0.84rem; color: #991b1b; line-height: 1.55;">
-              <strong>⚠️ 회계감사 지적 빈발 원인:</strong> {{ content.ai_token_section.problem }}
-            </div>
-            <div style="margin-top: 14px;">
-              <p style="margin: 0; font-size: 0.86rem; font-weight: 600; color: var(--ink);">{{ content.ai_token_section.solution_title }}</p>
-              <ul style="margin: 8px 0 0; padding-left: 20px; font-size: 0.84rem; color: var(--body); line-height: 1.6;">
-                {% for sol in content.ai_token_section.solutions %}
-                  <li>{{ sol }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          {% endif %}
-
-          {% if content.inspection_template_markdown %}
-          <div style="margin-top: 32px;">
-            <div class="snippet-box">
-              <div class="snippet-header">
-                <span class="snippet-title">과업 완료 검수조서 (표준 서식) · e나라도움 정산 제출용</span>
-                <button type="button"
-                        onclick="copySnippet('inspection-template-code', this)"
-                        class="snippet-copy-btn">
-                  <span>📋</span> <span class="btn-text">검수조서 서식 복사</span>
-                </button>
               </div>
-              <pre class="snippet-content"><code id="inspection-template-code">{{ content.inspection_template_markdown }}</code></pre>
-            </div>
-          </div>
-          {% endif %}
-        </section>
+            {% endif %}
+            {% if content.inspection_template_markdown %}
+              <div style="margin-top: 32px;">
+                <div class="snippet-box">
+                  <div class="snippet-header">
+                    <span class="snippet-title">과업 완료 검수조서 (표준 서식) · e나라도움 정산 제출용</span>
+                    <button type="button"
+                            onclick="copySnippet('inspection-template-code', this)"
+                            class="snippet-copy-btn">
+                      <span>📋</span> <span class="btn-text">검수조서 서식 복사</span>
+                    </button>
+                  </div>
+                  <pre class="snippet-content"><code id="inspection-template-code">{{ content.inspection_template_markdown }}</code></pre>
+                </div>
+              </div>
+            {% endif %}
+          </section>
         {% endif %}
-
         <!-- FAQ -->
-        <section class="renewal-section renewal-faq" id="faq" style="padding-inline: 0; padding-top: 60px; background: transparent;">
+        <section class="renewal-section renewal-faq"
+                 id="faq"
+                 style="padding-inline: 0;
+                        padding-top: 60px;
+                        background: transparent">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">자주 묻는 질문</p>
             <h2 style="font-size: 2.2rem;">{{ content.faq_title }}</h2>
@@ -289,19 +335,18 @@
           </div>
           <p style="margin-top: 24px; font-size: 0.85rem; color: var(--body);">
             광주 지역 개발 문의는
-            <a href="{% url 'landing:gwangju' %}" style="color: var(--blue); text-decoration: underline;">광주 전용 페이지</a>에서 바로 확인할 수 있습니다.
+            <a href="{% url 'landing:gwangju' %}"
+               style="color: var(--blue);
+                      text-decoration: underline">광주 전용 페이지</a>에서 바로 확인할 수 있습니다.
           </p>
         </section>
-
         <!-- 포트폴리오 (ArtTrip 단독 라벨 보존) -->
         <section style="margin-top: 60px;">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">실적 및 자체 제품</p>
             <h2 style="font-size: 2.2rem;">개발 포트폴리오</h2>
           </div>
-          <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted);">
-            클라이언트 프로젝트인 미술관 큐레이션과 직접 만든 제품을 구분해 표기했습니다.
-          </p>
+          <p style="margin: -20px 0 28px; font-size: 0.88rem; color: var(--muted)">클라이언트 프로젝트인 미술관 큐레이션과 직접 만든 제품을 구분해 표기했습니다.</p>
           <div class="subpage-portfolio-grid">
             {% for project in content.portfolio %}
               {% include "landing/partials/gwangju_portfolio_card.html" %}
@@ -309,38 +354,44 @@
           </div>
         </section>
       </div>
-
       <!-- 상담 신청 (통일된 Renewal Contact - 풀블리드) -->
       <section class="renewal-contact" id="contact">
         <div class="renewal-contact-copy">
           <p class="renewal-kicker" style="color: #93c5fd;">{{ content.cta_title }}</p>
           <h2 style="font-size: 2.2rem;">{{ content.cta_title }}</h2>
           <p>{{ content.cta_description }}</p>
-          <span>{{ content.company.email }} · 영업일 기준 24시간 내 회신</span>
+          <span>{{ content.company.email }} · 영업일 기준 1~2일 내 회신</span>
         </div>
-        <div id="contact-form-wrap" class="renewal-contact-form">
-          {% include "landing/partials/contact_form.html" %}
-        </div>
+        <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
       </section>
     </main>
-
     <script>
       function copySnippet(elementId, btn) {
         var el = document.getElementById(elementId);
         if (!el) return;
         var text = el.innerText || el.textContent;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function() {
-            var btnText = btn.querySelector('.btn-text');
-            var oldText = btnText ? btnText.innerText : btn.innerText;
-            if (btnText) btnText.innerText = "✓ 클립보드 복사 완료!";
-            btn.style.background = "#059669";
-            setTimeout(function() {
-              if (btnText) btnText.innerText = oldText;
-              btn.style.background = "";
-            }, 2200);
-          });
+        function showCopyFallback() {
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          var selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          btn.querySelector('.btn-text').innerText = "텍스트 선택됨 · 직접 복사해 주세요";
         }
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          showCopyFallback();
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+          var btnText = btn.querySelector('.btn-text');
+          var oldText = btnText.innerText;
+          btnText.innerText = "✓ 클립보드 복사 완료!";
+          btn.style.background = "#059669";
+          setTimeout(function() {
+            btnText.innerText = oldText;
+            btn.style.background = "";
+          }, 2200);
+        }).catch(showCopyFallback);
       }
     </script>
     {% include "landing/partials/gwangju_footer.html" %}

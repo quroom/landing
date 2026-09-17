@@ -15,7 +15,8 @@
         type="font/woff2"
         crossorigin />
   <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
-  <link rel="stylesheet" href="{% static 'landing/css/subpage-renewal.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'landing/css/subpage-renewal.css' %}" />
 {% endblock %}
 {% block body %}
   <div class="home-renewal subpage-renewal">
@@ -40,7 +41,9 @@
           <a class="renewal-button renewal-button-small" href="#contact">{{ content.persona.nav_cta }}</a>
         </nav>
       </div>
-      <nav id="mobile-menu" class="renewal-mobile-nav hidden" aria-label="모바일 메뉴">
+      <nav id="mobile-menu"
+           class="renewal-mobile-nav hidden"
+           aria-label="모바일 메뉴">
         <a href="{% url 'landing:index' %}">{{ content.persona.nav_home_label }}</a>
         <a href="#services">{{ content.persona.nav_services_label }}</a>
         <a href="#credibility">{{ content.persona.nav_credibility_label }}</a>
@@ -48,14 +51,16 @@
         <a href="#contact">{{ content.persona.nav_cta }}</a>
       </nav>
     </header>
-
     <main id="main" tabindex="-1">
       <section class="subpage-hero" id="top">
         <div class="subpage-hero-copy">
           <p class="renewal-kicker">{{ content.persona.label }}</p>
           <h1>{{ content.persona.title }}</h1>
           <p class="subpage-hero-summary">{{ content.persona.description }}</p>
-          <p style="margin-top: 14px; font-size: 0.88rem; font-weight: 600; color: var(--blue);">{{ content.persona.focus_note }}</p>
+          <p style="margin-top: 14px;
+                    font-size: 0.88rem;
+                    font-weight: 600;
+                    color: var(--blue)">{{ content.persona.focus_note }}</p>
           <div class="subpage-hero-badges">
             {% for item in content.persona.hero_support_buckets %}
               <span class="subpage-badge">{{ item }}</span>
@@ -63,16 +68,12 @@
           </div>
           <p style="margin-top: 16px; font-size: 0.82rem; color: var(--muted);">{{ content.persona.boundary_note }}</p>
           <div class="subpage-hero-actions">
-            <a href="{{ content.persona.primary_cta.href }}" class="renewal-button">
-              {{ content.persona.primary_cta.label }}
-            </a>
-            <a href="{{ content.persona.secondary_cta.href }}" class="renewal-text-link">
-              {{ content.persona.secondary_cta.label }}
-            </a>
+            <a href="{{ content.persona.primary_cta.href }}" class="renewal-button">{{ content.persona.primary_cta.label }}</a>
+            <a href="{{ content.persona.secondary_cta.href }}"
+               class="renewal-text-link">{{ content.persona.secondary_cta.label }}</a>
           </div>
         </div>
       </section>
-
       <div class="subpage-container">
         <!-- 서비스 안내 -->
         <section id="services">
@@ -88,24 +89,31 @@
                   <h3>{{ service.title }}</h3>
                   <p>{{ service.summary }}</p>
                   <p style="margin-top: 10px; font-size: 0.8rem; color: var(--muted);">{{ content.persona.recommended_audience_label }}: {{ service.audience }}</p>
-                  <ul style="margin: 16px 0 0; padding-left: 18px; font-size: 0.84rem; color: var(--body); line-height: 1.6;">
+                  <ul style="margin: 16px 0 0;
+                             padding-left: 18px;
+                             font-size: 0.84rem;
+                             color: var(--body);
+                             line-height: 1.6">
                     {% for service_item in service.items %}
                       <li>{{ service_item }}</li>
                     {% endfor %}
                   </ul>
                   {% if service.price %}
-                    <p style="margin-top: 14px; font-size: 0.84rem; font-weight: 600; color: var(--ink);">{{ content.persona.price_label }}: {{ service.price }}</p>
+                    <p style="margin-top: 14px;
+                              font-size: 0.84rem;
+                              font-weight: 600;
+                              color: var(--ink)">{{ content.persona.price_label }}: {{ service.price }}</p>
                   {% endif %}
                   <p style="margin-top: 4px; font-size: 0.8rem; color: var(--muted);">{{ content.persona.deliverable_label }}: {{ service.deliverable }}</p>
                 </div>
-                <a href="{{ service.cta_href }}" class="renewal-button renewal-button-small" style="margin-top: 24px; align-self: flex-start;">
-                  {{ service.cta_label }}
-                </a>
+                <a href="{{ service.cta_href }}"
+                   class="renewal-button renewal-button-small"
+                   style="margin-top: 24px;
+                          align-self: flex-start">{{ service.cta_label }}</a>
               </article>
             {% endfor %}
           </div>
         </section>
-
         <!-- 수행 자격 & 커리어 타임라인 -->
         <section id="credibility" style="margin-top: 80px;">
           <div class="renewal-section-intro renewal-section-intro-horizontal">
@@ -115,11 +123,17 @@
             </div>
             <p style="color: var(--body);">{{ content.persona.profile_section_intro }}</p>
           </div>
-
           <div class="subpage-portfolio-grid">
             <div class="subpage-card">
               <h3 style="margin: 0 0 16px;">{{ content.persona.profile_section_title }}</h3>
-              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; color: var(--body);">
+              <ul style="margin: 0;
+                         padding: 0;
+                         list-style: none;
+                         display: flex;
+                         flex-direction: column;
+                         gap: 10px;
+                         font-size: 0.88rem;
+                         color: var(--body)">
                 {% for item in content.persona.credibility_signals %}
                   <li style="display: flex; align-items: flex-start; gap: 8px;">
                     <span style="color: var(--blue); font-weight: 700;">✓</span>
@@ -127,18 +141,34 @@
                   </li>
                 {% endfor %}
               </ul>
-              <div style="margin-top: 20px; padding: 14px; border-radius: 8px; background: var(--soft); border: 1px solid var(--line); font-size: 0.8rem; color: var(--muted);">
+              <div style="margin-top: 20px;
+                          padding: 14px;
+                          border-radius: 8px;
+                          background: var(--soft);
+                          border: 1px solid var(--line);
+                          font-size: 0.8rem;
+                          color: var(--muted)">
                 <strong>{{ content.persona.scope_boundary_label }}:</strong> {{ content.persona.scope_boundary }}
               </div>
             </div>
-
             <div class="subpage-card">
               <h3 style="margin: 0 0 8px;">{{ content.persona.career_timeline_title }}</h3>
               <p style="margin: 0 0 16px; font-size: 0.84rem; color: var(--muted);">{{ content.persona.career_timeline_note }}</p>
-              <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 0.88rem; color: var(--body);">
+              <ul style="margin: 0;
+                         padding: 0;
+                         list-style: none;
+                         display: flex;
+                         flex-direction: column;
+                         gap: 12px;
+                         font-size: 0.88rem;
+                         color: var(--body)">
                 {% for range in career_ranges %}
                   <li style="display: flex; align-items: baseline; gap: 12px;">
-                    <span style="font-family: ui-monospace, monospace; font-size: 0.82rem; font-weight: 600; color: var(--blue); min-width: 90px;">
+                    <span style="font-family: ui-monospace, monospace;
+                                 font-size: 0.82rem;
+                                 font-weight: 600;
+                                 color: var(--blue);
+                                 min-width: 90px">
                       {{ range.start|slice:":4" }} ~ {% if range.end %}{{ range.end|slice:":4" }}{% else %}{{ content.persona.present_label }}{% endif %}
                     </span>
                     <span>{{ range.label }}</span>
@@ -148,9 +178,12 @@
             </div>
           </div>
         </section>
-
         <!-- FAQ -->
-        <section class="renewal-section renewal-faq" id="faq" style="padding-inline: 0; padding-top: 60px; background: transparent;">
+        <section class="renewal-section renewal-faq"
+                 id="faq"
+                 style="padding-inline: 0;
+                        padding-top: 60px;
+                        background: transparent">
           <div class="renewal-section-intro renewal-section-intro-compact">
             <p class="renewal-kicker" style="margin: 0;">자주 묻는 질문</p>
             <h2 style="font-size: 2.2rem;">{{ content.persona.faq_title }}</h2>
@@ -164,28 +197,56 @@
             {% endfor %}
           </div>
         </section>
-
         <!-- 문의 및 접수 폼 -->
-        <section id="contact" style="margin-top: 64px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 40px; box-shadow: 0 6px 24px rgba(15,23,42,0.04);">
+        <section id="contact"
+                 style="margin-top: 64px;
+                        background: #fff;
+                        border: 1px solid var(--line);
+                        border-radius: 14px;
+                        padding: 40px;
+                        box-shadow: 0 6px 24px rgba(15,23,42,0.04)">
           <div style="max-width: 600px;">
             <p class="renewal-kicker" style="margin: 0;">1:1 접수</p>
-            <h2 style="margin: 8px 0 0; font-size: 2.2rem; font-weight: 600; color: var(--ink);">{{ content.persona.contact_title }}</h2>
+            <h2 style="margin: 8px 0 0;
+                       font-size: 2.2rem;
+                       font-weight: 600;
+                       color: var(--ink)">{{ content.persona.contact_title }}</h2>
             <p style="margin: 8px 0 0; font-size: 0.92rem; color: var(--body);">{{ content.persona.contact_intro }}</p>
           </div>
-
-          <article id="quick-intake" style="margin-top: 32px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; padding: 24px;">
-            <h3 style="margin: 0 0 6px; font-size: 1.15rem; font-weight: 600; color: var(--ink);">{{ content.persona.quick_intake_title }}</h3>
+          <article id="quick-intake"
+                   style="margin-top: 32px;
+                          background: var(--soft);
+                          border: 1px solid var(--line);
+                          border-radius: 10px;
+                          padding: 24px">
+            <h3 style="margin: 0 0 6px;
+                       font-size: 1.15rem;
+                       font-weight: 600;
+                       color: var(--ink)">{{ content.persona.quick_intake_title }}</h3>
             <p style="margin: 0 0 18px; font-size: 0.82rem; color: var(--muted);">{{ content.persona.quick_intake_hint }}</p>
             <div id="foreign-quick-intake-wrap">
               {% include "landing/partials/foreign_quick_intake_form.html" with form=foreign_quick_intake_form %}
             </div>
           </article>
-
-          <details open style="margin-top: 24px; border: 1px solid var(--line); border-radius: 10px; padding: 20px;">
-            <summary style="cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--ink);">{{ content.persona.next_actions_summary }}</summary>
+          <details open
+                   style="margin-top: 24px;
+                          border: 1px solid var(--line);
+                          border-radius: 10px;
+                          padding: 20px">
+            <summary style="cursor: pointer;
+                            font-size: 0.95rem;
+                            font-weight: 600;
+                            color: var(--ink)">{{ content.persona.next_actions_summary }}</summary>
             <div style="margin-top: 18px;">
-              <article id="matching-profile" style="background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 20px;">
-                <h3 style="margin: 0 0 4px; font-size: 1.05rem; font-weight: 600; color: var(--ink);">{{ content.persona.matching_profile_title }}</h3>
+              <article id="matching-profile"
+                       style="background: var(--soft);
+                              border: 1px solid var(--line);
+                              border-radius: 8px;
+                              padding: 20px">
+                <h3 style="margin: 0 0 4px;
+                           font-size: 1.05rem;
+                           font-weight: 600;
+                           color: var(--ink)">{{ content.persona.matching_profile_title }}</h3>
                 <p style="margin: 0 0 8px; font-size: 0.8rem; color: var(--muted);">{{ content.persona.matching_profile_hint }}</p>
                 <div id="foreign-matching-profile-wrap">
                   {% include "landing/partials/foreign_matching_profile_form.html" with form=foreign_matching_profile_form %}
@@ -194,21 +255,32 @@
             </div>
           </details>
         </section>
-
         {% if content.links.linkedin %}
-        <section style="margin-top: 48px; padding: 28px; border-radius: 12px; background: var(--soft); border: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
-          <div>
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--ink);">{{ content.persona.profile_link_title }}</h3>
-            <p style="margin: 6px 0 0; font-size: 0.86rem; color: var(--body);">{{ content.trust_note }}</p>
-          </div>
-          <a href="{{ content.links.linkedin }}" target="_blank" rel="noreferrer" class="renewal-button renewal-button-small">
-            {{ content.persona.profile_link_label }}
-          </a>
-        </section>
+          <section style="margin-top: 48px;
+                          padding: 28px;
+                          border-radius: 12px;
+                          background: var(--soft);
+                          border: 1px solid var(--line);
+                          display: flex;
+                          flex-wrap: wrap;
+                          align-items: center;
+                          justify-content: space-between;
+                          gap: 20px">
+            <div>
+              <h3 style="margin: 0;
+                         font-size: 1.1rem;
+                         font-weight: 600;
+                         color: var(--ink)">{{ content.persona.profile_link_title }}</h3>
+              <p style="margin: 6px 0 0; font-size: 0.86rem; color: var(--body);">{{ content.trust_note }}</p>
+            </div>
+            <a href="{{ content.links.linkedin }}"
+               target="_blank"
+               rel="noreferrer"
+               class="renewal-button renewal-button-small">{{ content.persona.profile_link_label }}</a>
+          </section>
         {% endif %}
       </div>
     </main>
-
     {% include "landing/partials/gwangju_footer.html" %}
   </div>
 {% endblock %}

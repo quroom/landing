@@ -1,0 +1,14 @@
+{% load i18n %}
+<a href="{{ project.link }}"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="portfolio-link renewal-text-link">
+  {% if "github.com" in project.link %}
+    {% trans "GitHub 코드 보기 →" %}
+  {% elif "chromewebstore.google.com" in project.link %}
+    {% trans "웹스토어 보기 →" %}
+  {% else %}
+    {% trans "실서비스 둘러보기 →" %}
+  {% endif %}
+  <span class="renewal-visually-hidden">{% trans "새 창" %}</span>
+</a>

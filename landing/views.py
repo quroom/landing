@@ -353,13 +353,16 @@ def _resolve_landing_locale(request: HttpRequest, page_key: str) -> tuple[str, s
     requested = _normalize_locale(request.GET.get("lang"))
     if requested:
         translation.activate(requested)
-        request.session[LOCALE_SESSION_KEY] = requested
+        if hasattr(request, "session"):
+            request.session[LOCALE_SESSION_KEY] = requested
         return requested, page_default
-    persisted = _normalize_locale(request.session.get(LOCALE_SESSION_KEY))
-    if not persisted:
-        persisted = _normalize_locale(request.COOKIES.get("django_language"))
+    persisted = _normalize_locale(request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME))
+    if not persisted and hasattr(request, "session"):
+        persisted = _normalize_locale(request.session.get(LOCALE_SESSION_KEY))
     if persisted:
         translation.activate(persisted)
+        if hasattr(request, "session"):
+            request.session[LOCALE_SESSION_KEY] = persisted
         return persisted, page_default
     translation.activate(page_default)
     return page_default, page_default
@@ -510,25 +513,34 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
     canonical_url = _absolute_site_url(canonical_path)
     site_base_url = settings.SITE_BASE_URL.rstrip("/")
     organization_id = f"{site_base_url}/#organization"
+    is_en = translation.get_language() == "en"
     organization_schema = {
         "@context": "https://schema.org",
         "@type": "Organization",
         "@id": organization_id,
-        "name": "큐룸 (QUROOM)",
-        "legalName": "큐룸",
-        "alternateName": ["큐룸", "QUROOM", "QuRoom", "큐룸개발"],
+        "name": "QUROOM" if is_en else "큐룸 (QUROOM)",
+        "legalName": "QUROOM" if is_en else "큐룸",
+        "alternateName": ["QUROOM", "QuRoom"]
+        if is_en
+        else ["큐룸", "QUROOM", "QuRoom", "큐룸개발"],
         "url": f"{site_base_url}/",
         "logo": f"{site_base_url}/static/logo.jpg",
-        "description": "8년 차 삼성전자 출신 1인 풀스택 웹·앱 제작 및 린 MVP 전문 개발사 큐룸(QUROOM)",
+        "description": (
+            "QUROOM is an 8-year full-stack software development studio led by a former Samsung engineer, taking direct responsibility from MVP build to deployment."
+            if is_en
+            else "8년 차 삼성전자 출신 1인 풀스택 웹·앱 제작 및 린 MVP 전문 개발사 큐룸(QUROOM)"
+        ),
     }
     website_schema = {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "@id": f"{site_base_url}/#website",
         "url": f"{site_base_url}/",
-        "name": "큐룸 (QUROOM)",
-        "alternateName": ["큐룸", "QUROOM", "QuRoom"],
-        "inLanguage": "ko-KR",
+        "name": "QUROOM" if is_en else "큐룸 (QUROOM)",
+        "alternateName": ["QUROOM", "QuRoom"]
+        if is_en
+        else ["큐룸", "QUROOM", "QuRoom"],
+        "inLanguage": "en-US" if is_en else "ko-KR",
         "publisher": {"@id": organization_id},
     }
     return {
@@ -556,7 +568,20 @@ def _render_page(
     page_key: str,
 ) -> HttpResponse:
     context.update(_seo_context(request, page_key))
-    return render(request, template_name, context)
+    response = render(request, template_name, context)
+    requested = _normalize_locale(request.GET.get("lang"))
+    if requested:
+        response.set_cookie(
+            settings.LANGUAGE_COOKIE_NAME,
+            requested,
+            max_age=settings.LANGUAGE_COOKIE_AGE,
+            path=settings.LANGUAGE_COOKIE_PATH,
+            domain=settings.LANGUAGE_COOKIE_DOMAIN,
+            secure=settings.LANGUAGE_COOKIE_SECURE,
+            httponly=settings.LANGUAGE_COOKIE_HTTPONLY,
+            samesite=settings.LANGUAGE_COOKIE_SAMESITE,
+        )
+    return response
 
 
 def _public_testimonials() -> tuple[list[Testimonial], int, int]:
@@ -737,10 +762,10 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
             locale=locale,
             page_default_locale=page_default_locale,
         ),
-        page_key="home",
+        page_key="free_diagnosis",
         locale=locale,
         page_default_locale=page_default_locale,
-        recommended_inquiry_type=recommended_inquiry_type,
+        recommended_inquiry_type=recommended_inquiry_type or "vibe_diagnosis",
         lead_context=request.GET.get("lead_context", ""),
         tracking_context=_tracking_context_from_request(request),
     )
@@ -1057,7 +1082,11 @@ def _render_contact_form(
     status_message: str = "",
 ) -> HttpResponse:
     html = render_to_string(
-        "landing/partials/contact_form.html",
+        (
+            "landing/partials/contact_form.html"
+            if request.headers.get("HX-Request") == "true"
+            else "landing/contact_result.html"
+        ),
         {"form": form, "status": status, "status_message": status_message},
         request=request,
     )
@@ -1898,7 +1927,10 @@ def contact_submit(request: HttpRequest) -> HttpResponse:
         lead_source = "gwangju_contact"
     elif data.get("ad_source") == "naver":
         lead_source = "naver_search_ad"
-    elif submitted_lead_source in {"founder_contact_from_diagnosis", "free_diagnosis_vibe"}:
+    elif submitted_lead_source in {
+        "founder_contact_from_diagnosis",
+        "free_diagnosis_vibe",
+    }:
         lead_source = submitted_lead_source
     else:
         lead_source = "founder_contact"

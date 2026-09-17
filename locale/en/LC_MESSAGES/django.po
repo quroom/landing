@@ -589,8 +589,16 @@ msgid "제품 화면"
 msgstr "product screen"
 
 #: landing/templates/landing/index.html
-msgid "외부 링크"
-msgstr "External link"
+msgid "실서비스 둘러보기 →"
+msgstr "Explore Live Service →"
+
+#: landing/templates/landing/index.html
+msgid "GitHub 코드 보기 →"
+msgstr "View GitHub Code →"
+
+#: landing/templates/landing/index.html
+msgid "웹스토어 보기 →"
+msgstr "View on Web Store →"
 
 #: landing/templates/landing/index.html
 msgid "새 창"
@@ -613,5 +621,137 @@ msgid "하단 메뉴"
 msgstr "Footer navigation"
 
 #: landing/forms.py
-msgid "30분 무료 커피챗"
-msgstr "30-minute Coffee Chat"
+msgid "30분 프로젝트 요구사항 진단"
+msgstr "30-minute Project Scoping & Diagnosis"
+
+msgid "개발 진행 중"
+msgstr "In development"
+
+msgid "실무 자산 및 진단"
+msgstr "Templates and Technical Reviews"
+
+msgid "계약 전 무료로 확인하는 실전 서식과 기술 진단"
+msgstr "Free templates and technical reviews before your project starts"
+
+msgid "추가금 방지 & 견적 서식"
+msgstr "Scope and Quote Templates"
+
+msgid "5대 개발 제외 기준 및 표준 견적서"
+msgstr "Five Scope Exclusions and a Quote Template"
+
+msgid "외주 계약 시 발생하는 추가금 분쟁을 막는 5대 제외 조항과 린 MVP 6대 모듈 표준 견적서 마크다운을 복사해 활용할 수 있습니다."
+msgstr "Copy Markdown templates covering five scope exclusions and a six-module lean MVP quote to clarify scope and costs."
+
+msgid "서식 및 체크리스트 보기 →"
+msgstr "View Templates and Checklist →"
+
+msgid "AI 코드 SOS"
+msgstr "AI Code Support"
+
+msgid "15분 무료 코드·배포 진단"
+msgstr "Free 15-minute Code and Deployment Review"
+
+msgid "Cursor, Claude 등으로 만든 코드의 실서버 배포, 결제 연동, DB 오류를 15분간 엔지니어가 직접 진단하고 1순위 조치를 짚어드립니다."
+msgstr "An engineer reviews deployment, payment integration, or database issues in code built with Cursor or Claude and identifies the first action in a 15-minute session."
+
+msgid "15분 기술 진단 신청하기 →"
+msgstr "Request a Technical Review →"
+
+msgid "정부지원사업 정산"
+msgstr "Government Grant Documentation"
+
+msgid "e나라도움 5종 서류 패키지"
+msgstr "Five-document e-Naradoum Package"
+
+msgid "예창패·초창패·AI바우처 IT 외주 전자세금계산서, 비교견적서 2부, 과업완료 검수조서 표준 서식과 AI 토큰 원화 정산 안내를 제공합니다."
+msgstr "Get templates for IT outsourcing tax invoices, two comparison quotes, and acceptance reports, plus guidance on documenting AI API costs in KRW for Korean government grant programs."
+
+msgid "정산 서류 가이드 보기 →"
+msgstr "View Documentation Guide →"
+
+msgid "외주 프로젝트 문의"
+msgstr "Project Inquiry"
+
+msgid "만들거나 고칠 내용, 희망 완료 일정, 예상 예산 범위를 알려주세요. 일정이나 예산이 미정이면 현재 상황을 적어주세요. 참고 화면·링크나 오류 로그가 있다면 함께 남겨주세요."
+msgstr "Tell us what you want to build or fix, your target completion date, and your estimated budget range. If the timeline or budget is undecided, describe your current situation. Include screenshots, reference links, or error logs if available."
+
+msgid "[필수] 개인정보 수집 및 이용 동의"
+msgstr "[Required] I agree to the collection and use of my personal information."
+
+msgid "홈으로 돌아가기"
+msgstr "Back to Home"
+
+msgid "큐룸 (QUROOM) 홈"
+msgstr "QUROOM Home"
+
+msgid "대표 직접 수행"
+msgstr "Founder-led direct delivery"
+
+msgid "외주 체크리스트"
+msgstr "Outsourcing Checklist"
+
+msgid "무료 진단"
+msgstr "Free Diagnosis"
+
+msgid "메인 홈"
+msgstr "Home"
+
+msgid "광주 홈"
+msgstr "Gwangju Home"
+
+msgid "15분 진단 (SOS)"
+msgstr "15-min Review (SOS)"
+
+msgid "자동화 진단 (3분)"
+msgstr "Automation Review (3 min)"
+
+msgid "상담 문의"
+msgstr "Contact"
+
+msgid "5대 제외 기준"
+msgstr "5 Scope Exclusions"
+
+msgid "표준 견적서 서식"
+msgstr "Standard Quote Template"
+
+msgid "e나라도움 5종 서류"
+msgstr "e-Naradoum 5 Documents"
+
+msgid "서비스 안내"
+msgstr "Services"
+
+msgid "진행 방식"
+msgstr "Process"
+
+msgid "← 노트 목록"
+msgstr "← Note List"
+
+msgid "외주 체크리스트 & 표준 견적서"
+msgstr "Outsourcing Checklist & Quote Template"
+
+msgid "외주 체크리스트 & 견적서"
+msgstr "Outsourcing Checklist & Quote Template"
+
+msgid "15분 코드·배포 진단"
+msgstr "15-min Code & Deploy Diagnosis"
+
+msgid "광주 거점 개발"
+msgstr "Gwangju Hub Development"
+
+msgid "빌드 노트"
+msgstr "Build Notes"
+
+msgid "(큐룸)"
+msgstr "(QUROOM)"
+
+msgid "큐룸 (QUROOM) | 웹·앱 외주 개발 & 린 MVP 개발사"
+msgstr "QUROOM | Web & App Development Partner & Lean MVP Builder"
+
+msgid "큐룸(QUROOM)은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다."
+msgstr "QUROOM is an 8-year full-stack software development studio led by a former Samsung engineer, taking direct responsibility from MVP build to deployment."
+
+msgid "큐룸, QUROOM, quroom, 큐룸 개발, 큐룸 외주, 웹개발 외주, 앱개발 외주, 스타트업 MVP 개발, 1인 개발사, 광주 웹개발"
+msgstr "QUROOM, quroom, web development, app development, startup MVP development, solo developer, software engineering"
+
+msgid "큐룸 (QUROOM)"
+msgstr "QUROOM"

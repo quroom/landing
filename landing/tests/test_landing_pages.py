@@ -72,7 +72,7 @@ class LandingPageTests(TestCase):
             (
                 "landing:gwangju",
                 "https://quroom.kr/gwangju/",
-                "광주 홈페이지 제작·웹개발·앱개발, 요구사항부터 같이 정리합니다",
+                "광주 홈페이지 제작·웹개발·앱개발, 개발 범위와 견적 기준부터 명확히 세웁니다",
             ),
             (
                 "landing:gwangju_homepage",
@@ -348,7 +348,7 @@ class LandingPageTests(TestCase):
             '<a href="https://quroom.kr" target="_blank" rel="noreferrer">QuRoom</a>',
             html=False,
         )
-        self.assertContains(response, "제품 범위나 외주 기준을 같이 정리하고 싶다면")
+        self.assertContains(response, "제품 개발 범위와 기술 스택 검토가 필요하다면")
         self.assertEqual(
             self.client.get(
                 reverse("landing:build_note_detail", kwargs={"slug": draft_note.slug})
@@ -401,22 +401,23 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
         self.assertContains(response, ">QUROOM<", count=2, html=False)
-        self.assertContains(response, "아직 무엇을 맡길지 정하지 않았어도 괜찮습니다.")
+        self.assertContains(
+            response,
+            "프로젝트 구상 단계이거나 기술 검토가 필요한 상태에서도 편하게 남겨주세요.",
+        )
         self.assertNotContains(response, "김상은")
         self.assertContains(response, "웹·앱 개발부터 기술 상담까지")
         self.assertContains(response, "개발 전체를 맡기셔도,")
         self.assertContains(response, "막힌 부분만 맡기셔도 됩니다.")
         self.assertContains(
             response,
-            "전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다.",
+            "기획부터 배포·운영까지 대표 1인이 하청 없이 직접 책임집니다.",
         )
-        self.assertContains(response, "30분 커피챗은 무료입니다.")
+        self.assertContains(response, "30분 사전 기술 진단은 무료입니다.")
         self.assertContains(response, "신규 웹·앱 MVP")
         self.assertContains(response, "사내 업무 도구")
         self.assertContains(response, "기존 서비스 개선")
-        self.assertContains(
-            response, "무엇을 만들지 완전히 정리되지 않아도 괜찮습니다."
-        )
+        self.assertContains(response, "완성된 기획서나 기능 명세서가 없어도 좋습니다.")
         self.assertContains(response, "기간·예산 협의")
         proof_items = response.context["content"]["proof_items"]
         self.assertEqual(proof_items[2]["label"], "프로젝트 기간")
@@ -429,7 +430,7 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "매주 결과물을 보여드리고")
         self.assertContains(response, "개발자이면서")
         self.assertContains(response, "상담 전에 자주 묻는 내용입니다.")
-        self.assertContains(response, "지금 고민 중인 내용을")
+        self.assertContains(response, "희망 일정과 예산을 알려주세요.")
         self.assertContains(
             response,
             "전체 개발, 일부 기능 구현, 기술 검토 중 어떤 문의든 가능합니다.",
@@ -489,7 +490,7 @@ class LandingPageTests(TestCase):
             "Bring me the whole build",
         )
         self.assertContains(response, "or just the part where you are stuck.")
-        self.assertContains(response, "30-minute Coffee Chat")
+        self.assertContains(response, "30-minute Project Scoping &amp; Diagnosis")
         self.assertContains(response, "New Web or App MVP")
         self.assertContains(response, "Nine products I built")
         self.assertContains(response, "Review working software each week")
@@ -500,6 +501,51 @@ class LandingPageTests(TestCase):
             response.context["career_ranges"],
             build_career_ranges(locale="en", page_default_locale="ko"),
         )
+
+    def test_language_switcher_allows_switching_between_ko_and_en(self) -> None:
+        # Initial visit defaults to Korean
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="ko">', html=False)
+
+        # Switch to English
+        set_en = self.client.post(
+            reverse("set_language"), {"language": "en", "next": "/"}
+        )
+        self.assertEqual(set_en.status_code, 302)
+        response_en = self.client.get(set_en.headers.get("Location"))
+        self.assertEqual(response_en.status_code, 200)
+        self.assertContains(response_en, '<html lang="en">', html=False)
+        self.assertContains(response_en, "Outsourcing Checklist")
+        self.assertContains(response_en, "Free Diagnosis")
+        self.assertNotContains(response_en, ">외주 체크리스트<")
+        self.assertNotContains(response_en, ">무료 진단<")
+
+        # Switch back to Korean
+        set_ko = self.client.post(
+            reverse("set_language"), {"language": "ko", "next": "/"}
+        )
+        self.assertEqual(set_ko.status_code, 302)
+        response_ko = self.client.get(set_ko.headers.get("Location"))
+        self.assertEqual(response_ko.status_code, 200)
+        self.assertContains(response_ko, '<html lang="ko">', html=False)
+        self.assertContains(response_ko, "외주 체크리스트")
+        self.assertContains(response_ko, "무료 진단")
+
+        # Visiting ?lang=en provides clean next URL so user can switch back to KO
+        response_url_en = self.client.get(reverse("landing:index"), {"lang": "en"})
+        self.assertEqual(response_url_en.status_code, 200)
+        self.assertContains(
+            response_url_en,
+            '<input type="hidden" name="next" value="/" />',
+            html=True,
+        )
+        set_ko_from_en = self.client.post(
+            reverse("set_language"), {"language": "ko", "next": "/"}
+        )
+        self.assertEqual(set_ko_from_en.status_code, 302)
+        response_recovered_ko = self.client.get(set_ko_from_en.headers.get("Location"))
+        self.assertContains(response_recovered_ko, '<html lang="ko">', html=False)
 
     def test_free_diagnosis_page_renders(self) -> None:
         response = self.client.get(reverse("landing:free_diagnosis"))
@@ -613,7 +659,7 @@ class LandingPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
-            '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
+            '<option value="coffee_chat" selected>30분 프로젝트 요구사항 진단</option>',
             html=False,
         )
         self.assertContains(
@@ -862,14 +908,18 @@ class LandingPageTests(TestCase):
                 response = self.client.get(reverse(route))
                 self.assertEqual(response.status_code, 200)
                 self.assertContains(response, 'id="resources"')
-                self.assertContains(response, "계약 전 무료로 확인하는 실전 서식과 기술 진단")
+                self.assertContains(
+                    response, "계약 전 무료로 확인하는 실전 서식과 기술 진단"
+                )
                 self.assertContains(response, "5대 개발 제외 기준 및 표준 견적서")
                 self.assertContains(response, "15분 무료 코드·배포 진단")
                 self.assertContains(response, "e나라도움 5종 서류 패키지")
                 self.assertContains(response, reverse("landing:outsourcing_checklist"))
                 self.assertContains(response, reverse("landing:free_diagnosis"))
 
-    def test_home_engagement_table_links_to_self_serve_wbs_and_no_free_review(self) -> None:
+    def test_home_engagement_table_links_to_self_serve_wbs_and_no_free_review(
+        self,
+    ) -> None:
         response = self.client.get(reverse("landing:index"))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "무료 검수")

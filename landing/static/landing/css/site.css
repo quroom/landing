@@ -162,3 +162,19 @@ form input[type="radio"] {
   background: rgba(15, 23, 42, 0.06);
   padding: 1rem;
 }
+
+/* Shared contact form: stable field layout and touch targets on every landing. */
+.contact-form > * { min-width: 0; }
+.contact-form .contact-consent { min-height: 44px; align-items: center; cursor: pointer; }
+.contact-form .contact-consent input { width: 20px; height: 20px; flex: 0 0 20px; margin: 0; }
+.contact-form .contact-privacy-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; text-decoration: underline; }
+.contact-form button[type="submit"] { min-height: 48px; }
+.contact-form button:disabled { opacity: .65; cursor: wait; }
+.renewal-portfolio-item { display: flex; flex-direction: column; }
+.renewal-portfolio-item > .portfolio-link,
+.renewal-card-body > .portfolio-link { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; margin-top: auto; white-space: nowrap; }
+@media (max-width: 700px) {
+  .contact-form input[type="email"], .contact-form select, .contact-form textarea { font-size: 16px; min-height: 48px; }
+  #vibe-intake-form { padding: 20px !important; }
+  #vibe-intake-form .renewal-contact-form > div { padding: 0; }
+}

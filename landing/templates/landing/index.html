@@ -22,7 +22,9 @@
     <a class="renewal-skip-link" href="#main">{% trans "본문으로 건너뛰기" %}</a>
     <header class="renewal-header">
       <div class="renewal-header-inner">
-        <a class="renewal-brand" href="#top" aria-label="{% trans '큐룸 (QUROOM) 홈' %}">
+        <a class="renewal-brand"
+           href="#top"
+           aria-label="{% trans '큐룸 (QUROOM) 홈' %}">
           <img src="{% static 'logo.jpg' %}"
                width="30"
                height="30"
@@ -147,7 +149,7 @@
               </div>
               <b>{{ engagement.terms }}</b>
               {% if engagement.url %}
-                <a href="{{ engagement.url }}">{{ engagement.cta }} →</a>
+                <a href="{{ engagement.url }}">{{ engagement.cta }}</a>
               {% else %}
                 <a href="?inquiry_type={{ engagement.inquiry_type }}#contact"
                    data-inquiry-type="{{ engagement.inquiry_type }}">{{ engagement.cta }}</a>
@@ -219,11 +221,12 @@
               <h3>{{ project.name }}</h3>
               <p>{{ project.summary }}</p>
               {% if project.link %}
-                <a href="{{ project.link }}" target="_blank" rel="noreferrer">
-                  {% trans "외부 링크" %}<span class="renewal-visually-hidden">{% trans "새 창" %}</span>
-                </a>
+                {% include "landing/partials/portfolio_link.html" %}
               {% elif project.is_in_development %}
-                <span style="font-size: 0.78rem; font-weight: 500; color: #2563eb; margin-top: auto;">개발 진행 중</span>
+                <span style="font-size: 0.78rem;
+                             font-weight: 500;
+                             color: #2563eb;
+                             margin-top: auto">{% trans "개발 진행 중" %}</span>
               {% endif %}
             </article>
           {% endfor %}
@@ -315,34 +318,75 @@
           <p>{% trans "실무 자산 및 진단" %}</p>
           <h2>{% trans "계약 전 무료로 확인하는 실전 서식과 기술 진단" %}</h2>
         </div>
-        <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-          <article style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; background: #fff;">
-            <span style="font-size: 0.75rem; font-weight: 700; color: var(--blue); letter-spacing: 0.05em;">추가금 방지 &amp; 견적 서식</span>
-            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">5대 개발 제외 기준 및 표준 견적서</h3>
-            <p style="font-size: 0.86rem; color: var(--body); line-height: 1.6; margin: 0 0 16px;">
-              외주 계약 시 발생하는 추가금 분쟁을 막는 5대 제외 조항과 린 MVP 6대 모듈 표준 견적서 마크다운을 복사해 활용할 수 있습니다.
+        <div style="display: grid;
+                    gap: 20px;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))">
+          <article style="border: 1px solid var(--line);
+                          border-radius: 16px;
+                          padding: 24px;
+                          background: #fff">
+            <span style="font-size: 0.75rem;
+                         font-weight: 700;
+                         color: var(--blue);
+                         letter-spacing: 0.05em">{% trans "추가금 방지 & 견적 서식" %}</span>
+            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">{% trans "5대 개발 제외 기준 및 표준 견적서" %}</h3>
+            <p style="font-size: 0.86rem;
+                      color: var(--body);
+                      line-height: 1.6;
+                      margin: 0 0 16px">
+              {% trans "외주 계약 시 발생하는 추가금 분쟁을 막는 5대 제외 조항과 린 MVP 6대 모듈 표준 견적서 마크다운을 복사해 활용할 수 있습니다." %}
             </p>
-            <a href="{% url 'landing:outsourcing_checklist' %}" style="font-size: 0.86rem; font-weight: 600; color: var(--blue); text-decoration: underline;">서식 및 체크리스트 보기 →</a>
+            <a href="{% url 'landing:outsourcing_checklist' %}"
+               style="font-size: 0.86rem;
+                      font-weight: 600;
+                      color: var(--blue);
+                      text-decoration: underline">{% trans "서식 및 체크리스트 보기 →" %}</a>
           </article>
-          <article style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; background: #fff;">
-            <span style="font-size: 0.75rem; font-weight: 700; color: var(--blue); letter-spacing: 0.05em;">AI 코드 SOS</span>
-            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">15분 무료 코드·배포 진단</h3>
-            <p style="font-size: 0.86rem; color: var(--body); line-height: 1.6; margin: 0 0 16px;">
-              Cursor, Claude 등으로 만든 코드의 실서버 배포, 결제 연동, DB 오류를 15분간 엔지니어가 직접 진단하고 1순위 조치를 짚어드립니다.
+          <article style="border: 1px solid var(--line);
+                          border-radius: 16px;
+                          padding: 24px;
+                          background: #fff">
+            <span style="font-size: 0.75rem;
+                         font-weight: 700;
+                         color: var(--blue);
+                         letter-spacing: 0.05em">{% trans "AI 코드 SOS" %}</span>
+            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">{% trans "15분 무료 코드·배포 진단" %}</h3>
+            <p style="font-size: 0.86rem;
+                      color: var(--body);
+                      line-height: 1.6;
+                      margin: 0 0 16px">
+              {% trans "Cursor, Claude 등으로 만든 코드의 실서버 배포, 결제 연동, DB 오류를 15분간 엔지니어가 직접 진단하고 1순위 조치를 짚어드립니다." %}
             </p>
-            <a href="{% url 'landing:free_diagnosis' %}" style="font-size: 0.86rem; font-weight: 600; color: var(--blue); text-decoration: underline;">15분 기술 진단 신청하기 →</a>
+            <a href="{% url 'landing:free_diagnosis' %}"
+               style="font-size: 0.86rem;
+                      font-weight: 600;
+                      color: var(--blue);
+                      text-decoration: underline">{% trans "15분 기술 진단 신청하기 →" %}</a>
           </article>
-          <article style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; background: #fff;">
-            <span style="font-size: 0.75rem; font-weight: 700; color: var(--blue); letter-spacing: 0.05em;">정부지원사업 정산</span>
-            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">e나라도움 5종 서류 패키지</h3>
-            <p style="font-size: 0.86rem; color: var(--body); line-height: 1.6; margin: 0 0 16px;">
-              예창패·초창패·AI바우처 IT 외주 전자세금계산서, 비교견적서 2부, 과업완료 검수조서 표준 서식과 AI 토큰 원화 정산 안내를 제공합니다.
+          <article style="border: 1px solid var(--line);
+                          border-radius: 16px;
+                          padding: 24px;
+                          background: #fff">
+            <span style="font-size: 0.75rem;
+                         font-weight: 700;
+                         color: var(--blue);
+                         letter-spacing: 0.05em">{% trans "정부지원사업 정산" %}</span>
+            <h3 style="margin: 8px 0; font-size: 1.1rem; color: var(--ink);">{% trans "e나라도움 5종 서류 패키지" %}</h3>
+            <p style="font-size: 0.86rem;
+                      color: var(--body);
+                      line-height: 1.6;
+                      margin: 0 0 16px">
+              {% trans "예창패·초창패·AI바우처 IT 외주 전자세금계산서, 비교견적서 2부, 과업완료 검수조서 표준 서식과 AI 토큰 원화 정산 안내를 제공합니다." %}
             </p>
-            <a href="{% url 'landing:outsourcing_checklist' %}" style="font-size: 0.86rem; font-weight: 600; color: var(--blue); text-decoration: underline;">정산 서류 가이드 보기 →</a>
+            <a href="{% url 'landing:outsourcing_checklist' %}"
+               style="font-size: 0.86rem;
+                      font-weight: 600;
+                      color: var(--blue);
+                      text-decoration: underline">{% trans "정산 서류 가이드 보기 →" %}</a>
           </article>
         </div>
       </section>
-      <section class="renewal-contact" id="contact">
+      <section class="renewal-contact renewal-contact-wide" id="contact">
         <div class="renewal-contact-copy">
           <p>{{ content.contact_label }}</p>
           <h2>{{ content.contact_title|linebreaksbr }}</h2>
@@ -354,7 +398,13 @@
     </main>
     <footer class="renewal-footer">
       <div>
-        <strong>QUROOM</strong> <span style="font-size: 0.85rem; font-weight: 500; color: var(--muted); margin-left: 2px;">(큐룸)</span>
+        <strong>QUROOM</strong>
+        {% if html_lang != 'en' %}
+          <span style="font-size: 0.85rem;
+                       font-weight: 500;
+                       color: var(--muted);
+                       margin-left: 2px">(큐룸)</span>
+        {% endif %}
         <span>{% trans "광주광역시" %} · {% trans "사업자등록번호" %} {{ content.company.biz_number }}</span>
       </div>
       <nav aria-label="{% trans '하단 메뉴' %}">

@@ -9,6 +9,10 @@ if [[ ! -x "${SLOP_GATE}" ]]; then
   exit 1
 fi
 
-echo "[copy-check] AI writing-pattern scan"
+echo "[copy-check] 1/2: slop-gate scan (translationese & writing tells)"
 cd "${ROOT_DIR}"
 "${SLOP_GATE}"
+
+echo ""
+echo "[copy-check] 2/2: korean-slop-lint scan (AI clichés & marketing tropes)"
+python3 "${ROOT_DIR}/scripts/lint_korean_slop.py"

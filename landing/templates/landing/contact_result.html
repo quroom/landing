@@ -1,0 +1,9 @@
+{% extends "landing/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "문의" %} | QUROOM{% endblock %}
+{% block body %}
+  <main class="mx-auto max-w-2xl p-6">
+    <a href="{% url 'landing:index' %}">{% trans "홈으로 돌아가기" %}</a>
+    <div id="contact-form-wrap" class="mt-6">{% include "landing/partials/contact_form.html" %}</div>
+  </main>
+{% endblock %}

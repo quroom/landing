@@ -15,20 +15,28 @@
     </div>
     <h3>{{ project.name }}</h3>
     <p>{{ project.summary }}</p>
-    <div style="background: var(--soft); border-radius: 8px; padding: 14px; font-size: 0.8rem; line-height: 1.6; color: var(--body); display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+    <div style="background: var(--soft);
+                border-radius: 8px;
+                padding: 14px;
+                font-size: 0.8rem;
+                line-height: 1.6;
+                color: var(--body);
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                margin-bottom: 14px">
       <div><strong style="color: var(--ink);">Problem</strong> {{ project.problem }}</div>
       <div><strong style="color: var(--ink);">Solution</strong> {{ project.solution }}</div>
       <div><strong style="color: var(--ink);">Result</strong> {{ project.result }}</div>
       <div><strong style="color: var(--ink);">Tech</strong> {{ project.tech }}</div>
     </div>
     {% if project.link %}
-      <a href="{{ project.link }}"
-         target="_blank"
-         rel="noreferrer"
-         class="renewal-text-link"
-         style="font-size: 0.82rem; margin-top: auto;">외부 서비스 링크 확인 →</a>
+      {% include "landing/partials/portfolio_link.html" %}
     {% elif project.is_in_development %}
-      <span style="font-size: 0.78rem; font-weight: 500; color: var(--blue); margin-top: auto;">현재 개발 진행 중인 프로덕트입니다.</span>
+      <span style="font-size: 0.78rem;
+                   font-weight: 500;
+                   color: var(--blue);
+                   margin-top: auto">현재 개발 진행 중인 프로덕트입니다.</span>
     {% else %}
       <span style="font-size: 0.76rem; color: var(--muted); margin-top: auto;">보안 또는 운영 정책으로 상세 링크는 비공개입니다.</span>
     {% endif %}

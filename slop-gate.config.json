@@ -1,6 +1,7 @@
 {
   "include": [
     "landing/content.py",
+    "landing/ad_landing.py",
     "landing/forms.py",
     "landing/templates/landing/**/*.html",
     "locale/**/*.po"

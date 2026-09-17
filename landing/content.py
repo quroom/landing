@@ -33,8 +33,11 @@ EN_TRANSLATIONS = {
     "2025.01 ~ 현재": "2025.01 - Present",
     "2026.03 ~ 2026.05": "2026.03 - 2026.05",
     "AI 콜봇": "AI Callbot",
+    "1인 미용실·출장설비를 위한 30초 AI 음성 응대 및 모바일 접수 카드 솔루션 (지난주 착수, 현재 개발 중)": "30-second AI voice assistant and mobile intake card for solo salons and field technicians (in development)",
     "광주 도서관 통합검색 (library.quroom.kr)": "Gwangju Library Integrated Search (library.quroom.kr)",
+    "광주광역시 전역 공공도서관 실시간 대출 상태 및 소장 도서 통합 검색 포털 (library.quroom.kr)": "Integrated search portal for real-time book loan status across public libraries in Gwangju (library.quroom.kr)",
     "단어장앱 (voca.quroom.kr)": "Vocab App (voca.quroom.kr)",
+    "SM-2 간격 반복 알고리즘 기반의 오프라인 우선(Offline-First) 단어 암기 웹앱 (voca.quroom.kr)": "Offline-first vocabulary web app based on the SM-2 spaced repetition algorithm (voca.quroom.kr)",
     "손해사정사 문서 자동화 서비스 (R&D)": "Claims Document Automation Service (R&D)",
     "손해사정사를 위한 고객 관리와 문서 초안 생성 기능을 구현한 실험 프로젝트": "An experimental project that implemented customer management and document draft generation for claims adjusters.",
     "WishBox (소망창고) - Alpha": "WishBox - Alpha",
@@ -57,13 +60,13 @@ EN_TRANSLATIONS = {
     "업무 범위와 우선순위를 먼저 맞추고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope and priorities first, then directly handle the execution that needs to move.",
     "외주용역 집중 트랙은 한 타임에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
     "외주용역 집중 트랙은 한 번에 한 고객사만 진행합니다.": "The dedicated outsourcing track runs with one client at a time.",
-    "요구사항부터 같이 정리합니다.": "We start by aligning requirements together.",
+    "요구사항과 개발 범위부터 명확히 세웁니다.": "We start by clearly defining requirements and scope.",
     "제품, 운영, 외주가 따로 움직이면 속도가 바로 떨어집니다.": "When product, operations, and outsourcing move separately, speed drops immediately.",
     "요구사항이 모호하면 일정과 비용이 쉽게 흔들립니다.": "When requirements are unclear, schedule and cost become unstable.",
     "예산과 우선순위에 맞춰 범위를 조율하고, 필요한 실행은 직접 맡아 진행합니다.": "We align scope to budget and priorities, then directly handle the execution that should be delegated.",
     "문의부터 실행까지 진행 방식": "How We Work From Inquiry to Delivery",
     "사전 진단 상담": "Initial Diagnosis Call",
-    "현재 상황, 목표, 제약을 함께 정리해 우선순위를 확정합니다.": "We align your current situation, goals, and constraints to set priorities.",
+    "현재 상황, 목표, 제약을 함께 짚어보고 개발 우선순위를 논의합니다.": "We look at your current situation, goals, and constraints together to discuss priorities.",
     "실행 범위 설계": "Execution Scope Design",
     "2주~8주 단위 실행 범위, 일정, 산출물 기준을 명확히 합의합니다.": "We align execution scope, timeline, and deliverable criteria for a 2-8 week cycle.",
     "구현 및 점검": "Implementation and Review",
@@ -88,7 +91,7 @@ EN_TRANSLATIONS = {
     "문의 응답": "Response Time",
     "영업일 1~2일": "1-2 business days",
     "이메일 기준 안내": "Email-first contact",
-    "무엇을 먼저 할지, 무엇은 미뤄도 될지 90분 안에 정리합니다.": "In 90 minutes, we clarify what to do first and what can wait.",
+    "우선순위가 시급한 핵심 기능과 미뤄도 되는 범위를 90분 안에 명확히 구분합니다.": "In 90 minutes, we clearly distinguish urgent core features from what can wait.",
     "자동화 실행 진단 (90분)": "Automation Execution Diagnosis (90 min)",
     "90분 안에 지금 막힌 지점을 잡고, 바로 실행할 자동화 1순위를 정합니다.": "In 90 minutes, we pinpoint current bottlenecks and define the top automation priority to execute next.",
     "현재 흐름에서 시간·비용이 새는 구간 1~2개를 특정": "Identify 1-2 points where time and cost are leaking in the current flow",
@@ -98,7 +101,7 @@ EN_TRANSLATIONS = {
     "초기 창업팀, 1인기업, 소규모 운영팀": "Early-stage founder teams, solo businesses, small operations teams",
     "자동화 실행 진단 신청": "Request Automation Diagnosis",
     "자동화 실행 구축 (2주 ~ 4주)": "Automation Execution Build (2-4 weeks)",
-    "반복 업무와 운영 흐름을 실제로 돌아가게 정리합니다.": "We organize repetitive work and operations so they actually run.",
+    "반복 업무와 운영 흐름을 실제로 돌아가는 자동화 체계로 구축합니다.": "We build repetitive tasks and operational flows into an actually running automation system.",
     "핵심 업무 플로우를 실제 운영 기준에 맞게 설계": "Design core workflows based on real operational criteria",
     "반복 작업 자동화 적용 및 실패 케이스 점검": "Apply automation to repetitive tasks and review failure cases",
     "팀이 바로 이어받을 수 있는 운영 가이드 제공": "Provide operational guides your team can immediately take over",
@@ -118,32 +121,32 @@ EN_TRANSLATIONS = {
     "외주용역 상담 신청": "Request Outsourcing Consultation",
     "품질 때문에 한 타임에 한 고객사만 진행합니다.": "We handle one client at a time to keep focus.",
     "제품화·운영 실행 파트": "Productization and Operations Execution",
-    "바로 맡겨야 할 일과 아직 정리할 일을 구분해, 실제 실행으로 이어지게 돕습니다.": "We help separate what should be delegated now from what still needs alignment, then move it into real execution.",
+    "외주로 위임할 개발 과제와 내부에서 검증할 범위를 명확히 구분하여, 실제 제품 런칭으로 이어지게 돕습니다.": "We clearly separate what should be delegated to outsourcing from what should be validated internally, moving your product toward launch.",
     "이런 경험과 기준으로 일합니다": "This is the experience and standard I work from.",
     "왜 제가 맡을 수 있는지": "Why I can take this on",
     "삼성전자 포함 총 개발 경력 {career_duration}": "Total development experience {career_duration}, including Samsung Electronics",
     "삼성전자 제품 개발 경험과 자체 제품 운영 경험이 있습니다.": "I have product development experience at Samsung Electronics and direct experience operating owned products.",
     "그래서 예쁜 화면이나 기능 목록만 보지 않고, 우선순위·배포·운영·수정 요청까지 같이 봅니다.": "That means I look beyond screens and feature lists, covering priorities, deployment, operations, and change requests.",
     "자체 제품 기획·개발·운영 경험": "Experience planning, building, and operating owned products",
-    "총 7개 프로젝트 경험과 운영 이관 기준 정리": "Experience across 7 projects with clear handover criteria",
+    "총 7개 프로젝트 구축 경험과 명확한 소스코드·운영 이관 기준 보유": "Experience across 7 build projects with clear source code and operations handover standards.",
     "외주 개발: 미술관 큐레이션 서비스": "Client project: Museum Curation Service",
     "자체 제품과 외주 개발을 구분해 검증 가능한 사례만 제시": "Only verifiable examples, clearly separated between owned products and client work",
     "외주 집중 트랙은 한 타임 1고객만 진행해 집중도를 높입니다": "The dedicated outsourcing track runs one client at a time to keep focus high.",
     "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다": "The dedicated outsourcing track runs one client at a time to keep focus high.",
     "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능": "The founder's career and project history can be checked directly on LinkedIn.",
     "이런 상황이라면 함께하기 좋습니다": "These are the situations where working together fits well.",
-    "범위와 목표가 어느 정도 잡혀 있으면, 첫 대화에서 다음 액션까지 정리하기 쉽습니다.": "If scope and goals are roughly set, it is easier to sort out next actions in the first conversation.",
+    "구현할 기능과 프로젝트 목표가 가시화되어 있다면, 첫 상담에서 구체적인 개발 일정과 견적을 빠르게 도출할 수 있습니다.": "If your features and project goals are visible, we can quickly outline concrete timelines and estimates in our first consultation.",
     "이런 상황이라면 대화가 잘 됩니다": "These are the situations where the conversation tends to go well.",
     "이런 상황이면 첫 상담이 수월합니다": "These are the situations where the first consultation tends to move smoothly.",
     "범위와 목표가 어느 정도 보이면, 첫 대화에서 무엇부터 할지 같이 정리할 수 있습니다.": "If scope and goals are visible enough, we can sort out what to do first in the first conversation.",
     "범위와 목표가 어느 정도 보이면, 첫 대화에서 무엇부터 할지 더 빠르게 정리할 수 있습니다.": "If scope and goals are visible enough, we can sort out what to do first more quickly in the first conversation.",
     "이번 분기 안에 진행해야 할 과제가 있는 경우": "When there is work that needs to move within this quarter",
     "담당자와 의사결정자가 어느 정도 정해져 있는 경우": "When the owner and decision-maker are roughly in place",
-    "문의 전에 범위나 우선순위를 한번 같이 정리해보고 싶은 경우": "When you want to sort out scope or priorities before making a full inquiry",
+    "문의 전에 개발 범위나 우선순위를 먼저 검토해보고 싶은 경우": "When you want to review scope or priorities before making a full inquiry",
     "기본 연락은 이메일이나 문의 폼으로 부탁드립니다.": "Please use email or the contact form as the primary channel.",
     "담당자와 의사결정자가 정해져 있어 범위 합의가 가능한 팀": "Teams with a clear owner and decision-maker who can align scope",
-    "추가로 도와드릴 수 있는 것": "Additional Founder Infrastructure Support",
-    "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.": "Beyond the main execution work, we can quickly set up common operating infrastructure founders need early on.",
+    "초기 비즈니스 인프라 구축 지원": "Initial Business Infrastructure Setup Support",
+    "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 신속히 세팅합니다.": "Beyond the main execution work, we can quickly set up common operating infrastructure founders need early on.",
     "비즈니스 메일 구축": "Business Email Setup",
     "다음 스마트워크 기준으로 도메인 구매 / 연결 / DNS 레코드 설정을 지원합니다.": "Support domain purchase/connection and DNS records based on Daum Smartwork standards.",
     "초기 창업팀, 소상공인, 1인 사업자": "Early-stage teams, small merchants, solo founders",
@@ -179,14 +182,14 @@ EN_TRANSLATIONS = {
     "기본 채널은 help@quroom.kr 이메일입니다.": "The default contact channel is help@quroom.kr email.",
     "창업자/소상공인을 위한 제품화·운영 실행 지원": "Productization and operations execution support for founders and small business owners.",
     "문제 정의, 우선순위 정리, 구현, 배포까지 한 흐름으로 봅니다.": "We look at the full flow from problem definition and prioritization to implementation and deployment.",
-    "30분 무료 커피챗": "30-min Free Coffee Chat",
+    "30분 프로젝트 요구사항 진단": "30-minute Project Scoping & Diagnosis",
     "지금 뭐가 막혀 있는지 가볍게 이야기해보는 첫 대화입니다.": "A lightweight first conversation about what feels blocked right now.",
     "지금 가장 막힌 지점부터 정리": "Start by sorting out the most blocked point",
     "자동화나 구축이 필요한 구간을 가볍게 점검": "Quickly review where automation or a build may be needed",
     "정식 상담까지 갈 일인지 같이 판단": "Decide together whether it should move into a formal consultation",
     "대화 후 다음 액션 1~2개 정리": "1-2 next actions after the conversation",
     "가볍게 방향을 점검해보고 싶은 창업자/소규모 팀": "Founders and small teams who want a light directional check-in",
-    "커피챗 신청하기": "Book Coffee Chat",
+    "사전 진단 신청하기": "Request Scoping Call",
     "범위는 어떻게 확정하나요?": "How is scope finalized?",
     "초기 진단에서 우선순위를 정하고, 범위/일정/비용을 합의한 뒤 시작합니다.": "We set priorities in initial diagnosis, then start after agreeing scope/schedule/cost.",
     "비용과 일정은 어떻게 책정되나요?": "How are cost and schedule determined?",
@@ -211,7 +214,7 @@ EN_TRANSLATIONS = {
 SERVICE_CARDS = [
     {
         "id": "founder-ax-coffee-chat",
-        "title": "30분 무료 커피챗",
+        "title": "30분 프로젝트 요구사항 진단",
         "summary": "지금 뭐가 막혀 있는지 가볍게 이야기해보는 첫 대화입니다.",
         "items": [
             "지금 가장 막힌 지점부터 정리",
@@ -222,18 +225,18 @@ SERVICE_CARDS = [
         "price": "무료",
         "deliverable": "대화 후 다음 액션 1~2개 정리",
         "audience": "가볍게 방향을 점검해보고 싶은 창업자/소규모 팀",
-        "cta_label": "커피챗 신청하기",
+        "cta_label": "사전 진단 신청하기",
         "cta_href": "#contact",
         "persona_targets": ["founders"],
     },
     {
         "id": "founder-ax-diagnosis",
         "title": "자동화 실행 진단 (90분)",
-        "summary": "무엇을 먼저 할지, 무엇은 미뤄도 될지 90분 안에 정리합니다.",
+        "summary": "우선순위가 시급한 핵심 기능과 미뤄도 되는 범위를 90분 안에 명확히 구분합니다.",
         "items": [
-            "현재 흐름에서 시간·비용이 새는 구간 1~2개 확인",
-            "자동화 효과가 큰 후보 우선순위 정리",
-            "2주 안에 해볼 작업과 완료 기준 정리",
+            "현재 흐름에서 시간·비용이 새는 구간 1~2개 진단",
+            "도입 효과가 큰 자동화 후보 우선순위 도출",
+            "2주 내 검증 가능한 작업 목록과 완료 기준 확정",
         ],
         "duration": "90분",
         "price": "15만원 ~ 30만원",
@@ -246,11 +249,11 @@ SERVICE_CARDS = [
     {
         "id": "founder-ax-build",
         "title": "자동화 실행 구축 (2주 ~ 4주)",
-        "summary": "반복 업무와 운영 흐름을 실제로 돌아가게 정리합니다.",
+        "summary": "반복 업무와 운영 흐름을 실제로 돌아가는 자동화 체계로 구축합니다.",
         "items": [
-            "핵심 업무 흐름을 운영 기준에 맞게 정리",
-            "반복 작업 자동화 적용과 실패 구간 점검",
-            "팀이 이어받을 수 있게 운영 가이드 정리",
+            "핵심 업무 흐름을 실무 운영 기준에 맞춰 설계",
+            "반복 작업 자동화 적용 및 예외 케이스 점검",
+            "팀이 즉시 이어받을 수 있는 운영 매뉴얼 제공",
         ],
         "duration": "2주 ~ 4주",
         "price": "300만원 ~ 900만원",
@@ -285,7 +288,7 @@ SERVICE_CARDS = [
             "en": "Career Strategy",
         },
         "summary": {
-            "ko": "한국에서 어떤 방향으로 시작할지, 지금 단계에서 무엇부터 준비할지 함께 정리합니다.",
+            "ko": "한국 취업이나 프로젝트 수주를 위해 어떤 방향으로 시작할지, 지금 단계에서 필요한 준비를 차근차근 점검합니다.",
             "en": "Clarify where to start and what to prepare first for working in Korea.",
         },
         "items": [
@@ -294,7 +297,7 @@ SERVICE_CARDS = [
                 "en": "Review your current readiness and direction",
             },
             {
-                "ko": "우선순위가 선명한 다음 액션 정리",
+                "ko": "우선순위가 선명한 다음 실행 과제 도출",
                 "en": "Set the next action with practical priority",
             },
             {
@@ -323,7 +326,7 @@ SERVICE_CARDS = [
             "en": "Resume / Portfolio Readiness",
         },
         "summary": {
-            "ko": "이력서, LinkedIn, GitHub, 포트폴리오를 매칭 검토에 맞게 정리합니다.",
+            "ko": "이력서, LinkedIn, GitHub, 포트폴리오를 국내 기업 채용 검토 기준에 맞게 보완합니다.",
             "en": "Sharpen your resume, LinkedIn, GitHub, and portfolio for matching review.",
         },
         "items": [
@@ -413,14 +416,14 @@ SHARED_CONTENT = {
         "en": "Bring me the whole build,\nor just the part where you are stuck.",
     },
     "subcopy": {
-        "ko": "기획부터 개발, 배포, 운영까지 직접 해왔습니다. 전 과정을 맡기셔도 되고, 막힌 부분만 편하게 물어보셔도 됩니다. 30분 커피챗은 무료입니다.",
-        "en": "I have handled planning, development, deployment, and operations firsthand. You can bring me the whole project or just the part where you are stuck. The 30-minute coffee chat is free.",
+        "ko": "기획부터 배포·운영까지 대표 1인이 하청 없이 직접 책임집니다. 대형 외주사의 인건비 거품 없이 린하게 MVP를 런칭하거나, 막힌 기술 문제만 1~2주 스프린트로 해결해 드립니다. 30분 사전 기술 진단은 무료입니다.",
+        "en": "From planning to deployment and operations, the founder handles everything directly with zero subcontracting. Launch a lean MVP without agency overhead, or resolve technical bottlenecks in a 1-2 week sprint. The 30-minute technical diagnosis is free.",
     },
-    "hero_primary_cta": {"ko": "무료 커피챗 신청", "en": "Book a Free Chat"},
+    "hero_primary_cta": {"ko": "30분 사전 진단 신청", "en": "Request 30-min Diagnosis"},
     "hero_secondary_cta": {"ko": "수행 사례 보기", "en": "View Client Work"},
     "response_note": {
-        "ko": "아직 무엇을 맡길지 정하지 않았어도 괜찮습니다. 대표가 직접 보고 영업일 1~2일 안에 답합니다.",
-        "en": "It is fine if you have not decided what to delegate yet. The founder replies within 1-2 business days.",
+        "ko": "프로젝트 구상 단계이거나 기술 검토가 필요한 상태에서도 편하게 남겨주세요. 8년 차 대표 엔지니어가 직접 확인하고 영업일 1~2일 안에 회신드립니다.",
+        "en": "Reach out anytime during early ideation or technical exploration. The founder directly reviews inquiries and replies within 1-2 business days.",
     },
     "career_proof_prefix": {
         "ko": "삼성전자 포함",
@@ -454,15 +457,15 @@ SHARED_CONTENT = {
         "en": "Define what needs to be built,\nthen build it directly.",
     },
     "services_intro": {
-        "ko": "무엇을 만들지 완전히 정리되지 않아도 괜찮습니다. 첫 상담에서 꼭 필요한 기능과 나중에 해도 될 기능부터 나눕니다.",
-        "en": "You do not need a finished specification. In the first consultation, we separate what needs to be built now from what can wait.",
+        "ko": "완성된 기획서나 기능 명세서가 없어도 좋습니다. 사업 목표와 구현하고 싶은 기능을 들려주시면, 가장 현실적인 1차 출시 범위와 단계별 개발 계획을 함께 세워드립니다.",
+        "en": "You do not need a finished specification. Share your business goals and key ideas, and we will define a realistic MVP launch scope and roadmap together.",
     },
     "outsourcing_services": [
         {
             "title": {"ko": "신규 웹·앱 MVP", "en": "New Web or App MVP"},
             "description": {
-                "ko": "아이디어를 화면 흐름과 기능 목록으로 정리하고, 먼저 만들 범위를 정합니다.",
-                "en": "Turn your idea into screen flows and a feature list, then decide what to build first.",
+                "ko": "아이디어를 실제 화면 흐름과 기능 명세로 구체화하고, 핵심 출시 범위를 함께 결정합니다.",
+                "en": "Transform your idea into actual screen flows and specifications, and decide the core MVP launch scope together.",
             },
         },
         {
@@ -490,8 +493,8 @@ SHARED_CONTENT = {
         {"ko": "백엔드·API·관리자 기능", "en": "Backend, API, and admin capabilities"},
         {"ko": "테스트와 운영 환경 배포", "en": "Testing and production deployment"},
         {
-            "ko": "운영 이관 문서와 점검 항목",
-            "en": "Operational handover guide and checks",
+            "ko": "소스코드·계정 인계 및 기본 배포 가이드",
+            "en": "Source code, account handover, and basic deploy guide",
         },
     ],
     "deliverables_note": {
@@ -500,24 +503,30 @@ SHARED_CONTENT = {
     },
     "engagements": [
         {
-            "title": {"ko": "30분 커피챗", "en": "30-minute Coffee Chat"},
+            "title": {
+                "ko": "30분 프로젝트 요구사항 진단",
+                "en": "30-minute Project Scoping & Diagnosis",
+            },
             "description": {
-                "ko": "막힌 부분만 이야기해도 괜찮습니다",
-                "en": "Start with the part where you are stuck",
+                "ko": "구현할 기능과 목표 일정을 바탕으로 현실적인 개발 범위와 1차 견적 기준을 짚어드립니다",
+                "en": "Clarify realistic scope and initial quote baseline based on features and target schedule",
             },
             "terms": {"ko": "30분 · 무료", "en": "30 min · Free"},
-            "cta": {"ko": "무료 커피챗 신청", "en": "Book a Free Chat"},
+            "cta": {"ko": "사전 진단 신청", "en": "Request Scoping Call"},
             "inquiry_type": "coffee_chat",
         },
         {
-            "title": {"ko": "15분 코드·배포 진단", "en": "15-minute Code & Deploy Diagnosis"},
+            "title": {
+                "ko": "15분 코드·배포 진단",
+                "en": "15-minute Code & Deploy Diagnosis",
+            },
             "description": {
                 "ko": "Cursor·Claude 생성 코드 배포 및 결제 연동 에러 긴급 점검",
                 "en": "Emergency review for AI-generated code, deployment, and payment webhook errors",
             },
             "terms": {"ko": "15분 · 무료", "en": "15 min · Free"},
             "cta": {"ko": "15분 진단 신청", "en": "Request Diagnosis"},
-            "inquiry_type": "vibe_diagnosis",
+            "url": "/free-diagnosis/",
         },
         {
             "title": {
@@ -529,7 +538,7 @@ SHARED_CONTENT = {
                 "en": "Top 5 out-of-scope rules and Lean MVP standard quote template to prevent disputes",
             },
             "terms": {"ko": "자체 참고 · 무료 공개", "en": "Open Reference"},
-            "cta": {"ko": "서식 및 체크리스트 확인", "en": "View Checklist & Templates"},
+            "cta": {"ko": "체크리스트 보기", "en": "View Checklist"},
             "url": "/outsourcing-checklist/",
         },
         {
@@ -663,20 +672,20 @@ SHARED_CONTENT = {
         },
     ],
     "services_section_title": "제품화·운영 실행 파트",
-    "services_section_subtitle": "바로 맡겨야 할 일과 아직 정리할 일을 구분해, 실제 실행으로 이어지게 돕습니다.",
+    "services_section_subtitle": "외주로 위임할 개발 과제와 내부에서 검증할 범위를 명확히 구분하여, 실제 제품 런칭으로 이어지게 돕습니다.",
     "fit_section_title": "이런 상황이라면 함께하기 좋습니다",
-    "fit_section_intro": "범위와 목표가 어느 정도 잡혀 있으면, 첫 대화에서 다음 액션까지 정리하기 쉽습니다.",
+    "fit_section_intro": "구현할 기능과 프로젝트 목표가 가시화되어 있다면, 첫 상담에서 구체적인 개발 일정과 견적을 빠르게 도출할 수 있습니다.",
     "hero_trust_title": "이런 경험과 기준으로 일합니다",
     "hero_trust_points": [
         "삼성전자 포함 총 개발 경력 {career_duration}",
-        "총 7개 프로젝트 경험과 운영 이관 기준 정리",
+        "총 7개 프로젝트 구축 경험과 명확한 소스코드·운영 이관 기준 보유",
         "외주 집중 트랙은 한 번에 한 고객사만 진행해 집중도를 높입니다",
         "대표자 경력과 프로젝트 이력은 LinkedIn에서 바로 확인 가능",
     ],
     "contact_label": {"ko": "편하게 문의하세요", "en": "Start a Conversation"},
     "contact_title": {
-        "ko": "지금 고민 중인 내용을\n보내주세요.",
-        "en": "Tell me what you are\nworking through.",
+        "ko": "희망 일정과 예산을 알려주세요.",
+        "en": "Tell us your target timeline and budget.",
     },
     "contact_intro": {
         "ko": "전체 개발, 일부 기능 구현, 기술 검토 중 어떤 문의든 가능합니다.",
@@ -689,11 +698,11 @@ SHARED_CONTENT = {
     "contact_points": [
         "이번 분기 안에 진행해야 할 과제가 있는 경우",
         "담당자와 의사결정자가 어느 정도 정해져 있는 경우",
-        "문의 전에 범위나 우선순위를 한번 같이 정리해보고 싶은 경우",
+        "문의 전에 개발 범위나 우선순위를 먼저 검토해보고 싶은 경우",
         "기본 연락은 이메일이나 문의 폼으로 부탁드립니다.",
     ],
-    "addon_section_title": "추가로 도와드릴 수 있는 것",
-    "addon_section_subtitle": "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 빠르게 정리합니다.",
+    "addon_section_title": "초기 비즈니스 인프라 구축 지원",
+    "addon_section_subtitle": "메인 실행 과제 외에 창업 초기에 자주 필요한 운영 인프라를 신속히 세팅합니다.",
     "services": SERVICE_CARDS,
     "service_addons": [
         {
@@ -860,7 +869,7 @@ SHARED_CONTENT = {
             "result": "거의 일 단위 배포로 가설 검증 반복",
             "tech": "Nuxt, Amazon EC2, Nginx, Make, Apify",
             "image": "portfolio/thumb/2022-kidstravel-thumb-v1.jpg",
-            "link": "http://43.200.44.34/",
+            "link": "",
         },
         {
             "name": "미술관 큐레이션 서비스 (ArtTrip)",
@@ -924,8 +933,8 @@ SHARED_CONTENT = {
                 "en": "Which projects are a good fit?",
             },
             "a": {
-                "ko": "만들거나 고칠 대상이 있고, 진행 중 결정을 내려줄 담당자가 있으면 좋습니다. 아이디어만 있어도 커피챗에서 어디부터 확인할지 함께 이야기할 수 있습니다.",
-                "en": "It helps to have something specific to build or improve and someone who can make decisions during the project. If you only have an idea, we can still use the coffee chat to decide what to check first.",
+                "ko": "만들거나 고칠 대상이 있고, 진행 중 결정을 내려줄 담당자가 있으면 좋습니다. 아이디어 단계여도 사전 진단에서 기술 타당성과 우선순위를 함께 이야기할 수 있습니다.",
+                "en": "It helps to have something specific to build or improve and someone who can make decisions during the project. Even at the idea stage, we can discuss technical feasibility and priorities during the initial diagnosis.",
             },
         },
     ],
@@ -965,8 +974,8 @@ PERSONA_CONTENT = {
                 "a": "초기 진단에서 우선순위를 정하고, 범위/일정/비용을 합의한 뒤 시작합니다.",
             },
             {
-                "q": "커피챗에서는 무엇을 이야기하나요?",
-                "a": "자동화, 제품화, 사업 실행에 대해 현재 막힌 지점을 가볍게 점검하고 다음 액션을 정리합니다.",
+                "q": "사전 기술 진단에서는 무엇을 이야기하나요?",
+                "a": "자동화, 제품화, 사업 실행에서 병목이 생기는 구간을 짚어보고, 바로 시도할 실행 과제를 구체화합니다.",
             },
             {
                 "q": "비용과 일정은 어떻게 책정되나요?",
@@ -993,7 +1002,7 @@ PERSONA_CONTENT = {
             "en": "Work in Korea with practical support",
         },
         "description": {
-            "ko": "커리어 방향 정리, 이력서·포트폴리오 점검, 한국 생활·업무 적응 가이드까지 지금 단계에 맞는 다음 행동을 함께 정리합니다.",
+            "ko": "커리어 로드맵 설정, 이력서·포트폴리오 보완, 국내 취업·협업 환경 가이드까지 지금 단계에 필요한 실행 단계를 함께 짚어봅니다.",
             "en": "Career direction, resume or portfolio readiness, and Korea guidance to help you take the next realistic step.",
         },
         "focus_note": {
@@ -1418,7 +1427,7 @@ GWANGJU_PAGE_CONTENT = {
         "meta_description": "광주광역시 8년 차 1인 풀스택 개발사 큐룸(QUROOM). 반응형 홈페이지, 웹개발, 앱개발 요구사항 정리부터 배포까지 대표가 직접 책임집니다.",
         "meta_keywords": "광주 홈페이지 제작, 광주 웹개발, 광주 앱개발, 광주 개발 외주, 광주 개발 파트너",
         "hero_label": "광주 개발 상담",
-        "hero_title": "광주 홈페이지 제작·웹개발·앱개발, 요구사항부터 같이 정리합니다",
+        "hero_title": "광주 홈페이지 제작·웹개발·앱개발, 개발 범위와 견적 기준부터 명확히 세웁니다",
         "hero_summary": "페이지 구성, 기능 목록, 준비된 자료를 먼저 확인하고 기획 정리부터 개발, 배포까지 한 사람이 이어서 맡습니다.",
         "hero_badges": [
             "광주 기반 상담",
@@ -1427,7 +1436,7 @@ GWANGJU_PAGE_CONTENT = {
         ],
         "hero_checkpoints": [
             "지금 필요한 것이 홈페이지인지, 기능 개발인지 먼저 구분",
-            "이번 분기 안에 진행할 범위와 미뤄도 되는 범위 정리",
+            "이번 분기 안에 진행할 범위와 미뤄도 되는 범위 조율",
             "예상 기간/비용/운영 이관 기준까지 첫 상담에서 확인",
         ],
         "hero_stats": [
@@ -1437,28 +1446,28 @@ GWANGJU_PAGE_CONTENT = {
         "primary_cta_label": "상담 문의하기",
         "secondary_cta_label": "외주 전 체크리스트 보기",
         "secondary_cta_href": "/outsourcing-checklist/",
-        "outcome_title": "무엇을 먼저 할지 정리합니다",
-        "outcome_intro": "단순 견적부터 던지지 않고, 지금 단계에서 바로 맡겨야 할 일과 아직 정리할 일을 구분합니다.",
+        "outcome_title": "착수 전 개발 우선순위 기준",
+        "outcome_intro": "단순 견적부터 제시하기보다, 외주로 위임할 개발 과제와 내부에서 검증할 범위를 명확히 구분합니다.",
         "outcome_items": [
             {
                 "title": "무엇을 만들지 구분",
-                "description": "홈페이지, 웹서비스, 앱/PWA 중 지금 필요한 형태를 현실적으로 나눕니다.",
+                "description": "홈페이지, 웹서비스, 앱/PWA 중 비즈니스에 가장 알맞은 구축 형태를 명확히 제안합니다.",
             },
             {
                 "title": "범위와 예산 기준",
-                "description": "처음 만들 기능과 나중에 해도 되는 기능을 나눠 견적 기준을 먼저 정리합니다.",
+                "description": "처음 만들 기능과 차기 버전을 구분해 합리적인 견적 기준을 도출합니다.",
             },
             {
                 "title": "운영 이후까지 고려",
                 "description": "배포 후 수정, 계정, 소스코드, 운영 문서 기준까지 함께 확인합니다.",
             },
         ],
-        "fit_title": "이런 경우에 적합합니다",
+        "fit_title": "이런 프로젝트에 알맞습니다",
         "fit_items": [
-            "회사 소개 홈페이지가 필요하지만 무엇부터 만들지 정리가 안 된 경우",
-            "MVP를 빠르게 만들고 실제 사용자 반응을 확인해야 하는 경우",
-            "앱이 필요한지 웹앱으로 먼저 검증할지 판단이 필요한 경우",
-            "기능 요청이 늘어나 견적 기준을 먼저 잡아야 하는 경우",
+            "회사 소개 홈페이지를 준비 중이지만 메뉴 구성과 제작 범위가 모호할 때",
+            "초기 예산 안에서 핵심 기능(MVP)만 먼저 만들어 시장 반응을 봐야 할 때",
+            "네이티브 앱이 필수인지, 웹앱(PWA)으로 충분한지 기술 검토가 필요할 때",
+            "여러 외주사의 견적 차이가 커서 적정 개발 범위와 우선순위를 조율하고 싶을 때",
         ],
         "services_title": "광주 전용 상세 안내",
         "service_links": [
@@ -1482,7 +1491,7 @@ GWANGJU_PAGE_CONTENT = {
         "process_steps": [
             {
                 "title": "요구사항 정리",
-                "description": "목표, 제약, 일정, 예산을 먼저 맞추고 우선순위를 확정합니다.",
+                "description": "목표, 제약, 일정, 예산을 먼저 맞추고 개발 우선순위를 함께 논의합니다.",
             },
             {
                 "title": "실행 범위 확정",
@@ -1515,7 +1524,7 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "q": "문의 전에 준비해야 할 것이 있나요?",
-                "a": "현재 상황, 원하는 일정, 대략 예산 범위만 정리해 주셔도 첫 상담이 가능합니다.",
+                "a": "현재 고민 중인 내용, 희망 일정, 대략적인 예산 범위만 공유해주셔도 원활한 상담이 가능합니다.",
             },
         ],
         "portfolio_names": [
@@ -1531,7 +1540,7 @@ GWANGJU_PAGE_CONTENT = {
             "미술관 큐레이션 서비스 (ArtTrip)",
         ],
         "cta_title": "광주 프로젝트 문의하기",
-        "cta_description": "현재 상황과 목표를 짧게 남겨주시면, 먼저 정리해야 할 범위와 다음 액션을 제안합니다.",
+        "cta_description": "현재 상황과 목표를 남겨주시면, 착수 전 우선적으로 다뤄야 할 개발 범위와 구체적인 실행 방안을 제안해 드립니다.",
         "cta_button_label": "문의 보내기",
         "contact_anchor": "contact",
         "recommended_inquiry_type": "gwangju_scope",
@@ -1542,10 +1551,10 @@ GWANGJU_PAGE_CONTENT = {
         "meta_keywords": "광주 홈페이지 제작, 광주 기업 홈페이지, 광주 회사 홈페이지, 광주 소개 사이트 제작",
         "hero_label": "광주 홈페이지 제작",
         "hero_title": "광주 홈페이지 제작, 신뢰 중심 기업 소개 홈페이지를 작고 명확하게 구축합니다",
-        "hero_summary": "회사/서비스/포트폴리오/문의 구조를 먼저 정리하고, 방문자가 이해하기 쉬운 흐름으로 만듭니다.",
+        "hero_summary": "기업 소개, 서비스 강점, 고객 문의 동선을 명확히 설계하여 방문자가 신뢰를 느끼는 웹사이트를 구축합니다.",
         "hero_badges": ["회사 소개", "서비스/포트폴리오", "문의 전환 동선"],
         "hero_checkpoints": [
-            "첫 화면에서 무엇을 하는 회사인지 바로 보이게 정리",
+            "첫 화면에서 기업의 핵심 가치와 서비스가 직관적으로 드러나도록 구성",
             "서비스/포트폴리오/문의 동선을 한 흐름으로 연결",
             "기본 검색 노출과 공유 메타데이터까지 함께 반영",
         ],
@@ -1556,7 +1565,7 @@ GWANGJU_PAGE_CONTENT = {
         "primary_cta_label": "홈페이지 제작 상담하기",
         "secondary_cta_label": "외주 전 체크리스트 보기",
         "secondary_cta_href": "/outsourcing-checklist/",
-        "outcome_title": "홈페이지에서 먼저 정리할 것",
+        "outcome_title": "첫 화면과 문의 전환 설계 기준",
         "outcome_intro": "방문자가 회사를 이해하고, 신뢰하고, 문의할 수 있는 최소 구조를 먼저 잡습니다.",
         "outcome_items": [
             {
@@ -1565,24 +1574,24 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "title": "신뢰 근거",
-                "description": "이력, 사례, 진행 방식, 사업자 정보를 검증 가능한 문구로 정리합니다.",
+                "description": "이력, 사례, 진행 방식, 사업자 정보를 객관적인 사실 위주로 기술합니다.",
             },
             {
                 "title": "문의 흐름",
                 "description": "서비스 소개부터 문의 폼까지 끊기지 않도록 CTA와 섹션 순서를 설계합니다.",
             },
         ],
-        "fit_title": "이런 경우에 적합합니다",
+        "fit_title": "주요 제작 의뢰 목적",
         "fit_items": [
-            "회사 소개가 약해 첫 신뢰 형성이 어려운 경우",
-            "기존 사이트가 오래되어 최신 정보 반영이 어려운 경우",
-            "포트폴리오/서비스 소개 구조가 정리되지 않은 경우",
-            "문의 동선이 약해 상담 전환이 낮은 경우",
+            "기존 사이트가 낡고 모바일 대응이 안 되어 리뉴얼이 필요할 때",
+            "회사 소개서나 브로슈어 내용을 온라인 웹 환경에 맞게 옮겨야 할 때",
+            "포트폴리오와 보유 실적을 잠재 고객에게 명확히 전달하고 싶을 때",
+            "검색으로 유입된 방문자가 자연스럽게 문의 상담까지 이어지길 원할 때",
         ],
         "scope_title": "제공 범위",
         "scope_items": [
             "회사 소개형 홈페이지 구조 설계",
-            "서비스 소개/포트폴리오 페이지 정리",
+            "서비스 소개/포트폴리오 페이지 구성",
             "문의 폼과 기본 전환 동선 구성",
             "기본 메타데이터/검색 노출 구조 적용",
             "배포 및 운영 기본 가이드 전달",
@@ -1590,8 +1599,8 @@ GWANGJU_PAGE_CONTENT = {
         "process_title": "진행 방식",
         "process_steps": [
             {
-                "title": "요구사항 정리",
-                "description": "핵심 메시지, 타깃 고객, 필요한 페이지를 먼저 정리합니다.",
+                "title": "기획 및 범위 확정",
+                "description": "핵심 메시지와 타깃 고객, 필수 페이지 구성을 사전에 조율합니다.",
             },
             {
                 "title": "구조 합의",
@@ -1620,7 +1629,7 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "q": "문구나 이미지 정리가 안 되어 있어도 진행 가능한가요?",
-                "a": "가능합니다. 우선 현재 자료로 구조를 잡고 필요한 보완 목록을 함께 정리합니다.",
+                "a": "가능합니다. 기존에 보유하신 자료를 바탕으로 사이트 구조를 먼저 잡고, 추가할 콘텐츠 목록을 안내해 드립니다.",
             },
             {
                 "q": "제작 후 수정은 어떻게 하나요?",
@@ -1639,7 +1648,7 @@ GWANGJU_PAGE_CONTENT = {
             "미술관 큐레이션 서비스 (ArtTrip)",
         ],
         "cta_title": "홈페이지 제작 문의하기",
-        "cta_description": "현재 자료가 충분하지 않아도 괜찮습니다. 먼저 필요한 페이지와 우선순위부터 함께 정리합니다.",
+        "cta_description": "완성된 기획서가 없어도 편하게 문의해주세요. 사업 목적과 사용자 동선에 맞춘 필수 화면 구성과 제작 일정을 함께 상의해 드립니다.",
         "cta_button_label": "문의 보내기",
         "contact_anchor": "contact",
         "recommended_inquiry_type": "gwangju_homepage",
@@ -1680,16 +1689,16 @@ GWANGJU_PAGE_CONTENT = {
                 "description": "서비스 반영 후 확인해야 할 계정, 환경변수, 운영 문서 기준을 남깁니다.",
             },
         ],
-        "fit_title": "이런 경우에 적합합니다",
+        "fit_title": "이런 웹 시스템이 필요할 때",
         "fit_items": [
-            "빠르게 MVP를 만들어 사용자 반응을 봐야 하는 경우",
-            "신청·예약·관리 기능이 필요한 경우",
-            "내부 운영용 웹도구가 필요한 경우",
-            "데이터 흐름까지 함께 설계해야 하는 경우",
+            "MVP를 빠르게 만들어 실제 고객 수요를 검증해야 할 때",
+            "고객 신청·예약·결제와 이를 처리할 관리자 화면이 필요할 때",
+            "엑셀이나 수기 업무를 대체할 사내 운영 도구를 구축하고 싶을 때",
+            "비즈니스 성장에 맞춰 확장 가능한 DB 및 서버 구조가 필요할 때",
         ],
         "scope_title": "제공 범위",
         "scope_items": [
-            "요구사항/우선순위 정리",
+            "핵심 요구사항 도출 및 개발 우선순위 협의",
             "핵심 기능 개발 및 관리자 화면 구성",
             "배포 파이프라인과 운영 기본 구조 점검",
             "운영 이관용 핵심 가이드 제공",
@@ -1710,14 +1719,14 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "title": "배포/이관",
-                "description": "운영 관점에서 필요한 체크포인트를 정리해 인계합니다.",
+                "description": "운영에 필요한 체크포인트와 관리 매뉴얼을 인계합니다.",
             },
         ],
         "timeline_cost_title": "예상 기간/비용 범위",
         "timeline_cost_items": [
             "예상 기간: 2주 ~ 8주",
             "예상 비용: 300만원 ~ 1,000만원+",
-            "정확한 일정/비용은 기능 난이도와 연동 범위 기준으로 확정합니다.",
+            "정확한 일정/비용은 기능 난이도와 연동 범위를 바탕으로 상호 협의하여 조율합니다.",
         ],
         "faq_title": "자주 묻는 질문",
         "faq": [
@@ -1747,7 +1756,7 @@ GWANGJU_PAGE_CONTENT = {
             "미술관 큐레이션 서비스 (ArtTrip)",
         ],
         "cta_title": "웹개발 상담받기",
-        "cta_description": "MVP, 관리자 화면, 운영 도구 중 무엇부터 만들지 함께 정리합니다.",
+        "cta_description": "MVP, 관리자 화면, 운영 도구 중 비즈니스에 가장 시급한 범위부터 의논합니다.",
         "cta_button_label": "문의 보내기",
         "contact_anchor": "contact",
         "recommended_inquiry_type": "gwangju_web",
@@ -1762,7 +1771,7 @@ GWANGJU_PAGE_CONTENT = {
         "hero_badges": ["앱/웹앱 판단", "PWA MVP", "초기 검증"],
         "hero_checkpoints": [
             "앱스토어 앱이 꼭 필요한 상황인지 먼저 판단",
-            "웹앱/PWA로 빠르게 검증 가능한 범위와 한계 정리",
+            "웹앱/PWA로 빠르게 검증 가능한 범위와 기술 한계 분석",
             "초기 사용자 반응을 확인할 MVP 기준 합의",
         ],
         "hero_stats": [
@@ -1788,16 +1797,16 @@ GWANGJU_PAGE_CONTENT = {
                 "description": "초기 사용 데이터를 본 뒤 네이티브 앱 확장이 필요한지 판단합니다.",
             },
         ],
-        "fit_title": "이런 경우에 적합합니다",
+        "fit_title": "이런 모바일 프로젝트에 알맞습니다",
         "fit_items": [
-            "앱 아이디어를 먼저 검증하고 싶은 경우",
-            "모바일 중심 서비스가 필요한 경우",
-            "커뮤니티/구독/콘텐츠형 서비스 구조가 필요한 경우",
-            "앱과 웹앱 중 어떤 방식이 맞는지 판단이 필요한 경우",
+            "수천만 원대 앱 외주 비용을 들이기 전, 핵심 가설을 먼저 검증하고 싶을 때",
+            "모바일 웹 환경에서도 앱처럼 부드럽게 동작하는 PWA 서비스를 원할 때",
+            "커뮤니티·구독·콘텐츠형 서비스를 모바일 중심으로 기획 중일 때",
+            "네이티브 앱과 웹앱(PWA)의 기술적 득실을 객관적으로 비교하고 싶을 때",
         ],
         "scope_title": "제공 범위",
         "scope_items": [
-            "기획/기능 우선순위 정리",
+            "기획 구체화 및 기능 우선순위 조율",
             "MVP 설계 및 구현",
             "웹앱/PWA 중심의 현실적인 초기 출시 구조 제안",
             "백엔드/운영 구조 연결",
@@ -1884,31 +1893,6 @@ GWANGJU_PAGE_CONTENT = {
             "기획 변경에 따른 일방적 추가 개발비 청구 분쟁 차단",
             "배포 완료 후 코드 미인계 및 유지보수 단절 리스크 예방",
         ],
-        "faq_title": "자주 묻는 질문",
-        "faq": [
-            {
-                "q": "외주 경험이 없어도 체크리스트만으로 점검할 수 있나요?",
-                "a": "가능합니다. 최소한의 기준을 먼저 확인해도 실패 확률을 크게 줄일 수 있습니다.",
-            },
-            {
-                "q": "견적이 너무 낮으면 무조건 위험한가요?",
-                "a": "무조건은 아니지만, 범위/품질/인수인계 기준이 빠졌을 가능성이 높아 세부 항목 확인이 필요합니다.",
-            },
-            {
-                "q": "체크리스트 검토 후 바로 상담 가능한가요?",
-                "a": "가능합니다. 현재 준비 상태 기준으로 우선순위를 함께 정리할 수 있습니다.",
-            },
-        ],
-        "portfolio_names": [
-            "미술관 큐레이션 서비스 (ArtTrip)",
-            "AI 콜봇",
-            "단어장앱 (voca.quroom.kr)",
-            "광주 도서관 통합검색 (library.quroom.kr)",
-            "손해사정사 문서 자동화 서비스 (R&D)",
-            "PromptSpike",
-            "Obible (PWA 커뮤니티 성경 서비스)",
-            "Onepaper (부동산 전자계약 서비스)",
-        ],
         "outcome_title": "외주 실패를 줄이는 핵심 기준",
         "outcome_intro": "가격만 비교하면 놓치기 쉬운 범위, 소유권, 운영 이관 리스크를 먼저 분리합니다.",
         "outcome_items": [
@@ -1968,23 +1952,26 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "q": "체크리스트 검토 후 바로 상담 가능한가요?",
-                "a": "가능합니다. 현재 준비 상태 기준으로 우선순위를 함께 정리할 수 있습니다.",
+                "a": "가능합니다. 현재 준비 상황에 맞춰 핵심 요구사항과 개발 우선순위를 함께 조율해 드립니다.",
             },
         ],
         "portfolio_names": [
             "미술관 큐레이션 서비스 (ArtTrip)",
+            "AI 콜봇",
+            "단어장앱 (voca.quroom.kr)",
+            "광주 도서관 통합검색 (library.quroom.kr)",
             "손해사정사 문서 자동화 서비스 (R&D)",
             "PromptSpike",
             "Obible (PWA 커뮤니티 성경 서비스)",
             "Onepaper (부동산 전자계약 서비스)",
         ],
         "cta_title": "외주 진행 전 범위 점검이 필요하다면",
-        "cta_description": "현재 상황을 남겨주시면 어떤 항목부터 정리해야 할지 우선순위를 제안합니다.",
+        "cta_description": "현재 상황과 구상 중인 내용을 남겨주시면, 먼저 다뤄야 할 필수 과업과 개발 우선순위를 제안해 드립니다.",
         "cta_button_label": "문의 보내기",
         "contact_anchor": "contact",
         "recommended_inquiry_type": "outsourcing_check",
         "wbs_rules_title": "계약 전 필수 확인: 5대 개발 제외 기준 (추가금 방지)",
-        "wbs_rules_summary": "외주 계약 및 용역 진행 시 발생하는 분쟁의 대부분은 '당연히 해주는 줄 알았다'는 모호함에서 출발합니다. 계약서 별첨 과업지시서에 아래 5대 제외 기준을 사전 명시하면 추가금 분쟁을 사전에 방지할 수 있습니다.",
+        "wbs_rules_summary": "개발 범위가 모호하면 추가 비용과 검수 기준을 두고 이견이 생길 수 있습니다. 계약서 별첨 과업지시서에 아래 5대 제외 기준을 명시하고, 변경 요청에 따른 비용과 일정을 사전에 협의하세요.",
         "wbs_rules": [
             {
                 "article": "제1조 (기능 범위)",
@@ -2020,7 +2007,7 @@ GWANGJU_PAGE_CONTENT = {
             {
                 "article": "제4조 (품질 보증)",
                 "title": "하자보수(무상 3개월)와 기능 개선(유상)의 경계",
-                "rule": "무상 하자보수 기간은 검수 완료일로부터 3개월로 정의합니다.",
+                "rule": "무상 하자보수 기간은 검수 완료일부터 3개월로 정의합니다.",
                 "exclusions": [
                     "버튼 위치 변경, 폰트/색상 변경, 통계 집계 조건 변경 등 명세와 무관한 사용성 개선",
                     "클라이언트가 임의로 서버 환경설정(Nginx, DB 등)을 변경하거나 타사 개발자가 코드를 수정한 경우",
@@ -2074,10 +2061,10 @@ GWANGJU_PAGE_CONTENT = {
 
 # 표 준 견 적 서 (Quotation)
 
-- 공급자: 큐룸 (QUROOM) / 사업자등록번호: 729-16-01048
+- 공급자: 큐룸 (QUROOM) / 사업자등록번호: {company_biz_number}
 - 대표자: 김상은 (8년 차 풀스택 엔지니어) / 사업장: 광주광역시 북구
 - 수신처: (주)OOOOOO 대표 귀하
-- 견적일자: 202X년 X월 X일 (유효기간: 발행일로부터 14일)
+- 견적일자: 202X년 X월 X일 (유효기간: 발행일부터 14일)
 
 ### 1. 견적 요약
 - 용역명: [프로젝트명] 린 MVP 웹/앱 풀스택 구축 용역
@@ -2096,7 +2083,7 @@ GWANGJU_PAGE_CONTENT = {
 1. 본 견적은 [5대 개발 제외 기준]을 준수하며, 명시되지 않은 기능 추가는 상호 협의 후 별도 산정합니다.
 2. 검수 완료 후 3개월간 코드 오류에 대한 무상 하자보수를 보증합니다.""",
         "enaradaum_package_title": "[실무 가이드] 정부지원사업(예창패·초창패·AI바우처) e나라도움 5종 서류 패키지",
-        "enaradaum_package_intro": "예창패, 초창패, 청창사, AI 바우처 협약 기업이 IT 외주비 및 AI 토큰 사용료를 e나라도움 회계 검수에서 보완이나 반려 없이 정산할 수 있도록 완비된 5종 서류 패키지입니다.",
+        "enaradaum_package_intro": "정부지원사업의 IT 외주비 및 AI 토큰 사용료 정산 서류 준비를 지원하는 5종 서류 패키지입니다. 제출 전 해당 사업의 지침과 담당 기관의 요구 서류를 확인하세요.",
         "enaradaum_docs": [
             {
                 "num": "1",
@@ -2157,7 +2144,7 @@ GWANGJU_PAGE_CONTENT = {
 3. 실서버 가동 URL (`https://app.yourcompany.com`) 및 관리자 계정.
 
 ## 4. 검수 결과
-위 과업지시서 및 기능 명세서 계약 내용에 명시된 개발 용역이 정상적으로 완료되었으며, 
+위 과업지시서 및 기능 명세서 계약 내용에 명시된 개발 용역이 정상적으로 완료되었으며,
 단위 테스트 및 실서버 배포 상태를 최종 확인하고 본 검수조서를 발행합니다.
 
 202X년  00월  00일
@@ -2166,7 +2153,7 @@ GWANGJU_PAGE_CONTENT = {
 - 공급기업 (개발사): 큐룸 (QUROOM) 대표자  김 상 은  (인)""",
         "ai_token_section": {
             "title": "AI 토큰(OpenAI / Claude API) 원화 전자세금계산서 정산 안내",
-            "problem": "해외 신용카드 USD 결제는 부가세 누락 및 개인 계정 토큰 혼용 의혹으로 e나라도움 회계 감사 지적 1위 항목입니다.",
+            "problem": "해외 API 사용료는 결제 증빙과 업무용 사용 내역을 함께 관리해야 합니다. 개인용 사용 내역과 구분하고 해당 사업의 정산 지침을 확인하세요.",
             "solution_title": "큐룸의 기업 전용 AI 토큰 정산 대행 (LiteLLM Proxy)",
             "solutions": [
                 "국세청 전자세금계산서 정식 발행: 원화(KRW) 기준 부가세 10% 포함 정식 발행",
@@ -2190,6 +2177,10 @@ def build_gwangju_page_content(page_key: str) -> dict:
     page_content["trust"] = deepcopy(GWANGJU_COMMON_TRUST)
     page_content["links"] = deepcopy(SHARED_CONTENT["links"])
     page_content["company"] = deepcopy(SHARED_CONTENT["company"])
+    if "quote_template_markdown" in page_content:
+        page_content["quote_template_markdown"] = page_content[
+            "quote_template_markdown"
+        ].replace("{company_biz_number}", page_content["company"]["biz_number"])
     page_content["metrics"] = deepcopy(SHARED_CONTENT["metrics"])
     page_content["founder_capacity_policy"] = SHARED_CONTENT["founder_capacity_policy"]
     page_content["portfolio"] = _filter_portfolio_items(
@@ -2236,4 +2227,3 @@ VIBE_CODING_CHECKLIST = [
         ],
     },
 ]
-

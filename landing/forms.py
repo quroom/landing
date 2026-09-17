@@ -28,13 +28,13 @@ class ContactForm(forms.Form):
         "outsourcing_checklist",
     }
     HOME_INQUIRY_CHOICES = [
-        ("coffee_chat", _("30분 무료 커피챗")),
-        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
-        ("gov_grant", _("정부지원사업 e나라도움 서류")),
-        ("outsourcing", _("외주용역 집중 트랙")),
+        ("coffee_chat", _("30분 프로젝트 요구사항 진단")),
+        ("outsourcing", _("외주 프로젝트 문의")),
         ("other", _("기타")),
     ]
     LEGACY_HOME_INQUIRY_CHOICES = [
+        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
+        ("gov_grant", _("정부지원사업 e나라도움 서류")),
         ("wbs_review", _("외주 견적·개발 범위 사전 상담")),
         ("ax_diagnosis", _("자동화 실행 진단")),
         ("ax_build", _("자동화 실행 구축")),
@@ -115,8 +115,9 @@ class ContactForm(forms.Form):
     name = forms.CharField(
         label=_("이름"),
         max_length=50,
+        required=False,
         widget=forms.TextInput(
-            attrs={"placeholder": _("이름을 입력해 주세요"), "autocomplete": "name"}
+            attrs={"placeholder": _("이름 (선택)"), "autocomplete": "name"}
         ),
     )
     company_name = forms.CharField(
@@ -149,13 +150,13 @@ class ContactForm(forms.Form):
             attrs={
                 "rows": 5,
                 "placeholder": _(
-                    "프로젝트 목표, 예산 범위, 원하는 일정 등을 자유롭게 작성해 주세요."
+                    "만들거나 고칠 내용, 희망 완료 일정, 예상 예산 범위를 알려주세요. 일정이나 예산이 미정이면 현재 상황을 적어주세요. 참고 화면·링크나 오류 로그가 있다면 함께 남겨주세요."
                 ),
             }
         ),
     )
     agree_privacy = forms.BooleanField(
-        label=_("개인정보 수집 및 이용에 동의합니다."),
+        label=_("[필수] 개인정보 수집 및 이용 동의"),
         error_messages={"required": _("문의 접수를 위해 동의가 필요합니다.")},
     )
     agree_marketing = forms.BooleanField(
@@ -177,6 +178,8 @@ class ContactForm(forms.Form):
         tracking_context: dict | None = None,
         **kwargs,
     ):
+        if page_key == "free_diagnosis":
+            kwargs.setdefault("auto_id", "contact_%s")
         super().__init__(*args, **kwargs)
         self.ui_copy = {
             "optional_note": _(
@@ -189,7 +192,9 @@ class ContactForm(forms.Form):
 
         normalized_key = page_key if page_key in self.ALLOWED_PAGE_KEYS else "home"
         self.fields["page_key"].initial = normalized_key
-        if normalized_key == "foreign_developers":
+        if normalized_key == "free_diagnosis":
+            self.fields["lead_source"].initial = "free_diagnosis_vibe"
+        elif normalized_key == "foreign_developers":
             self.fields["lead_source"].initial = "foreign_developer_contact"
         elif normalized_key in self.GWANGJU_PAGE_KEYS:
             self.fields["lead_source"].initial = "gwangju_contact"
@@ -203,8 +208,12 @@ class ContactForm(forms.Form):
             )
         else:
             self.fields["lead_source"].initial = "founder_contact"
-        if normalized_key == "home":
+        if normalized_key in {"home", "free_diagnosis"}:
             visible_choices = list(self.HOME_INQUIRY_CHOICES)
+            if normalized_key == "free_diagnosis":
+                visible_choices.append(
+                    ("vibe_diagnosis", _("15분 무료 코드·배포 진단"))
+                )
             requested_type = recommended_inquiry_type
             if self.is_bound:
                 requested_type = self.data.get("inquiry_type", requested_type)
@@ -216,10 +225,13 @@ class ContactForm(forms.Form):
                 ),
                 None,
             )
-            if legacy_choice:
+            if legacy_choice and legacy_choice not in visible_choices:
                 visible_choices.append(legacy_choice)
             self.fields["inquiry_type"].choices = visible_choices
-            self.fields["inquiry_type"].initial = "coffee_chat"
+            if normalized_key == "free_diagnosis":
+                self.fields["inquiry_type"].initial = "vibe_diagnosis"
+            else:
+                self.fields["inquiry_type"].initial = "coffee_chat"
 
         if normalized_key == "foreign_developers":
             self.fields["inquiry_type"].choices = self.FOREIGN_INQUIRY_CHOICES
@@ -260,6 +272,19 @@ class ContactForm(forms.Form):
             "utm_content",
         ):
             self.fields[key].initial = tracking.get(key, "")
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        name = (cleaned_data.get("name") or "").strip()
+        if not name:
+            email = (cleaned_data.get("email") or "").strip()
+            if "@" in email:
+                cleaned_data["name"] = email.split("@", 1)[0][
+                    : self.fields["name"].max_length
+                ]
+            else:
+                cleaned_data["name"] = "문의자"
+        return cleaned_data
 
     def clean_page_key(self) -> str:
         page_key = (self.cleaned_data.get("page_key") or "").strip()

@@ -15,7 +15,7 @@ class ContactFormTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
-            '<option value="coffee_chat" selected>30분 무료 커피챗</option>',
+            '<option value="coffee_chat" selected>30분 프로젝트 요구사항 진단</option>',
             html=False,
         )
 
@@ -127,7 +127,9 @@ class ContactFormTests(TestCase):
         self.assertEqual(inquiry.inquiry_type, "vibe_diagnosis")
         self.assertEqual(inquiry.lead_source, "free_diagnosis_vibe")
         self.assertEqual(inquiry.ad_intent, "vibe")
-        event = FunnelEvent.objects.get(event_name="contact_submit", page_key="free_diagnosis")
+        event = FunnelEvent.objects.get(
+            event_name="contact_submit", page_key="free_diagnosis"
+        )
         self.assertEqual(event.metadata["inquiry_type"], "vibe_diagnosis")
 
     def test_contact_submit_persists_naver_ad_attribution(self) -> None:
@@ -547,3 +549,25 @@ class ContactFormTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(mail.outbox[1].from_email, "큐룸 <help@quroom.kr>")
+
+    def test_contact_submit_without_name_defaults_to_email_prefix(self) -> None:
+        response = self.client.post(
+            reverse("landing:contact_submit"),
+            {
+                "email": "solopreneur@example.com",
+                "inquiry_type": "coffee_chat",
+                "message": "간단한 기술 상담 희망합니다.",
+                "agree_privacy": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.get(email="solopreneur@example.com")
+        self.assertEqual(inquiry.name, "solopreneur")
+
+    def test_home_contact_form_choices_are_streamlined(self) -> None:
+        response = self.client.get(reverse("landing:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'value="coffee_chat"')
+        self.assertContains(response, 'value="outsourcing"')
+        self.assertContains(response, 'value="other"')
+        self.assertNotContains(response, 'value="gov_grant"')
