@@ -27,6 +27,16 @@ jobs:
           .venv/bin/pip install --upgrade pip
           .venv/bin/pip install -r requirements.txt
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tools/copy-lint/package-lock.json
+
+      - name: Install copy lint dependencies
+        run: npm ci --prefix tools/copy-lint
+
       - name: Django verify
         run: ./scripts/verify.sh
 
