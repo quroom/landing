@@ -129,6 +129,15 @@ class BuildNoteAdmin(admin.ModelAdmin):
         ("System", {"fields": ("created_at", "updated_at")}),
     )
 
+    class Media:
+        css = {
+            "all": (
+                "landing/css/subpage-renewal.css",
+                "landing/css/admin_markdown.css",
+            )
+        }
+        js = ("landing/js/admin_markdown.js",)
+
     @admin.action(description="선택 글 발행")
     def publish_selected(self, request, queryset):
         updated = 0
