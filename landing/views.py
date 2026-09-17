@@ -518,17 +518,15 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
         "@context": "https://schema.org",
         "@type": "Organization",
         "@id": organization_id,
-        "name": "QUROOM" if is_en else "큐룸 (QUROOM)",
+        "name": "QUROOM" if is_en else "큐룸",
         "legalName": "QUROOM" if is_en else "큐룸",
-        "alternateName": ["QUROOM", "QuRoom"]
-        if is_en
-        else ["큐룸", "QUROOM", "QuRoom", "큐룸개발"],
+        "alternateName": ["큐룸"] if is_en else ["QUROOM", "QuRoom"],
         "url": f"{site_base_url}/",
         "logo": f"{site_base_url}/static/logo.jpg",
         "description": (
             "QUROOM is an 8-year full-stack software development studio led by a former Samsung engineer, taking direct responsibility from MVP build to deployment."
             if is_en
-            else "8년 차 삼성전자 출신 1인 풀스택 웹·앱 제작 및 린 MVP 전문 개발사 큐룸(QUROOM)"
+            else "8년 차 삼성전자 출신 1인 풀스택 웹·앱 제작 및 린 MVP 전문 개발사 큐룸"
         ),
     }
     website_schema = {
@@ -536,10 +534,8 @@ def _seo_context(request: HttpRequest, page_key: str) -> dict[str, str]:
         "@type": "WebSite",
         "@id": f"{site_base_url}/#website",
         "url": f"{site_base_url}/",
-        "name": "QUROOM" if is_en else "큐룸 (QUROOM)",
-        "alternateName": ["QUROOM", "QuRoom"]
-        if is_en
-        else ["큐룸", "QUROOM", "QuRoom"],
+        "name": "QUROOM" if is_en else "큐룸",
+        "alternateName": ["큐룸"] if is_en else ["QUROOM", "QuRoom"],
         "inLanguage": "en-US" if is_en else "ko-KR",
         "publisher": {"@id": organization_id},
     }

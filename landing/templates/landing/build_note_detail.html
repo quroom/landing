@@ -1,11 +1,11 @@
 {% extends "landing/base.html" %}
 {% load static i18n %}
-{% block title %}{{ note.seo_title|default:note.title }} | 큐룸 (QUROOM){% endblock %}
+{% block title %}{{ note.seo_title|default:note.title }} | 큐룸{% endblock %}
 {% block description %}{{ note.seo_description|default:note.summary }}{% endblock %}
 {% block keywords %}{{ note.tags|default:"큐룸, 1인 개발자, 제품 개발, MVP, 외주 개발" }}{% endblock %}
 {% block og_title %}
   <meta property="og:title"
-        content="{{ note.seo_title|default:note.title }} | 큐룸 (QUROOM)" />
+        content="{{ note.seo_title|default:note.title }} | 큐룸" />
 {% endblock %}
 {% block og_description %}
   <meta property="og:description"
@@ -36,7 +36,7 @@
                width="30"
                height="30"
                alt="{% trans '큐룸 로고' %}" />
-          <span>QUROOM</span>
+          <span>{% trans "큐룸" %}</span>
           <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"
@@ -169,7 +169,7 @@
                   font-size: 0.82rem;
                   color: var(--body)">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <strong style="color: var(--ink);">QUROOM</strong>
+          <strong style="color: var(--ink);">{% trans "큐룸" %}</strong>
           <span style="color: var(--muted); font-size: 0.76rem;">8년 차 1인 풀스택 개발사 · 광주광역시</span>
         </div>
         <nav style="display: flex;

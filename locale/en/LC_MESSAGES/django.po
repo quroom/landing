@@ -681,7 +681,7 @@ msgstr "[Required] I agree to the collection and use of my personal information.
 msgid "홈으로 돌아가기"
 msgstr "Back to Home"
 
-msgid "큐룸 (QUROOM) 홈"
+msgid "큐룸 홈"
 msgstr "QUROOM Home"
 
 msgid "대표 직접 수행"
@@ -744,14 +744,14 @@ msgstr "Build Notes"
 msgid "(큐룸)"
 msgstr "(QUROOM)"
 
-msgid "큐룸 (QUROOM) | 웹·앱 외주 개발 & 린 MVP 개발사"
+msgid "큐룸 | 웹·앱 외주 개발 & 린 MVP 개발사"
 msgstr "QUROOM | Web & App Development Partner & Lean MVP Builder"
 
-msgid "큐룸(QUROOM)은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다."
+msgid "큐룸은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다."
 msgstr "QUROOM is an 8-year full-stack software development studio led by a former Samsung engineer, taking direct responsibility from MVP build to deployment."
 
 msgid "큐룸, QUROOM, quroom, 큐룸 개발, 큐룸 외주, 웹개발 외주, 앱개발 외주, 스타트업 MVP 개발, 1인 개발사, 광주 웹개발"
 msgstr "QUROOM, quroom, web development, app development, startup MVP development, solo developer, software engineering"
 
-msgid "큐룸 (QUROOM)"
+msgid "큐룸"
 msgstr "QUROOM"

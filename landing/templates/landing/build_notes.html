@@ -1,9 +1,9 @@
 {% extends "landing/base.html" %}
 {% load static i18n %}
-{% block title %}제품 개발 노트 | 큐룸 (QUROOM){% endblock %}
+{% block title %}제품 개발 노트 | 큐룸{% endblock %}
 {% block description %}1인 개발사와 초기 창업자를 위한 제품 개발, MVP, 외주, 운영 경험 기반 기록입니다.{% endblock %}
 {% block keywords %}큐룸, 제품 개발, MVP 개발, 외주 개발, 개발자 창업, 사이드프로젝트{% endblock %}
-{% block og_title %}<meta property="og:title" content="제품 개발 노트 | 큐룸 (QUROOM)" />{% endblock %}
+{% block og_title %}<meta property="og:title" content="제품 개발 노트 | 큐룸" />{% endblock %}
 {% block og_description %}
   <meta property="og:description"
         content="1인 개발사와 초기 창업자를 위한 제품 개발, MVP, 외주, 운영 경험 기반 기록입니다." />
@@ -33,7 +33,7 @@
                width="30"
                height="30"
                alt="{% trans '큐룸 로고' %}" />
-          <span>QUROOM</span>
+          <span>{% trans "큐룸" %}</span>
           <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"
@@ -133,7 +133,7 @@
                   font-size: 0.82rem;
                   color: var(--body)">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <strong style="color: var(--ink);">QUROOM</strong>
+          <strong style="color: var(--ink);">{% trans "큐룸" %}</strong>
           <span style="color: var(--muted); font-size: 0.76rem;">8년 차 1인 풀스택 개발사 · 광주광역시</span>
         </div>
         <nav style="display: flex;

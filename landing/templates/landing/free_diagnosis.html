@@ -1,6 +1,6 @@
 {% extends "landing/base.html" %}
 {% load static i18n %}
-{% block title %}무료 개발·자동화 진단 센터 | 15분 코드·배포 진단 & 실행 우선순위 점검 | 큐룸 (QUROOM){% endblock %}
+{% block title %}무료 개발·자동화 진단 센터 | 15분 코드·배포 진단 & 실행 우선순위 점검 | 큐룸{% endblock %}
 {% block description %}바이브코딩 코드·배포·결제 연동 15분 긴급 진단 및 3분 자동화 실행 우선순위를 점검하는 무료 엔지니어링 진단 센터{% endblock %}
 {% block extra_head %}
   <link rel="preload"
@@ -27,7 +27,7 @@
                width="30"
                height="30"
                alt="{% trans '큐룸 로고' %}" />
-          <span>QUROOM</span>
+          <span>{% trans "큐룸" %}</span>
           <small>{% trans "대표 직접 수행" %}</small>
         </a>
         <button id="menu-toggle"

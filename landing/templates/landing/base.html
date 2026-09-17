@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
       {% block title %}
-        {% trans "큐룸 (QUROOM) | 웹·앱 외주 개발 & 린 MVP 개발사" %}
+        {% trans "큐룸 | 웹·앱 외주 개발 & 린 MVP 개발사" %}
       {% endblock %}
     </title>
     <meta name="description"
-          content="{% block description %}{% trans "큐룸(QUROOM)은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다." %}{% endblock %}" />
+          content="{% block description %}{% trans "큐룸은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다." %}{% endblock %}" />
     <meta name="keywords"
           content="{% block keywords %}{% trans '큐룸, QUROOM, quroom, 큐룸 개발, 큐룸 외주, 웹개발 외주, 앱개발 외주, 스타트업 MVP 개발, 1인 개발사, 광주 웹개발' %}{% endblock %}" />
-    <meta property="og:site_name" content="{% trans '큐룸 (QUROOM)' %}" />
+    <meta property="og:site_name" content="{% trans '큐룸' %}" />
     {% block og_title %}
       <meta property="og:title"
-            content="{% trans '큐룸 (QUROOM) | 웹·앱 외주 개발 & 린 MVP 개발사' %}" />
+            content="{% trans '큐룸 | 웹·앱 외주 개발 & 린 MVP 개발사' %}" />
     {% endblock %}
     {% block og_description %}
       <meta property="og:description"
-            content="{% trans '큐룸(QUROOM)은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다.' %}" />
+            content="{% trans '큐룸은 8년 차 삼성전자 출신 1인 풀스택 개발사입니다. 웹·앱 외주 개발, 린 MVP 구현, 실서버 배포 및 운영 이관까지 대표가 직접 책임집니다.' %}" />
     {% endblock %}
     <meta property="og:type" content="website" />
     {% if og_url %}<meta property="og:url" content="{{ og_url }}" />{% endif %}
