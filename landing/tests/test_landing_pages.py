@@ -442,7 +442,7 @@ class LandingPageTests(TestCase):
         self.assertNotContains(response, "자동화 실행 구축")
         self.assertNotContains(response, "추가로 도와드릴 수 있는 것")
         self.assertNotContains(response, "OpenClaw")
-        self.assertNotContains(response, "바이브코딩")
+        self.assertContains(response, "바이브코딩 기술 진단")
         self.assertEqual(len(response.context["content"]["client_projects"]), 1)
         self.assertEqual(len(response.context["content"]["owned_products"]), 9)
         self.assertEqual(
@@ -547,29 +547,38 @@ class LandingPageTests(TestCase):
         response_recovered_ko = self.client.get(set_ko_from_en.headers.get("Location"))
         self.assertContains(response_recovered_ko, '<html lang="ko">', html=False)
 
-    def test_free_diagnosis_page_renders(self) -> None:
-        response = self.client.get(reverse("landing:free_diagnosis"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "무료 자동화 실행 진단 (3분 / 8문항)")
-        self.assertContains(
-            response,
-            'data-analytics-event="lead_magnet_submit_user"',
-            html=False,
-        )
-        self.assertContains(response, "8개 문항 모두 필수 응답입니다.")
-        self.assertNotContains(response, "업무 흐름 명확성")
-        self.assertNotContains(response, "데이터/운영 기반")
-
     def test_free_diagnosis_renders_vibe_diagnosis_and_checklist(self) -> None:
         response = self.client.get(reverse("landing:free_diagnosis"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "무료 개발·자동화 진단 센터")
-        self.assertContains(response, "바이브코딩 실서버 배포·결제 연동 15분 무료 진단")
-        self.assertContains(response, "15분 무료 기술 진단 신청")
-        self.assertContains(response, "배포 전 12대 필수 테크니컬 체크리스트")
+        self.assertContains(response, "바이브코딩 기술 진단")
+        self.assertContains(response, "30분 온라인 상담 · 무료")
+        self.assertContains(response, "기술 진단 신청")
+        self.assertContains(response, "배포 전 참고 체크리스트")
         self.assertContains(response, 'value="vibe_diagnosis"')
         self.assertContains(response, "보안 및 환경변수")
-        self.assertContains(response, "결제 및 웹훅 멱등성")
+        self.assertContains(response, "데이터 조회 속도 (N+1)")
+        self.assertContains(response, "결제 중복과 주문 누락")
+        self.assertContains(response, "무중단 배포")
+        self.assertNotContains(response, "데이터베이스 &amp; 세션")
+
+    def test_diagnosis_keeps_legacy_automation_entry_and_focuses_technical_form(self):
+        legacy = self.client.get(
+            reverse("landing:free_diagnosis"), {"type": "automation"}
+        )
+        self.assertNotContains(legacy, 'data-analytics-event="lead_magnet_submit_user"')
+        self.assertNotContains(legacy, "업무 자동화 실행 진단")
+        technical = self.client.get(reverse("landing:free_diagnosis"))
+        self.assertNotContains(
+            technical, 'data-analytics-event="lead_magnet_submit_user"'
+        )
+        self.assertNotContains(technical, "15분")
+        html = technical.content.decode()
+        self.assertLess(
+            html.index("배포 전 참고 체크리스트"), html.index('id="vibe-intake-form"')
+        )
+        english = self.client.get(reverse("landing:free_diagnosis"), {"lang": "en"})
+        self.assertContains(english, "Codex or Claude")
+        self.assertContains(english, "30-minute online consultation")
 
     def test_free_diagnosis_report_preview_requires_staff(self) -> None:
         response = self.client.get(reverse("landing:lead_magnet_report_preview"))
@@ -753,8 +762,8 @@ class LandingPageTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "[바이브코딩 배포] 8년 차 개발사 1:1 진단")
-        self.assertContains(response, "Cursor·Claude로 만든 서비스")
-        self.assertContains(response, "15분 코드·배포 무료 진단 신청")
+        self.assertContains(response, "Codex·Claude로 만든 서비스")
+        self.assertContains(response, "기술 진단 신청")
 
     def test_index_applies_naver_ad_creative_copy(self) -> None:
         response = self.client.get(
@@ -912,7 +921,7 @@ class LandingPageTests(TestCase):
                     response, "계약 전 무료로 확인하는 실전 서식과 기술 진단"
                 )
                 self.assertContains(response, "5대 개발 제외 기준 및 표준 견적서")
-                self.assertContains(response, "15분 무료 코드·배포 진단")
+                self.assertContains(response, "30분 바이브코딩 기술 진단")
                 self.assertContains(response, "e나라도움 5종 서류 패키지")
                 self.assertContains(response, reverse("landing:outsourcing_checklist"))
                 self.assertContains(response, reverse("landing:free_diagnosis"))

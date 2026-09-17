@@ -33,7 +33,7 @@ class ContactForm(forms.Form):
         ("other", _("기타")),
     ]
     LEGACY_HOME_INQUIRY_CHOICES = [
-        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
+        ("vibe_diagnosis", _("30분 바이브코딩 기술 진단")),
         ("gov_grant", _("정부지원사업 e나라도움 서류")),
         ("wbs_review", _("외주 견적·개발 범위 사전 상담")),
         ("ax_diagnosis", _("자동화 실행 진단")),
@@ -42,7 +42,7 @@ class ContactForm(forms.Form):
     ]
     GWANGJU_INQUIRY_CHOICES = [
         ("gwangju_scope", _("프로젝트 범위/견적 정리")),
-        ("vibe_diagnosis", _("15분 무료 코드·배포 진단")),
+        ("vibe_diagnosis", _("30분 바이브코딩 기술 진단")),
         ("gov_grant", _("정부지원사업 e나라도움 서류")),
         ("gwangju_homepage", _("광주 홈페이지 제작")),
         ("gwangju_web", _("광주 웹개발")),
@@ -208,11 +208,15 @@ class ContactForm(forms.Form):
             )
         else:
             self.fields["lead_source"].initial = "founder_contact"
+        if normalized_key == "free_diagnosis":
+            self.fields["message"].widget.attrs["placeholder"] = _(
+                "오류 증상, 사용 중인 기술, 지금까지 시도한 내용을 적어주세요. 희망 일정과 예산이 있다면 함께 알려주세요. 로그를 공유할 때는 비밀번호와 API 키를 제외해 주세요."
+            )
         if normalized_key in {"home", "free_diagnosis"}:
             visible_choices = list(self.HOME_INQUIRY_CHOICES)
             if normalized_key == "free_diagnosis":
                 visible_choices.append(
-                    ("vibe_diagnosis", _("15분 무료 코드·배포 진단"))
+                    ("vibe_diagnosis", _("30분 바이브코딩 기술 진단"))
                 )
             requested_type = recommended_inquiry_type
             if self.is_bound:

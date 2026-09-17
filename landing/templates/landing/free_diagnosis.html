@@ -1,7 +1,17 @@
 {% extends "landing/base.html" %}
 {% load static i18n %}
-{% block title %}무료 개발·자동화 진단 센터 | 15분 코드·배포 진단 & 실행 우선순위 점검 | 큐룸{% endblock %}
-{% block description %}바이브코딩 코드·배포·결제 연동 15분 긴급 진단 및 3분 자동화 실행 우선순위를 점검하는 무료 엔지니어링 진단 센터{% endblock %}
+{% block title %}{% trans "바이브코딩 기술 진단" %} | {% trans "큐룸" %}{% endblock %}
+{% block description %}
+  {% trans "Codex·Claude로 만든 서비스의 문제를 함께 살펴보고 필요한 작업과 진행 방향을 안내합니다. 30분 온라인 상담은 무료입니다." %}
+{% endblock %}
+{% block og_title %}
+  <meta property="og:title"
+        content="{% trans '바이브코딩 기술 진단' %} | {% trans '큐룸' %}" />
+{% endblock %}
+{% block og_description %}
+  <meta property="og:description"
+        content="{% trans 'Codex·Claude로 만든 서비스의 문제를 함께 살펴보고 필요한 작업과 진행 방향을 안내합니다. 30분 온라인 상담은 무료입니다.' %}" />
+{% endblock %}
 {% block extra_head %}
   <link rel="preload"
         href="{% static 'landing/fonts/Pretendard-Regular.woff2' %}"
@@ -19,7 +29,6 @@
 {% endblock %}
 {% block body %}
   <div class="home-renewal subpage-renewal">
-    <a class="renewal-skip-link" href="#main">본문으로 건너뛰기</a>
     <header class="renewal-header">
       <div class="renewal-header-inner">
         <a class="renewal-brand" href="{% url 'landing:index' %}">
@@ -38,11 +47,7 @@
         <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
           <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
           <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
-          <a href="javascript:void(0)"
-             onclick="switchTab('vibe')"
-             style="color: var(--blue);
-                    font-weight: 600">{% trans "15분 진단 (SOS)" %}</a>
-          <a href="javascript:void(0)" onclick="switchTab('automation')">{% trans "자동화 진단 (3분)" %}</a>
+          <a href="{% url 'landing:free_diagnosis' %}">{% trans "기술 진단" %}</a>
           <a class="renewal-button renewal-button-small"
              href="{% url 'landing:index' %}#contact">{% trans "상담 문의" %}</a>
         </nav>
@@ -52,181 +57,79 @@
            aria-label="{% trans '모바일 메뉴' %}">
         <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
         <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
-        <a href="javascript:void(0)" onclick="switchTab('vibe')">{% trans "15분 진단 (SOS)" %}</a>
-        <a href="javascript:void(0)" onclick="switchTab('automation')">{% trans "자동화 진단 (3분)" %}</a>
+        <a href="{% url 'landing:free_diagnosis' %}">{% trans "기술 진단" %}</a>
         <a href="{% url 'landing:index' %}#contact">{% trans "상담 문의" %}</a>
       </nav>
     </header>
     <main id="main" tabindex="-1">
       <section class="subpage-hero" id="top">
         <div class="subpage-hero-copy" style="max-width: 860px;">
-          <p class="renewal-kicker">Free Engineering Diagnosis</p>
-          <h1>무료 개발·자동화 진단 센터</h1>
-          <p class="subpage-hero-summary">
-            Cursor·Claude Code 등으로 만든 프로토타입의 실서버 배포·결제 연동 긴급 진단부터,
-            업무 반복을 줄이는 비즈니스 자동화 8대 실행 우선순위 점검까지 8년 차 엔지니어가 직접 진단합니다.
-          </p>
-          <div style="margin-top: 28px;">
-            <div class="subpage-tabs">
-              <button id="tab-btn-vibe"
-                      type="button"
-                      onclick="switchTab('vibe')"
-                      class="subpage-tab-btn active">🛠️ 15분 코드·배포 진단 (바이브코딩 SOS)</button>
-              <button id="tab-btn-automation"
-                      type="button"
-                      onclick="switchTab('automation')"
-                      class="subpage-tab-btn">⚡ 비즈니스 자동화 진단 (3분 / 8문항)</button>
-            </div>
-          </div>
+          <p class="renewal-kicker">{% trans "바이브코딩 기술 진단" %}</p>
+          <h1>{% trans "만들던 서비스가 막혔다면, 현재 상태부터 함께 살펴봅니다." %}</h1>
+          <p class="subpage-hero-summary">{% trans "Codex·Claude로 만든 서비스가 로컬에서는 동작하지만 배포 후에는 오류가 생기나요? 오류 증상과 지금까지 시도한 내용을 바탕으로 확인할 부분과 필요한 작업을 안내합니다." %}</p>
+          <p>{% trans "30분 온라인 상담 · 무료" %}</p>
+          <a class="renewal-button" href="#vibe-intake-form">{% trans "기술 진단 신청" %}</a>
         </div>
       </section>
       <div class="subpage-container">
-        <!-- TAB 1: 15분 무료 코드·배포 진단 (바이브코딩 SOS) -->
-        <div id="tab-content-vibe">
-          <section>
-            <div class="renewal-section-intro renewal-section-intro-horizontal">
-              <div>
-                <p class="renewal-kicker" style="margin: 0;">SOS 긴급 진단 · 15-Min Code &amp; Deploy Review</p>
-                <h2 style="font-size: 2.2rem;">바이브코딩 실서버 배포·결제 연동 15분 무료 진단</h2>
+        <section>
+          {% if vibe_checklist %}
+            <div style="margin-bottom: 48px;">
+              <div class="renewal-section-intro renewal-section-intro-compact">
+                <p class="renewal-kicker" style="margin: 0;">{% trans "배포 전 점검" %}</p>
+                <h2 style="font-size: 2.2rem;">{% trans "배포 전 참고 체크리스트" %}</h2>
               </div>
-              <p style="color: var(--body);">
-                Cursor, Claude 등으로 코드를 생성했으나 실서버 배포, 결제 연동, DB 마이그레이션에서 막히셨나요?
-                8년 차 풀스택 엔지니어가 15분간 에러 로그와 시스템 구조를 진단하고 오늘 바로 해결할 1순위 조치를 짚어드립니다.
-              </p>
-            </div>
-            <div class="subpage-card-grid subpage-card-grid-3">
-              <article class="subpage-card">
-                <div>
-                  <span class="subpage-card-kicker">STEP 1 (0~5분)</span>
-                  <h3 style="font-size: 1.05rem;">배포 환경 &amp; 에러 로그 분석</h3>
-                  <p>Docker, VPS, PaaS 환경 및 터미널 빌드 에러 로그를 분석해 장애 지점을 특정합니다.</p>
-                </div>
-              </article>
-              <article class="subpage-card">
-                <div>
-                  <span class="subpage-card-kicker">STEP 2 (5~10분)</span>
-                  <h3 style="font-size: 1.05rem;">보안·DB·웹훅 결함 점검</h3>
-                  <p>환경변수 유출, DB 커넥션 풀, Nginx 리버스 프록시 및 결제 웹훅 HMAC 서명을 검증합니다.</p>
-                </div>
-              </article>
-              <article class="subpage-card">
-                <div>
-                  <span class="subpage-card-kicker">STEP 3 (10~15분)</span>
-                  <h3 style="font-size: 1.05rem;">해결 1순위 조치 제안</h3>
-                  <p>단순 설정은 즉석에서 수정 방향을 안내하며, 셀프 해결 가이드 또는 피니셔 스프린트 옵션을 제시합니다.</p>
-                </div>
-              </article>
-            </div>
-            {% if vibe_checklist %}
-              <div style="margin-top: 64px;">
-                <div class="renewal-section-intro renewal-section-intro-compact">
-                  <p class="renewal-kicker" style="margin: 0;">자가진단</p>
-                  <h2 style="font-size: 2.2rem;">배포 전 12대 필수 테크니컬 체크리스트</h2>
-                </div>
-                <p style="margin: -20px 0 24px; font-size: 0.88rem; color: var(--muted)">AI 생성 코드가 실서버에서 자주 겪는 결함을 배포 전에 미리 확인해 보세요.</p>
-                <div class="subpage-card-grid subpage-card-grid-2">
-                  {% for group in vibe_checklist %}
-                    <div class="subpage-card" style="justify-content: flex-start;">
-                      <h4 style="margin: 0 0 12px;
-                                 font-size: 1.05rem;
-                                 font-weight: 600;
-                                 color: var(--ink);
-                                 display: flex;
-                                 align-items: center;
-                                 gap: 8px">
-                        <span>{{ group.icon }}</span> {{ group.category }}
-                      </h4>
-                      <ul style="margin: 0;
-                                 padding: 0;
-                                 list-style: none;
-                                 display: flex;
-                                 flex-direction: column;
-                                 gap: 8px;
-                                 font-size: 0.84rem;
-                                 color: var(--body)">
-                        {% for item in group.items %}
-                          <li style="display: flex;
-                                     align-items: flex-start;
-                                     gap: 8px;
-                                     line-height: 1.55">
-                            <span style="color: var(--blue); font-weight: 700;">✓</span>
-                            <span>{{ item }}</span>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    </div>
-                  {% endfor %}
-                </div>
+              <p style="margin: -20px 0 24px; font-size: 0.88rem; color: var(--muted)">{% trans "화면이 동작해도 데이터가 늘거나 요청이 겹치면 문제가 생길 수 있습니다. 실제 배포 전에 아래 항목을 확인하세요. 결제 기능이 있는 서비스는 결제·주문 항목도 점검하세요." %}</p>
+              <div class="subpage-card-grid subpage-card-grid-2">
+                {% for group in vibe_checklist %}
+                  <div class="subpage-card" style="justify-content: flex-start;">
+                    <h3 style="margin: 0 0 12px;
+                               font-size: 1.05rem;
+                               font-weight: 600;
+                               color: var(--ink);
+                               display: flex;
+                               align-items: center;
+                               gap: 8px">
+                      <span>{{ group.icon }}</span> {% trans group.category %}
+                    </h3>
+                    <ul style="margin: 0;
+                               padding: 0;
+                               list-style: none;
+                               display: flex;
+                               flex-direction: column;
+                               gap: 8px;
+                               font-size: 0.84rem;
+                               color: var(--body)">
+                      {% for item in group.items %}
+                        <li style="display: flex;
+                                   align-items: flex-start;
+                                   gap: 8px;
+                                   line-height: 1.55">
+                          <span style="color: var(--blue); font-weight: 700;">✓</span>
+                          <span>{% trans item %}</span>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endfor %}
               </div>
-            {% endif %}
-            <!-- 15분 기술 진단 신청 폼 -->
-            <div style="margin-top: 64px;
-                        background: #fff;
-                        border: 1px solid var(--line);
-                        border-radius: 14px;
-                        padding: 36px;
-                        box-shadow: 0 6px 24px rgba(15,23,42,0.04)"
-                 id="vibe-intake-form">
-              <div style="max-width: 600px;">
-                <p class="renewal-kicker" style="margin: 0;">1:1 무료 접수</p>
-                <h3 style="margin: 6px 0 0;
-                           font-size: 1.65rem;
-                           font-weight: 600;
-                           color: var(--ink)">15분 무료 기술 진단 신청</h3>
-                <p style="margin: 8px 0 0; font-size: 0.88rem; color: var(--body);">
-                  현재 겪고 계신 에러 증상과 기술 스택을 남겨주시면 엔지니어가 직접 확인 후 15분 Google Meet 또는 이메일 진단 가이드를 전달합니다.
-                </p>
-              </div>
-              <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
             </div>
-          </section>
-        </div>
-        <!-- TAB 2: 무료 자동화 실행 진단 (3분 / 8문항) -->
-        <div id="tab-content-automation" class="hidden">
-          <section style="background: #fff;
-                          border: 1px solid var(--line);
-                          border-radius: 14px;
-                          padding: 36px">
-            <p class="renewal-kicker" style="margin: 0;">Free Lead Magnet</p>
-            <h2 style="margin: 8px 0 0;
-                       font-size: 2.2rem;
-                       font-weight: 600;
-                       color: var(--ink)">무료 자동화 실행 진단 (3분 / 8문항)</h2>
-            <p style="margin: 10px 0 28px; font-size: 0.95rem; color: var(--body);">
-              질문 8개(모두 필수)에 답하면, 2주 안에 실행할 우선 과제 1개를 명확하게 제안합니다.
-            </p>
-            <div id="lead-magnet-wrap">{% include "landing/partials/lead_magnet_form.html" with form=lead_magnet_form %}</div>
-          </section>
-        </div>
+          {% endif %}
+          <h2>{% trans "기술 진단" %}</h2>
+          <div class="subpage-card-grid subpage-card-grid-3">
+            <article class="subpage-card"><span class="subpage-card-kicker">STEP 1</span><h3>{% trans "현재 상황 확인" %}</h3><p>{% trans "어떤 기능에서 문제가 생겼는지, 어디까지 동작하는지 살펴봅니다." %}</p></article>
+            <article class="subpage-card"><span class="subpage-card-kicker">STEP 2</span><h3>{% trans "확인할 부분과 작업 범위 정리" %}</h3><p>{% trans "공유해 주신 화면과 로그를 바탕으로 추가로 확인할 사항과 필요한 작업을 정리합니다." %}</p></article>
+            <article class="subpage-card"><span class="subpage-card-kicker">STEP 3</span><h3>{% trans "다음 진행 방향 안내" %}</h3><p>{% trans "직접 이어갈 수 있는 부분과 개발 지원이 필요한 부분을 설명합니다. 작업을 의뢰하실 경우 일정과 견적을 안내합니다." %}</p></article>
+          </div>
+          <p style="margin-top: 24px;">{% trans "상담은 공유해 주신 자료를 바탕으로 진행합니다. 코드 수정이나 상세 분석이 필요한 경우에는 작업 범위와 비용을 먼저 안내합니다." %}</p>
+          <div class="subpage-card" id="vibe-intake-form" style="margin-top: 32px;">
+            <h2>{% trans "어디에서 막혔는지 알려주세요." %}</h2>
+            <p>{% trans "오류 증상, 사용 중인 기술, 지금까지 시도한 내용을 적어주세요. 희망 일정과 예산을 알려주시면 후속 작업을 제안하는 데 도움이 됩니다." %}</p>
+            <div id="contact-form-wrap" class="renewal-contact-form">{% include "landing/partials/contact_form.html" %}</div>
+          </div>
+        </section>
       </div>
     </main>
-    <script>
-      function switchTab(target) {
-        var vibeContent = document.getElementById('tab-content-vibe');
-        var autoContent = document.getElementById('tab-content-automation');
-        var vibeBtn = document.getElementById('tab-btn-vibe');
-        var autoBtn = document.getElementById('tab-btn-automation');
-
-        if (target === 'automation') {
-          vibeContent.classList.add('hidden');
-          autoContent.classList.remove('hidden');
-          vibeBtn.classList.remove('active');
-          autoBtn.classList.add('active');
-        } else {
-          autoContent.classList.add('hidden');
-          vibeContent.classList.remove('hidden');
-          autoBtn.classList.remove('active');
-          vibeBtn.classList.add('active');
-        }
-      }
-
-      (function() {
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('type') === 'automation') {
-          switchTab('automation');
-        }
-      })();
-    </script>
     {% include "landing/partials/gwangju_footer.html" %}
   </div>
 {% endblock %}

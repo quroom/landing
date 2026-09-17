@@ -11,7 +11,7 @@ from .lead_magnet_sections import build_lead_magnet_section_ast, render_sections
 from .models import ContactInquiry, FunnelEvent
 
 INQUIRY_TYPE_LABELS = {
-    "vibe_diagnosis": "15분 무료 코드·배포 진단",
+    "vibe_diagnosis": "30분 바이브코딩 기술 진단",
     "wbs_review": "외주 견적·개발 범위 사전 상담",
     "gov_grant": "정부지원사업 e나라도움 서류",
     "ax_diagnosis": "자동화 실행 진단",

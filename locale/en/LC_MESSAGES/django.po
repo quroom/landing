@@ -648,13 +648,13 @@ msgstr "View Templates and Checklist →"
 msgid "AI 코드 SOS"
 msgstr "AI Code Support"
 
-msgid "15분 무료 코드·배포 진단"
-msgstr "Free 15-minute Code and Deployment Review"
+msgid "30분 바이브코딩 기술 진단"
+msgstr "Free 30-minute Technical Consultation"
 
-msgid "Cursor, Claude 등으로 만든 코드의 실서버 배포, 결제 연동, DB 오류를 15분간 엔지니어가 직접 진단하고 1순위 조치를 짚어드립니다."
-msgstr "An engineer reviews deployment, payment integration, or database issues in code built with Cursor or Claude and identifies the first action in a 15-minute session."
+msgid "Codex·Claude로 만든 서비스의 동작 상태와 배포 과정에서 생긴 오류를 함께 살펴보고 필요한 작업과 진행 방향을 안내합니다."
+msgstr "We review how services built with Codex or Claude behave and the errors encountered during deployment and discuss the work needed and next steps."
 
-msgid "15분 기술 진단 신청하기 →"
+msgid "기술 진단 신청하기 →"
 msgstr "Request a Technical Review →"
 
 msgid "정부지원사업 정산"
@@ -699,8 +699,8 @@ msgstr "Home"
 msgid "광주 홈"
 msgstr "Gwangju Home"
 
-msgid "15분 진단 (SOS)"
-msgstr "15-min Review (SOS)"
+msgid "기술 진단"
+msgstr "Technical Consultation"
 
 msgid "자동화 진단 (3분)"
 msgstr "Automation Review (3 min)"
@@ -732,8 +732,8 @@ msgstr "Outsourcing Checklist & Quote Template"
 msgid "외주 체크리스트 & 견적서"
 msgstr "Outsourcing Checklist & Quote Template"
 
-msgid "15분 코드·배포 진단"
-msgstr "15-min Code & Deploy Diagnosis"
+msgid "바이브코딩 기술 진단"
+msgstr "Technical Consultation"
 
 msgid "광주 거점 개발"
 msgstr "Gwangju Hub Development"
@@ -755,3 +755,111 @@ msgstr "QUROOM, quroom, web development, app development, startup MVP developmen
 
 msgid "큐룸"
 msgstr "QUROOM"
+
+msgid "업무 자동화의 실행 우선순위를 확인합니다."
+msgstr "Find the priorities for automating your workflow."
+
+msgid "Codex·Claude로 만든 서비스의 문제를 함께 살펴보고 필요한 작업과 진행 방향을 안내합니다. 30분 온라인 상담은 무료입니다."
+msgstr "We review issues in services built with Codex or Claude and discuss the work needed and next steps. The 30-minute online consultation is free."
+
+msgid "만들던 서비스가 막혔다면, 현재 상태부터 함께 살펴봅니다."
+msgstr "Stuck building your service? Let’s review where things stand."
+
+msgid "Codex·Claude로 만든 서비스가 로컬에서는 동작하지만 배포 후에는 오류가 생기나요? 오류 증상과 지금까지 시도한 내용을 바탕으로 확인할 부분과 필요한 작업을 안내합니다."
+msgstr "Does your service built with Codex or Claude work locally but fail after deployment? We use the symptoms and what you have tried to outline what to check and the work needed."
+
+msgid "30분 온라인 상담 · 무료"
+msgstr "30-minute online consultation · Free"
+
+msgid "기술 진단 신청"
+msgstr "Request a Technical Consultation"
+
+msgid "현재 상황 확인"
+msgstr "Review the Current Situation"
+
+msgid "어떤 기능에서 문제가 생겼는지, 어디까지 동작하는지 살펴봅니다."
+msgstr "We review which features have problems and what currently works."
+
+msgid "확인할 부분과 작업 범위 정리"
+msgstr "Outline Checks and Scope"
+
+msgid "공유해 주신 화면과 로그를 바탕으로 추가로 확인할 사항과 필요한 작업을 정리합니다."
+msgstr "Based on the screens and logs you share, we outline further checks and the work needed."
+
+msgid "다음 진행 방향 안내"
+msgstr "Discuss Next Steps"
+
+msgid "직접 이어갈 수 있는 부분과 개발 지원이 필요한 부분을 설명합니다. 작업을 의뢰하실 경우 일정과 견적을 안내합니다."
+msgstr "We explain what you can continue yourself and where development support may help. If you want to commission the work, we discuss timing and a quote."
+
+msgid "상담은 공유해 주신 자료를 바탕으로 진행합니다. 코드 수정이나 상세 분석이 필요한 경우에는 작업 범위와 비용을 먼저 안내합니다."
+msgstr "The consultation is based on the materials you share. If code changes or detailed analysis are needed, we explain scope and cost first."
+
+msgid "어디에서 막혔는지 알려주세요."
+msgstr "Tell Us Where You Are Stuck"
+
+msgid "오류 증상, 사용 중인 기술, 지금까지 시도한 내용을 적어주세요. 희망 일정과 예산을 알려주시면 후속 작업을 제안하는 데 도움이 됩니다."
+msgstr "Describe the error, your technology stack, and what you have tried. Your target timeline and budget help us propose follow-up work."
+
+msgid "업무 자동화 실행 진단"
+msgstr "Workflow Automation Review"
+
+msgid "오류 증상, 사용 중인 기술, 지금까지 시도한 내용을 적어주세요. 희망 일정과 예산이 있다면 함께 알려주세요. 로그를 공유할 때는 비밀번호와 API 키를 제외해 주세요."
+msgstr "Describe the error, your technology stack, and what you have tried. Include a target timeline and budget if you have them. Remove passwords and API keys from shared logs."
+
+msgid "배포 전 점검"
+msgstr "Before Deployment"
+
+msgid "배포 전 참고 체크리스트"
+msgstr "Pre-deployment Checklist"
+
+msgid "화면이 동작해도 데이터가 늘거나 요청이 겹치면 문제가 생길 수 있습니다. 실제 배포 전에 아래 항목을 확인하세요. 결제 기능이 있는 서비스는 결제·주문 항목도 점검하세요."
+msgstr "A working screen can still fail as data grows or requests overlap. Check these items before deployment. If your service accepts payments, also review the payment and order checks."
+
+msgid "보안 및 환경변수"
+msgstr "Security and Environment Settings"
+
+msgid "API 키·비밀번호가 소스코드나 브라우저 화면에 노출되지 않는지 확인합니다."
+msgstr "Check that API keys and passwords are not exposed in source code or the browser."
+
+msgid ".env 등 비밀 설정 파일이 Git 저장소에 포함되지 않았는지 확인합니다."
+msgstr "Check that secret configuration files such as .env are excluded from the Git repository."
+
+msgid "로컬과 운영 환경의 주소·설정값을 구분하고, 운영에 테스트 키가 남아 있지 않은지 확인합니다."
+msgstr "Separate local and production URLs and settings, and check that test keys are not used in production."
+
+msgid "데이터 조회 속도 (N+1)"
+msgstr "Database Query Performance (N+1)"
+
+msgid "목록에 항목이 늘어날 때 관련 정보를 건별로 다시 조회하는 N+1 쿼리가 발생하는지 확인합니다."
+msgstr "Check for N+1 queries that fetch related information separately for each item as a list grows."
+
+msgid "테스트 데이터가 적을 때뿐 아니라 실제 운영 규모의 데이터로 조회 횟수와 응답 시간을 확인합니다."
+msgstr "Measure query counts and response times with production-scale data, not just a small test dataset."
+
+msgid "필요한 관련 데이터를 한 번에 가져오고, 목록은 페이지를 나눠 조회하는지 확인합니다."
+msgstr "Check that related data is fetched in batches and lists are paginated."
+
+msgid "결제 중복과 주문 누락"
+msgstr "Duplicate Payments and Missing Orders"
+
+msgid "결제 버튼을 여러 번 누르거나 요청을 재시도해도 같은 주문이 중복 결제되지 않는지 확인합니다. (멱등성)"
+msgstr "Check that repeated clicks or retries cannot charge the same order more than once. (Idempotency)"
+
+msgid "결제 완료 알림(웹훅)이 반복 도착해도 주문 생성·상품 지급이 한 번만 처리되는지 확인합니다."
+msgstr "Check that repeated payment notifications (webhooks) create an order or deliver a product only once."
+
+msgid "결제는 승인됐는데 주문 저장이 실패한 경우, 결제 내역과 주문 상태를 대조해 누락을 찾고 복구할 수 있는지 확인합니다."
+msgstr "If payment succeeds but saving the order fails, check that you can reconcile payment records with order status and recover missing orders."
+
+msgid "배포 중 요청과 장애 복구"
+msgstr "Requests During Deployment and Recovery"
+
+msgid "새 버전이 정상 동작하는지 확인한 뒤 트래픽을 전환하고, 기존 서버의 처리 중인 요청을 마친 후 종료하는지 확인합니다. (무중단 배포)"
+msgstr "Check the new version before switching traffic, and let the old server finish in-flight requests before stopping it. (Zero-downtime deployment)"
+
+msgid "배포 중 결제 알림을 받지 못했을 때 재전송이나 결제 상태 재조회로 주문에 반영할 수 있는지 확인합니다."
+msgstr "Check that payment notifications missed during deployment can be reflected in orders through redelivery or payment-status reconciliation."
+
+msgid "배포 후 오류를 확인할 로그·알림과 이전 버전으로 되돌릴 절차를 준비합니다."
+msgstr "Prepare logs and alerts to detect errors after deployment and a procedure to roll back to the previous version."

@@ -768,9 +768,6 @@ def free_diagnosis(request: HttpRequest) -> HttpResponse:
     from .content import VIBE_CODING_CHECKLIST
 
     context["vibe_checklist"] = VIBE_CODING_CHECKLIST
-    context["initial_tab"] = (
-        "automation" if request.GET.get("type") == "automation" else "vibe"
-    )
     return _render_page(
         request,
         "landing/free_diagnosis.html",
@@ -2697,7 +2694,7 @@ def admin_dashboard(request: HttpRequest) -> HttpResponse:
         .order_by("-count")
     )
     inquiry_type_labels = {
-        "vibe_diagnosis": "15분 무료 코드·배포 진단",
+        "vibe_diagnosis": "30분 바이브코딩 기술 진단",
         "wbs_review": "외주 견적·개발 범위 사전 상담",
         "gov_grant": "정부지원사업 e나라도움 서류",
         "lead_magnet_diagnosis": "무료 자동화 실행 진단",

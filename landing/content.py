@@ -517,15 +517,15 @@ SHARED_CONTENT = {
         },
         {
             "title": {
-                "ko": "15분 코드·배포 진단",
-                "en": "15-minute Code & Deploy Diagnosis",
+                "ko": "바이브코딩 기술 진단",
+                "en": "30-minute Technical Consultation",
             },
             "description": {
-                "ko": "Cursor·Claude 생성 코드 배포 및 결제 연동 에러 긴급 점검",
-                "en": "Emergency review for AI-generated code, deployment, and payment webhook errors",
+                "ko": "Codex·Claude로 만든 서비스의 문제와 후속 작업 상담",
+                "en": "Discuss issues in AI-generated services and the follow-up work needed",
             },
-            "terms": {"ko": "15분 · 무료", "en": "15 min · Free"},
-            "cta": {"ko": "15분 진단 신청", "en": "Request Diagnosis"},
+            "terms": {"ko": "30분 · 무료", "en": "30 min · Free"},
+            "cta": {"ko": "기술 진단 신청", "en": "Request Diagnosis"},
             "url": "/free-diagnosis/",
         },
         {
@@ -1906,7 +1906,7 @@ GWANGJU_PAGE_CONTENT = {
             },
             {
                 "title": "운영 이관",
-                "description": "수정 방법, 배포 방법, 장애 대응 기준이 문서로 남는지 확인합니다.",
+                "description": "수정 방법, 배포 방법, 장애 대응 기준을 명확히 합니다.",
             },
         ],
         "checklist_title": "사전 점검 체크리스트",
@@ -2194,36 +2194,36 @@ VIBE_CODING_CHECKLIST = [
         "category": "보안 및 환경변수",
         "icon": "🔐",
         "items": [
-            ".env 저장소 격리: .env, .env.local 파일이 .gitignore에 등록되어 GitHub에 커밋되지 않았는가",
-            "클라이언트 키 노출 통제: NEXT_PUBLIC_ 또는 VITE_ 접두사에 DB 비번, 결제 시크릿 키가 없는가",
-            "하드코딩 API Key 제거: 코드 내부에 sk-ant- 또는 sk- 형태의 토큰 문자열이 잔존하지 않는가",
+            "API 키·비밀번호가 소스코드나 브라우저 화면에 노출되지 않는지 확인합니다.",
+            ".env 등 비밀 설정 파일이 Git 저장소에 포함되지 않았는지 확인합니다.",
+            "로컬과 운영 환경의 주소·설정값을 구분하고, 운영에 테스트 키가 남아 있지 않은지 확인합니다.",
         ],
     },
     {
-        "category": "인프라 & 네트워크",
-        "icon": "🌐",
-        "items": [
-            "포트 바인딩 확인: 백엔드 앱 포트(3000/8000) 바인딩 및 Nginx 리버스 프록시 80/443 포워딩",
-            "Let's Encrypt SSL 자동 갱신: HTTPS 인증서 설치 및 certbot renew 자동 갱신 크론잡 구성",
-            "CORS 도메인 명시: 와일드카드(*) 대신 실제 프로덕션 프론트엔드 도메인만 화이트리스트 허용",
-        ],
-    },
-    {
-        "category": "데이터베이스 & 세션",
+        "category": "데이터 조회 속도 (N+1)",
         "icon": "🗄️",
         "items": [
-            "마이그레이션 이력 관리: alembic / prisma migrate 등 버전 관리 파일이 순차적으로 유지되는가",
-            "커넥션 풀링(Connection Pooling): 서버리스/컨테이너 환경 PgBouncer 또는 Supabase Pooler 설정",
-            "외래키(FK) 무결성 및 인덱스: 결제 및 주문 테이블에 사용자 ID 외래키와 기본 조회 인덱스 확인",
+            "목록에 항목이 늘어날 때 관련 정보를 건별로 다시 조회하는 N+1 쿼리가 발생하는지 확인합니다.",
+            "테스트 데이터가 적을 때뿐 아니라 실제 운영 규모의 데이터로 조회 횟수와 응답 시간을 확인합니다.",
+            "필요한 관련 데이터를 한 번에 가져오고, 목록은 페이지를 나눠 조회하는지 확인합니다.",
         ],
     },
     {
-        "category": "결제 및 웹훅 멱등성",
+        "category": "결제 중복과 주문 누락",
         "icon": "💳",
         "items": [
-            "결제 금액 위변조 검증: 브라우저 금액 대신 서버에서 PG사 REST API로 실제 승인 금액 대조",
-            "웹훅 HMAC 서명 검증: 외부 결제 완료 웹훅 수신 시 시크릿 헤더 서명 검증",
-            "멱등성(Idempotency) 보장: 중복 웹훅 도달 시에도 결제 및 주문이 1회만 처리되도록 트랜잭션 보장",
+            "결제 버튼을 여러 번 누르거나 요청을 재시도해도 같은 주문이 중복 결제되지 않는지 확인합니다. (멱등성)",
+            "결제 완료 알림(웹훅)이 반복 도착해도 주문 생성·상품 지급이 한 번만 처리되는지 확인합니다.",
+            "결제는 승인됐는데 주문 저장이 실패한 경우, 결제 내역과 주문 상태를 대조해 누락을 찾고 복구할 수 있는지 확인합니다.",
+        ],
+    },
+    {
+        "category": "배포 중 요청과 장애 복구",
+        "icon": "🌐",
+        "items": [
+            "새 버전이 정상 동작하는지 확인한 뒤 트래픽을 전환하고, 기존 서버의 처리 중인 요청을 마친 후 종료하는지 확인합니다. (무중단 배포)",
+            "배포 중 결제 알림을 받지 못했을 때 재전송이나 결제 상태 재조회로 주문에 반영할 수 있는지 확인합니다.",
+            "배포 후 오류를 확인할 로그·알림과 이전 버전으로 되돌릴 절차를 준비합니다.",
         ],
     },
 ]
