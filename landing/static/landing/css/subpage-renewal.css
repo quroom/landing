@@ -456,13 +456,29 @@
   color: var(--ink);
 }
 
+.subpage-article-body h4 {
+  margin: 28px 0 10px;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .subpage-article-body p {
   margin: 0 0 20px;
 }
 
 .subpage-article-body ul, .subpage-article-body ol {
   margin: 0 0 24px;
-  padding-left: 24px;
+  padding-left: 28px;
+  line-height: 1.75;
+}
+
+.subpage-article-body ul {
+  list-style-type: disc;
+}
+
+.subpage-article-body ol {
+  list-style-type: decimal;
 }
 
 .subpage-article-body li {
@@ -470,23 +486,65 @@
 }
 
 .subpage-article-body pre {
-  background: #172033;
+  background: #0f172a;
   color: #f8fafc;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 20px 24px;
+  border-radius: 10px;
   overflow-x: auto;
-  font-size: 0.88rem;
-  margin: 24px 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  margin: 28px 0;
+  border: 1px solid #1e293b;
+}
+
+.subpage-article-body code {
+  background: #f1f5f9;
+  color: #0f172a;
+  padding: 3px 7px;
+  border-radius: 5px;
+  font-size: 0.88em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  border: 1px solid #e2e8f0;
+  font-weight: 500;
+}
+
+.subpage-article-body pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  font-weight: normal;
 }
 
 .subpage-article-body blockquote {
-  margin: 24px 0;
-  padding: 16px 22px;
-  background: var(--blue-soft);
-  border-left: 4px solid var(--blue);
-  border-radius: 0 8px 8px 0;
-  color: var(--body);
-  font-size: 0.95rem;
+  margin: 28px 0;
+  padding: 18px 24px;
+  background: #f0f9ff;
+  border-left: 4px solid #0284c7;
+  border-radius: 0 10px 10px 0;
+  color: #1e293b;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.subpage-article-body hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 48px 0;
+}
+
+.subpage-article-body strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.subpage-article-body a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
 }
 
 /* Subpage Contact Wrap */

@@ -945,7 +945,10 @@ def _render_limited_markdown(markdown_text: str) -> str:
     blocks = []
     paragraph_lines = []
     list_items = []
+    ordered_items = []
+    quote_lines = []
     in_code_block = False
+    code_lang = ""
     code_lines = []
 
     def flush_paragraph() -> None:
@@ -962,60 +965,144 @@ def _render_limited_markdown(markdown_text: str) -> str:
             )
             list_items.clear()
 
+    def flush_ordered_list() -> None:
+        if ordered_items:
+            blocks.append(
+                "<ol>" + "".join(f"<li>{item}</li>" for item in ordered_items) + "</ol>"
+            )
+            ordered_items.clear()
+
+    def flush_quote() -> None:
+        if quote_lines:
+            blocks.append(
+                "<blockquote>"
+                + "<br>".join(_render_inline_markdown(q_line) for q_line in quote_lines)
+                + "</blockquote>"
+            )
+            quote_lines.clear()
+
     def flush_code() -> None:
         if code_lines:
+            lang_attr = f' class="language-{escape(code_lang)}"' if code_lang else ""
             blocks.append(
-                "<pre><code>" + escape("\n".join(code_lines)) + "</code></pre>"
+                f"<pre><code{lang_attr}>"
+                + escape("\n".join(code_lines))
+                + "</code></pre>"
             )
             code_lines.clear()
 
+    def flush_all_pending() -> None:
+        flush_paragraph()
+        flush_list()
+        flush_ordered_list()
+        flush_quote()
+
     for raw_line in lines:
         line = raw_line.rstrip()
-        if line.strip() == "```":
+        stripped = line.strip()
+
+        # Code block fence (``` or ```python, ```bash, etc.)
+        if stripped.startswith("```"):
             if in_code_block:
                 flush_code()
                 in_code_block = False
+                code_lang = ""
             else:
-                flush_paragraph()
-                flush_list()
+                flush_all_pending()
                 in_code_block = True
+                code_lang = stripped[3:].strip()
             continue
+
         if in_code_block:
             code_lines.append(line)
             continue
-        if not line.strip():
+
+        # Blank line
+        if not stripped:
+            flush_all_pending()
+            continue
+
+        # Horizontal rule
+        if stripped in ("---", "***", "___"):
+            flush_all_pending()
+            blocks.append("<hr>")
+            continue
+
+        # Blockquote
+        if line.startswith("> "):
             flush_paragraph()
             flush_list()
+            flush_ordered_list()
+            quote_lines.append(line[2:].strip())
+            continue
+        elif quote_lines:
+            flush_quote()
+
+        # Headings
+        if line.startswith("#### "):
+            flush_all_pending()
+            blocks.append(f"<h4>{_render_inline_markdown(line[5:].strip())}</h4>")
             continue
         if line.startswith("### "):
-            flush_paragraph()
-            flush_list()
-            blocks.append(f"<h3>{escape(line[4:].strip())}</h3>")
+            flush_all_pending()
+            blocks.append(f"<h3>{_render_inline_markdown(line[4:].strip())}</h3>")
             continue
         if line.startswith("## "):
-            flush_paragraph()
-            flush_list()
-            blocks.append(f"<h2>{escape(line[3:].strip())}</h2>")
+            flush_all_pending()
+            blocks.append(f"<h2>{_render_inline_markdown(line[3:].strip())}</h2>")
             continue
-        if line.startswith("- "):
+        if line.startswith("# "):
+            flush_all_pending()
+            blocks.append(f"<h1>{_render_inline_markdown(line[2:].strip())}</h1>")
+            continue
+
+        # Unordered list
+        if line.startswith("- ") or line.startswith("* "):
             flush_paragraph()
+            flush_ordered_list()
             list_items.append(_render_inline_markdown(line[2:].strip()))
             continue
+        elif list_items:
+            flush_list()
+
+        # Ordered list
+        m_ol = re.match(r"^(\d+)\.\s+(.*)$", line)
+        if m_ol:
+            flush_paragraph()
+            flush_list()
+            ordered_items.append(_render_inline_markdown(m_ol.group(2).strip()))
+            continue
+        elif ordered_items:
+            flush_ordered_list()
+
         paragraph_lines.append(line.strip())
 
-    flush_paragraph()
-    flush_list()
+    flush_all_pending()
     flush_code()
     return "\n".join(blocks)
 
 
 def _render_inline_markdown(text: str) -> str:
     escaped = escape(text)
-    return re.sub(
-        r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
+    # Inline code: `code`
+    escaped = re.sub(
+        r"`([^`]+)`",
+        r"<code>\1</code>",
+        escaped,
+    )
+    # Bold: **bold**
+    escaped = re.sub(
+        r"\*\*([^*]+)\*\*",
+        r"<strong>\1</strong>",
+        escaped,
+    )
+    # Markdown links: [text](url)
+    escaped = re.sub(
+        r"\[([^\]]+)\]\((https?://[^)\s]+|/[^)\s]*)\)",
         r'<a href="\2" target="_blank" rel="noreferrer">\1</a>',
         escaped,
     )
+    return escaped
 
 
 def robots_txt(request: HttpRequest) -> HttpResponse:
