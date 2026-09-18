@@ -568,16 +568,17 @@
 }
 
 .subpage-article-body hr:last-of-type + p {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-top: -20px;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-top: -24px;
   margin-bottom: 0;
 }
 
 .subpage-article-body hr:last-of-type + p a {
-  color: var(--muted);
+  color: #94a3b8;
   text-decoration: underline;
+  text-decoration-color: #cbd5e1;
 }
 
 /* Subpage Contact Wrap */
