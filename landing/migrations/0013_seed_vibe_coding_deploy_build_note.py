@@ -3,7 +3,7 @@ from django.utils import timezone
 
 BODY_MARKDOWN = """## 화면은 3일 만에 만들었는데, 도메인 연결과 서버 배포에서 멈춰 섰습니다
 
-최근 Cursor, Claude Code 등 AI 도구를 활용해 3~5일 만에 웹 서비스나 MVP 프로토타입을 완성하는 분들이 정말 많아졌습니다. 화면(UI)도 깔끔하고 내 컴퓨터(`127.0.0.1:8000`)에서는 결제나 기능이 완벽하게 돌아가니, 금방이라도 서비스를 런칭할 수 있을 것 같은 자신감이 듭니다.
+최근 Codex, Claude Code 등 AI 도구를 활용해 3~5일 만에 웹 서비스나 MVP 프로토타입을 완성하는 분들이 정말 많아졌습니다. 화면(UI)도 깔끔하고 내 컴퓨터(`127.0.0.1:8000`)에서는 결제나 기능이 완벽하게 돌아가니, 금방이라도 서비스를 런칭할 수 있을 것 같은 자신감이 듭니다.
 
 하지만 진짜 싸움은 **도메인을 구매하고 리눅스 서버에 올리는 배포 단계**에서 시작됩니다.
 
@@ -188,7 +188,7 @@ def seed_vibe_coding_deploy_note(apps, schema_editor):
         defaults={
             "title": "바이브코딩 실서버 배포와 DNS 연결 A to Z: 초보자가 겪는 7가지 함정과 해결법",
             "summary": (
-                "Cursor, Claude로 만든 서비스를 도메인 구매부터 DNS A 레코드 연결, "
+                "Codex, Claude로 만든 서비스를 도메인 구매부터 DNS A 레코드 연결, "
                 "Nginx 리버스 프록시, HTTPS 자물쇠, Django WhiteNoise 정적 파일 설정까지 "
                 "실서버 배포에 필요한 전 과정을 알기 쉽게 총정리합니다."
             ),
