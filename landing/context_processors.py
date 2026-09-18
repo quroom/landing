@@ -13,3 +13,9 @@ def i18n_context(request: HttpRequest) -> dict[str, str]:
     return {
         "clean_next_url": clean_url or "/",
     }
+
+
+def analytics_context(request: HttpRequest) -> dict[str, bool]:
+    from .analytics import client_ip_from_request, is_excluded_ip
+
+    return {"posthog_enabled": not is_excluded_ip(client_ip_from_request(request))}

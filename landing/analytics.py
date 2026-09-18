@@ -97,7 +97,7 @@ def client_ip_from_request(request: HttpRequest) -> str:
     return source_ip
 
 
-def _is_excluded_ip(client_ip: str) -> bool:
+def is_excluded_ip(client_ip: str) -> bool:
     excluded_ips = getattr(settings, "ANALYTICS_EXCLUDED_IPS", [])
     if not client_ip or not excluded_ips:
         return _is_excluded_ip_from_db(client_ip)
@@ -128,7 +128,7 @@ def track_event(
     metadata: dict[str, Any] | None = None,
 ) -> None:
     client_ip = client_ip_from_request(request)
-    if _is_excluded_ip(client_ip):
+    if is_excluded_ip(client_ip):
         return
 
     payload: dict[str, Any] = {}
