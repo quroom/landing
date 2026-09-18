@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">바이브코딩 실서버 배포 오류 대표 이미지</title>
+  <desc id="desc">큐룸 빌드노트의 바이브코딩 실서버 배포 오류 해결 글을 위한 단순 타이포그래피 카드</desc>
+  <rect width="1200" height="630" rx="38" fill="#edf4ff"/>
+  <g font-family="Noto Sans CJK KR, sans-serif">
+    <text x="600" y="64" text-anchor="middle" font-size="24" font-weight="700" letter-spacing="3" fill="#17243b">QUROOM</text>
+
+    <g transform="translate(470 112)">
+      <rect width="260" height="154" rx="20" fill="#ffffff" stroke="#17243b" stroke-width="8"/>
+      <path d="M0 38 H260" stroke="#17243b" stroke-width="8"/>
+      <circle cx="24" cy="19" r="6" fill="#ef654e"/>
+      <circle cx="46" cy="19" r="6" fill="#f4b740"/>
+      <circle cx="68" cy="19" r="6" fill="#4eb978"/>
+      <path d="M36 78 H141 M36 104 H181" stroke="#7e8aa0" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="218" cy="108" r="40" fill="#2563eb"/>
+      <path d="M218 84 V111" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="218" cy="129" r="5" fill="#ffffff"/>
+    </g>
+
+    <text x="600" y="352" text-anchor="middle" font-size="36" font-weight="700" fill="#2563eb">바이브코딩</text>
+    <text x="600" y="416" text-anchor="middle" font-size="58" font-weight="700" fill="#17243b">실서버 배포 오류</text>
+    <text x="600" y="475" text-anchor="middle" font-size="31" font-weight="500" fill="#536178">DNS · Nginx · 정적 파일</text>
+
+    <rect x="502" y="527" width="196" height="54" rx="27" fill="#172b4d"/>
+    <text x="600" y="563" text-anchor="middle" font-size="23" font-weight="700" fill="#ffffff">BUILD NOTES</text>
+  </g>
+</svg>

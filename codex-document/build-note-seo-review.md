@@ -4,10 +4,10 @@
 
 ## 대표 이미지
 
-- 7개 주제별 자체 제작 흐름도, PNG 1200×630. 이미지 생성 API와 외부 사진 미사용.
+- 7개 주제별 단순 타이포그래피 카드, PNG 1200×630. 이미지 생성 API와 외부 사진 미사용.
 - 본문, OG, BlogPosting.image에서 같은 파일을 사용한다. 이미지 노출이나 순위는 검색엔진이 결정한다.
-- `landing/build_note_images.py`에 slug별 주제와 단계를 정의한다. 신규 글은 관련 도식이 등록된 경우에만 Article 이미지가 추가된다.
-- `python3 scripts/build-note-covers.py`로 재생성한다. 제작 환경에 Pillow와 Noto Sans CJK가 필요하며 서버 런타임 의존성은 없다. 한국어 face(index 1)의 Bold 제목/단계명과 Regular 설명을 사용한다.
+- `landing/build_note_images.py`에 slug별 이미지 키, alt, caption을 정의한다. 신규 글은 관련 카드가 등록된 경우에만 Article 이미지가 추가된다.
+- 상세 제작 규칙은 `codex-document/build-note-cover-standard.md`를 따른다. SVG 원본을 편집한 뒤 `python3 scripts/build-note-covers.py`로 PNG를 재생성한다.
 
 ## 측정
 

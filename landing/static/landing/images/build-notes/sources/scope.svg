@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<rect width="1200" height="630" rx="38" fill="#fff8e8"/>
+<g font-family="Noto Sans CJK KR, sans-serif">
+<text x="600" y="64" text-anchor="middle" font-size="24" font-weight="700" letter-spacing="3" fill="#3f321b">QUROOM</text>
+<rect x="474" y="108" width="252" height="162" rx="20" fill="#fff" stroke="#3f321b" stroke-width="8"/><path d="M600 108v162" stroke="#3f321b" stroke-width="7"/><circle cx="522" cy="151" r="15" fill="#d28b00"/><path d="m514 151 7 7 13-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M550 151h28M506 198h72M506 225h50" stroke="#8b7c5f" stroke-width="9" stroke-linecap="round"/><circle cx="648" cy="151" r="15" fill="#e16050"/><path d="m641 144 14 14m0-14-14 14" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M676 151h23M632 198h67M632 225h48" stroke="#8b7c5f" stroke-width="9" stroke-linecap="round"/>
+<text x="600" y="352" text-anchor="middle" font-size="36" font-weight="700" fill="#d28b00">외주 계약</text>
+<text x="600" y="416" text-anchor="middle" font-size="56" font-weight="700" fill="#3f321b">과업 범위와 검수 기준</text>
+<text x="600" y="475" text-anchor="middle" font-size="29" font-weight="500" fill="#59677a">포함 범위 · 제외 범위 · 인수 조건</text>
+<rect x="502" y="527" width="196" height="54" rx="27" fill="#3f321b"/>
+<text x="600" y="563" text-anchor="middle" font-size="23" font-weight="700" fill="#fff">BUILD NOTES</text>
+</g></svg>

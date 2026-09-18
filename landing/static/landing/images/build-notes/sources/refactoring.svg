@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<rect width="1200" height="630" rx="38" fill="#f3efff"/>
+<g font-family="Noto Sans CJK KR, sans-serif">
+<text x="600" y="64" text-anchor="middle" font-size="24" font-weight="700" letter-spacing="3" fill="#2f254d">QUROOM</text>
+<g fill="#fff" stroke="#2f254d" stroke-width="7"><circle cx="503" cy="151" r="27"/><circle cx="503" cy="230" r="27"/><circle cx="581" cy="190" r="27"/></g><g stroke="#e07b63" stroke-width="7"><path d="m524 164 35 17M524 218l35-18M503 178v25"/></g><path d="M628 190h55m0 0-18-18m18 18-18 18" fill="none" stroke="#7655c5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g fill="#fff" stroke="#2f254d" stroke-width="7"><rect x="702" y="131" width="62" height="118" rx="16"/><path d="M717 163h32M717 190h32M717 217h32"/></g>
+<text x="600" y="352" text-anchor="middle" font-size="36" font-weight="700" fill="#7655c5">AI 프로토타입</text>
+<text x="600" y="416" text-anchor="middle" font-size="56" font-weight="700" fill="#2f254d">상용화 리팩터링</text>
+<text x="600" y="475" text-anchor="middle" font-size="29" font-weight="500" fill="#59677a">코드 진단 · 경계 분리 · 테스트</text>
+<rect x="502" y="527" width="196" height="54" rx="27" fill="#2f254d"/>
+<text x="600" y="563" text-anchor="middle" font-size="23" font-weight="700" fill="#fff">BUILD NOTES</text>
+</g></svg>
