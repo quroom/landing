@@ -72,7 +72,7 @@ class LandingPageTests(TestCase):
             (
                 "landing:gwangju",
                 "https://quroom.kr/gwangju/",
-                "광주 홈페이지 제작·웹개발·앱개발, 개발 범위와 견적 기준부터 명확히 세웁니다",
+                "광주 웹·앱 개발 외주, 개발 범위와 견적 기준부터 명확히 세웁니다",
             ),
             (
                 "landing:gwangju_homepage",
@@ -138,7 +138,7 @@ class LandingPageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<html lang="ko">', html=False)
-        self.assertContains(response, "광주 홈페이지 제작·웹개발·앱개발")
+        self.assertContains(response, "광주 웹·앱 개발 외주")
 
     @override_settings(
         SITE_BASE_URL="https://quroom.kr",
@@ -869,6 +869,24 @@ class LandingPageTests(TestCase):
         self.assertContains(response, "삼성전자 포함 총 개발 경력")
         self.assertContains(response, "개인정보처리방침")
         self.assertContains(response, "사업자 정보")
+
+    def test_homepage_keyword_points_to_dedicated_local_landing(self) -> None:
+        home = self.client.get(reverse("landing:index"))
+        hub = self.client.get(reverse("landing:gwangju"))
+        homepage = self.client.get(reverse("landing:gwangju_homepage"))
+
+        self.assertContains(
+            home,
+            f'href="{reverse("landing:gwangju_homepage")}">광주 홈페이지 제작</a>',
+            html=False,
+        )
+        self.assertContains(hub, "광주 웹·앱 개발 외주")
+        self.assertNotContains(
+            hub,
+            "광주 홈페이지 제작·웹개발·앱개발",
+        )
+        self.assertContains(homepage, "광주 북구에 기반을 둔 8년 차 개발사")
+        self.assertContains(homepage, "광주에서 대면 상담도 가능한가요?")
 
     def test_outsourcing_checklist_marks_only_arttrip_as_outsourced(self) -> None:
         response = self.client.get(reverse("landing:outsourcing_checklist"))

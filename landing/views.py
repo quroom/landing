@@ -928,14 +928,53 @@ def build_note_detail(request: HttpRequest, slug: str) -> HttpResponse:
         published_at__lte=timezone.now(),
     )
     note_url = reverse("landing:build_note_detail", kwargs={"slug": note.slug})
+    canonical_url = _absolute_site_url(note_url)
+    article_schema = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": note.seo_title or note.title,
+        "description": note.seo_description or note.summary,
+        "url": canonical_url,
+        "datePublished": note.published_at.isoformat() if note.published_at else None,
+        "dateModified": note.updated_at.isoformat() if note.updated_at else None,
+        "author": {
+            "@type": "Person",
+            "name": "김상은",
+            "jobTitle": "대표 / 풀스택 엔지니어",
+            "worksFor": {
+                "@type": "Organization",
+                "name": "큐룸 (QUROOM)",
+                "url": _absolute_site_url("/"),
+            },
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "큐룸",
+            "url": _absolute_site_url("/"),
+            "logo": {
+                "@type": "ImageObject",
+                "url": _absolute_site_url("/static/logo.jpg"),
+            },
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": canonical_url,
+        },
+    }
+    if note.tags:
+        article_schema["keywords"] = [
+            t.strip() for t in note.tags.split(",") if t.strip()
+        ]
+
     return render(
         request,
         "landing/build_note_detail.html",
         {
             "note": note,
             "body_html": _render_limited_markdown(note.body_markdown),
-            "canonical_url": _absolute_site_url(note_url),
-            "og_url": _absolute_site_url(note_url),
+            "canonical_url": canonical_url,
+            "og_url": canonical_url,
+            "article_schema_json": json.dumps(article_schema, ensure_ascii=False),
         },
     )
 

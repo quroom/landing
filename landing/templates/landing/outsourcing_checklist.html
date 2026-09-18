@@ -40,6 +40,7 @@
                 aria-controls="mobile-menu">{% trans "메뉴" %}</button>
         <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
           <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+          <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
           <a href="#wbs-rules">{% trans "5대 제외 기준" %}</a>
           <a href="#quote-template">{% trans "표준 견적서 서식" %}</a>
           <a href="#enaradaum">{% trans "e나라도움 5종 서류" %}</a>
@@ -51,6 +52,7 @@
            class="renewal-mobile-nav hidden"
            aria-label="{% trans '모바일 메뉴' %}">
         <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+        <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
         <a href="#wbs-rules">{% trans "5대 제외 기준" %}</a>
         <a href="#quote-template">{% trans "표준 견적서 서식" %}</a>
         <a href="#enaradaum">{% trans "e나라도움 5종 서류" %}</a>

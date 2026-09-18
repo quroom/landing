@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{% static 'landing/css/home-renewal.css' %}" />
   <link rel="stylesheet"
         href="{% static 'landing/css/subpage-renewal.css' %}" />
+  {% if article_schema_json %}<script type="application/ld+json">{{ article_schema_json|safe }}</script>{% endif %}
 {% endblock %}
 {% block body %}
   <div class="home-renewal subpage-renewal">
@@ -108,9 +109,7 @@
                         margin-top: 20px;
                         padding-bottom: 24px;
                         border-bottom: 1px solid var(--line)">
-              {% for tag in note.tag_list %}
-                <span style="font-size: 0.78rem; color: var(--muted);">#{{ tag }}</span>
-              {% endfor %}
+              {% for tag in note.tag_list %}<span style="font-size: 0.78rem; color: var(--muted);">#{{ tag }}</span>{% endfor %}
             </div>
           {% endif %}
           <div class="subpage-article-body">{{ body_html|safe }}</div>

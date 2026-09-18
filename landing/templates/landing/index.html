@@ -40,6 +40,7 @@
           <a href="#work">{{ content.client_work_label }}</a>
           <a href="#products">{{ content.products_label }}</a>
           <a href="#process">{{ content.execution_process_label }}</a>
+          <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
           <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
           <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
           <a class="renewal-button renewal-button-small" href="#contact">{% trans "외주 상담" %}</a>
@@ -52,6 +53,7 @@
         <a href="#work">{{ content.client_work_label }}</a>
         <a href="#products">{{ content.products_label }}</a>
         <a href="#process">{{ content.execution_process_label }}</a>
+        <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
         <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
         <a href="{% url 'landing:free_diagnosis' %}">{% trans "무료 진단" %}</a>
         <a href="#contact">{% trans "외주 상담" %}</a>
@@ -411,7 +413,8 @@
       <nav aria-label="{% trans '하단 메뉴' %}">
         <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트 & 표준 견적서" %}</a>
         <a href="{% url 'landing:free_diagnosis' %}">{% trans "바이브코딩 기술 진단" %}</a>
-        <a href="{% url 'landing:gwangju' %}">{% trans "광주 거점 개발" %}</a>
+        <a href="{% url 'landing:gwangju_homepage' %}">{% trans "광주 홈페이지 제작" %}</a>
+        <a href="{% url 'landing:gwangju' %}">{% trans "광주 웹·앱 개발" %}</a>
         <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
         <a href="{% url 'landing:privacy' %}">{% trans "개인정보처리방침" %}</a>
         <a href="{% url 'landing:terms' %}">{% trans "이용약관" %}</a>

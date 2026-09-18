@@ -46,6 +46,7 @@
                 aria-controls="mobile-menu">{% trans "메뉴" %}</button>
         <nav class="renewal-nav" aria-label="{% trans '주요 메뉴' %}">
           <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+          <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
           <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
           <a href="{% url 'landing:free_diagnosis' %}">{% trans "기술 진단" %}</a>
           <a class="renewal-button renewal-button-small"
@@ -56,6 +57,7 @@
            class="renewal-mobile-nav hidden"
            aria-label="{% trans '모바일 메뉴' %}">
         <a href="{% url 'landing:index' %}">{% trans "메인 홈" %}</a>
+        <a href="{% url 'landing:build_notes' %}">{% trans "빌드 노트" %}</a>
         <a href="{% url 'landing:outsourcing_checklist' %}">{% trans "외주 체크리스트" %}</a>
         <a href="{% url 'landing:free_diagnosis' %}">{% trans "기술 진단" %}</a>
         <a href="{% url 'landing:index' %}#contact">{% trans "상담 문의" %}</a>
