@@ -157,6 +157,11 @@ else:
         "whitenoise.storage.CompressedManifestStaticFilesStorage"
     )
     WHITENOISE_MAX_AGE = 31536000
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 STORAGES = {
     "default": {

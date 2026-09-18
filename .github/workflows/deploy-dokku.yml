@@ -78,7 +78,19 @@ jobs:
         run: |
           git remote remove dokku >/dev/null 2>&1 || true
           git remote add dokku "dokku@${DOKKU_HOST}:${DOKKU_APP}"
-          git push dokku "HEAD:main" --force
+          for attempt in 1 2 3; do
+            echo "Deploy attempt $attempt of 3..."
+            if git push dokku "HEAD:main" --force; then
+              echo "Deploy succeeded on attempt $attempt"
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "Deploy failed after 3 attempts"
+              exit 1
+            fi
+            echo "Deploy push failed (likely transient deploy lock). Waiting 20s before retry..."
+            sleep 20
+          done
 
       - name: Post-deploy smoke checks
         id: smoke
