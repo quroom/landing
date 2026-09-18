@@ -567,6 +567,19 @@
   font-weight: 500;
 }
 
+.subpage-article-body hr:last-of-type + p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: -20px;
+  margin-bottom: 0;
+}
+
+.subpage-article-body hr:last-of-type + p a {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
 /* Subpage Contact Wrap */
 .subpage-contact-wrap {
   background: #263246;
