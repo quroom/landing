@@ -88,6 +88,12 @@ class BuildNoteSeoTests(TestCase):
             [s["@type"] for s in parser.schemas], ["Organization", "WebSite"]
         )
         self.assertContains(response, 'content="https://quroom.kr/static/')
+        self.assertContains(response, "landing/images/build-notes/deploy.png")
+        self.assertContains(response, 'loading="lazy"')
+        self.assertContains(
+            response,
+            'alt="바이브코딩 실서버 배포 오류: DNS, Nginx, 정적 파일"',
+        )
 
     def test_article_text_cannot_terminate_schema_script(self):
         self.note.seo_title = '</script><script>alert("test")</script>'

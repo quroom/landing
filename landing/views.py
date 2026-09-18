@@ -906,10 +906,16 @@ def outsourcing_checklist(request: HttpRequest) -> HttpResponse:
 
 
 def build_notes(request: HttpRequest) -> HttpResponse:
-    notes = BuildNote.objects.filter(
-        status=BuildNote.Status.PUBLISHED,
-        published_at__lte=timezone.now(),
+    notes = list(
+        BuildNote.objects.filter(
+            status=BuildNote.Status.PUBLISHED,
+            published_at__lte=timezone.now(),
+        )
     )
+    for note in notes:
+        note.cover = cover_for_slug(note.slug)
+        if note.cover:
+            note.cover["url"] = static(note.cover["path"])
     return render(
         request,
         "landing/build_notes.html",

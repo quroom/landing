@@ -204,6 +204,42 @@
   color: var(--body);
 }
 
+.build-note-list-card {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+}
+
+.build-note-list-thumbnail {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--soft);
+}
+
+.build-note-list-thumbnail img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+}
+
+.build-note-list-content {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .build-note-list-card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 20px;
+  }
+}
+
 /* WBS Rule Card */
 .wbs-rule-card {
   background: #fff;
@@ -792,5 +828,4 @@
     gap: 32px;
   }
 }
-
 

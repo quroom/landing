@@ -71,43 +71,57 @@
       <div class="subpage-container" style="max-width: 860px;">
         <div style="display: flex; flex-direction: column; gap: 20px;">
           {% for note in notes %}
-            <article class="subpage-card" style="padding: 28px;">
-              <div style="display: flex;
-                          align-items: center;
-                          gap: 10px;
-                          font-size: 0.76rem;
-                          color: var(--muted);
-                          margin-bottom: 8px">
-                <span style="padding: 2px 8px;
-                             border-radius: 4px;
-                             background: var(--blue-soft);
-                             color: var(--blue);
-                             font-weight: 600">{{ note.get_category_display }}</span>
-                {% if note.published_at %}
-                  <time datetime="{{ note.published_at|date:'c' }}">{{ note.published_at|date:"Y.m.d" }}</time>
+            <article class="subpage-card build-note-list-card">
+              {% if note.cover %}
+                <a class="build-note-list-thumbnail"
+                   href="{% url 'landing:build_note_detail' note.slug %}"
+                   aria-label="{{ note.title }}">
+                  <img src="{{ note.cover.url }}"
+                       alt="{{ note.cover.alt }}"
+                       width="1200"
+                       height="630"
+                       loading="lazy"
+                       decoding="async" />
+                </a>
+              {% endif %}
+              <div class="build-note-list-content">
+                <div style="display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            font-size: 0.76rem;
+                            color: var(--muted);
+                            margin-bottom: 8px">
+                  <span style="padding: 2px 8px;
+                               border-radius: 4px;
+                               background: var(--blue-soft);
+                               color: var(--blue);
+                               font-weight: 600">{{ note.get_category_display }}</span>
+                  {% if note.published_at %}
+                    <time datetime="{{ note.published_at|date:'c' }}">{{ note.published_at|date:"Y.m.d" }}</time>
+                  {% endif %}
+                </div>
+                <h2 style="margin: 4px 0 10px;
+                           font-size: 1.35rem;
+                           font-weight: 600;
+                           color: var(--ink)">
+                  <a href="{% url 'landing:build_note_detail' note.slug %}"
+                     style="text-decoration: none;
+                            color: inherit"
+                     onmouseover="this.style.color='var(--blue)'"
+                     onmouseout="this.style.color='inherit'">{{ note.title }}</a>
+                </h2>
+                <p style="margin: 0;
+                          font-size: 0.92rem;
+                          line-height: 1.65;
+                          color: var(--body)">{{ note.summary }}</p>
+                {% if note.tag_list %}
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                    {% for tag in note.tag_list %}
+                      <span style="font-size: 0.75rem; color: var(--muted);">#{{ tag }}</span>
+                    {% endfor %}
+                  </div>
                 {% endif %}
               </div>
-              <h2 style="margin: 4px 0 10px;
-                         font-size: 1.35rem;
-                         font-weight: 600;
-                         color: var(--ink)">
-                <a href="{% url 'landing:build_note_detail' note.slug %}"
-                   style="text-decoration: none;
-                          color: inherit"
-                   onmouseover="this.style.color='var(--blue)'"
-                   onmouseout="this.style.color='inherit'">{{ note.title }}</a>
-              </h2>
-              <p style="margin: 0;
-                        font-size: 0.92rem;
-                        line-height: 1.65;
-                        color: var(--body)">{{ note.summary }}</p>
-              {% if note.tag_list %}
-                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
-                  {% for tag in note.tag_list %}
-                    <span style="font-size: 0.75rem; color: var(--muted);">#{{ tag }}</span>
-                  {% endfor %}
-                </div>
-              {% endif %}
             </article>
           {% empty %}
             <div class="subpage-card"
