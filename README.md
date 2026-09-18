@@ -159,7 +159,7 @@ If both pass, push to GitHub.
 - `DATABASE_URL` (preferred in production)
 - `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` (fallback if no `DATABASE_URL`)
 - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (Cloudtype-style fallback keys)
-- `GA4_MEASUREMENT_ID` (if you want GA4 tracking)
+- Analytics uses PostHog; GA4 loading and event forwarding are removed.
 - `ANALYTICS_EXCLUDED_IPS` (comma-separated IPs to exclude from FunnelEvent tracking, e.g. `203.0.113.10,198.51.100.7`)
 - `QUROOM_CONTACT_EMAIL` (defaults to `help@quroom.kr`)
 - `CONTACT_EMAIL_ASYNC` (`1` enables async email send, default `0`)

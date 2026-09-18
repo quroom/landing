@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "landing.middleware.CanonicalHostMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -204,7 +205,6 @@ EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "20"))
 DEFAULT_FROM_EMAIL = os.getenv("DJANGO_DEFAULT_FROM_EMAIL", "help@quroom.kr")
 QUROOM_CONTACT_EMAIL = os.getenv("QUROOM_CONTACT_EMAIL", "help@quroom.kr")
-GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "")
 CONTACT_EMAIL_ASYNC = os.getenv("CONTACT_EMAIL_ASYNC", "1") == "1"
 # In debug mode, disable async unless real email is explicitly allowed.
 if DEBUG and not ALLOW_REAL_EMAIL_IN_DEBUG:

@@ -689,7 +689,7 @@ class LandingPageTests(TestCase):
         self.assertNotIn('"message"', script)
         self.assertNotIn('"contact"', script)
 
-    def test_client_analytics_persists_ad_attribution_for_ga4(self) -> None:
+    def test_client_analytics_persists_ad_attribution_for_posthog(self) -> None:
         script_path = settings.REPO_ROOT / "landing/static/landing/js/site.js"
         script = script_path.read_text(encoding="utf-8")
 
@@ -698,7 +698,8 @@ class LandingPageTests(TestCase):
         self.assertIn('creative: "ad_creative"', script)
         self.assertIn('kw: "ad_keyword"', script)
         self.assertIn("window.sessionStorage.setItem", script)
-        self.assertIn('window.gtag("event", eventName, eventPayload)', script)
+        self.assertIn("window.posthog.capture(eventName, eventPayload)", script)
+        self.assertNotIn("window.gtag", script)
 
     def test_index_applies_naver_ad_landing_variant(self) -> None:
         response = self.client.get(
@@ -1132,7 +1133,7 @@ class LandingPageTests(TestCase):
         terms = self.client.get(reverse("landing:terms"))
         self.assertEqual(privacy.status_code, 200)
         self.assertEqual(terms.status_code, 200)
-        self.assertContains(privacy, "Google Analytics 4(GA4)")
+        self.assertContains(privacy, "PostHog")
         self.assertContains(privacy, "방문 통계, 유입 경로, 페이지 조회")
         self.assertContains(privacy, "개인정보의 국외 이전")
         self.assertContains(privacy, "개인정보의 파기 절차 및 방법")

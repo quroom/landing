@@ -12,6 +12,7 @@ from django.db.models import Count
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone, translation
 from django.utils.translation import gettext as _
@@ -25,6 +26,7 @@ from .ax_tool_stack import (
     DIAGNOSIS_QUESTIONS,
     diagnosis_question_keys,
 )
+from .build_note_images import cover_for_slug
 from .content import (
     CAREER_RANGES,
     SAFE_LOCALE,
@@ -474,7 +476,6 @@ def _base_context(
         "form": ContactForm(**form_kwargs),
         "lead_magnet_form": lead_magnet_form,
         "lead_magnet_fields": _diagnosis_fields(lead_magnet_form),
-        "ga4_measurement_id": settings.GA4_MEASUREMENT_ID,
         "page_key": page_key,
         "testimonials": testimonials,
         "testimonial_threshold": testimonial_threshold,
@@ -913,6 +914,7 @@ def build_notes(request: HttpRequest) -> HttpResponse:
         request,
         "landing/build_notes.html",
         {
+            **_seo_context(request, "build_notes"),
             "notes": notes,
             "canonical_url": _absolute_site_url(reverse("landing:build_notes")),
             "og_url": _absolute_site_url(reverse("landing:build_notes")),
@@ -929,14 +931,16 @@ def build_note_detail(request: HttpRequest, slug: str) -> HttpResponse:
     )
     note_url = reverse("landing:build_note_detail", kwargs={"slug": note.slug})
     canonical_url = _absolute_site_url(note_url)
+    cover = cover_for_slug(note.slug)
+    cover_url = _absolute_site_url(static(cover["path"])) if cover else None
     article_schema = {
         "@context": "https://schema.org",
-        "@type": "TechArticle",
+        "@type": "BlogPosting",
         "headline": note.seo_title or note.title,
         "description": note.seo_description or note.summary,
         "url": canonical_url,
         "datePublished": note.published_at.isoformat() if note.published_at else None,
-        "dateModified": note.updated_at.isoformat() if note.updated_at else None,
+        "dateModified": max(note.published_at, note.updated_at).isoformat(),
         "author": {
             "@type": "Person",
             "name": "김상은",
@@ -965,16 +969,23 @@ def build_note_detail(request: HttpRequest, slug: str) -> HttpResponse:
         article_schema["keywords"] = [
             t.strip() for t in note.tags.split(",") if t.strip()
         ]
+    if cover_url:
+        article_schema["image"] = [cover_url]
 
     return render(
         request,
         "landing/build_note_detail.html",
         {
+            **_seo_context(request, "build_note_detail"),
             "note": note,
+            "cover": cover,
+            "cover_url": cover_url,
             "body_html": _render_limited_markdown(note.body_markdown),
             "canonical_url": canonical_url,
             "og_url": canonical_url,
-            "article_schema_json": json.dumps(article_schema, ensure_ascii=False),
+            "article_schema_json": json.dumps(
+                article_schema, ensure_ascii=False
+            ).replace("<", "\\u003c"),
         },
     )
 
@@ -1259,15 +1270,18 @@ def sitemap_xml(request: HttpRequest) -> HttpResponse:
     urls = []
     for route_name in SEARCH_SITEMAP_ROUTE_NAMES:
         path = reverse(route_name)
-        urls.append(_absolute_site_url(path))
+        urls.append({"loc": _absolute_site_url(path)})
     for note in BuildNote.objects.filter(
         status=BuildNote.Status.PUBLISHED,
         published_at__lte=timezone.now(),
     ):
         urls.append(
-            _absolute_site_url(
-                reverse("landing:build_note_detail", kwargs={"slug": note.slug})
-            )
+            {
+                "loc": _absolute_site_url(
+                    reverse("landing:build_note_detail", kwargs={"slug": note.slug})
+                ),
+                "lastmod": max(note.published_at, note.updated_at).isoformat(),
+            }
         )
 
     xml = render_to_string(

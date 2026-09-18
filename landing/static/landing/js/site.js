@@ -275,9 +275,6 @@
       ),
     );
 
-    if (typeof window.gtag === "function") {
-      window.gtag("event", eventName, eventPayload);
-    }
     if (window.posthog && typeof window.posthog.capture === "function") {
       window.posthog.capture(eventName, eventPayload);
     }
@@ -300,6 +297,21 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    var article = document.querySelector("[data-build-note]");
+    if (article) {
+      if (window.posthog && typeof window.posthog.register_for_session === "function") {
+        window.posthog.register_for_session({ article_slug: article.dataset.buildNote });
+      }
+      sendAnalyticsEvent("build_note_viewed", { article_slug: article.dataset.buildNote });
+      document.querySelectorAll('a[href="/free-diagnosis/"], a[href="/outsourcing-checklist/"], a[href="/#contact"]').forEach(function (link) {
+        link.addEventListener("click", function () {
+          sendAnalyticsEvent("build_note_cta_clicked", {
+            article_slug: article.dataset.buildNote,
+            destination: link.getAttribute("href"),
+          });
+        });
+      });
+    }
     bindMobileMenu();
     bindInquiryLinks();
     updateCareerDuration();
