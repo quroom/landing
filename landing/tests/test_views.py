@@ -1,6 +1,10 @@
 from django.test import SimpleTestCase
 
-from landing.views import _group_preview_reports, _intent_pattern_coverage
+from landing.views import (
+    _group_preview_reports,
+    _intent_pattern_coverage,
+    _render_limited_markdown,
+)
 
 
 class PreviewReportGroupingTests(SimpleTestCase):
@@ -145,3 +149,41 @@ class PreviewReportGroupingTests(SimpleTestCase):
         self.assertTrue(coverage["is_covered"])
         self.assertEqual(coverage["missing_patterns"], [])
         self.assertEqual(coverage["missing_tools"], [])
+
+
+class MarkdownRenderingTests(SimpleTestCase):
+    def test_renders_markdown_table_with_header_and_body(self) -> None:
+        md = """
+| 대상 모듈 | 기능 명세 | 검증 방법 |
+| :--- | :--- | :--- |
+| **회원 인증** | 카카오 간편 로그인 | 브라우저 시연 |
+| **결제 연동** | 단건 카드 결제 | PG 테스트 |
+"""
+        html = _render_limited_markdown(md)
+        self.assertIn('<div class="subpage-table-wrap"><table>', html)
+        self.assertIn(
+            "<thead><tr><th>대상 모듈</th><th>기능 명세</th><th>검증 방법</th></tr></thead>",
+            html,
+        )
+        self.assertIn(
+            "<tbody><tr><td><strong>회원 인증</strong></td><td>카카오 간편 로그인</td><td>브라우저 시연</td></tr>",
+            html,
+        )
+        self.assertIn(
+            "<tr><td><strong>결제 연동</strong></td><td>단건 카드 결제</td><td>PG 테스트</td></tr></tbody>",
+            html,
+        )
+        self.assertIn("</table></div>", html)
+
+    def test_renders_table_with_inline_links_and_code(self) -> None:
+        md = """
+| 항목 | 설명 |
+| :--- | :--- |
+| `orders` | [링크](https://quroom.kr/) |
+"""
+        html = _render_limited_markdown(md)
+        self.assertIn("<code>orders</code>", html)
+        self.assertIn(
+            '<a href="https://quroom.kr/" target="_blank" rel="noreferrer">링크</a>',
+            html,
+        )

@@ -947,6 +947,7 @@ def _render_limited_markdown(markdown_text: str) -> str:
     list_items = []
     ordered_items = []
     quote_lines = []
+    table_lines = []
     in_code_block = False
     code_lang = ""
     code_lines = []
@@ -981,6 +982,62 @@ def _render_limited_markdown(markdown_text: str) -> str:
             )
             quote_lines.clear()
 
+    def flush_table() -> None:
+        if not table_lines:
+            return
+
+        rows = []
+        for t_line in table_lines:
+            # Strip outer '|' and split by '|'
+            inner = t_line.strip()
+            if inner.startswith("|"):
+                inner = inner[1:]
+            if inner.endswith("|"):
+                inner = inner[:-1]
+            cells = [c.strip() for c in inner.split("|")]
+            rows.append(cells)
+
+        table_lines.clear()
+        if not rows:
+            return
+
+        # Check if row 1 is a delimiter row: e.g. :--- or ---: or :---: or ---
+        delimiter_idx = -1
+        for idx in range(1, min(2, len(rows))):
+            if all(re.match(r"^:?-+:?$", c) for c in rows[idx] if c):
+                delimiter_idx = idx
+                break
+
+        html_parts = ['<div class="subpage-table-wrap"><table>']
+        if delimiter_idx == 1 and len(rows) > 1:
+            header_cells = rows[0]
+            html_parts.append("<thead><tr>")
+            for c in header_cells:
+                html_parts.append(f"<th>{_render_inline_markdown(c)}</th>")
+            html_parts.append("</tr></thead>")
+
+            body_rows = rows[2:]
+            if body_rows:
+                html_parts.append("<tbody>")
+                for r in body_rows:
+                    html_parts.append("<tr>")
+                    for c in r:
+                        html_parts.append(f"<td>{_render_inline_markdown(c)}</td>")
+                    html_parts.append("</tr>")
+                html_parts.append("</tbody>")
+        else:
+            # Render all rows as tbody rows
+            html_parts.append("<tbody>")
+            for r in rows:
+                html_parts.append("<tr>")
+                for c in r:
+                    html_parts.append(f"<td>{_render_inline_markdown(c)}</td>")
+                html_parts.append("</tr>")
+            html_parts.append("</tbody>")
+
+        html_parts.append("</table></div>")
+        blocks.append("".join(html_parts))
+
     def flush_code() -> None:
         if code_lines:
             lang_attr = f' class="language-{escape(code_lang)}"' if code_lang else ""
@@ -996,6 +1053,7 @@ def _render_limited_markdown(markdown_text: str) -> str:
         flush_list()
         flush_ordered_list()
         flush_quote()
+        flush_table()
 
     for raw_line in lines:
         line = raw_line.rstrip()
@@ -1060,6 +1118,7 @@ def _render_limited_markdown(markdown_text: str) -> str:
         if stripped.startswith("- ") or stripped.startswith("* "):
             flush_paragraph()
             flush_ordered_list()
+            flush_table()
             bullet_text = stripped[2:].strip()
             is_checkbox = False
             is_checked = False
@@ -1085,10 +1144,22 @@ def _render_limited_markdown(markdown_text: str) -> str:
         if m_ol:
             flush_paragraph()
             flush_list()
+            flush_table()
             ordered_items.append(_render_inline_markdown(m_ol.group(2).strip()))
             continue
         elif ordered_items:
             flush_ordered_list()
+
+        # Markdown table row: lines starting and ending with '|'
+        if stripped.startswith("|") and stripped.endswith("|") and len(stripped) >= 2:
+            flush_paragraph()
+            flush_list()
+            flush_ordered_list()
+            flush_quote()
+            table_lines.append(stripped)
+            continue
+        elif table_lines:
+            flush_table()
 
         paragraph_lines.append(line.strip())
 
